@@ -6,12 +6,23 @@ import (
 	"github.com/yoheimuta/protolinter/internal/strs"
 )
 
-// EnumNamesUpperCamelCaseRule checks that enum type names are CamelCase (with an initial capital).
+// EnumNamesUpperCamelCaseRule verifies that all enum names are CamelCase (with an initial capital).
+// See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumNamesUpperCamelCaseRule struct{}
 
 // NewEnumNamesUpperCamelCaseRule creates a new EnumNamesUpperCamelCaseRule.
 func NewEnumNamesUpperCamelCaseRule() EnumNamesUpperCamelCaseRule {
 	return EnumNamesUpperCamelCaseRule{}
+}
+
+// ID returns the ID of this rule.
+func (r EnumNamesUpperCamelCaseRule) ID() string {
+	return "ENUM_NAMES_UPPER_CAMEL_CASE"
+}
+
+// Purpose returns the purpose of this rule.
+func (r EnumNamesUpperCamelCaseRule) Purpose() string {
+	return "Verifies that all enum names are CamelCase (with an initial capital)."
 }
 
 // Apply applies the rule to the proto.
