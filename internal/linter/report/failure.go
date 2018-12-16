@@ -26,5 +26,5 @@ func Failuref(
 
 // String stringifies Failure.
 func (f Failure) String() string {
-	return fmt.Sprintf("[%s], %s", f.pos, f.message)
+	return fmt.Sprintf("[%s] %s", f.pos, f.message)
 }

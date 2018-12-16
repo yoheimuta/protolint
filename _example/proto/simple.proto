@@ -19,3 +19,6 @@ message outer {
     EnumAllowingAlias enum_field =3;
     map<int32, string> my_map = 4;
 }
+service SearchService {
+    rpc search (SearchRequest) returns (SearchResponse);
+}

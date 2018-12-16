@@ -1,7 +1,7 @@
 package lint
 
 import (
-	"github.com/yoheimuta/protolinter/internal/addon/rules"
+	"github.com/yoheimuta/protolinter/internal/cmd/subcmds"
 	"github.com/yoheimuta/protolinter/internal/linter/config"
 	"github.com/yoheimuta/protolinter/internal/linter/file"
 	"github.com/yoheimuta/protolinter/internal/linter/rule"
@@ -25,7 +25,9 @@ func NewCmdLintConfig(
 func (c CmdLintConfig) GenRules(
 	f file.ProtoFile,
 ) ([]rule.HasApply, error) {
-	return []rule.HasApply{
-		rules.NewEnumNamesUpperCamelCaseRule(),
-	}, nil
+	var hasApplies []rule.HasApply
+	for _, r := range subcmds.NewAllRules() {
+		hasApplies = append(hasApplies, r)
+	}
+	return hasApplies, nil
 }

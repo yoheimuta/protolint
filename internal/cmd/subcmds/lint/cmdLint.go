@@ -50,8 +50,11 @@ func (c *CmdLint) Run() osutil.ExitCode {
 
 	for _, failure := range failures {
 		_, _ = fmt.Fprintln(c.stderr, failure)
+	}
+	if 0 < len(failures) {
 		return osutil.ExitFailure
 	}
+
 	return osutil.ExitSuccess
 }
 
