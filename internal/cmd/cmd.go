@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"github.com/yoheimuta/protolinter/internal/cmd/subcmds/lint"
+	"github.com/yoheimuta/protolinter/internal/cmd/subcmds/list"
 	"github.com/yoheimuta/protolinter/internal/osutil"
 )
 
@@ -17,6 +18,11 @@ Usage:
   pl lint .
   pl lint example.proto example2.proto
 `
+)
+
+const (
+	subCmdLint = "lint"
+	subCmdList = "list"
 )
 
 // Do runs the command logic.
@@ -44,13 +50,15 @@ func doSub(
 	stderr io.Writer,
 ) osutil.ExitCode {
 	switch args[0] {
-	case "lint":
+	case subCmdLint:
 		if len(args) < 2 {
 			_, _ = fmt.Fprintln(stderr, "pl lint requires at least one argument. See Usage.")
 			_, _ = fmt.Fprint(stderr, help)
 			return osutil.ExitFailure
 		}
 		return doLint(args[1:], stdout, stderr)
+	case subCmdList:
+		return doList(stdout, stderr)
 	default:
 		return doLint(args, stdout, stderr)
 	}
@@ -70,5 +78,16 @@ func doLint(
 		_, _ = fmt.Fprint(stderr, err)
 		return osutil.ExitFailure
 	}
+	return subCmd.Run()
+}
+
+func doList(
+	stdout io.Writer,
+	stderr io.Writer,
+) osutil.ExitCode {
+	subCmd := list.NewCmdList(
+		stdout,
+		stderr,
+	)
 	return subCmd.Run()
 }
