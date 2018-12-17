@@ -40,7 +40,7 @@ type rpcNamesUpperCamelCaseVisitor struct {
 // VisitRPC checks the rpc.
 func (v *rpcNamesUpperCamelCaseVisitor) VisitRPC(rpc *parser.RPC) bool {
 	if !strs.IsUpperCamelCase(rpc.RPCName) {
-		v.addFailuref(rpc.Meta.Pos, "RPC name %q must be UpperCamelCase.", rpc.RPCName)
+		v.addFailuref(rpc.Meta.Pos, "RPC name %q must be UpperCamelCase", rpc.RPCName)
 	}
 	return false
 }

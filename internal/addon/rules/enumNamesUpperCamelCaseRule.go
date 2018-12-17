@@ -40,7 +40,7 @@ type enumNamesUpperCamelCaseVisitor struct {
 // VisitEnum checks the enum.
 func (v *enumNamesUpperCamelCaseVisitor) VisitEnum(enum *parser.Enum) bool {
 	if !strs.IsUpperCamelCase(enum.EnumName) {
-		v.addFailuref(enum.Meta.Pos, "Enum name %q must be UpperCamelCase.", enum.EnumName)
+		v.addFailuref(enum.Meta.Pos, "Enum name %q must be UpperCamelCase", enum.EnumName)
 	}
 	return false
 }
