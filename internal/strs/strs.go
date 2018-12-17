@@ -1,7 +1,9 @@
 // Package strs contains common string manipulation functionality.
 package strs
 
-import "unicode/utf8"
+import (
+	"unicode/utf8"
+)
 
 // IsUpperCamelCase returns true if s is not empty and is camel case with an initial capital.
 func IsUpperCamelCase(s string) bool {
@@ -9,6 +11,20 @@ func IsUpperCamelCase(s string) bool {
 		return false
 	}
 	return isCamelCase(s)
+}
+
+// IsUpperSnakeCase returns true if s only contains uppercase letters,
+// digits, and/or underscores. s MUST NOT begin or end with an underscore.
+func IsUpperSnakeCase(s string) bool {
+	if s == "" || s[0] == '_' || s[len(s)-1] == '_' {
+		return false
+	}
+	for _, r := range s {
+		if !(isUpper(r) || isDigit(r) || r == '_') {
+			return false
+		}
+	}
+	return true
 }
 
 // isCapitalized returns true if is not empty and the first letter is

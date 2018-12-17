@@ -8,6 +8,7 @@ import (
 // NewAllRules creates new rules.
 func NewAllRules() []rule.Rule {
 	return []rule.Rule{
+		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
 		rules.NewEnumNamesUpperCamelCaseRule(),
 		rules.NewRPCNamesUpperCamelCaseRule(),
 	}
