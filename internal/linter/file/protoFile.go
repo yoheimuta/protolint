@@ -3,8 +3,6 @@ package file
 import (
 	"os"
 
-	"log"
-
 	"github.com/yoheimuta/go-protoparser"
 	"github.com/yoheimuta/go-protoparser/parser"
 )
@@ -33,15 +31,18 @@ func NewProtoFile(
 }
 
 // Parse parses a Protocol Buffer file.
-func (f ProtoFile) Parse() (*parser.Proto, error) {
+func (f ProtoFile) Parse() (_ *parser.Proto, err error) {
 	reader, err := os.Open(f.path)
 	if err != nil {
 		return nil, err
 	}
 	defer func() {
-		err = reader.Close()
+		closeErr := reader.Close()
 		if err != nil {
-			log.Println(err)
+			return
+		}
+		if closeErr != nil {
+			err = closeErr
 		}
 	}()
 
