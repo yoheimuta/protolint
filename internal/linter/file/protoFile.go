@@ -52,3 +52,13 @@ func (f ProtoFile) Parse() (_ *parser.Proto, err error) {
 	}
 	return proto, nil
 }
+
+// Path returns the path to the .proto file.
+func (f ProtoFile) Path() string {
+	return f.path
+}
+
+// DisplayPath returns the path to display in output.
+func (f ProtoFile) DisplayPath() string {
+	return f.displayPath
+}
