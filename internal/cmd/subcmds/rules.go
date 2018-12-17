@@ -10,6 +10,7 @@ func NewAllRules() []rule.Rule {
 	return []rule.Rule{
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
 		rules.NewEnumNamesUpperCamelCaseRule(),
+		rules.NewMessageNamesUpperCamelCaseRule(),
 		rules.NewRPCNamesUpperCamelCaseRule(),
 	}
 }
