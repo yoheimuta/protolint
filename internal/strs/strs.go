@@ -27,6 +27,20 @@ func IsUpperSnakeCase(s string) bool {
 	return true
 }
 
+// IsLowerSnakeCase returns true if s only contains lowercase letters,
+// digits, and/or underscores. s MUST NOT begin or end with an underscore.
+func IsLowerSnakeCase(s string) bool {
+	if s == "" || s[0] == '_' || s[len(s)-1] == '_' {
+		return false
+	}
+	for _, r := range s {
+		if !(isLower(r) || isDigit(r) || r == '_') {
+			return false
+		}
+	}
+	return true
+}
+
 // isCapitalized returns true if is not empty and the first letter is
 // an uppercase character.
 func isCapitalized(s string) bool {

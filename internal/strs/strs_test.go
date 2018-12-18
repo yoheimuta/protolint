@@ -86,3 +86,43 @@ func TestIsUpperSnakeCase(t *testing.T) {
 		})
 	}
 }
+
+func TestIsLowerSnakeCase(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  bool
+	}{
+		{
+			name: "empty is not lowercase",
+		},
+		{
+			name:  "includes uppercase characters",
+			input: "HELLO",
+		},
+		{
+			name:  "includes a uppercase character",
+			input: "Hello",
+		},
+		{
+			name:  "all lowercase",
+			input: "hello",
+			want:  true,
+		},
+		{
+			name:  "all lowercase with underscore",
+			input: "song_name",
+			want:  true,
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			got := strs.IsLowerSnakeCase(test.input)
+			if got != test.want {
+				t.Errorf("got %v, but want %v", got, test.want)
+			}
+		})
+	}
+}
