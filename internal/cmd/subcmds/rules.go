@@ -12,5 +12,6 @@ func NewAllRules() []rule.Rule {
 		rules.NewEnumNamesUpperCamelCaseRule(),
 		rules.NewMessageNamesUpperCamelCaseRule(),
 		rules.NewRPCNamesUpperCamelCaseRule(),
+		rules.NewServiceNamesUpperCamelCaseRule(),
 	}
 }
