@@ -17,6 +17,7 @@ Usage:
   pl .
   pl lint .
   pl lint example.proto example2.proto
+  pl list
 `
 )
 
