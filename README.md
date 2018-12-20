@@ -9,7 +9,7 @@ protolinter is a command line tool which lints Protocol Buffer files (proto3):
 ### Installation
 
 ```
-go get github.com/yoheimuta/protolinter/cmd/pl
+go get -u -v github.com/yoheimuta/protolinter/cmd/pl
 ```
 
 ### Usage
