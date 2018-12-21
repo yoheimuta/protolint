@@ -2,6 +2,7 @@ package rules
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/visitor"
 	"github.com/yoheimuta/protolinter/internal/linter/report"
 	"github.com/yoheimuta/protolinter/internal/strs"
 )
@@ -27,20 +28,20 @@ func (r EnumNamesUpperCamelCaseRule) Purpose() string {
 
 // Apply applies the rule to the proto.
 func (r EnumNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	visitor := &enumNamesUpperCamelCaseVisitor{
-		baseAddVisitor: newBaseAddVisitor(),
+	v := &enumNamesUpperCamelCaseVisitor{
+		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return runVisitor(visitor, proto)
+	return visitor.RunVisitor(v, proto)
 }
 
 type enumNamesUpperCamelCaseVisitor struct {
-	*baseAddVisitor
+	*visitor.BaseAddVisitor
 }
 
 // VisitEnum checks the enum.
 func (v *enumNamesUpperCamelCaseVisitor) VisitEnum(enum *parser.Enum) bool {
 	if !strs.IsUpperCamelCase(enum.EnumName) {
-		v.addFailuref(enum.Meta.Pos, "Enum name %q must be UpperCamelCase", enum.EnumName)
+		v.AddFailuref(enum.Meta.Pos, "Enum name %q must be UpperCamelCase", enum.EnumName)
 	}
 	return false
 }

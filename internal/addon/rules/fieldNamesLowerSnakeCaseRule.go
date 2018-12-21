@@ -2,6 +2,7 @@ package rules
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/visitor"
 	"github.com/yoheimuta/protolinter/internal/linter/report"
 	"github.com/yoheimuta/protolinter/internal/strs"
 )
@@ -27,20 +28,20 @@ func (r FieldNamesLowerSnakeCaseRule) Purpose() string {
 
 // Apply applies the rule to the proto.
 func (r FieldNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	visitor := &fieldNamesLowerSnakeCaseVisitor{
-		baseAddVisitor: newBaseAddVisitor(),
+	v := &fieldNamesLowerSnakeCaseVisitor{
+		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return runVisitor(visitor, proto)
+	return visitor.RunVisitor(v, proto)
 }
 
 type fieldNamesLowerSnakeCaseVisitor struct {
-	*baseAddVisitor
+	*visitor.BaseAddVisitor
 }
 
 // VisitField checks the field.
 func (v *fieldNamesLowerSnakeCaseVisitor) VisitField(field *parser.Field) bool {
 	if !strs.IsLowerSnakeCase(field.FieldName) {
-		v.addFailuref(field.Meta.Pos, "Field name %q must be LowerSnakeCase", field.FieldName)
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be LowerSnakeCase", field.FieldName)
 	}
 	return false
 }

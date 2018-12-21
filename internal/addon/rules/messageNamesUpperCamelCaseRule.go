@@ -2,6 +2,7 @@ package rules
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/visitor"
 	"github.com/yoheimuta/protolinter/internal/linter/report"
 	"github.com/yoheimuta/protolinter/internal/strs"
 )
@@ -27,20 +28,20 @@ func (r MessageNamesUpperCamelCaseRule) Purpose() string {
 
 // Apply applies the rule to the proto.
 func (r MessageNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	visitor := &messageNamesUpperCamelCaseVisitor{
-		baseAddVisitor: newBaseAddVisitor(),
+	v := &messageNamesUpperCamelCaseVisitor{
+		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return runVisitor(visitor, proto)
+	return visitor.RunVisitor(v, proto)
 }
 
 type messageNamesUpperCamelCaseVisitor struct {
-	*baseAddVisitor
+	*visitor.BaseAddVisitor
 }
 
 // VisitMessage checks the message.
 func (v *messageNamesUpperCamelCaseVisitor) VisitMessage(message *parser.Message) bool {
 	if !strs.IsUpperCamelCase(message.MessageName) {
-		v.addFailuref(message.Meta.Pos, "Message name %q must be UpperCamelCase", message.MessageName)
+		v.AddFailuref(message.Meta.Pos, "Message name %q must be UpperCamelCase", message.MessageName)
 	}
 	return true
 }

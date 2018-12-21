@@ -2,6 +2,7 @@ package rules
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/visitor"
 	"github.com/yoheimuta/protolinter/internal/linter/report"
 	"github.com/yoheimuta/protolinter/internal/strs"
 )
@@ -27,20 +28,20 @@ func (r EnumFieldNamesUpperSnakeCaseRule) Purpose() string {
 
 // Apply applies the rule to the proto.
 func (r EnumFieldNamesUpperSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	visitor := &enumFieldNamesUpperSnakeCaseVisitor{
-		baseAddVisitor: newBaseAddVisitor(),
+	v := &enumFieldNamesUpperSnakeCaseVisitor{
+		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return runVisitor(visitor, proto)
+	return visitor.RunVisitor(v, proto)
 }
 
 type enumFieldNamesUpperSnakeCaseVisitor struct {
-	*baseAddVisitor
+	*visitor.BaseAddVisitor
 }
 
 // VisitEnumField checks the enum field.
 func (v *enumFieldNamesUpperSnakeCaseVisitor) VisitEnumField(field *parser.EnumField) bool {
 	if !strs.IsUpperSnakeCase(field.Ident) {
-		v.addFailuref(field.Meta.Pos, "EnumField name %q must be UpperSnakeCase", field.Ident)
+		v.AddFailuref(field.Meta.Pos, "EnumField name %q must be UpperSnakeCase", field.Ident)
 	}
 	return false
 }

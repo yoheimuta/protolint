@@ -2,6 +2,7 @@ package rules
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/visitor"
 	"github.com/yoheimuta/protolinter/internal/linter/report"
 	"github.com/yoheimuta/protolinter/internal/strs"
 )
@@ -27,20 +28,20 @@ func (r ServiceNamesUpperCamelCaseRule) Purpose() string {
 
 // Apply applies the rule to the proto.
 func (r ServiceNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	visitor := &serviceNamesUpperCamelCaseVisitor{
-		baseAddVisitor: newBaseAddVisitor(),
+	v := &serviceNamesUpperCamelCaseVisitor{
+		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return runVisitor(visitor, proto)
+	return visitor.RunVisitor(v, proto)
 }
 
 type serviceNamesUpperCamelCaseVisitor struct {
-	*baseAddVisitor
+	*visitor.BaseAddVisitor
 }
 
 // VisitService checks the service.
 func (v *serviceNamesUpperCamelCaseVisitor) VisitService(service *parser.Service) bool {
 	if !strs.IsUpperCamelCase(service.ServiceName) {
-		v.addFailuref(service.Meta.Pos, "Service name %q must be UpperCamelCase", service.ServiceName)
+		v.AddFailuref(service.Meta.Pos, "Service name %q must be UpperCamelCase", service.ServiceName)
 	}
 	return false
 }
