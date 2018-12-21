@@ -4,15 +4,17 @@ protolinter is a command line tool which lints Protocol Buffer files (proto3):
 
 - Runs fast because this works without compiler.
 - Easy to follow the official style guide. The rules and the style guide correspond to each other exactly.
+- Allow to disable rules with a comment in a Protocol Buffer file.
+  - It is useful for projects which must keep API compatibility while enforce the style guide as much as possible.
 - Undergone testing for all rules.
 
-### Installation
+## Installation
 
 ```
 go get -u -v github.com/yoheimuta/protolinter/cmd/pl
 ```
 
-### Usage
+## Usage
 
 ```
 pl lint example.proto example2.proto # file mode, specify multiple specific files
@@ -21,7 +23,7 @@ pl .                                 # same as "pl lint ."
 pl list                              # list all current lint rules being used
 ```
 
-### Rules
+## Rules
 
 See `internal/addon/rules` in detail.
 
@@ -97,7 +99,32 @@ __RPC_NAMES_UPPER_CAMEL_CASE__
 }
 ```
 
-### Motivation
+## Configuring
+
+__Disable rules in a Protocol Buffer file__
+
+Rules can be disabled with a comment inside a Protocol Buffer file with the following format.
+The rules will be disabled until the end of the file or until the linter sees a matching enable comment:
+
+```
+// protolint:disable <ruleID1> [<ruleID2> <ruleID3>...]
+...
+// protolint:enable <ruleID1> [<ruleID2> <ruleID3>...]
+```
+
+It's also possible to modify a disable command by appending :next for only applying the command to the next line.
+
+For example:
+
+```proto
+enum Foo {
+  // protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
+  firstValue = 0;    // no error
+  second_value = 1;  // spits out an error
+}
+```
+
+## Motivation
 
 There exists the similar protobuf linters as of 2018-12-20.
 
@@ -113,9 +140,8 @@ There exists the similar protobuf linters as of 2018-12-20.
 - Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to understand both rules and the guide in detail, and then to combine the rules accurately.
 - There are no tests about linter rules.
 
-### TODO
+## TODO
 
-- [ ] Enable to turn off the rule with a comment line
 - [ ] Auto-Register binaries to GitHub Releases
 - [ ] Support a configuration file to turn on/off the rules
 - [ ] More rules

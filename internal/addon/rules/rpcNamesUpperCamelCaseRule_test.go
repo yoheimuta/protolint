@@ -39,7 +39,7 @@ func TestRPCNamesUpperCamelCaseRule_Apply(t *testing.T) {
 			},
 		},
 		{
-			name: "a failure for proto with LowerCamelCase",
+			name: "failures for proto with LowerCamelCase",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
 					&parser.Service{

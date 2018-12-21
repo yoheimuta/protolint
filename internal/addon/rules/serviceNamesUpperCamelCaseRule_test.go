@@ -38,7 +38,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 			},
 		},
 		{
-			name: "a failure for proto with invalid service names",
+			name: "failures for proto with invalid service names",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
 					&parser.Service{

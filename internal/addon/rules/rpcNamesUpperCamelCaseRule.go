@@ -31,7 +31,7 @@ func (r RPCNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure
 	v := &rpcNamesUpperCamelCaseVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return visitor.RunVisitor(v, proto)
+	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type rpcNamesUpperCamelCaseVisitor struct {

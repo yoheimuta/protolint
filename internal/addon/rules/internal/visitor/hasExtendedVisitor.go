@@ -5,7 +5,7 @@ import (
 	"github.com/yoheimuta/protolinter/internal/linter/report"
 )
 
-type extendedVisitor interface {
+type hasExtendedVisitor interface {
 	parser.Visitor
 
 	// OnStart is called when visiting is started.
@@ -18,15 +18,21 @@ type extendedVisitor interface {
 
 // RunVisitor dispatches the call to the visitor.
 func RunVisitor(
-	visitor extendedVisitor,
+	visitor hasExtendedVisitor,
 	proto *parser.Proto,
+	ruleID string,
 ) ([]report.Failure, error) {
-	if err := visitor.OnStart(proto); err != nil {
+	v := newExtendedDisableRuleVisitor(
+		visitor,
+		ruleID,
+	)
+
+	if err := v.OnStart(proto); err != nil {
 		return nil, err
 	}
-	proto.Accept(visitor)
+	proto.Accept(v)
 	if err := visitor.Finally(); err != nil {
 		return nil, err
 	}
-	return visitor.Failures(), nil
+	return v.Failures(), nil
 }

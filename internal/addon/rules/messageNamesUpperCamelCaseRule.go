@@ -31,7 +31,7 @@ func (r MessageNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Fai
 	v := &messageNamesUpperCamelCaseVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return visitor.RunVisitor(v, proto)
+	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type messageNamesUpperCamelCaseVisitor struct {

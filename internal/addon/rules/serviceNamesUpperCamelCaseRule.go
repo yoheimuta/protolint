@@ -31,7 +31,7 @@ func (r ServiceNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Fai
 	v := &serviceNamesUpperCamelCaseVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return visitor.RunVisitor(v, proto)
+	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type serviceNamesUpperCamelCaseVisitor struct {

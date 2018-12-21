@@ -39,7 +39,7 @@ func TestEnumNamesUpperCamelCaseRule_Apply(t *testing.T) {
 			},
 		},
 		{
-			name: "a failure for proto with invalid enum names",
+			name: "failures for proto with invalid enum names",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
 					&parser.Service{},

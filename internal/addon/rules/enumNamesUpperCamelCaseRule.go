@@ -31,7 +31,7 @@ func (r EnumNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failur
 	v := &enumNamesUpperCamelCaseVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return visitor.RunVisitor(v, proto)
+	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type enumNamesUpperCamelCaseVisitor struct {

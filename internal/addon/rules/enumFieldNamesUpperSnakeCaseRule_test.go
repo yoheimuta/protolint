@@ -43,7 +43,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 			},
 		},
 		{
-			name: "a failure for proto with invalid enum field names",
+			name: "failures for proto with invalid enum field names",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
 					&parser.Enum{

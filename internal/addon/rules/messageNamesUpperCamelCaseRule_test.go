@@ -44,7 +44,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 			},
 		},
 		{
-			name: "a failure for proto with invalid message names",
+			name: "failures for proto with invalid message names",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
 					&parser.Service{},

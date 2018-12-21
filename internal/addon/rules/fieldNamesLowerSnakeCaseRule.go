@@ -31,7 +31,7 @@ func (r FieldNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failu
 	v := &fieldNamesLowerSnakeCaseVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return visitor.RunVisitor(v, proto)
+	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type fieldNamesLowerSnakeCaseVisitor struct {

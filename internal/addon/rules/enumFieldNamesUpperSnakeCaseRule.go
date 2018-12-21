@@ -31,7 +31,7 @@ func (r EnumFieldNamesUpperSnakeCaseRule) Apply(proto *parser.Proto) ([]report.F
 	v := &enumFieldNamesUpperSnakeCaseVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 	}
-	return visitor.RunVisitor(v, proto)
+	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type enumFieldNamesUpperSnakeCaseVisitor struct {
