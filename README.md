@@ -1,4 +1,4 @@
-# protolint [![GoDoc](https://godoc.org/github.com/yoheimuta/protolint?status.svg)](https://godoc.org/github.com/yoheimuta/protolint)[![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)
+# protolint [![GoDoc](https://godoc.org/github.com/yoheimuta/protolint?status.svg)](https://godoc.org/github.com/yoheimuta/protolint)[![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
 
 protolint is a command line tool which lints Protocol Buffer files (proto3):
 
