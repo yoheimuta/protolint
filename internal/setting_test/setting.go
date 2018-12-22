@@ -6,7 +6,7 @@ import (
 )
 
 func projectRootPath() string {
-	return filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "yoheimuta", "protolinter")
+	return filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "yoheimuta", "protolint")
 }
 
 // TestDataPath is the directory path for the data used by tests.

@@ -1,6 +1,6 @@
-# protolinter [![GoDoc](https://godoc.org/github.com/yoheimuta/protolinter?status.svg)](https://godoc.org/github.com/yoheimuta/protolinter)
+# protolint [![GoDoc](https://godoc.org/github.com/yoheimuta/protolint?status.svg)](https://godoc.org/github.com/yoheimuta/protolint)
 
-protolinter is a command line tool which lints Protocol Buffer files (proto3):
+protolint is a command line tool which lints Protocol Buffer files (proto3):
 
 - Runs fast because this works without compiler.
 - Easy to follow the official style guide. The rules and the style guide correspond to each other exactly.
@@ -11,7 +11,7 @@ protolinter is a command line tool which lints Protocol Buffer files (proto3):
 ## Installation
 
 ```
-go get -u -v github.com/yoheimuta/protolinter/cmd/pl
+go get -u -v github.com/yoheimuta/protolint/cmd/pl
 ```
 
 ## Usage

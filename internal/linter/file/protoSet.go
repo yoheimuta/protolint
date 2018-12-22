@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/yoheimuta/protolinter/internal/linter/config"
+	"github.com/yoheimuta/protolint/internal/linter/config"
 )
 
 // ProtoSet represents a set of .proto files and an associated config.

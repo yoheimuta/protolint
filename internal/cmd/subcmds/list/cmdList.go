@@ -5,9 +5,9 @@ import (
 
 	"fmt"
 
-	"github.com/yoheimuta/protolinter/internal/cmd/subcmds"
-	"github.com/yoheimuta/protolinter/internal/linter/rule"
-	"github.com/yoheimuta/protolinter/internal/osutil"
+	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
+	"github.com/yoheimuta/protolint/internal/linter/rule"
+	"github.com/yoheimuta/protolint/internal/osutil"
 )
 
 // CmdList is a rule list command.

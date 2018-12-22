@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yoheimuta/protolinter/internal/cmd/subcmds/lint"
-	"github.com/yoheimuta/protolinter/internal/cmd/subcmds/list"
-	"github.com/yoheimuta/protolinter/internal/osutil"
+	"github.com/yoheimuta/protolint/internal/cmd/subcmds/lint"
+	"github.com/yoheimuta/protolint/internal/cmd/subcmds/list"
+	"github.com/yoheimuta/protolint/internal/osutil"
 )
 
 const (

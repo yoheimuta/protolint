@@ -2,9 +2,9 @@ package rules
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/visitor"
-	"github.com/yoheimuta/protolinter/internal/linter/report"
-	"github.com/yoheimuta/protolinter/internal/strs"
+	"github.com/yoheimuta/protolint/internal/addon/rules/internal/visitor"
+	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/internal/strs"
 )
 
 // EnumFieldNamesUpperSnakeCaseRule verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.

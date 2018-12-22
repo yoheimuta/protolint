@@ -2,7 +2,7 @@ package rule
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolinter/internal/linter/report"
+	"github.com/yoheimuta/protolint/internal/linter/report"
 )
 
 // HasApply represents a rule which can be applied.

@@ -3,7 +3,7 @@ package strs_test
 import (
 	"testing"
 
-	"github.com/yoheimuta/protolinter/internal/strs"
+	"github.com/yoheimuta/protolint/internal/strs"
 )
 
 func TestIsUpperCamelCase(t *testing.T) {

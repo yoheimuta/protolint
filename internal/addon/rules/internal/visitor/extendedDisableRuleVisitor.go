@@ -2,8 +2,8 @@ package visitor
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/disablerule"
-	"github.com/yoheimuta/protolinter/internal/linter/report"
+	"github.com/yoheimuta/protolint/internal/addon/rules/internal/disablerule"
+	"github.com/yoheimuta/protolint/internal/linter/report"
 )
 
 type extendedDisableRuleVisitor struct {

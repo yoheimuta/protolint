@@ -2,8 +2,8 @@ package linter
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolinter/internal/linter/report"
-	"github.com/yoheimuta/protolinter/internal/linter/rule"
+	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/internal/linter/rule"
 )
 
 // Linter represents the protocol buffer linter with some rules.

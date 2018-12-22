@@ -1,10 +1,10 @@
 package lint
 
 import (
-	"github.com/yoheimuta/protolinter/internal/cmd/subcmds"
-	"github.com/yoheimuta/protolinter/internal/linter/config"
-	"github.com/yoheimuta/protolinter/internal/linter/file"
-	"github.com/yoheimuta/protolinter/internal/linter/rule"
+	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
+	"github.com/yoheimuta/protolint/internal/linter/config"
+	"github.com/yoheimuta/protolint/internal/linter/file"
+	"github.com/yoheimuta/protolint/internal/linter/rule"
 )
 
 // CmdLintConfig is a config for lint command.

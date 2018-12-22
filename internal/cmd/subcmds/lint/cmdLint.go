@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yoheimuta/protolinter/internal/linter"
-	"github.com/yoheimuta/protolinter/internal/linter/file"
-	"github.com/yoheimuta/protolinter/internal/linter/report"
-	"github.com/yoheimuta/protolinter/internal/osutil"
+	"github.com/yoheimuta/protolint/internal/linter"
+	"github.com/yoheimuta/protolint/internal/linter/file"
+	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/internal/osutil"
 )
 
 // CmdLint is a lint command.

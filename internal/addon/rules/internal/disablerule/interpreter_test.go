@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/disablerule"
+	"github.com/yoheimuta/protolint/internal/addon/rules/internal/disablerule"
 )
 
 func TestInterpreter_Interpret(t *testing.T) {

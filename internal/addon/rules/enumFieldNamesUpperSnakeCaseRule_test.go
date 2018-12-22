@@ -6,8 +6,8 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/parser"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
-	"github.com/yoheimuta/protolinter/internal/addon/rules"
-	"github.com/yoheimuta/protolinter/internal/linter/report"
+	"github.com/yoheimuta/protolint/internal/addon/rules"
+	"github.com/yoheimuta/protolint/internal/linter/report"
 )
 
 func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {

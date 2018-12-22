@@ -6,9 +6,9 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/parser/meta"
 
-	"github.com/yoheimuta/protolinter/internal/addon/rules/internal/visitor"
+	"github.com/yoheimuta/protolint/internal/addon/rules/internal/visitor"
 
-	"github.com/yoheimuta/protolinter/internal/linter/report"
+	"github.com/yoheimuta/protolint/internal/linter/report"
 
 	"github.com/yoheimuta/go-protoparser/parser"
 )

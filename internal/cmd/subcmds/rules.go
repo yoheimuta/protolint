@@ -1,8 +1,8 @@
 package subcmds
 
 import (
-	"github.com/yoheimuta/protolinter/internal/addon/rules"
-	"github.com/yoheimuta/protolinter/internal/linter/rule"
+	"github.com/yoheimuta/protolint/internal/addon/rules"
+	"github.com/yoheimuta/protolint/internal/linter/rule"
 )
 
 // NewAllRules creates new rules.
