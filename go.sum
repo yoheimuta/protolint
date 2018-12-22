@@ -1,2 +1,2 @@
-github.com/yoheimuta/go-protoparser v0.0.0-20181218233413-7e7d7cafe0f0 h1:7eLaFKcoMGMaY39zCxiyWq8E7FcYEIViOXX8E3BtW3g=
-github.com/yoheimuta/go-protoparser v0.0.0-20181218233413-7e7d7cafe0f0/go.mod h1:NMMDARGayMyLM9oD1JUgKyF1Tv7aj9S+KcTG4lqvemo=
+github.com/yoheimuta/go-protoparser v1.0.0 h1:s+/hA+enNbeNSbSzFUBoVKpGNYv020cD/xCpKt/CzL0=
+github.com/yoheimuta/go-protoparser v1.0.0/go.mod h1:NMMDARGayMyLM9oD1JUgKyF1Tv7aj9S+KcTG4lqvemo=
