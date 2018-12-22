@@ -35,6 +35,10 @@ test/lint/nosupport/gomod:
 	# checks dispensable type conversions.
 	unconvert -v ./...
 
+## dev/install/dep installs depenencies required for development.
+dev/install/dep:
+	./.circleci/install_dep.sh
+
 ## ARG is command arguments.
 ARG=lint
 

@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  lint:
+    docker:
+      - image: circleci/golang:1.11.4
+    working_directory: /go/src/github.com/yoheimuta/protolint
+    steps:
+      - checkout
+      - run: make dev/install/dep
+      - run: make test/lint
+  test:
+    docker:
+      - image: circleci/golang:1.11.4
+    working_directory: /go/src/github.com/yoheimuta/protolint
+    steps:
+      - checkout
+      - run: make test
+workflows:
+  version: 2
+  lint_and_test:
+    jobs:
+      - lint
+      - test
