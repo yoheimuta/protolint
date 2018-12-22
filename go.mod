@@ -1,3 +1,3 @@
 module github.com/yoheimuta/protolint
 
-require github.com/yoheimuta/go-protoparser v0.0.0-20181218233413-7e7d7cafe0f0
+require github.com/yoheimuta/go-protoparser v1.0.0

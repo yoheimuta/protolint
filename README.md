@@ -1,4 +1,4 @@
-# protolint [![GoDoc](https://godoc.org/github.com/yoheimuta/protolint?status.svg)](https://godoc.org/github.com/yoheimuta/protolint)[![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)
+# protolint [![GoDoc](https://godoc.org/github.com/yoheimuta/protolint?status.svg)](https://godoc.org/github.com/yoheimuta/protolint)[![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
 
 protolint is a command line tool which lints Protocol Buffer files (proto3):
 
@@ -139,6 +139,10 @@ There exists the similar protobuf linters as of 2018-12-20.
 - While it has a lot of features other than lint, it seems cumbersome for users who just want the linter.
 - Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to understand both rules and the guide in detail, and then to combine the rules accurately.
 - There are no tests about linter rules.
+
+## Dependencies
+
+- [go-protoparser](https://github.com/yoheimuta/go-protoparser)
 
 ## TODO
 
