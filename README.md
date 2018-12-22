@@ -144,28 +144,3 @@ There exists the similar protobuf linters as of 2018-12-20.
 
 - [go-protoparser](https://github.com/yoheimuta/go-protoparser)
 
-## TODO
-
-- [ ] Auto-Register binaries to GitHub Releases
-- [ ] Support a configuration file to turn on/off the rules
-- [ ] More rules
-  - [ ] oneofNamesUpperCamelCaseRule
-  - [ ] mapFieldNamesLowerSnakeCaseRule
-  - [ ] oneofFieldNamesLowerSnakeCaseRule
-  - [ ] requestResponseNamesMatchRPCRule
-  - [ ] fieldNumbersStartFromOneRule
-  - [ ] enumFieldNumbersStartFromZeroRule
-  - [ ] enumsHaveCommentsRule
-  - [ ] enumFieldsHaveCommentsRule
-  - [ ] messagesHaveCommentsRule
-  - [ ] fieldsHaveCommentsRule
-  - [ ] mapFieldsHaveCommentsRule
-  - [ ] rpcsHaveCommentsRule
-  - [ ] servicesHaveCommentsRule
-  - [ ] oneofsHaveCommentsRule
-  - [ ] oneofFieldsHaveCommentsRule
-  - [ ] commentsBeginWithTheNameRule
-  - [ ] commentsNoCStyleRule
-  - [ ] maxLineLengthRule
-  - [ ] spaceIndentationRule
-  - [ ] tabIndentationRule
