@@ -18,7 +18,7 @@ test/lint:
 	(! gofmt -s -d `find . -name vendor -prune -type f -o -name '*.go'` | grep '^')
 	golint -set_exit_status `go list ./...`
 	# checks the import format.
-	(! goimports -l `find . -name vendor -prune -type f -o -name '*.go'` | grep 'go')
+	#(! goimports -l `find . -name vendor -prune -type f -o -name '*.go'` | grep 'go')
 	# checks the error the compiler can't find.
 	go vet ./...
 	# checks shadowed variables.
