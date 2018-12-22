@@ -140,6 +140,10 @@ There exists the similar protobuf linters as of 2018-12-20.
 - Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to understand both rules and the guide in detail, and then to combine the rules accurately.
 - There are no tests about linter rules.
 
+## Dependencies
+
+- [go-protoparser](https://github.com/yoheimuta/go-protoparser)
+
 ## TODO
 
 - [ ] Auto-Register binaries to GitHub Releases
