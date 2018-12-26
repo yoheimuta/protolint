@@ -128,19 +128,23 @@ enum Foo {
 
 There exists the similar protobuf linters as of 2018-12-20.
 
-[protoc-gen-lint](https://github.com/ckaznocha/protoc-gen-lint) is a plug-in for Google's Protocol Buffers compiler.
+One is a plug-in for Google's Protocol Buffers compiler.
 
 - When you just want to lint the files, it may be tedious to create the compilation environment.
 - And it generally takes a lot of time to compile the files than to parse the files.
 
-[prototool](https://github.com/uber/prototool) is a Swiss Army Knife for Protocol Buffers.
+Other is a command line tool which also lints Protocol Buffer files.
 
-- The lint rule slants towards to be opinionated, because the rule set basically follows the Uber's Style Guide.
 - While it has a lot of features other than lint, it seems cumbersome for users who just want the linter.
+- The lint rule slants towards to be opinionated.
 - Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to understand both rules and the guide in detail, and then to combine the rules accurately.
-- There are no tests about linter rules.
 
 ## Dependencies
 
 - [go-protoparser](https://github.com/yoheimuta/go-protoparser)
 
+### Acknowledgement
+
+Thank you to the prototool package: https://github.com/uber/prototool
+
+I referred to the package for the good proven design, interface and some source code.
