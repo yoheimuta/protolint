@@ -143,7 +143,7 @@ Other is a command line tool which also lints Protocol Buffer files.
 
 - [go-protoparser](https://github.com/yoheimuta/go-protoparser)
 
-### Acknowledgement
+## Acknowledgement
 
 Thank you to the prototool package: https://github.com/uber/prototool
 
