@@ -12,12 +12,14 @@ const (
 	commandDisable commandType = iota
 	commandEnable
 	commandDisableNext
+	commandDisableThis
 )
 
 var (
 	reDisable     = regexp.MustCompile(`protolint:disable (.*)`)
 	reEnable      = regexp.MustCompile(`protolint:enable (.*)`)
 	reDisableNext = regexp.MustCompile(`protolint:disable:next (.*)`)
+	reDisableThis = regexp.MustCompile(`protolint:disable:this (.*)`)
 )
 
 type command struct {
@@ -55,6 +57,15 @@ func newCommand(
 		}, nil
 	}
 
+	subs = reDisableThis.FindStringSubmatch(comment)
+	if len(subs) == 2 {
+		ruleIDs := strings.Split(subs[1], " ")
+		return command{
+			ruleIDs: ruleIDs,
+			t:       commandDisableThis,
+		}, nil
+	}
+
 	return command{}, fmt.Errorf("invalid disabled comments")
 }
 
@@ -74,6 +85,12 @@ func (c command) disabledNext(
 	ruleID string,
 ) bool {
 	return c.t == commandDisableNext && c.matchRuleID(ruleID)
+}
+
+func (c command) disabledThis(
+	ruleID string,
+) bool {
+	return c.t == commandDisableThis && c.matchRuleID(ruleID)
 }
 
 func (c command) matchRuleID(
