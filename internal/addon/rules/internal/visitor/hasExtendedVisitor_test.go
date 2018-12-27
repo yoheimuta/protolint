@@ -221,6 +221,51 @@ func TestRunVisitor(t *testing.T) {
 			},
 		},
 		{
+			name: "visit a message. one is disabled by an inline comment.",
+			inputVisitor: &testVisitor{
+				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+			},
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Message{
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "example.proto",
+								Offset:   100,
+								Line:     10,
+								Column:   5,
+							},
+						},
+						InlineComment: &parser.Comment{
+							Raw: `// protolint:disable:this MESSAGE_NAMES_UPPER_CAMEL_CASE`,
+						},
+					},
+					&parser.Message{
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "example.proto",
+								Offset:   200,
+								Line:     20,
+								Column:   10,
+							},
+						},
+					},
+				},
+			},
+			inputRuleID: `MESSAGE_NAMES_UPPER_CAMEL_CASE`,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   200,
+						Line:     20,
+						Column:   10,
+					},
+					"Test Message",
+				),
+			},
+		},
+		{
 			name: "visit a messages. others are disabled.",
 			inputVisitor: &testVisitor{
 				BaseAddVisitor: visitor.NewBaseAddVisitor(),
