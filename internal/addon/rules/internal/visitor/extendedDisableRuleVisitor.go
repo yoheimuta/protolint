@@ -22,14 +22,19 @@ func newExtendedDisableRuleVisitor(
 	}
 }
 
-func (v extendedDisableRuleVisitor) OnStart(p *parser.Proto) error  { return v.inner.OnStart(p) }
-func (v extendedDisableRuleVisitor) Finally() error                 { return v.inner.Finally() }
-func (v extendedDisableRuleVisitor) Failures() []report.Failure     { return v.inner.Failures() }
-func (v extendedDisableRuleVisitor) VisitComment(c *parser.Comment) { v.inner.VisitComment(c) }
+func (v extendedDisableRuleVisitor) OnStart(p *parser.Proto) error { return v.inner.OnStart(p) }
+func (v extendedDisableRuleVisitor) Finally() error                { return v.inner.Finally() }
+func (v extendedDisableRuleVisitor) Failures() []report.Failure    { return v.inner.Failures() }
 func (v extendedDisableRuleVisitor) VisitEmptyStatement(e *parser.EmptyStatement) (next bool) {
 	return v.inner.VisitEmptyStatement(e)
 }
 
+func (v extendedDisableRuleVisitor) VisitComment(c *parser.Comment) {
+	if v.interpreter.Interpret([]*parser.Comment{c}) {
+		return
+	}
+	v.inner.VisitComment(c)
+}
 func (v extendedDisableRuleVisitor) VisitEnum(e *parser.Enum) (next bool) {
 	if v.interpreter.Interpret(e.Comments, e.InlineComment, e.InlineCommentBehindLeftCurly) {
 		return true

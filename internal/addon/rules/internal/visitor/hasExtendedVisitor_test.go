@@ -266,7 +266,7 @@ func TestRunVisitor(t *testing.T) {
 			},
 		},
 		{
-			name: "visit a messages. others are disabled.",
+			name: "visit messages. others are disabled.",
 			inputVisitor: &testVisitor{
 				BaseAddVisitor: visitor.NewBaseAddVisitor(),
 			},
@@ -309,6 +309,66 @@ func TestRunVisitor(t *testing.T) {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// protolint:enable MESSAGE_NAMES_UPPER_CAMEL_CASE`,
+							},
+						},
+					},
+				},
+			},
+			inputRuleID: `MESSAGE_NAMES_UPPER_CAMEL_CASE`,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   300,
+						Line:     30,
+						Column:   15,
+					},
+					"Test Message",
+				),
+			},
+		},
+		{
+			name: "visit messages. others are disabled by a last line comment.",
+			inputVisitor: &testVisitor{
+				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+			},
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Message{
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "example.proto",
+								Offset:   100,
+								Line:     10,
+								Column:   5,
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// protolint:disable MESSAGE_NAMES_UPPER_CAMEL_CASE`,
+							},
+						},
+					},
+					&parser.Message{
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "example.proto",
+								Offset:   200,
+								Line:     20,
+								Column:   10,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `// protolint:enable MESSAGE_NAMES_UPPER_CAMEL_CASE`,
+					},
+					&parser.Message{
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "example.proto",
+								Offset:   300,
+								Line:     30,
+								Column:   15,
 							},
 						},
 					},
