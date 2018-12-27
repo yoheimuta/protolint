@@ -40,6 +40,8 @@ The rule set follows:
 | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
 
+`-` is a bad style, `+` is a good style:
+
 __ENUM_FIELD_NAMES_UPPER_SNAKE_CASE__
 
 ```diff
