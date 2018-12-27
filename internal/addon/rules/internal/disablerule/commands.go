@@ -11,6 +11,9 @@ func newCommands(
 ) commands {
 	var cmds []command
 	for _, comment := range comments {
+		if comment == nil {
+			continue
+		}
 		cmd, err := newCommand(comment.Raw)
 		if err == nil {
 			cmds = append(cmds, cmd)
@@ -46,6 +49,17 @@ func (cs commands) disabledNext(
 ) bool {
 	for _, cmd := range cs {
 		if cmd.disabledNext(ruleID) {
+			return true
+		}
+	}
+	return false
+}
+
+func (cs commands) disabledThis(
+	ruleID string,
+) bool {
+	for _, cmd := range cs {
+		if cmd.disabledThis(ruleID) {
 			return true
 		}
 	}

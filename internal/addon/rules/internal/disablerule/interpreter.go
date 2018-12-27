@@ -17,12 +17,18 @@ func NewInterpreter(
 	}
 }
 
-// Interpret interprets comments and returns a bool whether not apply the rule to a next element.
+// Interpret interprets comments and returns a bool whether not apply the rule to a next or this element.
 func (i *Interpreter) Interpret(
 	comments []*parser.Comment,
-) (isDisabledNext bool) {
+	inlines ...*parser.Comment,
+) (isDisabled bool) {
 	cmds := newCommands(comments)
-	return i.interpret(cmds)
+	inlineCmds := newCommands(inlines)
+	allCmds := append(append([]command{}, cmds...), inlineCmds...)
+	return i.interpret(allCmds) ||
+		i.interpretNext(cmds) ||
+		i.interpretThis(inlineCmds) ||
+		i.isDisabled
 }
 
 func (i *Interpreter) interpret(
@@ -37,8 +43,25 @@ func (i *Interpreter) interpret(
 		i.isDisabled = true
 		return true
 	}
+	return false
+}
+
+func (i *Interpreter) interpretNext(
+	cmds commands,
+) bool {
+	id := i.ruleID
 	if cmds.disabledNext(id) {
 		return true
 	}
-	return i.isDisabled
+	return false
+}
+
+func (i *Interpreter) interpretThis(
+	cmds commands,
+) bool {
+	id := i.ruleID
+	if cmds.disabledThis(id) {
+		return true
+	}
+	return false
 }

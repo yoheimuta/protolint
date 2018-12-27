@@ -9,9 +9,10 @@ import (
 
 func TestInterpreter_Interpret(t *testing.T) {
 	type inOut struct {
-		name               string
-		inputComments      []*parser.Comment
-		wantIsNextDisabled bool
+		name                string
+		inputComments       []*parser.Comment
+		inputInlineComments []*parser.Comment
+		wantIsDisabled      bool
 	}
 	tests := []struct {
 		name        string
@@ -48,7 +49,7 @@ func TestInterpreter_Interpret(t *testing.T) {
 							Raw: `// protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
 				},
 				{
 					name: "rule is disabled when there is a disable:next c-style comment with a ruleID",
@@ -59,7 +60,7 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 */`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
 				},
 				{
 					name: "rule is disabled when there are disable:next comments with ruleIDs",
@@ -71,7 +72,7 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 							Raw: `// protolint:disable:next ENUM_NAMES_UPPER_CAMEL_CASE`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
 				},
 			},
 		},
@@ -94,7 +95,30 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 							Raw: `// protolint:disable:next SERVICE_NAMES_UPPER_CAMEL_CASE`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
+				},
+			},
+		},
+		{
+			name:        "disable:this comment skips SERVICE_NAMES_UPPER_CAMEL_CASE",
+			inputRuleID: "SERVICE_NAMES_UPPER_CAMEL_CASE",
+			inOuts: []inOut{
+				{
+					name: "rule is enabled when the ruleID does not match it",
+					inputInlineComments: []*parser.Comment{
+						{
+							Raw: `// protolint:disable:this ENUM_NAMES_UPPER_CAMEL_CASE`,
+						},
+					},
+				},
+				{
+					name: "rule is disabled when there is a disable:this comment with a ruleID",
+					inputInlineComments: []*parser.Comment{
+						{
+							Raw: `// protolint:disable:this SERVICE_NAMES_UPPER_CAMEL_CASE`,
+						},
+					},
+					wantIsDisabled: true,
 				},
 			},
 		},
@@ -117,11 +141,11 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 							Raw: `// protolint:disable SERVICE_NAMES_UPPER_CAMEL_CASE`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
 				},
 				{
-					name:               "rule is always disabled after a disable comment",
-					wantIsNextDisabled: true,
+					name:           "rule is always disabled after a disable comment",
+					wantIsDisabled: true,
 				},
 				{
 					name: "rule is disabled when there is a disable:next comment with a ruleID",
@@ -130,11 +154,11 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 							Raw: `// protolint:disable:next SERVICE_NAMES_UPPER_CAMEL_CASE`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
 				},
 				{
-					name:               "rule is always disabled after a disable comment",
-					wantIsNextDisabled: true,
+					name:           "rule is always disabled after a disable comment",
+					wantIsDisabled: true,
 				},
 			},
 		},
@@ -149,7 +173,7 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 							Raw: `// protolint:disable SERVICE_NAMES_UPPER_CAMEL_CASE`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
 				},
 				{
 					name: "rule is not enabled when there is an enable comment with another ruleID",
@@ -158,7 +182,7 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 							Raw: `// protolint:enable ENUM_FIELD_NAMES_UPPER_SNAKE_CASE`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
 				},
 				{
 					name: "rule is enabled when there is an enable comment with a same ruleID",
@@ -178,7 +202,7 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 							Raw: `// protolint:disable:next SERVICE_NAMES_UPPER_CAMEL_CASE`,
 						},
 					},
-					wantIsNextDisabled: true,
+					wantIsDisabled: true,
 				},
 				{
 					name: "rule is always enabled after an enable comment and a disable:next comment",
@@ -193,9 +217,9 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 			interpreter := disablerule.NewInterpreter(test.inputRuleID)
 
 			for _, expect := range test.inOuts {
-				got := interpreter.Interpret(expect.inputComments)
-				if got != expect.wantIsNextDisabled {
-					t.Errorf("[%s] got %v, but want %v", expect.name, got, expect.wantIsNextDisabled)
+				got := interpreter.Interpret(expect.inputComments, expect.inputInlineComments...)
+				if got != expect.wantIsDisabled {
+					t.Errorf("[%s] got %v, but want %v", expect.name, got, expect.wantIsDisabled)
 				}
 			}
 		})

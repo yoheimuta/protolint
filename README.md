@@ -112,7 +112,7 @@ The rules will be disabled until the end of the file or until the linter sees a 
 // protolint:enable <ruleID1> [<ruleID2> <ruleID3>...]
 ```
 
-It's also possible to modify a disable command by appending :next for only applying the command to the next line.
+It's also possible to modify a disable command by appending :next or :this for only applying the command to this(current) or the next line respectively.
 
 For example:
 
@@ -120,7 +120,8 @@ For example:
 enum Foo {
   // protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
   firstValue = 0;    // no error
-  second_value = 1;  // spits out an error
+  second_value = 1;  // protolint:disable:this ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
+  THIRD_VALUE = 2;   // spits out an error
 }
 ```
 
