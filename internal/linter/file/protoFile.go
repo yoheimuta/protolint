@@ -46,7 +46,11 @@ func (f ProtoFile) Parse() (_ *parser.Proto, err error) {
 		}
 	}()
 
-	proto, err := protoparser.Parse(reader, protoparser.WithFilename(f.displayPath))
+	proto, err := protoparser.Parse(
+		reader,
+		protoparser.WithFilename(f.displayPath),
+		protoparser.WithBodyIncludingComments(true),
+	)
 	if err != nil {
 		return nil, err
 	}
