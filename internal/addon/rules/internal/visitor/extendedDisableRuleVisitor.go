@@ -6,6 +6,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/linter/report"
 )
 
+// TODO: To work `enable comments` more precisely, this implementation has to be modified.
 type extendedDisableRuleVisitor struct {
 	inner       hasExtendedVisitor
 	interpreter *disablerule.Interpreter
