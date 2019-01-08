@@ -3,7 +3,7 @@
   <component name="GoLibraries">
     <option name="urls">
       <list>
-        <option value="file://$MODULE_DIR$/../../../.." />
+        <option value="file://$USER_HOME$/.go" />
       </list>
     </option>
   </component>
