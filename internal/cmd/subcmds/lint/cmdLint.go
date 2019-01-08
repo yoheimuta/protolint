@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/yoheimuta/protolint/internal/linter/config"
+
 	"github.com/yoheimuta/protolint/internal/linter"
 	"github.com/yoheimuta/protolint/internal/linter/file"
 	"github.com/yoheimuta/protolint/internal/linter/report"
@@ -29,7 +31,12 @@ func NewCmdLint(
 	if err != nil {
 		return nil, err
 	}
-	lintConfig := NewCmdLintConfig()
+
+	externalConfig, err := config.GetExternalConfig("")
+	if err != nil {
+		return nil, err
+	}
+	lintConfig := NewCmdLintConfig(externalConfig)
 
 	return &CmdLint{
 		l:          linter.NewLinter(),

@@ -1,0 +1,19 @@
+lint:
+  ignores:
+    - id: ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
+      files:
+        - path/to/foo.proto
+        - path/to/bar.proto
+    - id: ENUM_NAMES_UPPER_CAMEL_CASE
+      files:
+        - path/to/foo.proto
+
+  rules:
+    no_default: true
+
+    add:
+      - FIELD_NAMES_LOWER_SNAKE_CASE
+      - MESSAGE_NAMES_UPPER_CAMEL_CASE
+
+    remove:
+      - RPC_NAMES_UPPER_CAMEL_CASE

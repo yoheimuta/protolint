@@ -13,9 +13,11 @@ type CmdLintConfig struct {
 }
 
 // NewCmdLintConfig creates a new CmdLintConfig.
-func NewCmdLintConfig() CmdLintConfig {
+func NewCmdLintConfig(
+	externalConfig config.ExternalConfig,
+) CmdLintConfig {
 	return CmdLintConfig{
-		c: config.ExternalConfig{},
+		c: externalConfig,
 	}
 }
 
