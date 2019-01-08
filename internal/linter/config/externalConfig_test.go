@@ -3,6 +3,8 @@ package config_test
 import (
 	"testing"
 
+	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
+
 	"github.com/yoheimuta/protolint/internal/linter/config"
 )
 
@@ -150,6 +152,11 @@ func TestExternalConfig_SkipRule(t *testing.T) {
 			name:           "not skip noRemove rule",
 			externalConfig: defaultExternalConfig,
 			inputRuleID:    "FIELD_NAMES_LOWER_SNAKE_CASE",
+		},
+		{
+			name:           "not skip default one",
+			externalConfig: config.ExternalConfig{},
+			inputRuleID:    subcmds.DefaultRuleIDs()[0],
 		},
 	} {
 		test := test

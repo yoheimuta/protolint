@@ -28,8 +28,10 @@ func (c CmdLintConfig) GenRules(
 	var hasApplies []rule.HasApply
 	for _, r := range subcmds.NewAllRules() {
 		if c.external.SkipRule(r.ID(), f.DisplayPath(), subcmds.DefaultRuleIDs()) {
-			hasApplies = append(hasApplies, r)
+			continue
 		}
+		hasApplies = append(hasApplies, r)
 	}
+
 	return hasApplies, nil
 }
