@@ -1,2 +1,5 @@
 github.com/yoheimuta/go-protoparser v1.1.0 h1:uQ2BiiM1BW4Fp3NW17chUZggK61zOWTiqhb/Ksus7vc=
 github.com/yoheimuta/go-protoparser v1.1.0/go.mod h1:NMMDARGayMyLM9oD1JUgKyF1Tv7aj9S+KcTG4lqvemo=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
+gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
