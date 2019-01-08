@@ -17,13 +17,12 @@ func TestGetExternalConfig(t *testing.T) {
 		wantExistErr       bool
 	}{
 		{
-			name:         "not found a config file",
-			wantExistErr: true,
-		},
-		{
 			name:         "invalid config file",
 			inputDirPath: setting_test.TestDataPath("invalidconfig"),
 			wantExistErr: true,
+		},
+		{
+			name: "not found a config file",
 		},
 		{
 			name:         "valid config file",
