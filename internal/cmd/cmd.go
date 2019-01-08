@@ -71,8 +71,15 @@ func doLint(
 		return osutil.ExitFailure
 	}
 
+	flags := lint.NewFlags(args[1:])
+	if len(flags.Args()) < 1 {
+		_, _ = fmt.Fprintln(stderr, "pl lint requires at least one argument. See Usage.")
+		_, _ = fmt.Fprint(stderr, help)
+		return osutil.ExitFailure
+	}
+
 	subCmd, err := lint.NewCmdLint(
-		args[1:],
+		flags,
 		stdout,
 		stderr,
 	)

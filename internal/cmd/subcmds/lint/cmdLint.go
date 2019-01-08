@@ -23,16 +23,16 @@ type CmdLint struct {
 
 // NewCmdLint creates a new CmdLint.
 func NewCmdLint(
-	args []string,
+	flags Flags,
 	stdout io.Writer,
 	stderr io.Writer,
 ) (*CmdLint, error) {
-	protoSet, err := file.NewProtoSet(args)
+	protoSet, err := file.NewProtoSet(flags.Args())
 	if err != nil {
 		return nil, err
 	}
 
-	externalConfig, err := config.GetExternalConfig("")
+	externalConfig, err := config.GetExternalConfig(flags.ConfigDirPath)
 	if err != nil {
 		return nil, err
 	}
