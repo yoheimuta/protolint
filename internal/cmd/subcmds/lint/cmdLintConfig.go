@@ -9,15 +9,13 @@ import (
 
 // CmdLintConfig is a config for lint command.
 type CmdLintConfig struct {
-	c config.Config
+	c config.ExternalConfig
 }
 
 // NewCmdLintConfig creates a new CmdLintConfig.
-func NewCmdLintConfig(
-	c config.Config,
-) CmdLintConfig {
+func NewCmdLintConfig() CmdLintConfig {
 	return CmdLintConfig{
-		c: c,
+		c: config.ExternalConfig{},
 	}
 }
 

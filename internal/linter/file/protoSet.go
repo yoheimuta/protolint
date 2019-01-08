@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"github.com/yoheimuta/protolint/internal/linter/config"
 )
 
-// ProtoSet represents a set of .proto files and an associated config.
+// ProtoSet represents a set of .proto files.
 type ProtoSet struct {
 	protoFiles []ProtoFile
-	config     config.Config
 }
 
 // NewProtoSet creates a new ProtoSet.
@@ -34,11 +31,6 @@ func NewProtoSet(
 // ProtoFiles returns proto files.
 func (s ProtoSet) ProtoFiles() []ProtoFile {
 	return s.protoFiles
-}
-
-// Config returns the config.
-func (s ProtoSet) Config() config.Config {
-	return s.config
 }
 
 func collectAllProtoFilesFromArgs(

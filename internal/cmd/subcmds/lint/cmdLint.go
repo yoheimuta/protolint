@@ -29,7 +29,7 @@ func NewCmdLint(
 	if err != nil {
 		return nil, err
 	}
-	lintConfig := NewCmdLintConfig(protoSet.Config())
+	lintConfig := NewCmdLintConfig()
 
 	return &CmdLint{
 		l:          linter.NewLinter(),
