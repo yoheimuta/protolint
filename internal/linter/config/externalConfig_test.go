@@ -154,9 +154,18 @@ func TestExternalConfig_SkipRule(t *testing.T) {
 			inputRuleID:    "FIELD_NAMES_LOWER_SNAKE_CASE",
 		},
 		{
-			name:           "not skip default one",
-			externalConfig: config.ExternalConfig{},
-			inputRuleID:    subcmds.DefaultRuleIDs()[0],
+			name:           "not skip default rules",
+			externalConfig: defaultExternalConfig,
+			inputRuleID:    "HOGE_RULE",
+			inputDefaultRuleIDs: []string{
+				"HOGE_RULE",
+			},
+		},
+		{
+			name:                "not skip default one",
+			externalConfig:      config.ExternalConfig{},
+			inputRuleID:         subcmds.DefaultRuleIDs()[0],
+			inputDefaultRuleIDs: subcmds.DefaultRuleIDs(),
 		},
 	} {
 		test := test
