@@ -46,6 +46,10 @@ ARG=lint
 run/cmd/pl:
 	go run cmd/pl/main.go $(ARG)
 
+## run/cmd/pl/exampleconfig runs pl with ARG under _example/config
+run/cmd/pl/exampleconfig:
+	cd _example/config && go run ../../cmd/pl/main.go $(ARG)
+
 ## build/cmd/pl builds pl
 build/cmd/pl:
 	go build -o pl cmd/pl/main.go

@@ -9,15 +9,15 @@ import (
 
 // CmdLintConfig is a config for lint command.
 type CmdLintConfig struct {
-	c config.Config
+	external config.ExternalConfig
 }
 
 // NewCmdLintConfig creates a new CmdLintConfig.
 func NewCmdLintConfig(
-	c config.Config,
+	externalConfig config.ExternalConfig,
 ) CmdLintConfig {
 	return CmdLintConfig{
-		c: c,
+		external: externalConfig,
 	}
 }
 
@@ -27,7 +27,11 @@ func (c CmdLintConfig) GenRules(
 ) ([]rule.HasApply, error) {
 	var hasApplies []rule.HasApply
 	for _, r := range subcmds.NewAllRules() {
+		if c.external.SkipRule(r.ID(), f.DisplayPath(), subcmds.DefaultRuleIDs()) {
+			continue
+		}
 		hasApplies = append(hasApplies, r)
 	}
+
 	return hasApplies, nil
 }

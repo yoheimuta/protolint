@@ -1,12 +1,16 @@
 package setting_test
 
 import (
-	"os"
 	"path/filepath"
+	"runtime"
 )
 
 func projectRootPath() string {
-	return filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "yoheimuta", "protolint")
+	_, this, _, ok := runtime.Caller(0)
+	if !ok {
+		return ""
+	}
+	return filepath.Dir(filepath.Dir(filepath.Dir(this)))
 }
 
 // TestDataPath is the directory path for the data used by tests.

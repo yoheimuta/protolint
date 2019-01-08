@@ -1,4 +1,4 @@
-# protolint [![GoDoc](https://godoc.org/github.com/yoheimuta/protolint?status.svg)](https://godoc.org/github.com/yoheimuta/protolint)[![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
+# protolint [![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
 
 protolint is a command line tool which lints Protocol Buffer files (proto3):
 
@@ -20,6 +20,7 @@ go get -u -v github.com/yoheimuta/protolint/cmd/pl
 pl lint example.proto example2.proto # file mode, specify multiple specific files
 pl lint .                            # directory mode, search for all .proto files recursively
 pl .                                 # same as "pl lint ."
+pl . -config_dir_path=path/to        # search path/to for protolint.yaml
 pl list                              # list all current lint rules being used
 ```
 
@@ -126,6 +127,15 @@ enum Foo {
   THIRD_VALUE = 2;   // spits out an error
 }
 ```
+
+__Config file__
+
+protolint can operate using a config file named `protolint.yaml`.
+
+Refer to [_example/config/protolint.yaml](_example/config/protolint.yaml) for the config file specification.
+
+protolint will search a current working directory for the config file by default.
+And it can search the specified directory with `-config_dir_path` flag.
 
 ## Motivation
 

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/yoheimuta/protolint/internal/linter/config"
+
 	"github.com/yoheimuta/protolint/internal/linter"
 	"github.com/yoheimuta/protolint/internal/linter/file"
 	"github.com/yoheimuta/protolint/internal/linter/report"
@@ -21,15 +23,20 @@ type CmdLint struct {
 
 // NewCmdLint creates a new CmdLint.
 func NewCmdLint(
-	args []string,
+	flags Flags,
 	stdout io.Writer,
 	stderr io.Writer,
 ) (*CmdLint, error) {
-	protoSet, err := file.NewProtoSet(args)
+	protoSet, err := file.NewProtoSet(flags.Args())
 	if err != nil {
 		return nil, err
 	}
-	lintConfig := NewCmdLintConfig(protoSet.Config())
+
+	externalConfig, err := config.GetExternalConfig(flags.ConfigDirPath)
+	if err != nil {
+		return nil, err
+	}
+	lintConfig := NewCmdLintConfig(externalConfig)
 
 	return &CmdLint{
 		l:          linter.NewLinter(),
