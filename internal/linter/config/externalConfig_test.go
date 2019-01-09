@@ -20,6 +20,7 @@ func TestExternalConfig_SkipRule(t *testing.T) {
 				Add       []string `yaml:"add"`
 				Remove    []string `yaml:"remove"`
 			}
+			RuleOption config.RuleOption `yaml:"rule_option"`
 		}{
 			Ignores: []struct {
 				ID    string   `yaml:"id"`
@@ -67,6 +68,7 @@ func TestExternalConfig_SkipRule(t *testing.T) {
 				Add       []string `yaml:"add"`
 				Remove    []string `yaml:"remove"`
 			}
+			RuleOption config.RuleOption `yaml:"rule_option"`
 		}{
 			Ignores: []struct {
 				ID    string   `yaml:"id"`

@@ -3,6 +3,8 @@ package list
 import (
 	"io"
 
+	"github.com/yoheimuta/protolint/internal/linter/config"
+
 	"fmt"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
@@ -59,7 +61,7 @@ type hasIDAndPurpose interface {
 
 func hasIDAndPurposes() []hasIDAndPurpose {
 	var rules []hasIDAndPurpose
-	for _, r := range subcmds.NewAllRules() {
+	for _, r := range subcmds.NewAllRules(config.RuleOption{}) {
 		rules = append(rules, r)
 	}
 	return rules
