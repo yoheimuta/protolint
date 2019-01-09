@@ -28,7 +28,7 @@ func (c CmdLintConfig) GenRules(
 	defaultRuleIDs := subcmds.DefaultRuleIDs()
 
 	var hasApplies []rule.HasApply
-	for _, r := range subcmds.NewAllRules(c.external.Lint.RuleOption) {
+	for _, r := range subcmds.NewAllRules(c.external.Lint.RulesOption) {
 		if c.external.SkipRule(r.ID(), f.DisplayPath(), defaultRuleIDs) {
 			continue
 		}

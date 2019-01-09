@@ -6,8 +6,8 @@ type MaxLineLengthOption struct {
 	TabChars int `yaml:"tab_chars"`
 }
 
-// RuleOption represents the option for some rules.
-type RuleOption struct {
+// RulesOption represents the option for some rules.
+type RulesOption struct {
 	MaxLineLength MaxLineLengthOption `yaml:"max_line_length"`
 }
 
@@ -23,7 +23,7 @@ type ExternalConfig struct {
 			Add       []string `yaml:"add"`
 			Remove    []string `yaml:"remove"`
 		}
-		RuleOption RuleOption `yaml:"rule_option"`
+		RulesOption RulesOption `yaml:"rules_option"`
 	}
 }
 

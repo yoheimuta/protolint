@@ -25,8 +25,8 @@ lint:
     remove:
       - RPC_NAMES_UPPER_CAMEL_CASE
 
-  # Linter option.
-  rule_option:
+  # Linter rules option.
+  rules_option:
     # MAX_LINE_LENGTH rule option.
     max_line_length:
       # Enforces a maximum line length

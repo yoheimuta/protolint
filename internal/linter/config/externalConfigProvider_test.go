@@ -38,7 +38,7 @@ func TestGetExternalConfig(t *testing.T) {
 						Add       []string `yaml:"add"`
 						Remove    []string `yaml:"remove"`
 					}
-					RuleOption config.RuleOption `yaml:"rule_option"`
+					RulesOption config.RulesOption `yaml:"rules_option"`
 				}{
 					Ignores: []struct {
 						ID    string   `yaml:"id"`
@@ -72,7 +72,7 @@ func TestGetExternalConfig(t *testing.T) {
 							"RPC_NAMES_UPPER_CAMEL_CASE",
 						},
 					},
-					RuleOption: config.RuleOption{
+					RulesOption: config.RulesOption{
 						MaxLineLength: config.MaxLineLengthOption{
 							MaxChars: 80,
 							TabChars: 2,

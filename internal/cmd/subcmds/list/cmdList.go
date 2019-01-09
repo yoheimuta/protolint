@@ -61,7 +61,7 @@ type hasIDAndPurpose interface {
 
 func hasIDAndPurposes() []hasIDAndPurpose {
 	var rules []hasIDAndPurpose
-	for _, r := range subcmds.NewAllRules(config.RuleOption{}) {
+	for _, r := range subcmds.NewAllRules(config.RulesOption{}) {
 		rules = append(rules, r)
 	}
 	return rules

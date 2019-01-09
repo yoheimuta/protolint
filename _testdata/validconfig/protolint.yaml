@@ -18,7 +18,7 @@ lint:
     remove:
       - RPC_NAMES_UPPER_CAMEL_CASE
 
-  rule_option:
+  rules_option:
     max_line_length:
       max_chars: 80
       tab_chars: 2

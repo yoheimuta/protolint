@@ -7,7 +7,7 @@ import (
 )
 
 func defaultRules(
-	option config.RuleOption,
+	option config.RulesOption,
 ) []rule.Rule {
 	maxLineLength := option.MaxLineLength
 
@@ -27,7 +27,7 @@ func defaultRules(
 
 // DefaultRuleIDs are the default rule ids.
 func DefaultRuleIDs() []string {
-	emptyOption := config.RuleOption{}
+	emptyOption := config.RulesOption{}
 
 	var ids []string
 	for _, rule := range defaultRules(emptyOption) {
@@ -38,7 +38,7 @@ func DefaultRuleIDs() []string {
 
 // NewAllRules creates new rules.
 func NewAllRules(
-	option config.RuleOption,
+	option config.RulesOption,
 ) []rule.Rule {
 	return defaultRules(option)
 }
