@@ -1,5 +1,16 @@
 package config
 
+// MaxLineLengthOption represents the option for the MAX_LINE_LENGTH rule.
+type MaxLineLengthOption struct {
+	MaxChars int `yaml:"max_chars"`
+	TabChars int `yaml:"tab_chars"`
+}
+
+// RulesOption represents the option for some rules.
+type RulesOption struct {
+	MaxLineLength MaxLineLengthOption `yaml:"max_line_length"`
+}
+
 // ExternalConfig represents the external configuration.
 type ExternalConfig struct {
 	Lint struct {
@@ -12,6 +23,7 @@ type ExternalConfig struct {
 			Add       []string `yaml:"add"`
 			Remove    []string `yaml:"remove"`
 		}
+		RulesOption RulesOption `yaml:"rules_option"`
 	}
 }
 

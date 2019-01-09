@@ -30,7 +30,9 @@ See `internal/addon/rules` in detail.
 
 The rule set follows:
 
-- [the official Style Guide](https://developers.google.com/protocol-buffers/docs/style).
+- [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style).
+- Formatting Style Guide
+  - Enforce a maximum line length. The length of a line is defined as the number of Unicode characters in the line. You can configure the detail with `protolint.yaml`.
 
 | ID                                | Purpose                                                                  |
 |-----------------------------------|--------------------------------------------------------------------------|
@@ -40,6 +42,7 @@ The rule set follows:
 | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
 | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
+| MAX_LINE_LENGTH    | Enforces a maximum line length. |
 
 `-` is a bad style, `+` is a good style:
 

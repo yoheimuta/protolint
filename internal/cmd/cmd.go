@@ -52,7 +52,7 @@ func doSub(
 ) osutil.ExitCode {
 	switch args[0] {
 	case subCmdLint:
-		return doLint(args, stdout, stderr)
+		return doLint(args[1:], stdout, stderr)
 	case subCmdList:
 		return doList(stdout, stderr)
 	default:
@@ -65,13 +65,13 @@ func doLint(
 	stdout io.Writer,
 	stderr io.Writer,
 ) osutil.ExitCode {
-	if len(args) < 2 {
+	if len(args) < 1 {
 		_, _ = fmt.Fprintln(stderr, "pl lint requires at least one argument. See Usage.")
 		_, _ = fmt.Fprint(stderr, help)
 		return osutil.ExitFailure
 	}
 
-	flags := lint.NewFlags(args[1:])
+	flags := lint.NewFlags(args)
 	if len(flags.Args()) < 1 {
 		_, _ = fmt.Fprintln(stderr, "pl lint requires at least one argument. See Usage.")
 		_, _ = fmt.Fprint(stderr, help)
