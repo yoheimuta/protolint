@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// PrettyFormat formats any objects for test debug use..
+// PrettyFormat formats any objects for test debug use.
 func PrettyFormat(v interface{}) string {
 	b, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
