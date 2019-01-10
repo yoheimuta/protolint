@@ -25,6 +25,8 @@ func defaultRules(
 		),
 		rules.NewIndentRule(
 			indent.Style,
+			"",
+			false,
 		),
 	}
 }

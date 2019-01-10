@@ -1,9 +1,12 @@
 package rules_test
 
 import (
+	"io/ioutil"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/yoheimuta/protolint/internal/osutil"
 
 	"github.com/yoheimuta/go-protoparser/parser/meta"
 
@@ -140,6 +143,8 @@ func TestIndentRule_Apply(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewIndentRule(
 				test.inputStyle,
+				"\n",
+				false,
 			)
 
 			proto, err := file.NewProtoFile(test.inputProtoPath, test.inputProtoPath).Parse()
@@ -162,6 +167,149 @@ func TestIndentRule_Apply(t *testing.T) {
 
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
+			}
+		})
+	}
+}
+
+type testData struct {
+	filePath   string
+	originData []byte
+}
+
+func newTestData(
+	fileName string,
+) (testData, error) {
+	filePath := setting_test.TestDataPath("rules", "indentrule", fileName)
+	data, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return testData{}, nil
+	}
+	return testData{
+		filePath:   filePath,
+		originData: data,
+	}, nil
+}
+
+func (d testData) data() ([]byte, error) {
+	return ioutil.ReadFile(d.filePath)
+}
+
+func (d testData) restore() error {
+	newLineChar := "\n"
+	lines := strings.Split(string(d.originData), newLineChar)
+	return osutil.WriteLinesToExistingFile(d.filePath, lines, newLineChar)
+}
+
+func TestIndentRule_Apply_fix(t *testing.T) {
+	space4 := strings.Repeat(" ", 4)
+
+	correctSyntaxPath, err := newTestData("syntax.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	incorrectSyntaxPath, err := newTestData("incorrect_syntax.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	correctEnumPath, err := newTestData("enum.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	incorrectEnumPath, err := newTestData("incorrect_enum.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	correctMessagePath, err := newTestData("message.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	incorrectMessagePath, err := newTestData("incorrect_message.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	tests := []struct {
+		name            string
+		inputTestData   testData
+		wantCorrectData testData
+	}{
+		{
+			name:            "correct syntax",
+			inputTestData:   correctSyntaxPath,
+			wantCorrectData: correctSyntaxPath,
+		},
+		{
+			name:            "incorrect syntax",
+			inputTestData:   incorrectSyntaxPath,
+			wantCorrectData: correctSyntaxPath,
+		},
+		{
+			name:            "correct enum",
+			inputTestData:   correctEnumPath,
+			wantCorrectData: correctEnumPath,
+		},
+		{
+			name:            "incorrect enum",
+			inputTestData:   incorrectEnumPath,
+			wantCorrectData: correctEnumPath,
+		},
+		{
+			name:            "correct message",
+			inputTestData:   correctMessagePath,
+			wantCorrectData: correctMessagePath,
+		},
+		{
+			name:            "incorrect message",
+			inputTestData:   incorrectMessagePath,
+			wantCorrectData: correctMessagePath,
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			rule := rules.NewIndentRule(
+				space4,
+				"\n",
+				true,
+			)
+
+			proto, err := file.NewProtoFile(test.inputTestData.filePath, test.inputTestData.filePath).Parse()
+			if err != nil {
+				t.Errorf(err.Error())
+				return
+			}
+
+			_, err = rule.Apply(proto)
+			if err != nil {
+				t.Errorf("got err %v, but want nil", err)
+				return
+			}
+
+			got, err := test.inputTestData.data()
+			if !reflect.DeepEqual(got, test.wantCorrectData.originData) {
+				t.Errorf(
+					"got %s(%v), but want %s(%v)",
+					string(got), got,
+					string(test.wantCorrectData.originData), test.wantCorrectData.originData,
+				)
+			}
+
+			err = test.inputTestData.restore()
+			if err != nil {
+				t.Errorf("got err %v", err)
 			}
 		})
 	}
