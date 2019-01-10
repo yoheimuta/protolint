@@ -14,32 +14,32 @@ import (
 const (
 	// 4 spaces
 	defaultStyle   = "    "
-	defaultNewLine = "\n"
+	defaultNewline = "\n"
 )
 
 // IndentRule enforces a consistent indentation style.
 type IndentRule struct {
 	style   string
-	newLine string
+	newline string
 	fixMode bool
 }
 
 // NewIndentRule creates a new IndentRule.
 func NewIndentRule(
 	style string,
-	newLine string,
+	newline string,
 	fixMode bool,
 ) IndentRule {
 	if len(style) == 0 {
 		style = defaultStyle
 	}
-	if len(newLine) == 0 {
-		newLine = defaultNewLine
+	if len(newline) == 0 {
+		newline = defaultNewline
 	}
 
 	return IndentRule{
 		style:   style,
-		newLine: newLine,
+		newline: newline,
 		fixMode: fixMode,
 	}
 }
@@ -59,7 +59,7 @@ func (r IndentRule) Apply(
 	proto *parser.Proto,
 ) ([]report.Failure, error) {
 	fileName := proto.Meta.Filename
-	lines, err := osutil.ReadAllLines(fileName, r.newLine)
+	lines, err := osutil.ReadAllLines(fileName, r.newline)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (r IndentRule) Apply(
 		style:          r.style,
 		protoLines:     lines,
 		fixMode:        r.fixMode,
-		newLine:        r.newLine,
+		newline:        r.newline,
 		protoFileName:  fileName,
 		indentFixes:    make(map[int]indentFix),
 	}
@@ -88,7 +88,7 @@ type indentVisitor struct {
 	currentLevel int
 
 	fixMode       bool
-	newLine       string
+	newline       string
 	protoFileName string
 	indentFixes   map[int]indentFix
 }
@@ -299,5 +299,5 @@ func (v indentVisitor) fix() error {
 	if !shouldFixed {
 		return nil
 	}
-	return osutil.WriteLinesToExistingFile(v.protoFileName, fixedLines, v.newLine)
+	return osutil.WriteLinesToExistingFile(v.protoFileName, fixedLines, v.newline)
 }

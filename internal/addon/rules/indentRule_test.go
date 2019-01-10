@@ -196,9 +196,9 @@ func (d testData) data() ([]byte, error) {
 }
 
 func (d testData) restore() error {
-	newLineChar := "\n"
-	lines := strings.Split(string(d.originData), newLineChar)
-	return osutil.WriteLinesToExistingFile(d.filePath, lines, newLineChar)
+	newlineChar := "\n"
+	lines := strings.Split(string(d.originData), newlineChar)
+	return osutil.WriteLinesToExistingFile(d.filePath, lines, newlineChar)
 }
 
 func TestIndentRule_Apply_fix(t *testing.T) {

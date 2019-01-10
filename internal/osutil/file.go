@@ -10,22 +10,22 @@ import (
 // ReadAllLines reads all lines from a file.
 func ReadAllLines(
 	fileName string,
-	newLineChar string,
+	newlineChar string,
 ) ([]string, error) {
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		return nil, err
 	}
-	return strings.Split(string(data), newLineChar), nil
+	return strings.Split(string(data), newlineChar), nil
 }
 
 // WriteLinesToExistingFile writes lines to an existing file.
 func WriteLinesToExistingFile(
 	fileName string,
 	lines []string,
-	newLineChar string,
+	newlineChar string,
 ) error {
-	data := strings.Join(lines, newLineChar)
+	data := strings.Join(lines, newlineChar)
 	return writeExistingFile(
 		fileName,
 		[]byte(data),
