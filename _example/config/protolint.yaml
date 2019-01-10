@@ -20,6 +20,7 @@ lint:
       - FIELD_NAMES_LOWER_SNAKE_CASE
       - MESSAGE_NAMES_UPPER_CAMEL_CASE
       - MAX_LINE_LENGTH
+      - INDENT
 
     # The specific linters to remove.
     remove:
@@ -33,3 +34,7 @@ lint:
       max_chars: 80
       # Specifies the character count for tab characters
       tab_chars: 2
+
+    # INDENT rule option.
+    indent:
+      style: 4

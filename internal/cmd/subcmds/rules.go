@@ -10,6 +10,7 @@ func defaultRules(
 	option config.RulesOption,
 ) []rule.Rule {
 	maxLineLength := option.MaxLineLength
+	indent := option.Indent
 
 	return []rule.Rule{
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
@@ -21,6 +22,9 @@ func defaultRules(
 		rules.NewMaxLineLengthRule(
 			maxLineLength.MaxChars,
 			maxLineLength.TabChars,
+		),
+		rules.NewIndentRule(
+			indent.Style,
 		),
 	}
 }
