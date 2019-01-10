@@ -36,7 +36,7 @@ func NewCmdLint(
 	if err != nil {
 		return nil, err
 	}
-	lintConfig := NewCmdLintConfig(externalConfig)
+	lintConfig := NewCmdLintConfig(externalConfig, flags.FixMode)
 
 	return &CmdLint{
 		l:          linter.NewLinter(),

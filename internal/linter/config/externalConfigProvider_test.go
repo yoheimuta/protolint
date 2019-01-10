@@ -78,7 +78,8 @@ func TestGetExternalConfig(t *testing.T) {
 							TabChars: 2,
 						},
 						Indent: config.IndentOption{
-							Style: "\t",
+							Style:   "\t",
+							Newline: "\n",
 						},
 					},
 				},

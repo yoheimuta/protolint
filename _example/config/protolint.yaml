@@ -39,3 +39,5 @@ lint:
     indent:
       # Available styles are 4(4-spaces), 2(2-spaces) or tab.
       style: 4
+      # Available newlines are "\n", "\r", or "\r\n".
+      newline: "\n"

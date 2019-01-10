@@ -1,9 +1,9 @@
 package rules
 
 import (
-	"bufio"
-	"os"
 	"strings"
+
+	"github.com/yoheimuta/protolint/internal/osutil"
 
 	"github.com/yoheimuta/go-protoparser/parser"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
@@ -13,24 +13,34 @@ import (
 
 const (
 	// 4 spaces
-	defaultStyle = "    "
+	defaultStyle   = "    "
+	defaultNewline = "\n"
 )
 
 // IndentRule enforces a consistent indentation style.
 type IndentRule struct {
-	style string
+	style   string
+	newline string
+	fixMode bool
 }
 
 // NewIndentRule creates a new IndentRule.
 func NewIndentRule(
 	style string,
+	newline string,
+	fixMode bool,
 ) IndentRule {
 	if len(style) == 0 {
 		style = defaultStyle
 	}
+	if len(newline) == 0 {
+		newline = defaultNewline
+	}
 
 	return IndentRule{
-		style: style,
+		style:   style,
+		newline: newline,
+		fixMode: fixMode,
 	}
 }
 
@@ -48,7 +58,8 @@ func (r IndentRule) Purpose() string {
 func (r IndentRule) Apply(
 	proto *parser.Proto,
 ) ([]report.Failure, error) {
-	lines, err := protoLines(proto)
+	fileName := proto.Meta.Filename
+	lines, err := osutil.ReadAllLines(fileName, r.newline)
 	if err != nil {
 		return nil, err
 	}
@@ -57,36 +68,17 @@ func (r IndentRule) Apply(
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 		style:          r.style,
 		protoLines:     lines,
+		fixMode:        r.fixMode,
+		newline:        r.newline,
+		protoFileName:  fileName,
+		indentFixes:    make(map[int]indentFix),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
-func protoLines(
-	proto *parser.Proto,
-) (lines []string, err error) {
-	fileName := proto.Meta.Filename
-	reader, err := os.Open(fileName)
-	if err != nil {
-		return nil, err
-	}
-	defer func() {
-		closeErr := reader.Close()
-		if err != nil {
-			return
-		}
-		if closeErr != nil {
-			err = closeErr
-		}
-	}()
-
-	scanner := bufio.NewScanner(reader)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	if err := scanner.Err(); err != nil {
-		return nil, err
-	}
-	return lines, nil
+type indentFix struct {
+	currentChars int
+	replacement  string
 }
 
 type indentVisitor struct {
@@ -94,6 +86,18 @@ type indentVisitor struct {
 	style        string
 	protoLines   []string
 	currentLevel int
+
+	fixMode       bool
+	newline       string
+	protoFileName string
+	indentFixes   map[int]indentFix
+}
+
+func (v indentVisitor) Finally() error {
+	if v.fixMode {
+		return v.fix()
+	}
+	return nil
 }
 
 func (v indentVisitor) VisitEnum(e *parser.Enum) (next bool) {
@@ -264,6 +268,13 @@ func (v indentVisitor) validateIndent(
 		leading,
 		indentation,
 	)
+
+	if v.fixMode {
+		v.indentFixes[pos.Line-1] = indentFix{
+			currentChars: len(leading),
+			replacement:  indentation,
+		}
+	}
 }
 
 func (v *indentVisitor) nest() func() {
@@ -271,4 +282,22 @@ func (v *indentVisitor) nest() func() {
 	return func() {
 		v.currentLevel--
 	}
+}
+
+func (v indentVisitor) fix() error {
+	var shouldFixed bool
+
+	var fixedLines []string
+	for i, line := range v.protoLines {
+		if fix, ok := v.indentFixes[i]; ok {
+			line = fix.replacement + line[fix.currentChars:]
+			shouldFixed = true
+		}
+		fixedLines = append(fixedLines, line)
+	}
+
+	if !shouldFixed {
+		return nil
+	}
+	return osutil.WriteLinesToExistingFile(v.protoFileName, fixedLines, v.newline)
 }
