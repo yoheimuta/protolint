@@ -77,6 +77,9 @@ func TestGetExternalConfig(t *testing.T) {
 							MaxChars: 80,
 							TabChars: 2,
 						},
+						Indent: config.IndentOption{
+							Style: "\t",
+						},
 					},
 				},
 			},

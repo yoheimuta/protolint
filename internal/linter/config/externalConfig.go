@@ -1,14 +1,51 @@
 package config
 
+import (
+	"fmt"
+	"strings"
+)
+
 // MaxLineLengthOption represents the option for the MAX_LINE_LENGTH rule.
 type MaxLineLengthOption struct {
 	MaxChars int `yaml:"max_chars"`
 	TabChars int `yaml:"tab_chars"`
 }
 
+// IndentOption represents the option for the INDENT rule.
+type IndentOption struct {
+	Style string
+}
+
+// UnmarshalYAML implements yaml.v2 Unmarshaler interface.
+func (i *IndentOption) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	var option struct {
+		Style string `yaml:"style"`
+	}
+	if err := unmarshal(&option); err != nil {
+		return err
+	}
+
+	var style string
+	switch option.Style {
+	case "tab":
+		style = "\t"
+	case "4":
+		style = strings.Repeat(" ", 4)
+	case "2":
+		style = strings.Repeat(" ", 2)
+	case "":
+		break
+	default:
+		return fmt.Errorf("%s is an invalid style option. valid option is tab, 4 or 2", option.Style)
+	}
+	i.Style = style
+	return nil
+}
+
 // RulesOption represents the option for some rules.
 type RulesOption struct {
 	MaxLineLength MaxLineLengthOption `yaml:"max_line_length"`
+	Indent        IndentOption        `yaml:"indent"`
 }
 
 // ExternalConfig represents the external configuration.
