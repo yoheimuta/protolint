@@ -25,3 +25,4 @@ lint:
 
     indent:
       style: tab
+      newline: "\n"

@@ -202,7 +202,7 @@ style: 4-space
 			wantExistErr: true,
 		},
 		{
-			name: "tab",
+			name: "style: tab",
 			inputConfig: []byte(`
 style: tab
 `),
@@ -211,7 +211,7 @@ style: tab
 			},
 		},
 		{
-			name: "4",
+			name: "style: 4",
 			inputConfig: []byte(`
 style: 4
 `),
@@ -220,12 +220,47 @@ style: 4
 			},
 		},
 		{
-			name: "2",
+			name: "style: 2",
 			inputConfig: []byte(`
 style: 2
 `),
 			wantIndentOption: config.IndentOption{
 				Style: strings.Repeat(" ", 2),
+			},
+		},
+		{
+			name: "not found supported newline",
+			inputConfig: []byte(`
+style: tab
+newline: linefeed
+`),
+			wantExistErr: true,
+		},
+		{
+			name: "newline: \n",
+			inputConfig: []byte(`
+newline: "\n"
+`),
+			wantIndentOption: config.IndentOption{
+				Newline: "\n",
+			},
+		},
+		{
+			name: "newline: \r",
+			inputConfig: []byte(`
+newline: "\r"
+`),
+			wantIndentOption: config.IndentOption{
+				Newline: "\r",
+			},
+		},
+		{
+			name: "newline: \r\n",
+			inputConfig: []byte(`
+newline: "\r\n"
+`),
+			wantIndentOption: config.IndentOption{
+				Newline: "\r\n",
 			},
 		},
 	} {
