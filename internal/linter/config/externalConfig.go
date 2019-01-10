@@ -46,7 +46,7 @@ func (i *IndentOption) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	case "\n", "\r", "\r\n", "":
 		i.Newline = option.Newline
 	default:
-		return fmt.Errorf("%s is an invalid newline option. valid option is \n, \r or \r\n", option.Newline)
+		return fmt.Errorf(`%s is an invalid newline option. valid option is \n, \r or \r\n`, option.Newline)
 	}
 	return nil
 }
