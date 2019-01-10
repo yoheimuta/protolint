@@ -1,5 +1,7 @@
 package config
 
+import "github.com/yoheimuta/protolint/internal/stringsutil"
+
 // ExternalConfig represents the external configuration.
 type ExternalConfig struct {
 	Lint struct {
@@ -16,13 +18,13 @@ func (c ExternalConfig) SkipRule(
 	defaultRuleIDs []string,
 ) bool {
 	if ignoreFiles, ok := c.ignores(ruleID); ok {
-		if containsStringInSlice(displayPath, ignoreFiles) {
+		if stringsutil.ContainsStringInSlice(displayPath, ignoreFiles) {
 			return true
 		}
 	}
 
 	rules := c.rules(defaultRuleIDs)
-	return !containsStringInSlice(ruleID, rules)
+	return !stringsutil.ContainsStringInSlice(ruleID, rules)
 }
 
 func (c ExternalConfig) rules(
@@ -38,7 +40,7 @@ func (c ExternalConfig) rules(
 
 	var newRuleIDs []string
 	for _, id := range ruleIDs {
-		if !containsStringInSlice(id, c.Lint.Rules.Remove) {
+		if !stringsutil.ContainsStringInSlice(id, c.Lint.Rules.Remove) {
 			newRuleIDs = append(newRuleIDs, id)
 		}
 	}
@@ -54,16 +56,4 @@ func (c ExternalConfig) ignores(
 		}
 	}
 	return nil, false
-}
-
-func containsStringInSlice(
-	needle string,
-	haystack []string,
-) bool {
-	for _, h := range haystack {
-		if h == needle {
-			return true
-		}
-	}
-	return false
 }
