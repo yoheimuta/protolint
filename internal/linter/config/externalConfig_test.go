@@ -9,11 +9,7 @@ import (
 
 func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 	noDefaultExternalConfig := config.ExternalConfig{
-		Lint: struct {
-			Ignores     config.Ignores
-			Rules       config.Rules
-			RulesOption config.RulesOption `yaml:"rules_option"`
-		}{
+		Lint: config.Lint{
 			Ignores: []config.Ignore{
 				{
 					ID: "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
@@ -27,6 +23,12 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 					Files: []string{
 						"path/to/foo.proto",
 					},
+				},
+			},
+			Directories: config.Directories{
+				Exclude: []string{
+					"path/to/dir",
+					"path/to/dir2",
 				},
 			},
 			Rules: struct {
@@ -47,11 +49,7 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 	}
 
 	defaultExternalConfig := config.ExternalConfig{
-		Lint: struct {
-			Ignores     config.Ignores
-			Rules       config.Rules
-			RulesOption config.RulesOption `yaml:"rules_option"`
-		}{
+		Lint: config.Lint{
 			Ignores: []config.Ignore{
 				{
 					ID: "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
@@ -147,6 +145,26 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			externalConfig:      config.ExternalConfig{},
 			inputRuleID:         subcmds.DefaultRuleIDs()[0],
 			inputDefaultRuleIDs: subcmds.DefaultRuleIDs(),
+		},
+		{
+			name:             "exclude the directory",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "path/to/dir/bar.proto",
+			wantSkipRule:     true,
+		},
+		{
+			name:             "exclude the another directory",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "path/to/dir2/bar.proto",
+			wantSkipRule:     true,
+		},
+		{
+			name:             "not exclude the another directory",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "path/to/dir3/bar.proto",
 		},
 	} {
 		test := test

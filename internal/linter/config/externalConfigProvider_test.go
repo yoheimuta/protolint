@@ -28,11 +28,7 @@ func TestGetExternalConfig(t *testing.T) {
 			name:         "valid config file",
 			inputDirPath: setting_test.TestDataPath("validconfig"),
 			wantExternalConfig: config.ExternalConfig{
-				Lint: struct {
-					Ignores     config.Ignores
-					Rules       config.Rules
-					RulesOption config.RulesOption `yaml:"rules_option"`
-				}{
+				Lint: config.Lint{
 					Ignores: []config.Ignore{
 						{
 							ID: "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
