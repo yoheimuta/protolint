@@ -20,7 +20,8 @@ go get -u -v github.com/yoheimuta/protolint/cmd/pl
 pl lint example.proto example2.proto # file mode, specify multiple specific files
 pl lint .                            # directory mode, search for all .proto files recursively
 pl .                                 # same as "pl lint ."
-pl . -config_dir_path=path/to        # search path/to for protolint.yaml
+pl lint -config_dir_path=path/to .   # search path/to for protolint.yaml
+pl lint -fix .                       # automatically fix some of the problems reported by some rules
 pl list                              # list all current lint rules being used
 ```
 
@@ -33,7 +34,7 @@ The rule set follows:
 - [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style). This is enabled by default.
 - Formatting Style Guide. This is enabled by default.
   - Enforce a maximum line length. The length of a line is defined as the number of Unicode characters in the line. You can configure the detail with `protolint.yaml`.
-  - Enforce a consistent indentation style. The default style is 4 spaces. You can configure the detail with `protolint.yaml`.
+  - Enforce a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 4 spaces. You can configure the detail with `protolint.yaml`.
 
 | ID                                | Purpose                                                                  |
 |-----------------------------------|--------------------------------------------------------------------------|
