@@ -14,21 +14,11 @@ import (
 func TestExternalConfig_SkipRule(t *testing.T) {
 	noDefaultExternalConfig := config.ExternalConfig{
 		Lint: struct {
-			Ignores []struct {
-				ID    string   `yaml:"id"`
-				Files []string `yaml:"files"`
-			}
-			Rules struct {
-				NoDefault bool     `yaml:"no_default"`
-				Add       []string `yaml:"add"`
-				Remove    []string `yaml:"remove"`
-			}
+			Ignores     config.Ignores
+			Rules       config.Rules
 			RulesOption config.RulesOption `yaml:"rules_option"`
 		}{
-			Ignores: []struct {
-				ID    string   `yaml:"id"`
-				Files []string `yaml:"files"`
-			}{
+			Ignores: []config.Ignore{
 				{
 					ID: "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
 					Files: []string{
@@ -62,21 +52,11 @@ func TestExternalConfig_SkipRule(t *testing.T) {
 
 	defaultExternalConfig := config.ExternalConfig{
 		Lint: struct {
-			Ignores []struct {
-				ID    string   `yaml:"id"`
-				Files []string `yaml:"files"`
-			}
-			Rules struct {
-				NoDefault bool     `yaml:"no_default"`
-				Add       []string `yaml:"add"`
-				Remove    []string `yaml:"remove"`
-			}
+			Ignores     config.Ignores
+			Rules       config.Rules
 			RulesOption config.RulesOption `yaml:"rules_option"`
 		}{
-			Ignores: []struct {
-				ID    string   `yaml:"id"`
-				Files []string `yaml:"files"`
-			}{
+			Ignores: []config.Ignore{
 				{
 					ID: "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
 					Files: []string{
