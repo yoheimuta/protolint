@@ -10,14 +10,17 @@ import (
 // CmdLintConfig is a config for lint command.
 type CmdLintConfig struct {
 	external config.ExternalConfig
+	fixMode  bool
 }
 
 // NewCmdLintConfig creates a new CmdLintConfig.
 func NewCmdLintConfig(
 	externalConfig config.ExternalConfig,
+	fixMode bool,
 ) CmdLintConfig {
 	return CmdLintConfig{
 		external: externalConfig,
+		fixMode:  fixMode,
 	}
 }
 
@@ -28,7 +31,7 @@ func (c CmdLintConfig) GenRules(
 	defaultRuleIDs := subcmds.DefaultRuleIDs()
 
 	var hasApplies []rule.HasApply
-	for _, r := range subcmds.NewAllRules(c.external.Lint.RulesOption) {
+	for _, r := range subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode) {
 		if c.external.SkipRule(r.ID(), f.DisplayPath(), defaultRuleIDs) {
 			continue
 		}

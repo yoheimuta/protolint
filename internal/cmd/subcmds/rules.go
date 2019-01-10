@@ -8,6 +8,7 @@ import (
 
 func defaultRules(
 	option config.RulesOption,
+	fixMode bool,
 ) []rule.Rule {
 	maxLineLength := option.MaxLineLength
 	indent := option.Indent
@@ -26,7 +27,7 @@ func defaultRules(
 		rules.NewIndentRule(
 			indent.Style,
 			"",
-			false,
+			fixMode,
 		),
 	}
 }
@@ -36,7 +37,7 @@ func DefaultRuleIDs() []string {
 	emptyOption := config.RulesOption{}
 
 	var ids []string
-	for _, rule := range defaultRules(emptyOption) {
+	for _, rule := range defaultRules(emptyOption, false) {
 		ids = append(ids, rule.ID())
 	}
 	return ids
@@ -45,6 +46,7 @@ func DefaultRuleIDs() []string {
 // NewAllRules creates new rules.
 func NewAllRules(
 	option config.RulesOption,
+	fixMode bool,
 ) []rule.Rule {
-	return defaultRules(option)
+	return defaultRules(option, fixMode)
 }

@@ -16,6 +16,7 @@ Protocol Buffer Linter Command.
 Usage:
   pl .
   pl lint .
+  pl lint -fix .
   pl lint example.proto example2.proto
   pl list
 `
