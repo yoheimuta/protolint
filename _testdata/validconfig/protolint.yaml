@@ -22,3 +22,6 @@ lint:
     max_line_length:
       max_chars: 80
       tab_chars: 2
+
+    indent:
+      style: tab
