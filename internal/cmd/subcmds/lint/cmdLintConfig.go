@@ -32,7 +32,7 @@ func (c CmdLintConfig) GenRules(
 
 	var hasApplies []rule.HasApply
 	for _, r := range subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode) {
-		if c.external.SkipRule(r.ID(), f.DisplayPath(), defaultRuleIDs) {
+		if c.external.ShouldSkipRule(r.ID(), f.DisplayPath(), defaultRuleIDs) {
 			continue
 		}
 		hasApplies = append(hasApplies, r)
