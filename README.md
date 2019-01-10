@@ -33,6 +33,7 @@ The rule set follows:
 - [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style). This is enabled by default.
 - Formatting Style Guide. This is enabled by default.
   - Enforce a maximum line length. The length of a line is defined as the number of Unicode characters in the line. You can configure the detail with `protolint.yaml`.
+  - Enforce a consistent indentation style. The default style is 4 spaces. You can configure the detail with `protolint.yaml`.
 
 | ID                                | Purpose                                                                  |
 |-----------------------------------|--------------------------------------------------------------------------|
@@ -43,6 +44,7 @@ The rule set follows:
 | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
 | MAX_LINE_LENGTH    | Enforces a maximum line length. |
+| INDENT    | Enforces a consistent indentation style. |
 
 `-` is a bad style, `+` is a good style:
 
