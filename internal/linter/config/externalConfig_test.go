@@ -155,7 +155,7 @@ func TestExternalConfig_SkipRule(t *testing.T) {
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			got := test.externalConfig.SkipRule(
+			got := test.externalConfig.ShouldSkipRule(
 				test.inputRuleID,
 				test.inputDisplayPath,
 				test.inputDefaultRuleIDs,

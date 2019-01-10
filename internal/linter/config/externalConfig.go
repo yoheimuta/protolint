@@ -11,8 +11,8 @@ type ExternalConfig struct {
 	}
 }
 
-// SkipRule checks to skip applying the rule to the file.
-func (c ExternalConfig) SkipRule(
+// ShouldSkipRule checks whether to skip applying the rule to the file.
+func (c ExternalConfig) ShouldSkipRule(
 	ruleID string,
 	displayPath string,
 	defaultRuleIDs []string,
