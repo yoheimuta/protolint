@@ -19,9 +19,26 @@ jobs:
     steps:
       - checkout
       - run: make test
+  deploy:
+    docker:
+      - image: circleci/golang:1.11.4
+        environment:
+          GO111MODULE: "on"
+    working_directory: /go/src/github.com/yoheimuta/protolint
+    steps:
+      - checkout
+      - run: curl -sL https://git.io/goreleaser | bash
 workflows:
   version: 2
   lint_and_test:
     jobs:
       - lint
       - test
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
