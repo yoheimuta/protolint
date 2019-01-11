@@ -1,7 +1,8 @@
 package config
 
 import (
-	"path/filepath"
+	"os"
+	"strings"
 )
 
 // Directories represents the target directories.
@@ -12,10 +13,8 @@ type Directories struct {
 func (d Directories) shouldSkipRule(
 	displayPath string,
 ) bool {
-	displayDir := filepath.Dir(displayPath)
-
 	for _, exclude := range d.Exclude {
-		if displayDir == exclude {
+		if strings.HasPrefix(displayPath, exclude+string(os.PathSeparator)) {
 			return true
 		}
 	}
