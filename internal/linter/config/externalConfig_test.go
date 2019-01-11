@@ -161,6 +161,13 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			wantSkipRule:     true,
 		},
 		{
+			name:             "exclude the child directory",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "path/to/dir2/child/bar.proto",
+			wantSkipRule:     true,
+		},
+		{
 			name:             "not exclude the another directory",
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
