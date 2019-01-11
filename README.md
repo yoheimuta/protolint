@@ -20,7 +20,7 @@ go get -u -v github.com/yoheimuta/protolint/cmd/pl
 pl lint example.proto example2.proto # file mode, specify multiple specific files
 pl lint .                            # directory mode, search for all .proto files recursively
 pl .                                 # same as "pl lint ."
-pl lint -config_dir_path=path/to .   # search path/to for protolint.yaml
+pl lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 pl lint -fix .                       # automatically fix some of the problems reported by some rules
 pl list                              # list all current lint rules being used
 ```
@@ -33,8 +33,8 @@ The rule set follows:
 
 - [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style). This is enabled by default.
 - Formatting Style Guide. This is enabled by default.
-  - Enforce a maximum line length. The length of a line is defined as the number of Unicode characters in the line. You can configure the detail with `protolint.yaml`.
-  - Enforce a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 4 spaces. You can configure the detail with `protolint.yaml`.
+  - Enforce a maximum line length. The length of a line is defined as the number of Unicode characters in the line. You can configure the detail with `.protolint.yaml`.
+  - Enforce a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 4 spaces. You can configure the detail with `.protolint.yaml`.
 
 | ID                                | Purpose                                                                  |
 |-----------------------------------|--------------------------------------------------------------------------|
@@ -136,9 +136,9 @@ enum Foo {
 
 __Config file__
 
-protolint can operate using a config file named `protolint.yaml`.
+protolint can operate using a config file named `.protolint.yaml`.
 
-Refer to [_example/config/protolint.yaml](_example/config/protolint.yaml) for the config file specification.
+Refer to [_example/config/.protolint.yaml](_example/config/.protolint.yaml) for the config file specification.
 
 protolint will search a current working directory for the config file by default.
 And it can search the specified directory with `-config_dir_path` flag.
