@@ -14,6 +14,12 @@ protolint is a command line tool which lints Protocol Buffer files (proto3):
 go get -u -v github.com/yoheimuta/protolint/cmd/pl
 ```
 
+For non-Go users, the simplest way to install the protolint is to download a pre-built binary from this release page:
+
+- https://github.com/yoheimuta/protolint/releases
+
+In the downloads section of each release, you can find pre-built binaries in .tar.gz packages.
+
 ## Usage
 
 ```
