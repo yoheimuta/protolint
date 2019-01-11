@@ -9,15 +9,19 @@ import (
 )
 
 const (
-	externalConfigFileName = "protolint.yaml"
+	externalConfigFileName  = ".protolint.yaml"
+	externalConfigFileName2 = "protolint.yaml"
 )
 
 // GetExternalConfig provides the externalConfig.
 func GetExternalConfig(
 	dirPath string,
 ) (ExternalConfig, error) {
-	filePath := filepath.Join(dirPath, externalConfigFileName)
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+	filePath, err := getExternalConfigPath(dirPath)
+	if err != nil {
+		return ExternalConfig{}, err
+	}
+	if len(filePath) == 0 {
 		return ExternalConfig{}, nil
 	}
 
@@ -35,4 +39,23 @@ func GetExternalConfig(
 	}
 
 	return config, nil
+}
+
+func getExternalConfigPath(
+	dirPath string,
+) (string, error) {
+	for _, name := range []string{
+		externalConfigFileName,
+		externalConfigFileName2,
+	} {
+		filePath := filepath.Join(dirPath, name)
+		if _, err := os.Stat(filePath); err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return "", err
+		}
+		return filePath, nil
+	}
+	return "", nil
 }
