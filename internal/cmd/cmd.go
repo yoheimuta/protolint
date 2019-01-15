@@ -14,11 +14,11 @@ const (
 Protocol Buffer Linter Command.
 
 Usage:
-  pl .
-  pl lint .
-  pl lint -fix .
-  pl lint example.proto example2.proto
-  pl list
+  protolint .
+  protolint lint .
+  protolint lint -fix .
+  protolint lint example.proto example2.proto
+  protolint list
 `
 )
 
@@ -67,14 +67,14 @@ func doLint(
 	stderr io.Writer,
 ) osutil.ExitCode {
 	if len(args) < 1 {
-		_, _ = fmt.Fprintln(stderr, "pl lint requires at least one argument. See Usage.")
+		_, _ = fmt.Fprintln(stderr, "protolint lint requires at least one argument. See Usage.")
 		_, _ = fmt.Fprint(stderr, help)
 		return osutil.ExitFailure
 	}
 
 	flags := lint.NewFlags(args)
 	if len(flags.Args()) < 1 {
-		_, _ = fmt.Fprintln(stderr, "pl lint requires at least one argument. See Usage.")
+		_, _ = fmt.Fprintln(stderr, "protolint lint requires at least one argument. See Usage.")
 		_, _ = fmt.Fprint(stderr, help)
 		return osutil.ExitFailure
 	}
