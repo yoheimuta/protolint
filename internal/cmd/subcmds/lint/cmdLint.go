@@ -89,7 +89,7 @@ func (c *CmdLint) runOneFile(
 		if c.config.verbose {
 			return nil, err
 		}
-		return nil, fmt.Errorf("%v. Use -v for more details.\n", err)
+		return nil, fmt.Errorf("%s. Use -v for more details", err)
 	}
 
 	rs, err := c.config.GenRules(f)
