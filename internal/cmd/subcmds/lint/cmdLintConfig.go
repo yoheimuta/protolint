@@ -11,16 +11,18 @@ import (
 type CmdLintConfig struct {
 	external config.ExternalConfig
 	fixMode  bool
+	verbose  bool
 }
 
 // NewCmdLintConfig creates a new CmdLintConfig.
 func NewCmdLintConfig(
 	externalConfig config.ExternalConfig,
-	fixMode bool,
+	flags Flags,
 ) CmdLintConfig {
 	return CmdLintConfig{
 		external: externalConfig,
-		fixMode:  fixMode,
+		fixMode:  flags.FixMode,
+		verbose:  flags.Verbose,
 	}
 }
 

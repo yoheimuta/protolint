@@ -36,7 +36,10 @@ func NewCmdLint(
 	if err != nil {
 		return nil, err
 	}
-	lintConfig := NewCmdLintConfig(externalConfig, flags.FixMode)
+	lintConfig := NewCmdLintConfig(
+		externalConfig,
+		flags,
+	)
 
 	return &CmdLint{
 		l:          linter.NewLinter(),
@@ -81,9 +84,12 @@ func (c *CmdLint) run() ([]report.Failure, error) {
 func (c *CmdLint) runOneFile(
 	f file.ProtoFile,
 ) ([]report.Failure, error) {
-	proto, err := f.Parse()
+	proto, err := f.Parse(c.config.verbose)
 	if err != nil {
-		return nil, err
+		if c.config.verbose {
+			return nil, err
+		}
+		return nil, fmt.Errorf("%s. Use -v for more details", err)
 	}
 
 	rs, err := c.config.GenRules(f)

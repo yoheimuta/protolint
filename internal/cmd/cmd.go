@@ -17,6 +17,7 @@ Usage:
   protolint .
   protolint lint .
   protolint lint -fix .
+  protolint lint -v .
   protolint lint example.proto example2.proto
   protolint list
 `

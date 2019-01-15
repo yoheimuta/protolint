@@ -8,6 +8,7 @@ type Flags struct {
 
 	ConfigDirPath string
 	FixMode       bool
+	Verbose       bool
 }
 
 // NewFlags creates a new Flags.
@@ -29,6 +30,12 @@ func NewFlags(
 		"fix",
 		false,
 		"mode that the command line can automatically fix some of the problems",
+	)
+	f.BoolVar(
+		&f.Verbose,
+		"v",
+		false,
+		"verbose output that includes parsing process details",
 	)
 	_ = f.Parse(args)
 	return f

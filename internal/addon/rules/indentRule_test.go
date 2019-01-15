@@ -147,7 +147,7 @@ func TestIndentRule_Apply(t *testing.T) {
 				false,
 			)
 
-			proto, err := file.NewProtoFile(test.inputProtoPath, test.inputProtoPath).Parse()
+			proto, err := file.NewProtoFile(test.inputProtoPath, test.inputProtoPath).Parse(false)
 			if err != nil {
 				t.Errorf(err.Error())
 				return
@@ -286,7 +286,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 				true,
 			)
 
-			proto, err := file.NewProtoFile(test.inputTestData.filePath, test.inputTestData.filePath).Parse()
+			proto, err := file.NewProtoFile(test.inputTestData.filePath, test.inputTestData.filePath).Parse(false)
 			if err != nil {
 				t.Errorf(err.Error())
 				return
