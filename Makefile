@@ -42,14 +42,14 @@ dev/install/dep:
 ## ARG is command arguments.
 ARG=lint
 
-## run/cmd/pl runs pl with ARG
-run/cmd/pl:
-	go run cmd/pl/main.go $(ARG)
+## run/cmd/protolint runs protolint with ARG
+run/cmd/protolint:
+	go run cmd/protolint/main.go $(ARG)
 
-## run/cmd/pl/exampleconfig runs pl with ARG under _example/config
-run/cmd/pl/exampleconfig:
-	cd _example/config && go run ../../cmd/pl/main.go $(ARG)
+## run/cmd/protolint/exampleconfig runs protolint with ARG under _example/config
+run/cmd/protolint/exampleconfig:
+	cd _example/config && go run ../../cmd/protolint/main.go $(ARG)
 
-## build/cmd/pl builds pl
-build/cmd/pl:
-	go build -o pl cmd/pl/main.go
+## build/cmd/protolint builds protolint
+build/cmd/protolint:
+	go build -o protolint cmd/protolint/main.go

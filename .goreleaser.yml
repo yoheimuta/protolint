@@ -4,8 +4,8 @@ before:
 builds:
 - env:
   - CGO_ENABLED=0
-  main: ./cmd/pl/main.go
-  binary: pl
+  main: ./cmd/protolint/main.go
+  binary: protolint
 archive:
   replacements:
     darwin: Darwin
