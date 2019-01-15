@@ -11,7 +11,7 @@ protolint is a command line tool which lints Protocol Buffer files (proto3):
 ## Installation
 
 ```
-go get -u -v github.com/yoheimuta/protolint/cmd/pl
+go get -u -v github.com/yoheimuta/protolint/cmd/protolint
 ```
 
 For non-Go users, the simplest way to install the protolint is to download a pre-built binary from this release page:
@@ -23,12 +23,12 @@ In the downloads section of each release, you can find pre-built binaries in .ta
 ## Usage
 
 ```
-pl lint example.proto example2.proto # file mode, specify multiple specific files
-pl lint .                            # directory mode, search for all .proto files recursively
-pl .                                 # same as "pl lint ."
-pl lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
-pl lint -fix .                       # automatically fix some of the problems reported by some rules
-pl list                              # list all current lint rules being used
+protolint lint example.proto example2.proto # file mode, specify multiple specific files
+protolint lint .                            # directory mode, search for all .proto files recursively
+protolint .                                 # same as "protolint lint ."
+protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
+protolint lint -fix .                       # automatically fix some of the problems reported by some rules
+protolint list                              # list all current lint rules being used
 ```
 
 ## Rules
