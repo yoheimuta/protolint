@@ -28,6 +28,7 @@ protolint lint .                            # directory mode, search for all .pr
 protolint .                                 # same as "protolint lint ."
 protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
+protolint lint -v .                         # with verbose output to investigate the parsing error
 protolint list                              # list all current lint rules being used
 ```
 
