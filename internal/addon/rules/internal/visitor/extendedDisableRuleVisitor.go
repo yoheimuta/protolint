@@ -48,6 +48,12 @@ func (v extendedDisableRuleVisitor) VisitEnumField(e *parser.EnumField) (next bo
 	}
 	return v.inner.VisitEnumField(e)
 }
+func (v extendedDisableRuleVisitor) VisitExtend(m *parser.Extend) (next bool) {
+	if v.interpreter.Interpret(m.Comments, m.InlineComment, m.InlineCommentBehindLeftCurly) {
+		return true
+	}
+	return v.inner.VisitExtend(m)
+}
 func (v extendedDisableRuleVisitor) VisitField(f *parser.Field) (next bool) {
 	if v.interpreter.Interpret(f.Comments, f.InlineComment) {
 		return true

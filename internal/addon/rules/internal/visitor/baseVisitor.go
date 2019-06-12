@@ -25,6 +25,9 @@ func (BaseVisitor) VisitEnum(*parser.Enum) (next bool) { return true }
 // VisitEnumField works noop.
 func (BaseVisitor) VisitEnumField(*parser.EnumField) (next bool) { return true }
 
+// VisitExtend works noop.
+func (BaseVisitor) VisitExtend(*parser.Extend) (next bool) { return true }
+
 // VisitField works noop.
 func (BaseVisitor) VisitField(*parser.Field) (next bool) { return true }
 
