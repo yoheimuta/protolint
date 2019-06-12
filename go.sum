@@ -8,6 +8,8 @@ github.com/yoheimuta/go-protoparser v1.2.0 h1:QUc8Y0L6ucTqw5Cm1EH4GFbXqcM6MutSr1
 github.com/yoheimuta/go-protoparser v1.2.0/go.mod h1:NMMDARGayMyLM9oD1JUgKyF1Tv7aj9S+KcTG4lqvemo=
 github.com/yoheimuta/go-protoparser v1.3.0 h1:rHDOtpGuaFUFmT1qIlg/RrUjBB8GabEGA97siSEAD7E=
 github.com/yoheimuta/go-protoparser v1.3.0/go.mod h1:NMMDARGayMyLM9oD1JUgKyF1Tv7aj9S+KcTG4lqvemo=
+github.com/yoheimuta/go-protoparser v2.0.0+incompatible h1:HVstTyDcki8G0F7CMm7ktPP22v7Y/WyLG4VV+fuxCJE=
+github.com/yoheimuta/go-protoparser v2.0.0+incompatible/go.mod h1:NMMDARGayMyLM9oD1JUgKyF1Tv7aj9S+KcTG4lqvemo=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 h1:qIbj1fsPNlZgppZ+VLlY7N33q108Sa+fhmuc+sWQYwY=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
