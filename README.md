@@ -53,6 +53,7 @@ The rule set follows:
 | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
 | MAX_LINE_LENGTH    | Enforces a maximum line length. |
 | INDENT    | Enforces a consistent indentation style. |
+| SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. |
 
 `-` is a bad style, `+` is a good style:
 
