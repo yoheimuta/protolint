@@ -30,7 +30,7 @@ func TestValidServiceNamesEndWithRule_Apply(t *testing.T) {
 	}
 
 	t.Run(validTestCase.name, func(t *testing.T) {
-		rule := rules.NewServiceNamesEndWithRule("")
+		rule := rules.NewServiceNamesEndWithRule("Service")
 
 		_, err := rule.Apply(validTestCase.inputProto)
 		if err != nil {
