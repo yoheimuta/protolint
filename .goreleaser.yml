@@ -6,6 +6,10 @@ builds:
   - CGO_ENABLED=0
   main: ./cmd/protolint/main.go
   binary: protolint
+  goos:
+    - windows
+    - darwin
+    - linux
 archive:
   replacements:
     darwin: Darwin
