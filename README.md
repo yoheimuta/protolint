@@ -168,7 +168,7 @@ Other is a command line tool which also lints Protocol Buffer files.
 
 ## Users
 
-- [vscode-protobuflint](https://github.com/jpreese/vscode-protobuflint)
+- [vscode-protolint](https://github.com/plexsystems/vscode-protolint)
 
 ## Dependencies
 
