@@ -166,9 +166,15 @@ Other is a command line tool which also lints Protocol Buffer files.
 - The lint rule slants towards to be opinionated.
 - Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to understand both rules and the guide in detail, and then to combine the rules accurately.
 
-## Users
+## Editor Integration
+
+Visual Studio Code
 
 - [vscode-protolint](https://github.com/plexsystems/vscode-protolint)
+
+JetBrains IntelliJ IDEA, GoLand, WebStorm, PHPStorm, PyCharm...
+
+- [intellij-protolint](https://github.com/yoheimuta/intellij-protolint)
 
 ## Dependencies
 
