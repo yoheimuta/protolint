@@ -32,6 +32,17 @@ protolint lint -v .                         # with verbose output to investigate
 protolint list                              # list all current lint rules being used
 ```
 
+## Editor Integration
+
+Visual Studio Code
+
+- [vscode-protolint](https://github.com/plexsystems/vscode-protolint)
+
+JetBrains IntelliJ IDEA, GoLand, WebStorm, PHPStorm, PyCharm...
+
+- [intellij-protolint](https://github.com/yoheimuta/intellij-protolint)
+
+
 ## Rules
 
 See `internal/addon/rules` in detail.
@@ -165,16 +176,6 @@ Other is a command line tool which also lints Protocol Buffer files.
 - While it has a lot of features other than lint, it seems cumbersome for users who just want the linter.
 - The lint rule slants towards to be opinionated.
 - Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to understand both rules and the guide in detail, and then to combine the rules accurately.
-
-## Editor Integration
-
-Visual Studio Code
-
-- [vscode-protolint](https://github.com/plexsystems/vscode-protolint)
-
-JetBrains IntelliJ IDEA, GoLand, WebStorm, PHPStorm, PyCharm...
-
-- [intellij-protolint](https://github.com/yoheimuta/intellij-protolint)
 
 ## Dependencies
 
