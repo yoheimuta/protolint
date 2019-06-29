@@ -32,6 +32,8 @@ protolint lint -v .                         # with verbose output to investigate
 protolint list                              # list all current lint rules being used
 ```
 
+protolint does not require configuration by default, for the majority of projects it should work out of the box.
+
 ## Editor Integration
 
 Visual Studio Code
