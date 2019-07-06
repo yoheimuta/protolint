@@ -53,8 +53,8 @@ The rule set follows:
 
 - [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style). This is enabled by default.
 - Formatting Style Guide. This is enabled by default.
-  - Enforce a maximum line length. The length of a line is defined as the number of Unicode characters in the line. You can configure the detail with `.protolint.yaml`.
-  - Enforce a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 4 spaces. You can configure the detail with `.protolint.yaml`.
+  - Enforce a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`.
+  - Enforce a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 2 spaces. You can configure the detail with `.protolint.yaml`.
 
 | ID                                | Purpose                                                                  |
 |-----------------------------------|--------------------------------------------------------------------------|
