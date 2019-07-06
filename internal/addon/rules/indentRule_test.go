@@ -19,7 +19,7 @@ import (
 )
 
 func TestIndentRule_Apply(t *testing.T) {
-	space4 := strings.Repeat(" ", 4)
+	defaultSpace := strings.Repeat(" ", 2)
 
 	tests := []struct {
 		name           string
@@ -34,7 +34,7 @@ func TestIndentRule_Apply(t *testing.T) {
 		},
 		{
 			name:           "incorrect syntax",
-			inputStyle:     space4,
+			inputStyle:     defaultSpace,
 			inputProtoPath: setting_test.TestDataPath("rules", "indentrule", "incorrect_syntax.proto"),
 			wantFailures: []report.Failure{
 				report.Failuref(
@@ -45,7 +45,7 @@ func TestIndentRule_Apply(t *testing.T) {
 						Column:   5,
 					},
 					`Found an incorrect indentation style "%s". "%s" is correct.`,
-					space4,
+					"    ",
 					"",
 				),
 			},
@@ -61,7 +61,7 @@ func TestIndentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_enum.proto"),
-						Offset:   166,
+						Offset:   162,
 						Line:     7,
 						Column:   2,
 					},
@@ -72,24 +72,24 @@ func TestIndentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_enum.proto"),
-						Offset:   69,
+						Offset:   67,
 						Line:     4,
 						Column:   9,
 					},
 					`Found an incorrect indentation style "%s". "%s" is correct.`,
 					"        ",
-					space4,
+					defaultSpace,
 				),
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_enum.proto"),
-						Offset:   118,
+						Offset:   114,
 						Line:     6,
 						Column:   6,
 					},
 					`Found an incorrect indentation style "%s". "%s" is correct.`,
 					"     ",
-					space4,
+					defaultSpace,
 				),
 			},
 		},
@@ -104,35 +104,35 @@ func TestIndentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_message.proto"),
-						Offset:   106,
+						Offset:   100,
 						Line:     6,
-						Column:   5,
+						Column:   3,
 					},
 					`Found an incorrect indentation style "%s". "%s" is correct.`,
-					space4,
-					strings.Repeat(space4, 2),
+					"  ",
+					strings.Repeat(defaultSpace, 2),
 				),
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_message.proto"),
-						Offset:   166,
+						Offset:   156,
 						Line:     9,
 						Column:   1,
 					},
 					`Found an incorrect indentation style "%s". "%s" is correct.`,
 					"",
-					space4,
+					defaultSpace,
 				),
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_message.proto"),
-						Offset:   311,
+						Offset:   287,
 						Line:     14,
-						Column:   13,
+						Column:   7,
 					},
 					`Found an incorrect indentation style "%s". "%s" is correct.`,
-					strings.Repeat(space4, 3),
-					strings.Repeat(space4, 2),
+					"      ",
+					strings.Repeat(defaultSpace, 2),
 				),
 			},
 		},
@@ -202,7 +202,7 @@ func (d testData) restore() error {
 }
 
 func TestIndentRule_Apply_fix(t *testing.T) {
-	space4 := strings.Repeat(" ", 4)
+	space2 := strings.Repeat(" ", 2)
 
 	correctSyntaxPath, err := newTestData("syntax.proto")
 	if err != nil {
@@ -281,7 +281,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewIndentRule(
-				space4,
+				space2,
 				"\n",
 				true,
 			)
