@@ -12,8 +12,10 @@ import (
 )
 
 const (
-	// 4 spaces
-	defaultStyle   = "    "
+	// Use an indent of 2 spaces.
+	// See https://developers.google.com/protocol-buffers/docs/style#standard-file-formatting
+	defaultStyle = "  "
+
 	defaultNewline = "\n"
 )
 
