@@ -13,7 +13,10 @@ import (
 )
 
 const (
-	defaultMaxChars = 120
+	// Keep the line length to 80 characters.
+	// See https://developers.google.com/protocol-buffers/docs/style#standard-file-formatting
+	defaultMaxChars = 80
+
 	defaultTabChars = 4
 )
 

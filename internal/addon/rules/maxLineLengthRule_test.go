@@ -43,7 +43,6 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 		},
 		{
 			name:          "found long lines",
-			inputMaxChars: 80,
 			inputTabChars: 4,
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{
