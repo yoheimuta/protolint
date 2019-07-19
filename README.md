@@ -52,9 +52,8 @@ See `internal/addon/rules` in detail.
 The rule set follows:
 
 - [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style). This is enabled by default.
-- Formatting Style Guide. This is enabled by default.
-  - Enforce a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`.
-  - Enforce a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 2 spaces. You can configure the detail with `.protolint.yaml`.
+- Unofficial Style Guide. This is disabled by default.
+  - Enforces a consistent suffix for service names. See https://cloud.google.com/apis/design/naming_convention#interface_names for details.
 
 | ID                                | Purpose                                                                  |
 |-----------------------------------|--------------------------------------------------------------------------|
@@ -64,8 +63,8 @@ The rule set follows:
 | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
 | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
-| MAX_LINE_LENGTH    | Enforces a maximum line length. |
-| INDENT    | Enforces a consistent indentation style. |
+| MAX_LINE_LENGTH    | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |
+| INDENT    | Enforces a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 2 spaces. You can configure the detail with `.protolint.yaml`. |
 | SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. |
 
 `-` is a bad style, `+` is a good style:
