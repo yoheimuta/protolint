@@ -60,6 +60,7 @@ The rule set follows:
 | Official | ID                                | Purpose                                                                  |
 |----------|-----------------------------------|--------------------------------------------------------------------------|
 | Yes | ENUM_FIELD_NAMES_UPPER_SNAKE_CASE | Verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.        |
+| Yes | ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH | Verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID"). The default is "UNSPECIFIED". You can configure the specific suffix with `.protolint.yaml`. |
 | Yes | ENUM_NAMES_UPPER_CAMEL_CASE       | Verifies that all enum names are CamelCase (with an initial capital).    |
 | Yes | FIELD_NAMES_LOWER_SNAKE_CASE      | Verifies that all field names are underscore_separated_names.            |
 | Yes | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
@@ -83,6 +84,15 @@ enum Foo {
 +  FIRST_VALUE = 0;
 -  second_value = 1;
 +  SECOND_VALUE = 1;
+}
+```
+
+__ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH__
+
+```diff
+enum Foo {
+-  FOO_FIRST = 0;
++  FOO_UNSPECIFIED = 0;
 }
 ```
 

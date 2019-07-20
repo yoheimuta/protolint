@@ -55,6 +55,10 @@ lint:
       # Available newlines are "\n", "\r", or "\r\n".
       newline: "\n"
 
+    # ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH rule option.
+    enum_field_names_zero_value_end_with:
+      suffix: INVALID
+
     # SERVICE_NAMES_END_WITH rule option.
     service_names_end_with:
       text: Service
