@@ -10,6 +10,7 @@ func defaultRules(
 	option config.RulesOption,
 	fixMode bool,
 ) []rule.Rule {
+	fileNamesLowerSnakeCase := option.FileNamesLowerSnakeCase
 	enumFieldNamesZeroValueEndWith := option.EnumFieldNamesZeroValueEndWith
 	maxLineLength := option.MaxLineLength
 	indent := option.Indent
@@ -20,6 +21,9 @@ func defaultRules(
 			enumFieldNamesZeroValueEndWith.Suffix,
 		),
 		rules.NewEnumNamesUpperCamelCaseRule(),
+		rules.NewFileNamesLowerSnakeCaseRule(
+			fileNamesLowerSnakeCase.Excludes,
+		),
 		rules.NewFieldNamesLowerSnakeCaseRule(),
 		rules.NewMessageNamesUpperCamelCaseRule(),
 		rules.NewRPCNamesUpperCamelCaseRule(),
