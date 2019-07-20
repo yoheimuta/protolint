@@ -128,6 +128,63 @@ func TestIsLowerSnakeCase(t *testing.T) {
 	}
 }
 
+func TestSplitCamelCaseWord(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  []string
+	}{
+		{
+			name: "if s is empty, returns nil",
+		},
+		{
+			name:  "if s is not camel_case, returns nil",
+			input: "not_camel",
+		},
+		{
+			name:  "input consists of one word",
+			input: "Account",
+			want: []string{
+				"Account",
+			},
+		},
+		{
+			name:  "input consists of words with an initial capital",
+			input: "AccountStatus",
+			want: []string{
+				"Account",
+				"Status",
+			},
+		},
+		{
+			name:  "input consists of words without an initial capital",
+			input: "accountStatus",
+			want: []string{
+				"account",
+				"Status",
+			},
+		},
+		{
+			name:  "input consists of words with continuous upper letters",
+			input: "ACCOUNTStatusException",
+			want: []string{
+				"ACCOUNTStatus",
+				"Exception",
+			},
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			got := strs.SplitCamelCaseWord(test.input)
+			if !reflect.DeepEqual(got, test.want) {
+				t.Errorf("got %v, but want %v", got, test.want)
+			}
+		})
+	}
+}
+
 func TestSplitSnakeCaseWord(t *testing.T) {
 	tests := []struct {
 		name  string

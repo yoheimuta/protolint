@@ -29,6 +29,7 @@ lint:
       - INDENT
       - SERVICE_NAMES_END_WITH
       - FIELD_NAMES_EXCLUDE_PREPOSITIONS
+      - MESSAGE_NAMES_EXCLUDE_PREPOSITIONS
 
     # The specific linters to remove.
     remove:
@@ -60,3 +61,10 @@ lint:
       prepositions:
         - for
         - at
+        -
+    # MESSAGE_NAMES_EXCLUDE_PREPOSITIONS rule option.
+    message_names_exclude_prepositions:
+      # The specific prepositions to determine if the message name includes.
+      prepositions:
+        - With
+        - For
