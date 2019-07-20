@@ -46,9 +46,11 @@ func NewAllRules(
 		),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Prepositions,
+			fieldNamesExcludePrepositions.Excludes,
 		),
 		rules.NewMessageNamesExcludePrepositionsRule(
 			messageNamesExcludePrepositions.Prepositions,
+			messageNamesExcludePrepositions.Excludes,
 		),
 	}
 }

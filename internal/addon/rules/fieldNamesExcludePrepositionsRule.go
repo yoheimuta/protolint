@@ -1,6 +1,8 @@
 package rules
 
 import (
+	"strings"
+
 	"github.com/yoheimuta/go-protoparser/parser"
 	"github.com/yoheimuta/protolint/internal/addon/rules/internal/visitor"
 	"github.com/yoheimuta/protolint/internal/linter/report"
@@ -42,17 +44,20 @@ var (
 // See https://cloud.google.com/apis/design/naming_convention#field_names.
 type FieldNamesExcludePrepositionsRule struct {
 	prepositions []string
+	excludes     []string
 }
 
 // NewFieldNamesExcludePrepositionsRule creates a new FieldNamesExcludePrepositionsRule.
 func NewFieldNamesExcludePrepositionsRule(
 	prepositions []string,
+	excludes []string,
 ) FieldNamesExcludePrepositionsRule {
 	if len(prepositions) == 0 {
 		prepositions = defaultPrepositions
 	}
 	return FieldNamesExcludePrepositionsRule{
 		prepositions: prepositions,
+		excludes:     excludes,
 	}
 }
 
@@ -76,6 +81,7 @@ func (r FieldNamesExcludePrepositionsRule) Apply(proto *parser.Proto) ([]report.
 	v := &fieldNamesExcludePrepositionsVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 		prepositions:   r.prepositions,
+		excludes:       r.excludes,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
@@ -83,11 +89,17 @@ func (r FieldNamesExcludePrepositionsRule) Apply(proto *parser.Proto) ([]report.
 type fieldNamesExcludePrepositionsVisitor struct {
 	*visitor.BaseAddVisitor
 	prepositions []string
+	excludes     []string
 }
 
 // VisitField checks the field.
 func (v *fieldNamesExcludePrepositionsVisitor) VisitField(field *parser.Field) bool {
-	parts := strs.SplitSnakeCaseWord(field.FieldName)
+	name := field.FieldName
+	for _, e := range v.excludes {
+		name = strings.Replace(name, e, "", -1)
+	}
+
+	parts := strs.SplitSnakeCaseWord(name)
 	for _, p := range parts {
 		if stringsutil.ContainsStringInSlice(p, v.prepositions) {
 			v.AddFailuref(field.Meta.Pos, "Field name %q should not include a preposition %q", field.FieldName, p)

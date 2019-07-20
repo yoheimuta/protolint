@@ -16,6 +16,7 @@ func TestMessageNamesExcludePrepositionsRule_Apply(t *testing.T) {
 		name              string
 		inputProto        *parser.Proto
 		inputPrepositions []string
+		inputExcludes     []string
 		wantFailures      []report.Failure
 	}{
 		{
@@ -100,12 +101,60 @@ func TestMessageNamesExcludePrepositionsRule_Apply(t *testing.T) {
 				),
 			},
 		},
+		{
+			name: "failures for proto with invalid message names, but message name including the excluded keyword is no problem",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Message{
+						MessageName: "AccountStatus",
+						MessageBody: []parser.Visitee{
+							&parser.Message{
+								MessageName: "SpecialEndOfSupport",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   100,
+										Line:     5,
+										Column:   10,
+									},
+								},
+							},
+							&parser.Message{
+								MessageName: "EndOfSales",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   200,
+										Line:     10,
+										Column:   20,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			inputExcludes: []string{
+				"EndOfSupport",
+			},
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   200,
+						Line:     10,
+						Column:   20,
+					},
+					`Message name "EndOfSales" should not include a preposition "Of"`,
+				),
+			},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewMessageNamesExcludePrepositionsRule(test.inputPrepositions)
+			rule := rules.NewMessageNamesExcludePrepositionsRule(test.inputPrepositions, test.inputExcludes)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {

@@ -75,10 +75,18 @@ lint:
       prepositions:
         - for
         - at
-        -
+        - of
+      # The specific keywords including prepositions to ignore. E.g. end_of_support is a term you would like to use, and skip checking.
+      excludes:
+        - end_of_support
+
     # MESSAGE_NAMES_EXCLUDE_PREPOSITIONS rule option.
     message_names_exclude_prepositions:
       # The specific prepositions to determine if the message name includes.
       prepositions:
         - With
         - For
+        - Of
+      # The specific keywords including prepositions to ignore. E.g. EndOfSupport is a term you would like to use, and skip checking.
+      excludes:
+        - EndOfSupport
