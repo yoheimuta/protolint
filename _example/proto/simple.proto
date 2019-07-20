@@ -18,6 +18,7 @@ message outer {
     repeated inner inner_message = 2;
     EnumAllowingAlias enum_field =3;
     map<int32, string> my_map = 4;
+  string reason_for_error = 5;
 }
 service SearchService {
     rpc search (SearchRequest) returns (SearchResponse);

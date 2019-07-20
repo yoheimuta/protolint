@@ -27,6 +27,7 @@ lint:
       - MESSAGE_NAMES_UPPER_CAMEL_CASE
       - MAX_LINE_LENGTH
       - INDENT
+      - FIELD_NAMES_EXCLUDE_PREPOSITIONS
 
     # The specific linters to remove.
     remove:
@@ -47,3 +48,10 @@ lint:
       style: 4
       # Available newlines are "\n", "\r", or "\r\n".
       newline: "\n"
+
+    # FIELD_NAMES_EXCLUDE_PREPOSITIONS rule option.
+    field_names_exclude_prepositions:
+      # The specific prepositions to determine if the field name includes.
+      prepositions:
+        - for
+        - at

@@ -52,5 +52,12 @@ func NewAllRules(
 	option config.RulesOption,
 	fixMode bool,
 ) []rule.Rule {
-	return defaultRules(option, fixMode)
+	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositionsOption
+
+	return append(
+		defaultRules(option, fixMode),
+		rules.NewFieldNamesExcludePrepositionsRule(
+			fieldNamesExcludePrepositions.Prepositions,
+		),
+	)
 }
