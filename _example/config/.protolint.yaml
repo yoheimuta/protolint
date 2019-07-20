@@ -21,6 +21,10 @@ lint:
     # Determines whether or not to include the default set of linters.
     no_default: true
 
+    # Set the default to all linters. This option works the other way around as no_default does.
+    # If you want to enable this option, delete the comment out below and no_default.
+    # all_default: true
+
     # The specific linters to add.
     add:
       - FIELD_NAMES_LOWER_SNAKE_CASE
