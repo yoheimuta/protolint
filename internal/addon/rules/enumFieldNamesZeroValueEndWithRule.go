@@ -40,6 +40,11 @@ func (r EnumFieldNamesZeroValueEndWithRule) Purpose() string {
 	return `Verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID").`
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r EnumFieldNamesZeroValueEndWithRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r EnumFieldNamesZeroValueEndWithRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumFieldNamesZeroValueEndWithVisitor{

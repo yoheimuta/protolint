@@ -56,6 +56,11 @@ func (r IndentRule) Purpose() string {
 	return "Enforces a consistent indentation style."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r IndentRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r IndentRule) Apply(
 	proto *parser.Proto,

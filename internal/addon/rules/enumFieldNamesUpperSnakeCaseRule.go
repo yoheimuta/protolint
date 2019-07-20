@@ -26,6 +26,11 @@ func (r EnumFieldNamesUpperSnakeCaseRule) Purpose() string {
 	return "Verifies that all enum field names are CAPITALS_WITH_UNDERSCORES."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r EnumFieldNamesUpperSnakeCaseRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r EnumFieldNamesUpperSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumFieldNamesUpperSnakeCaseVisitor{

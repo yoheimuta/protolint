@@ -26,6 +26,11 @@ func (r FieldNamesLowerSnakeCaseRule) Purpose() string {
 	return "Verifies that all field names are underscore_separated_names."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r FieldNamesLowerSnakeCaseRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r FieldNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &fieldNamesLowerSnakeCaseVisitor{

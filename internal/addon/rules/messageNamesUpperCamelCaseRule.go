@@ -26,6 +26,11 @@ func (r MessageNamesUpperCamelCaseRule) Purpose() string {
 	return "Verifies that all message names are CamelCase (with an initial capital)."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r MessageNamesUpperCamelCaseRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r MessageNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &messageNamesUpperCamelCaseVisitor{

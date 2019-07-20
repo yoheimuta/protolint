@@ -36,6 +36,11 @@ func (r MessageNamesExcludePrepositionsRule) ID() string {
 	return "MESSAGE_NAMES_EXCLUDE_PREPOSITIONS"
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r MessageNamesExcludePrepositionsRule) IsOfficial() bool {
+	return false
+}
+
 // Purpose returns the purpose of this rule.
 func (r MessageNamesExcludePrepositionsRule) Purpose() string {
 	return `Verifies that all message names don't include prepositions (e.g. "With", "For").`

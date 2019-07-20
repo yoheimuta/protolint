@@ -26,6 +26,11 @@ func (r ServiceNamesUpperCamelCaseRule) Purpose() string {
 	return "Verifies that all service names are CamelCase (with an initial capital)."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r ServiceNamesUpperCamelCaseRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r ServiceNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &serviceNamesUpperCamelCaseVisitor{

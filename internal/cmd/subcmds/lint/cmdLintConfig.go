@@ -30,15 +30,17 @@ func NewCmdLintConfig(
 func (c CmdLintConfig) GenRules(
 	f file.ProtoFile,
 ) ([]rule.HasApply, error) {
+	allRules := subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode)
+
 	var defaultRuleIDs []string
 	if c.external.Lint.Rules.AllDefault {
-		defaultRuleIDs = subcmds.AllRuleIDs()
+		defaultRuleIDs = allRules.IDs()
 	} else {
-		defaultRuleIDs = subcmds.DefaultRuleIDs()
+		defaultRuleIDs = allRules.Default().IDs()
 	}
 
 	var hasApplies []rule.HasApply
-	for _, r := range subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode) {
+	for _, r := range allRules {
 		if c.external.ShouldSkipRule(r.ID(), f.DisplayPath(), defaultRuleIDs) {
 			continue
 		}

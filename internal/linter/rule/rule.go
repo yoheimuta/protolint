@@ -23,9 +23,16 @@ type HasPurpose interface {
 	Purpose() string
 }
 
+// HasIsOfficial represents a rule with IsOfficial.
+type HasIsOfficial interface {
+	// IsOfficial decides whether or not this rule belongs to the official guide.
+	IsOfficial() bool
+}
+
 // Rule represents a rule which a linter can apply.
 type Rule interface {
 	HasApply
 	HasID
 	HasPurpose
+	HasIsOfficial
 }
