@@ -12,7 +12,6 @@ func defaultRules(
 ) []rule.Rule {
 	maxLineLength := option.MaxLineLength
 	indent := option.Indent
-	serviceNamesEndWith := option.ServiceNamesEndWith
 
 	return []rule.Rule{
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
@@ -29,9 +28,6 @@ func defaultRules(
 			indent.Style,
 			indent.Newline,
 			fixMode,
-		),
-		rules.NewServiceNamesEndWithRule(
-			serviceNamesEndWith.Text,
 		),
 	}
 }
@@ -52,10 +48,14 @@ func NewAllRules(
 	option config.RulesOption,
 	fixMode bool,
 ) []rule.Rule {
+	serviceNamesEndWith := option.ServiceNamesEndWith
 	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositionsOption
 
 	return append(
 		defaultRules(option, fixMode),
+		rules.NewServiceNamesEndWithRule(
+			serviceNamesEndWith.Text,
+		),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Prepositions,
 		),

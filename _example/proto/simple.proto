@@ -20,6 +20,6 @@ message outer {
     map<int32, string> my_map = 4;
   string reason_for_error = 5;
 }
-service SearchService {
+service SearchApi {
     rpc search (SearchRequest) returns (SearchResponse);
 }
