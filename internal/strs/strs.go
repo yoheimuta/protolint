@@ -2,6 +2,7 @@
 package strs
 
 import (
+	"strings"
 	"unicode/utf8"
 )
 
@@ -64,6 +65,35 @@ func isCamelCase(s string) bool {
 		}
 	}
 	return true
+}
+
+// isSnake returns true if s only contains letters, digits, and/or underscores.
+// s MUST NOT begin or end with an underscore.
+func isSnake(s string) bool {
+	if s == "" || s[0] == '_' || s[len(s)-1] == '_' {
+		return false
+	}
+	for _, r := range s {
+		if !(isLetter(r) || isDigit(r) || r == '_') {
+			return false
+		}
+	}
+	return true
+}
+
+// SplitSnakeCaseWord splits a snake_case word into its parts.
+//
+// If s is empty, returns nil.
+// If s is not snake_case, returns nil.
+func SplitSnakeCaseWord(s string) []string {
+	if s == "" {
+		return nil
+	}
+	s = strings.TrimSpace(s)
+	if !isSnake(s) {
+		return nil
+	}
+	return strings.Split(s, "_")
 }
 
 func isLetter(r rune) bool {

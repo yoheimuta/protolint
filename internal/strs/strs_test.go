@@ -1,6 +1,7 @@
 package strs_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/yoheimuta/protolint/internal/strs"
@@ -121,6 +122,57 @@ func TestIsLowerSnakeCase(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			got := strs.IsLowerSnakeCase(test.input)
 			if got != test.want {
+				t.Errorf("got %v, but want %v", got, test.want)
+			}
+		})
+	}
+}
+
+func TestSplitSnakeCaseWord(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  []string
+	}{
+		{
+			name: "if s is empty, returns nil",
+		},
+		{
+			name:  "if s is not snake_case, returns nil",
+			input: "_not_snake",
+		},
+		{
+			name:  "input consists of one word",
+			input: "HELLO",
+			want: []string{
+				"HELLO",
+			},
+		},
+		{
+			name:  "input consists of multiple upper case words",
+			input: "REASON_FOR_ERROR",
+			want: []string{
+				"REASON",
+				"FOR",
+				"ERROR",
+			},
+		},
+		{
+			name:  "input consists of multiple lower case words",
+			input: "reason_for_error",
+			want: []string{
+				"reason",
+				"for",
+				"error",
+			},
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			got := strs.SplitSnakeCaseWord(test.input)
+			if !reflect.DeepEqual(got, test.want) {
 				t.Errorf("got %v, but want %v", got, test.want)
 			}
 		})
