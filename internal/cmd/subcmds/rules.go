@@ -50,6 +50,7 @@ func NewAllRules(
 ) []rule.Rule {
 	serviceNamesEndWith := option.ServiceNamesEndWith
 	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositionsOption
+	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositionsOption
 
 	return append(
 		defaultRules(option, fixMode),
@@ -58,6 +59,9 @@ func NewAllRules(
 		),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Prepositions,
+		),
+		rules.NewMessageNamesExcludePrepositionsRule(
+			messageNamesExcludePrepositions.Prepositions,
 		),
 	)
 }
