@@ -26,6 +26,11 @@ func (r RPCNamesUpperCamelCaseRule) Purpose() string {
 	return "Verifies that all rpc names are CamelCase (with an initial capital)."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r RPCNamesUpperCamelCaseRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r RPCNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &rpcNamesUpperCamelCaseVisitor{

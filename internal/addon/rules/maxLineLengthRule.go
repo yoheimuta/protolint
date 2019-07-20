@@ -54,6 +54,11 @@ func (r MaxLineLengthRule) Purpose() string {
 	return "Enforces a maximum line length."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r MaxLineLengthRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r MaxLineLengthRule) Apply(proto *parser.Proto) (
 	failures []report.Failure,

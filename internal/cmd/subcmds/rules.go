@@ -6,16 +6,20 @@ import (
 	"github.com/yoheimuta/protolint/internal/linter/rule"
 )
 
-func defaultRules(
+// NewAllRules creates new all rules.
+func NewAllRules(
 	option config.RulesOption,
 	fixMode bool,
-) []rule.Rule {
+) rule.Rules {
 	fileNamesLowerSnakeCase := option.FileNamesLowerSnakeCase
 	enumFieldNamesZeroValueEndWith := option.EnumFieldNamesZeroValueEndWith
 	maxLineLength := option.MaxLineLength
 	indent := option.Indent
+	serviceNamesEndWith := option.ServiceNamesEndWith
+	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositions
+	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
 
-	return []rule.Rule{
+	return rule.Rules{
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
@@ -37,40 +41,6 @@ func defaultRules(
 			indent.Newline,
 			fixMode,
 		),
-	}
-}
-
-func ruleIDs(rules []rule.Rule) []string {
-	var ids []string
-	for _, rule := range rules {
-		ids = append(ids, rule.ID())
-	}
-	return ids
-}
-
-// DefaultRuleIDs are the default rule ids.
-func DefaultRuleIDs() []string {
-	emptyOption := config.RulesOption{}
-	return ruleIDs(defaultRules(emptyOption, false))
-}
-
-// AllRuleIDs are the all rule ids.
-func AllRuleIDs() []string {
-	emptyOption := config.RulesOption{}
-	return ruleIDs(NewAllRules(emptyOption, false))
-}
-
-// NewAllRules creates new rules.
-func NewAllRules(
-	option config.RulesOption,
-	fixMode bool,
-) []rule.Rule {
-	serviceNamesEndWith := option.ServiceNamesEndWith
-	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositions
-	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
-
-	return append(
-		defaultRules(option, fixMode),
 		rules.NewServiceNamesEndWithRule(
 			serviceNamesEndWith.Text,
 		),
@@ -80,5 +50,5 @@ func NewAllRules(
 		rules.NewMessageNamesExcludePrepositionsRule(
 			messageNamesExcludePrepositions.Prepositions,
 		),
-	)
+	}
 }

@@ -26,6 +26,11 @@ func (r EnumNamesUpperCamelCaseRule) Purpose() string {
 	return "Verifies that all enum names are CamelCase (with an initial capital)."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r EnumNamesUpperCamelCaseRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r EnumNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumNamesUpperCamelCaseVisitor{

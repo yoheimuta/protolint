@@ -37,6 +37,11 @@ func (r FileNamesLowerSnakeCaseRule) Purpose() string {
 	return "Verifies that all file names are lower_snake_case.proto."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r FileNamesLowerSnakeCaseRule) IsOfficial() bool {
+	return true
+}
+
 // Apply applies the rule to the proto.
 func (r FileNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &fileNamesLowerSnakeCaseVisitor{

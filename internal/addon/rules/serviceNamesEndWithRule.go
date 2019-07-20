@@ -30,6 +30,11 @@ func (r ServiceNamesEndWithRule) Purpose() string {
 	return "Verifies that all service names end with the specified value."
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r ServiceNamesEndWithRule) IsOfficial() bool {
+	return false
+}
+
 // Apply applies the rule to the proto.
 func (r ServiceNamesEndWithRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &serviceNamesEndWithVisitor{

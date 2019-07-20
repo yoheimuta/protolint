@@ -66,6 +66,11 @@ func (r FieldNamesExcludePrepositionsRule) Purpose() string {
 	return `Verifies that all field names don't include prepositions (e.g. "for", "during", "at").`
 }
 
+// IsOfficial decides whether or not this rule belongs to the official guide.
+func (r FieldNamesExcludePrepositionsRule) IsOfficial() bool {
+	return false
+}
+
 // Apply applies the rule to the proto.
 func (r FieldNamesExcludePrepositionsRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &fieldNamesExcludePrepositionsVisitor{
