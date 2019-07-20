@@ -15,11 +15,13 @@ import (
 // See https://cloud.google.com/apis/design/naming_convention#message_names.
 type MessageNamesExcludePrepositionsRule struct {
 	prepositions []string
+	excludes     []string
 }
 
 // NewMessageNamesExcludePrepositionsRule creates a new MessageNamesExcludePrepositionsRule.
 func NewMessageNamesExcludePrepositionsRule(
 	prepositions []string,
+	excludes []string,
 ) MessageNamesExcludePrepositionsRule {
 	if len(prepositions) == 0 {
 		for _, p := range defaultPrepositions {
@@ -28,6 +30,7 @@ func NewMessageNamesExcludePrepositionsRule(
 	}
 	return MessageNamesExcludePrepositionsRule{
 		prepositions: prepositions,
+		excludes:     excludes,
 	}
 }
 
@@ -51,6 +54,7 @@ func (r MessageNamesExcludePrepositionsRule) Apply(proto *parser.Proto) ([]repor
 	v := &messageNamesExcludePrepositionsVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(),
 		prepositions:   r.prepositions,
+		excludes:       r.excludes,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
@@ -58,11 +62,17 @@ func (r MessageNamesExcludePrepositionsRule) Apply(proto *parser.Proto) ([]repor
 type messageNamesExcludePrepositionsVisitor struct {
 	*visitor.BaseAddVisitor
 	prepositions []string
+	excludes     []string
 }
 
 // VisitMessage checks the message.
 func (v *messageNamesExcludePrepositionsVisitor) VisitMessage(message *parser.Message) bool {
-	parts := strs.SplitCamelCaseWord(message.MessageName)
+	name := message.MessageName
+	for _, e := range v.excludes {
+		name = strings.Replace(name, e, "", -1)
+	}
+
+	parts := strs.SplitCamelCaseWord(name)
 	for _, p := range parts {
 		if stringsutil.ContainsStringInSlice(p, v.prepositions) {
 			v.AddFailuref(message.Meta.Pos, "Message name %q should not include a preposition %q", message.MessageName, p)
