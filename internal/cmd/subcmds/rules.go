@@ -10,11 +10,15 @@ func defaultRules(
 	option config.RulesOption,
 	fixMode bool,
 ) []rule.Rule {
+	enumFieldNamesZeroValueEndWith := option.EnumFieldNamesZeroValueEndWith
 	maxLineLength := option.MaxLineLength
 	indent := option.Indent
 
 	return []rule.Rule{
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
+		rules.NewEnumFieldNamesZeroValueEndWithRule(
+			enumFieldNamesZeroValueEndWith.Suffix,
+		),
 		rules.NewEnumNamesUpperCamelCaseRule(),
 		rules.NewFieldNamesLowerSnakeCaseRule(),
 		rules.NewMessageNamesUpperCamelCaseRule(),
@@ -58,8 +62,8 @@ func NewAllRules(
 	fixMode bool,
 ) []rule.Rule {
 	serviceNamesEndWith := option.ServiceNamesEndWith
-	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositionsOption
-	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositionsOption
+	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositions
+	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
 
 	return append(
 		defaultRules(option, fixMode),
