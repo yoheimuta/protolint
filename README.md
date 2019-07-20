@@ -71,6 +71,8 @@ The rule set follows:
 | No | FIELD_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). You can configure the specific prepositions with `.protolint.yaml`. |
 | No | MESSAGE_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all message names don't include prepositions (e.g. "With", "For"). You can configure the specific prepositions with `.protolint.yaml`. |
 
+I recommend that you add `all_default: true` in `.protolint.yaml`, because all linters above are automatically enabled so that you can always enjoy maximum benefits whenever protolint is updated.
+
 `-` is a bad style, `+` is a good style:
 
 __ENUM_FIELD_NAMES_UPPER_SNAKE_CASE__

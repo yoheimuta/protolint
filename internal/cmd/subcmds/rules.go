@@ -32,15 +32,24 @@ func defaultRules(
 	}
 }
 
-// DefaultRuleIDs are the default rule ids.
-func DefaultRuleIDs() []string {
-	emptyOption := config.RulesOption{}
-
+func ruleIDs(rules []rule.Rule) []string {
 	var ids []string
-	for _, rule := range defaultRules(emptyOption, false) {
+	for _, rule := range rules {
 		ids = append(ids, rule.ID())
 	}
 	return ids
+}
+
+// DefaultRuleIDs are the default rule ids.
+func DefaultRuleIDs() []string {
+	emptyOption := config.RulesOption{}
+	return ruleIDs(defaultRules(emptyOption, false))
+}
+
+// AllRuleIDs are the all rule ids.
+func AllRuleIDs() []string {
+	emptyOption := config.RulesOption{}
+	return ruleIDs(NewAllRules(emptyOption, false))
 }
 
 // NewAllRules creates new rules.

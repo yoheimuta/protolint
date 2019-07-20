@@ -45,9 +45,10 @@ func TestGetExternalConfig(t *testing.T) {
 						},
 					},
 					Rules: struct {
-						NoDefault bool     `yaml:"no_default"`
-						Add       []string `yaml:"add"`
-						Remove    []string `yaml:"remove"`
+						NoDefault  bool     `yaml:"no_default"`
+						AllDefault bool     `yaml:"all_default"`
+						Add        []string `yaml:"add"`
+						Remove     []string `yaml:"remove"`
 					}{
 						NoDefault: true,
 						Add: []string{
