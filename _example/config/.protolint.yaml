@@ -34,6 +34,7 @@ lint:
       - SERVICE_NAMES_END_WITH
       - FIELD_NAMES_EXCLUDE_PREPOSITIONS
       - MESSAGE_NAMES_EXCLUDE_PREPOSITIONS
+      - FILE_NAMES_LOWER_SNAKE_CASE
 
     # The specific linters to remove.
     remove:
@@ -54,6 +55,11 @@ lint:
       style: 4
       # Available newlines are "\n", "\r", or "\r\n".
       newline: "\n"
+
+    # FILE_NAMES_LOWER_SNAKE_CASE rule option.
+    file_names_lower_snake_case:
+      excludes:
+        - ../proto/invalidFileName.proto
 
     # ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH rule option.
     enum_field_names_zero_value_end_with:
