@@ -13,6 +13,7 @@ func NewAllRules(
 ) rule.Rules {
 	fileNamesLowerSnakeCase := option.FileNamesLowerSnakeCase
 	enumFieldNamesZeroValueEndWith := option.EnumFieldNamesZeroValueEndWith
+	importsSorted := option.ImportsSorted
 	maxLineLength := option.MaxLineLength
 	indent := option.Indent
 	serviceNamesEndWith := option.ServiceNamesEndWith
@@ -29,6 +30,10 @@ func NewAllRules(
 			fileNamesLowerSnakeCase.Excludes,
 		),
 		rules.NewFieldNamesLowerSnakeCaseRule(),
+		rules.NewImportsSortedRule(
+			importsSorted.Newline,
+			fixMode,
+		),
 		rules.NewMessageNamesUpperCamelCaseRule(),
 		rules.NewRPCNamesUpperCamelCaseRule(),
 		rules.NewServiceNamesUpperCamelCaseRule(),
