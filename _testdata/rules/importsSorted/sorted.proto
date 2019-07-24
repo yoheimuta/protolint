@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+import "myproject/other_protos.proto";
+import public "new.proto";
+import "other.proto";

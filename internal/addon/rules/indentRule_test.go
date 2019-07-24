@@ -177,10 +177,15 @@ type testData struct {
 	originData []byte
 }
 
-func newTestData(
+func newTestIndentData(
 	fileName string,
 ) (testData, error) {
-	filePath := setting_test.TestDataPath("rules", "indentrule", fileName)
+	return newTestData(setting_test.TestDataPath("rules", "indentrule", fileName))
+}
+
+func newTestData(
+	filePath string,
+) (testData, error) {
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return testData{}, nil
@@ -204,37 +209,37 @@ func (d testData) restore() error {
 func TestIndentRule_Apply_fix(t *testing.T) {
 	space2 := strings.Repeat(" ", 2)
 
-	correctSyntaxPath, err := newTestData("syntax.proto")
+	correctSyntaxPath, err := newTestIndentData("syntax.proto")
 	if err != nil {
 		t.Errorf("got err %v", err)
 		return
 	}
 
-	incorrectSyntaxPath, err := newTestData("incorrect_syntax.proto")
+	incorrectSyntaxPath, err := newTestIndentData("incorrect_syntax.proto")
 	if err != nil {
 		t.Errorf("got err %v", err)
 		return
 	}
 
-	correctEnumPath, err := newTestData("enum.proto")
+	correctEnumPath, err := newTestIndentData("enum.proto")
 	if err != nil {
 		t.Errorf("got err %v", err)
 		return
 	}
 
-	incorrectEnumPath, err := newTestData("incorrect_enum.proto")
+	incorrectEnumPath, err := newTestIndentData("incorrect_enum.proto")
 	if err != nil {
 		t.Errorf("got err %v", err)
 		return
 	}
 
-	correctMessagePath, err := newTestData("message.proto")
+	correctMessagePath, err := newTestIndentData("message.proto")
 	if err != nil {
 		t.Errorf("got err %v", err)
 		return
 	}
 
-	incorrectMessagePath, err := newTestData("incorrect_message.proto")
+	incorrectMessagePath, err := newTestIndentData("incorrect_message.proto")
 	if err != nil {
 		t.Errorf("got err %v", err)
 		return

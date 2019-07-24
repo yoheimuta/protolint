@@ -2,7 +2,16 @@ syntax = "proto3";
 // A broken example of the official reference
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
 package examplepb;
-import public "other.proto";
+
+import "other.proto";
+import public "new.proto";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+import "myproject/other_protos.proto";
+import "myproject/main_protos.proto";
+
 option java_package = "com.example.foo";
 enum enumAllowingAlias {
     option allow_alias = true;

@@ -53,9 +53,11 @@ The rule set follows:
 
 - [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style). This is enabled by default.
 - Unofficial Style Guide. This is disabled by default. You can enable each rule with `.protolint.yaml`.
-  - Enforces a consistent suffix for service names. See https://cloud.google.com/apis/design/naming_convention#interface_names for details.
-  - Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). See https://cloud.google.com/apis/design/naming_convention#field_names for details.
-  - Verifies that all message names don't include prepositions (e.g. "With", "For"). See https://cloud.google.com/apis/design/naming_convention#message_names for details.
+
+Some rules support a feature that automatically fixed the problems.
+
+- IMPORTS_SORTED
+- INDENT
 
 | Official | ID                                | Purpose                                                                  |
 |----------|-----------------------------------|--------------------------------------------------------------------------|
@@ -64,6 +66,7 @@ The rule set follows:
 | Yes | ENUM_NAMES_UPPER_CAMEL_CASE       | Verifies that all enum names are CamelCase (with an initial capital).    |
 | Yes | FILE_NAMES_LOWER_SNAKE_CASE       | Verifies that all file names are lower_snake_case.proto. You can configure the excluded files with `.protolint.yaml`. |
 | Yes | FIELD_NAMES_LOWER_SNAKE_CASE      | Verifies that all field names are underscore_separated_names.            |
+| Yes | IMPORTS_SORTED                    | Verifies that all imports are sorted. The --fix option on the command line can automatically fix some of the problems reported by this rule. |
 | Yes | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
 | Yes | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | Yes | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
@@ -114,6 +117,18 @@ message SongServerRequest {
 -  required string SongName = 1;
 +  required string song_name = 1;
 }
+```
+
+__IMPORTS_SORTED__
+
+```diff
+- import public "new.proto";
++ import "myproject/other_protos.proto";
+- import "myproject/other_protos.proto";
++ import public "new.proto";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 ```
 
 __MESSAGE_NAMES_UPPER_CAMEL_CASE__
