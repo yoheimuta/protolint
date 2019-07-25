@@ -9,6 +9,12 @@ lint:
       files:
         - path/to/foo.proto
 
+  # Linter files to walk.
+  files:
+    # The specific files to exclude.
+    exclude:
+      - path/to/file
+
   # Linter directories to walk.
   directories:
     # The specific directories to exclude.
