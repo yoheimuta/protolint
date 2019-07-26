@@ -1,6 +1,6 @@
 package config
 
-// Directories represents the target directories.
+// Files represents the target files.
 type Files struct {
 	Exclude []string `yaml:"exclude"`
 }
