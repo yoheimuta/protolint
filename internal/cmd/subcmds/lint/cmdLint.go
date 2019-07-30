@@ -84,17 +84,22 @@ func (c *CmdLint) run() ([]report.Failure, error) {
 func (c *CmdLint) runOneFile(
 	f file.ProtoFile,
 ) ([]report.Failure, error) {
+	// Gen rules first
+	// If there is no rule, we can skip parse proto file
+	rs, err := c.config.GenRules(f)
+	if err != nil {
+		return nil, err
+	}
+	if len(rs) == 0 {
+		return []report.Failure{}, nil
+	}
+
 	proto, err := f.Parse(c.config.verbose)
 	if err != nil {
 		if c.config.verbose {
 			return nil, err
 		}
 		return nil, fmt.Errorf("%s. Use -v for more details", err)
-	}
-
-	rs, err := c.config.GenRules(f)
-	if err != nil {
-		return nil, err
 	}
 
 	return c.l.Run(proto, rs)

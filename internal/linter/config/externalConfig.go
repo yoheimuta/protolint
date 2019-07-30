@@ -3,6 +3,7 @@ package config
 // Lint represents the lint configuration.
 type Lint struct {
 	Ignores     Ignores
+	Files       Files
 	Directories Directories
 	Rules       Rules
 	RulesOption RulesOption `yaml:"rules_option"`
@@ -21,6 +22,7 @@ func (c ExternalConfig) ShouldSkipRule(
 ) bool {
 	lint := c.Lint
 	return lint.Ignores.shouldSkipRule(ruleID, displayPath) ||
+		lint.Files.shouldSkipRule(displayPath) ||
 		lint.Directories.shouldSkipRule(displayPath) ||
 		lint.Rules.shouldSkipRule(ruleID, defaultRuleIDs)
 }
