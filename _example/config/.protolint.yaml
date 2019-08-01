@@ -43,6 +43,7 @@ lint:
       - FILE_NAMES_LOWER_SNAKE_CASE
       - IMPORTS_SORTED
       - PACKAGE_NAME_LOWER_CASE
+      - ORDER
 
     # The specific linters to remove.
     remove:

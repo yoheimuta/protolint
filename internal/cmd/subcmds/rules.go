@@ -21,6 +21,7 @@ func NewAllRules(
 	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
 
 	return rule.Rules{
+		rules.NewOrderRule(),
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
