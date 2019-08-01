@@ -22,6 +22,7 @@ enum enumAllowingAlias {
 }
 message outer {
     option (my_option).a = true;
+    // inner is an inner message.
     message inner {   // Level 2
       int64 ival = 1;
     }
