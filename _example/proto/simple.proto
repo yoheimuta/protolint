@@ -1,7 +1,7 @@
 syntax = "proto3";
 // A broken example of the official reference
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
-package examplepb;
+package examplePb;
 
 import "other.proto";
 import public "new.proto";

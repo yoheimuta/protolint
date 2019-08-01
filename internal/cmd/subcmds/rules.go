@@ -35,6 +35,7 @@ func NewAllRules(
 			fixMode,
 		),
 		rules.NewMessageNamesUpperCamelCaseRule(),
+		rules.NewPackageNameLowerCaseRule(),
 		rules.NewRPCNamesUpperCamelCaseRule(),
 		rules.NewServiceNamesUpperCamelCaseRule(),
 		rules.NewMaxLineLengthRule(
