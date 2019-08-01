@@ -143,6 +143,21 @@ __MESSAGE_NAMES_UPPER_CAMEL_CASE__
 }
 ```
 
+__ORDER__
+
+```diff
+- option java_package = "com.example.foo";
+- syntax = "proto3";
+- package examplePb;
+- message song_server_request { }
+- import "other.proto";
++ syntax = "proto3";
++ package examplePb;
++ import "other.proto";
++ option java_package = "com.example.foo";
++ message song_server_request { }
+```
+
 __PACKAGE_NAME_LOWER_CASE__
 
 ```diff
