@@ -68,6 +68,7 @@ Some rules support a feature that automatically fixed the problems.
 | Yes | FIELD_NAMES_LOWER_SNAKE_CASE      | Verifies that all field names are underscore_separated_names.            |
 | Yes | IMPORTS_SORTED                    | Verifies that all imports are sorted. The --fix option on the command line can automatically fix some of the problems reported by this rule. |
 | Yes | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
+| Yes | ORDER                             | Verifies that all files should be ordered in the specific manner. |
 | Yes | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name only contains lowercase letters, digits and/or periods. |
 | Yes | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | Yes | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
