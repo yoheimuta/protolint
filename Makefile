@@ -9,25 +9,19 @@ test:
 test/run:
 	go test -v -p 2 -count 1 -timeout 240s -race ./... -run $(RUN)
 
-## test/lint/all runs all linter
-test/lint/all: test/lint test/lint/nosupport/gomod
-
 ## test/lint runs linter
 test/lint:
 	# checks the coding style.
 	(! gofmt -s -d `find . -name vendor -prune -type f -o -name '*.go'` | grep '^')
 	golint -set_exit_status `go list ./...`
 	# checks the import format.
-	#(! goimports -l `find . -name vendor -prune -type f -o -name '*.go'` | grep 'go')
+	(! goimports -l `find . -name vendor -prune -type f -o -name '*.go'` | grep 'go')
 	# checks the error the compiler can't find.
 	go vet ./...
 	# checks shadowed variables.
 	go vet -vettool=$(which shadow) ./...
 	# checks no used assigned value.
 	ineffassign .
-
-## test/lint/nosupport/gomod runs linter without support of go mod
-test/lint/nosupport/gomod:
 	# checks not to ignore the error.
 	errcheck ./...
 	# checks unused global variables and constants.
