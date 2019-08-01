@@ -42,6 +42,7 @@ lint:
       - MESSAGE_NAMES_EXCLUDE_PREPOSITIONS
       - FILE_NAMES_LOWER_SNAKE_CASE
       - IMPORTS_SORTED
+      - PACKAGE_NAME_LOWER_CASE
 
     # The specific linters to remove.
     remove:
