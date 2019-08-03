@@ -21,6 +21,10 @@ func NewAllRules(
 	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
 	messagesHaveComment := option.MessagesHaveComment
 	servicesHaveComment := option.ServicesHaveComment
+	rpcsHaveComment := option.RPCsHaveComment
+	fieldsHaveComment := option.FieldsHaveComment
+	enumsHaveComment := option.EnumsHaveComment
+	enumFieldsHaveComment := option.EnumFieldsHaveComment
 
 	return rule.Rules{
 		rules.NewOrderRule(),
@@ -28,11 +32,20 @@ func NewAllRules(
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
 		),
+		rules.NewEnumFieldsHaveCommentRule(
+			enumFieldsHaveComment.ShouldFollowGolangStyle,
+		),
 		rules.NewEnumNamesUpperCamelCaseRule(),
+		rules.NewEnumsHaveCommentRule(
+			enumsHaveComment.ShouldFollowGolangStyle,
+		),
 		rules.NewFileNamesLowerSnakeCaseRule(
 			fileNamesLowerSnakeCase.Excludes,
 		),
 		rules.NewFieldNamesLowerSnakeCaseRule(),
+		rules.NewFieldsHaveCommentRule(
+			fieldsHaveComment.ShouldFollowGolangStyle,
+		),
 		rules.NewImportsSortedRule(
 			importsSorted.Newline,
 			fixMode,
@@ -40,6 +53,9 @@ func NewAllRules(
 		rules.NewMessageNamesUpperCamelCaseRule(),
 		rules.NewPackageNameLowerCaseRule(),
 		rules.NewRPCNamesUpperCamelCaseRule(),
+		rules.NewRPCsHaveCommentRule(
+			rpcsHaveComment.ShouldFollowGolangStyle,
+		),
 		rules.NewServiceNamesUpperCamelCaseRule(),
 		rules.NewMaxLineLengthRule(
 			maxLineLength.MaxChars,

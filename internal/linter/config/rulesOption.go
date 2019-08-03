@@ -12,4 +12,8 @@ type RulesOption struct {
 	MessageNamesExcludePrepositions MessageNamesExcludePrepositionsOption `yaml:"message_names_exclude_prepositions"`
 	MessagesHaveComment             MessagesHaveCommentOption             `yaml:"messages_have_comment"`
 	ServicesHaveComment             ServicesHaveCommentOption             `yaml:"services_have_comment"`
+	RPCsHaveComment                 RPCsHaveCommentOption                 `yaml:"rpcs_have_comment"`
+	FieldsHaveComment               FieldsHaveCommentOption               `yaml:"fields_have_comment"`
+	EnumsHaveComment                EnumsHaveCommentOption                `yaml:"enums_have_comment"`
+	EnumFieldsHaveComment           EnumFieldsHaveCommentOption           `yaml:"enum_fields_have_comment"`
 }
