@@ -1,6 +1,6 @@
 # protolint [![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
 
-protolint is a command line tool which lints Protocol Buffer files (proto3):
+protolint is a command line tool which lints Protocol Buffer files (proto2+proto3):
 
 - Runs fast because this works without compiler.
 - Easy to follow the official style guide. The rules and the style guide correspond to each other exactly.
