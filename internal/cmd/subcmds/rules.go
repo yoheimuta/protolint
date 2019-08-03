@@ -12,10 +12,10 @@ func NewAllRules(
 	fixMode bool,
 ) rule.Rules {
 	fileNamesLowerSnakeCase := option.FileNamesLowerSnakeCase
+	indent := option.Indent
+	maxLineLength := option.MaxLineLength
 	enumFieldNamesZeroValueEndWith := option.EnumFieldNamesZeroValueEndWith
 	importsSorted := option.ImportsSorted
-	maxLineLength := option.MaxLineLength
-	indent := option.Indent
 	serviceNamesEndWith := option.ServiceNamesEndWith
 	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositions
 	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
@@ -27,7 +27,27 @@ func NewAllRules(
 	enumFieldsHaveComment := option.EnumFieldsHaveComment
 
 	return rule.Rules{
+		rules.NewFileNamesLowerSnakeCaseRule(
+			fileNamesLowerSnakeCase.Excludes,
+		),
 		rules.NewOrderRule(),
+		rules.NewIndentRule(
+			indent.Style,
+			indent.Newline,
+			fixMode,
+		),
+		rules.NewMaxLineLengthRule(
+			maxLineLength.MaxChars,
+			maxLineLength.TabChars,
+		),
+
+		rules.NewPackageNameLowerCaseRule(),
+
+		rules.NewImportsSortedRule(
+			importsSorted.Newline,
+			fixMode,
+		),
+
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
@@ -35,53 +55,41 @@ func NewAllRules(
 		rules.NewEnumFieldsHaveCommentRule(
 			enumFieldsHaveComment.ShouldFollowGolangStyle,
 		),
+
 		rules.NewEnumNamesUpperCamelCaseRule(),
 		rules.NewEnumsHaveCommentRule(
 			enumsHaveComment.ShouldFollowGolangStyle,
 		),
-		rules.NewFileNamesLowerSnakeCaseRule(
-			fileNamesLowerSnakeCase.Excludes,
-		),
+
 		rules.NewFieldNamesLowerSnakeCaseRule(),
-		rules.NewFieldsHaveCommentRule(
-			fieldsHaveComment.ShouldFollowGolangStyle,
-		),
-		rules.NewImportsSortedRule(
-			importsSorted.Newline,
-			fixMode,
-		),
-		rules.NewMessageNamesUpperCamelCaseRule(),
-		rules.NewPackageNameLowerCaseRule(),
-		rules.NewRPCNamesUpperCamelCaseRule(),
-		rules.NewRPCsHaveCommentRule(
-			rpcsHaveComment.ShouldFollowGolangStyle,
-		),
-		rules.NewServiceNamesUpperCamelCaseRule(),
-		rules.NewMaxLineLengthRule(
-			maxLineLength.MaxChars,
-			maxLineLength.TabChars,
-		),
-		rules.NewIndentRule(
-			indent.Style,
-			indent.Newline,
-			fixMode,
-		),
-		rules.NewServiceNamesEndWithRule(
-			serviceNamesEndWith.Text,
-		),
-		rules.NewServicesHaveCommentRule(
-			servicesHaveComment.ShouldFollowGolangStyle,
-		),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Prepositions,
 			fieldNamesExcludePrepositions.Excludes,
 		),
+		rules.NewFieldsHaveCommentRule(
+			fieldsHaveComment.ShouldFollowGolangStyle,
+		),
+
+		rules.NewMessageNamesUpperCamelCaseRule(),
 		rules.NewMessageNamesExcludePrepositionsRule(
 			messageNamesExcludePrepositions.Prepositions,
 			messageNamesExcludePrepositions.Excludes,
 		),
 		rules.NewMessagesHaveCommentRule(
 			messagesHaveComment.ShouldFollowGolangStyle,
+		),
+
+		rules.NewRPCNamesUpperCamelCaseRule(),
+		rules.NewRPCsHaveCommentRule(
+			rpcsHaveComment.ShouldFollowGolangStyle,
+		),
+
+		rules.NewServiceNamesUpperCamelCaseRule(),
+		rules.NewServiceNamesEndWithRule(
+			serviceNamesEndWith.Text,
+		),
+		rules.NewServicesHaveCommentRule(
+			servicesHaveComment.ShouldFollowGolangStyle,
 		),
 	}
 }
