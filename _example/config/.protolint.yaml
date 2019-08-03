@@ -45,6 +45,7 @@ lint:
       - PACKAGE_NAME_LOWER_CASE
       - ORDER
       - MESSAGES_HAVE_COMMENT
+      - SERVICES_HAVE_COMMENT
 
     # The specific linters to remove.
     remove:
@@ -108,5 +109,10 @@ lint:
 
     # MESSAGES_HAVE_COMMENT rule option.
     messages_have_comment:
+      # Comments need to begin with the name of the thing being described. default is false.
+      should_follow_golang_style: true
+
+    # SERVICES_HAVE_COMMENT rule option.
+    services_have_comment:
       # Comments need to begin with the name of the thing being described. default is false.
       should_follow_golang_style: true
