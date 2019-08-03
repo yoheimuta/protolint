@@ -61,3 +61,25 @@ func (v *fieldsHaveCommentVisitor) VisitField(field *parser.Field) bool {
 	}
 	return false
 }
+
+// VisitMapField checks the map field.
+func (v *fieldsHaveCommentVisitor) VisitMapField(field *parser.MapField) bool {
+	n := field.MapName
+	if v.shouldFollowGolangStyle && !hasGolangStyleComment(field.Comments, n) {
+		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment of the form "// %s ..."`, n, n)
+	} else if !hasComment(field.Comments) {
+		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment`, n)
+	}
+	return false
+}
+
+// VisitOneofField checks the oneof field.
+func (v *fieldsHaveCommentVisitor) VisitOneofField(field *parser.OneofField) bool {
+	n := field.FieldName
+	if v.shouldFollowGolangStyle && !hasGolangStyleComment(field.Comments, n) {
+		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment of the form "// %s ..."`, n, n)
+	} else if !hasComment(field.Comments) {
+		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment`, n)
+	}
+	return false
+}

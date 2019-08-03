@@ -40,6 +40,16 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 							&parser.Field{
 								FieldName: "failure_time_cpu_usage",
 							},
+							&parser.MapField{
+								MapName: "song_name2",
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "song_name3",
+									},
+								},
+							},
 						},
 					},
 				},
@@ -70,6 +80,32 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 										Offset:   200,
 										Line:     10,
 										Column:   20,
+									},
+								},
+							},
+							&parser.MapField{
+								MapName: "name_of_song",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   210,
+										Line:     14,
+										Column:   30,
+									},
+								},
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "name_of_song2",
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Filename: "example.proto",
+												Offset:   300,
+												Line:     21,
+												Column:   45,
+											},
+										},
 									},
 								},
 							},
@@ -105,6 +141,24 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 					},
 					`Field name "cpu_usage_at_time_of_failure" should not include a preposition "of"`,
 				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   210,
+						Line:     14,
+						Column:   30,
+					},
+					`Field name "name_of_song" should not include a preposition "of"`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   300,
+						Line:     21,
+						Column:   45,
+					},
+					`Field name "name_of_song2" should not include a preposition "of"`,
+				),
 			},
 		},
 		{
@@ -115,12 +169,14 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						MessageBody: []parser.Visitee{
 							&parser.Field{
 								FieldName: "end_of_support_version",
-								Meta: meta.Meta{
-									Pos: meta.Position{
-										Filename: "example.proto",
-										Offset:   100,
-										Line:     5,
-										Column:   10,
+							},
+							&parser.MapField{
+								MapName: "end_of_support_version",
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "end_of_support_version",
 									},
 								},
 							},

@@ -38,6 +38,26 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 									},
 								},
 							},
+							&parser.MapField{
+								MapName: "MapFieldName",
+								Comments: []*parser.Comment{
+									{
+										Raw: "// a map field name.",
+									},
+								},
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "OneofFieldName",
+										Comments: []*parser.Comment{
+											{
+												Raw: "// a oneof field name.",
+											},
+										},
+									},
+								},
+							},
 						},
 					},
 				},
@@ -54,6 +74,26 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 								Comments: []*parser.Comment{
 									{
 										Raw: "// FieldName is a field name.",
+									},
+								},
+							},
+							&parser.MapField{
+								MapName: "MapFieldName",
+								Comments: []*parser.Comment{
+									{
+										Raw: "// MapFieldName is a map field name.",
+									},
+								},
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "OneofFieldName",
+										Comments: []*parser.Comment{
+											{
+												Raw: "// OneofFieldName is a oneof field name.",
+											},
+										},
 									},
 								},
 							},
@@ -80,6 +120,32 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 									},
 								},
 							},
+							&parser.MapField{
+								MapName: "MapFieldName",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   200,
+										Line:     14,
+										Column:   30,
+									},
+								},
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "OneofFieldName",
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Filename: "example.proto",
+												Offset:   300,
+												Line:     21,
+												Column:   45,
+											},
+										},
+									},
+								},
+							},
 						},
 					},
 				},
@@ -93,6 +159,24 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					`Field "FieldName" should have a comment`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   200,
+						Line:     14,
+						Column:   30,
+					},
+					`Field "MapFieldName" should have a comment`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   300,
+						Line:     21,
+						Column:   45,
+					},
+					`Field "OneofFieldName" should have a comment`,
 				),
 			},
 		},
@@ -118,6 +202,42 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 									},
 								},
 							},
+							&parser.MapField{
+								MapName: "MapFieldName",
+								Comments: []*parser.Comment{
+									{
+										Raw: "// a map field name.",
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   200,
+										Line:     14,
+										Column:   30,
+									},
+								},
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "OneofFieldName",
+										Comments: []*parser.Comment{
+											{
+												Raw: "// a oneof field name.",
+											},
+										},
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Filename: "example.proto",
+												Offset:   300,
+												Line:     21,
+												Column:   45,
+											},
+										},
+									},
+								},
+							},
 						},
 					},
 				},
@@ -132,6 +252,24 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					`Field "FieldName" should have a comment of the form "// FieldName ..."`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   200,
+						Line:     14,
+						Column:   30,
+					},
+					`Field "MapFieldName" should have a comment of the form "// MapFieldName ..."`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   300,
+						Line:     21,
+						Column:   45,
+					},
+					`Field "OneofFieldName" should have a comment of the form "// OneofFieldName ..."`,
 				),
 			},
 		},
