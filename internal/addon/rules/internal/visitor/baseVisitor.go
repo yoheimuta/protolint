@@ -25,11 +25,17 @@ func (BaseVisitor) VisitEnum(*parser.Enum) (next bool) { return true }
 // VisitEnumField works noop.
 func (BaseVisitor) VisitEnumField(*parser.EnumField) (next bool) { return true }
 
+// VisitExtensions works noop.
+func (BaseVisitor) VisitExtensions(*parser.Extensions) bool { return true }
+
 // VisitExtend works noop.
 func (BaseVisitor) VisitExtend(*parser.Extend) (next bool) { return true }
 
 // VisitField works noop.
 func (BaseVisitor) VisitField(*parser.Field) (next bool) { return true }
+
+// VisitGroupField works noop.
+func (BaseVisitor) VisitGroupField(*parser.GroupField) bool { return true }
 
 // VisitImport works noop.
 func (BaseVisitor) VisitImport(*parser.Import) (next bool) { return true }

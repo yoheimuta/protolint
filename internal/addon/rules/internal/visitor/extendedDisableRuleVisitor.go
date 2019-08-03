@@ -54,11 +54,23 @@ func (v extendedDisableRuleVisitor) VisitExtend(m *parser.Extend) (next bool) {
 	}
 	return v.inner.VisitExtend(m)
 }
+func (v extendedDisableRuleVisitor) VisitExtensions(m *parser.Extensions) (next bool) {
+	if v.interpreter.Interpret(m.Comments, m.InlineComment) {
+		return true
+	}
+	return v.inner.VisitExtensions(m)
+}
 func (v extendedDisableRuleVisitor) VisitField(f *parser.Field) (next bool) {
 	if v.interpreter.Interpret(f.Comments, f.InlineComment) {
 		return true
 	}
 	return v.inner.VisitField(f)
+}
+func (v extendedDisableRuleVisitor) VisitGroupField(m *parser.GroupField) (next bool) {
+	if v.interpreter.Interpret(m.Comments, m.InlineComment, m.InlineCommentBehindLeftCurly) {
+		return true
+	}
+	return v.inner.VisitGroupField(m)
 }
 func (v extendedDisableRuleVisitor) VisitImport(i *parser.Import) (next bool) {
 	if v.interpreter.Interpret(i.Comments, i.InlineComment) {
