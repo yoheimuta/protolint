@@ -20,6 +20,7 @@ func NewAllRules(
 	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositions
 	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
 	messagesHaveComment := option.MessagesHaveComment
+	servicesHaveComment := option.ServicesHaveComment
 
 	return rule.Rules{
 		rules.NewOrderRule(),
@@ -51,6 +52,9 @@ func NewAllRules(
 		),
 		rules.NewServiceNamesEndWithRule(
 			serviceNamesEndWith.Text,
+		),
+		rules.NewServicesHaveCommentRule(
+			servicesHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Prepositions,
