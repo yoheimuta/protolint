@@ -50,3 +50,19 @@ func (v *fieldNamesLowerSnakeCaseVisitor) VisitField(field *parser.Field) bool {
 	}
 	return false
 }
+
+// VisitMapField checks the map field.
+func (v *fieldNamesLowerSnakeCaseVisitor) VisitMapField(field *parser.MapField) bool {
+	if !strs.IsLowerSnakeCase(field.MapName) {
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be LowerSnakeCase", field.MapName)
+	}
+	return false
+}
+
+// VisitOneofField checks the oneof field.
+func (v *fieldNamesLowerSnakeCaseVisitor) VisitOneofField(field *parser.OneofField) bool {
+	if !strs.IsLowerSnakeCase(field.FieldName) {
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be LowerSnakeCase", field.FieldName)
+	}
+	return false
+}

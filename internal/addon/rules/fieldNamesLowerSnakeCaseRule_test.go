@@ -37,6 +37,16 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 							&parser.Field{
 								FieldName: "singer",
 							},
+							&parser.MapField{
+								MapName: "song_name2",
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "song_name3",
+									},
+								},
+							},
 						},
 					},
 				},
@@ -70,6 +80,32 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 									},
 								},
 							},
+							&parser.MapField{
+								MapName: "MapFieldName",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   210,
+										Line:     14,
+										Column:   30,
+									},
+								},
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "OneofFieldName",
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Filename: "example.proto",
+												Offset:   300,
+												Line:     21,
+												Column:   45,
+											},
+										},
+									},
+								},
+							},
 						},
 					},
 				},
@@ -92,6 +128,24 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					`Field name "song.name" must be LowerSnakeCase`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   210,
+						Line:     14,
+						Column:   30,
+					},
+					`Field name "MapFieldName" must be LowerSnakeCase`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   300,
+						Line:     21,
+						Column:   45,
+					},
+					`Field name "OneofFieldName" must be LowerSnakeCase`,
 				),
 			},
 		},

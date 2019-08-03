@@ -107,3 +107,35 @@ func (v *fieldNamesExcludePrepositionsVisitor) VisitField(field *parser.Field) b
 	}
 	return false
 }
+
+// VisitMapField checks the map field.
+func (v *fieldNamesExcludePrepositionsVisitor) VisitMapField(field *parser.MapField) bool {
+	name := field.MapName
+	for _, e := range v.excludes {
+		name = strings.Replace(name, e, "", -1)
+	}
+
+	parts := strs.SplitSnakeCaseWord(name)
+	for _, p := range parts {
+		if stringsutil.ContainsStringInSlice(p, v.prepositions) {
+			v.AddFailuref(field.Meta.Pos, "Field name %q should not include a preposition %q", field.MapName, p)
+		}
+	}
+	return false
+}
+
+// VisitOneofField checks the oneof field.
+func (v *fieldNamesExcludePrepositionsVisitor) VisitOneofField(field *parser.OneofField) bool {
+	name := field.FieldName
+	for _, e := range v.excludes {
+		name = strings.Replace(name, e, "", -1)
+	}
+
+	parts := strs.SplitSnakeCaseWord(name)
+	for _, p := range parts {
+		if stringsutil.ContainsStringInSlice(p, v.prepositions) {
+			v.AddFailuref(field.Meta.Pos, "Field name %q should not include a preposition %q", field.FieldName, p)
+		}
+	}
+	return false
+}
