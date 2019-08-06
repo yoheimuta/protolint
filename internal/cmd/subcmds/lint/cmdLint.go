@@ -58,9 +58,12 @@ func (c *CmdLint) Run() osutil.ExitCode {
 		return osutil.ExitFailure
 	}
 
-	for _, failure := range failures {
-		_, _ = fmt.Fprintln(c.stderr, failure)
+	err = c.config.reporter.Report(c.stderr, failures)
+	if err != nil {
+		_, _ = fmt.Fprintln(c.stderr, err)
+		return osutil.ExitFailure
 	}
+
 	if 0 < len(failures) {
 		return osutil.ExitFailure
 	}
