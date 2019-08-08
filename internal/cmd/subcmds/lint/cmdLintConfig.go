@@ -4,6 +4,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 	"github.com/yoheimuta/protolint/internal/linter/config"
 	"github.com/yoheimuta/protolint/internal/linter/file"
+	"github.com/yoheimuta/protolint/internal/linter/report"
 	"github.com/yoheimuta/protolint/internal/linter/rule"
 )
 
@@ -12,6 +13,7 @@ type CmdLintConfig struct {
 	external config.ExternalConfig
 	fixMode  bool
 	verbose  bool
+	reporter report.Reporter
 }
 
 // NewCmdLintConfig creates a new CmdLintConfig.
@@ -23,6 +25,7 @@ func NewCmdLintConfig(
 		external: externalConfig,
 		fixMode:  flags.FixMode,
 		verbose:  flags.Verbose,
+		reporter: flags.Reporter,
 	}
 }
 
