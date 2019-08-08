@@ -82,7 +82,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 						Line:     5,
 						Column:   10,
 					},
-					`EnumField name "fIRST_VALUE" must be UpperSnakeCase`,
+					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -91,7 +91,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
-					`EnumField name "SECOND.VALUE" must be UpperSnakeCase`,
+					`EnumField name "SECOND.VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
 			},
 		},

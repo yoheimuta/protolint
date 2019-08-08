@@ -46,7 +46,7 @@ type enumFieldNamesUpperSnakeCaseVisitor struct {
 // VisitEnumField checks the enum field.
 func (v *enumFieldNamesUpperSnakeCaseVisitor) VisitEnumField(field *parser.EnumField) bool {
 	if !strs.IsUpperSnakeCase(field.Ident) {
-		v.AddFailuref(field.Meta.Pos, "EnumField name %q must be UpperSnakeCase", field.Ident)
+		v.AddFailuref(field.Meta.Pos, "EnumField name %q must be CAPITALS_WITH_UNDERSCORES", field.Ident)
 	}
 	return false
 }

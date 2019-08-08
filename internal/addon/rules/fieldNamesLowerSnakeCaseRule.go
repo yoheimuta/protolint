@@ -46,7 +46,7 @@ type fieldNamesLowerSnakeCaseVisitor struct {
 // VisitField checks the field.
 func (v *fieldNamesLowerSnakeCaseVisitor) VisitField(field *parser.Field) bool {
 	if !strs.IsLowerSnakeCase(field.FieldName) {
-		v.AddFailuref(field.Meta.Pos, "Field name %q must be LowerSnakeCase", field.FieldName)
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names", field.FieldName)
 	}
 	return false
 }
@@ -54,7 +54,7 @@ func (v *fieldNamesLowerSnakeCaseVisitor) VisitField(field *parser.Field) bool {
 // VisitMapField checks the map field.
 func (v *fieldNamesLowerSnakeCaseVisitor) VisitMapField(field *parser.MapField) bool {
 	if !strs.IsLowerSnakeCase(field.MapName) {
-		v.AddFailuref(field.Meta.Pos, "Field name %q must be LowerSnakeCase", field.MapName)
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names", field.MapName)
 	}
 	return false
 }
@@ -62,7 +62,7 @@ func (v *fieldNamesLowerSnakeCaseVisitor) VisitMapField(field *parser.MapField) 
 // VisitOneofField checks the oneof field.
 func (v *fieldNamesLowerSnakeCaseVisitor) VisitOneofField(field *parser.OneofField) bool {
 	if !strs.IsLowerSnakeCase(field.FieldName) {
-		v.AddFailuref(field.Meta.Pos, "Field name %q must be LowerSnakeCase", field.FieldName)
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names", field.FieldName)
 	}
 	return false
 }
