@@ -118,7 +118,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Line:     5,
 						Column:   10,
 					},
-					`Field name "song_Name" must be LowerSnakeCase`,
+					`Field name "song_Name" must be underscore_separated_names`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -127,7 +127,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
-					`Field name "song.name" must be LowerSnakeCase`,
+					`Field name "song.name" must be underscore_separated_names`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -136,7 +136,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Line:     14,
 						Column:   30,
 					},
-					`Field name "MapFieldName" must be LowerSnakeCase`,
+					`Field name "MapFieldName" must be underscore_separated_names`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -145,7 +145,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Line:     21,
 						Column:   45,
 					},
-					`Field name "OneofFieldName" must be LowerSnakeCase`,
+					`Field name "OneofFieldName" must be underscore_separated_names`,
 				),
 			},
 		},
