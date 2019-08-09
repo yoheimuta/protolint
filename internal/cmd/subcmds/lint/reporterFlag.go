@@ -23,11 +23,12 @@ func (f *reporterFlag) Set(value string) error {
 
 	rs := map[string]report.Reporter{
 		"plain": reporters.PlainReporter{},
+		"junit": reporters.JUnitReporter{},
 	}
 	if r, ok := rs[value]; ok {
 		f.raw = value
 		f.reporter = r
 		return nil
 	}
-	return fmt.Errorf(`available reporters are "plain"`)
+	return fmt.Errorf(`available reporters are "plain" and "junit"`)
 }
