@@ -158,6 +158,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Line:     7,
 						Column:   15,
 					},
+					"FIELDS_HAVE_COMMENT",
 					`Field "FieldName" should have a comment`,
 				),
 				report.Failuref(
@@ -167,6 +168,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Line:     14,
 						Column:   30,
 					},
+					"FIELDS_HAVE_COMMENT",
 					`Field "MapFieldName" should have a comment`,
 				),
 				report.Failuref(
@@ -176,6 +178,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Line:     21,
 						Column:   45,
 					},
+					"FIELDS_HAVE_COMMENT",
 					`Field "OneofFieldName" should have a comment`,
 				),
 			},
@@ -251,6 +254,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Line:     7,
 						Column:   15,
 					},
+					"FIELDS_HAVE_COMMENT",
 					`Field "FieldName" should have a comment of the form "// FieldName ..."`,
 				),
 				report.Failuref(
@@ -260,6 +264,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Line:     14,
 						Column:   30,
 					},
+					"FIELDS_HAVE_COMMENT",
 					`Field "MapFieldName" should have a comment of the form "// MapFieldName ..."`,
 				),
 				report.Failuref(
@@ -269,6 +274,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Line:     21,
 						Column:   45,
 					},
+					"FIELDS_HAVE_COMMENT",
 					`Field "OneofFieldName" should have a comment of the form "// OneofFieldName ..."`,
 				),
 			},

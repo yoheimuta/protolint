@@ -72,7 +72,7 @@ func (r IndentRule) Apply(
 	}
 
 	v := &indentVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 		style:          r.style,
 		protoLines:     lines,
 		fixMode:        r.fixMode,

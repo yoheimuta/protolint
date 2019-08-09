@@ -94,6 +94,7 @@ func (r MaxLineLengthRule) Apply(proto *parser.Proto) (
 					Line:     currentLineCount,
 					Column:   1,
 				},
+				r.ID(),
 				"The line length is %d, but it must be shorter than %d",
 				lineCount,
 				r.maxChars,

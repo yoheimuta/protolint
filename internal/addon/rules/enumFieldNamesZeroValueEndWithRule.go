@@ -48,7 +48,7 @@ func (r EnumFieldNamesZeroValueEndWithRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r EnumFieldNamesZeroValueEndWithRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumFieldNamesZeroValueEndWithVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 		suffix:         r.suffix,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

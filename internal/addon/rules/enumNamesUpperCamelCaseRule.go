@@ -34,7 +34,7 @@ func (r EnumNamesUpperCamelCaseRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r EnumNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumNamesUpperCamelCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }

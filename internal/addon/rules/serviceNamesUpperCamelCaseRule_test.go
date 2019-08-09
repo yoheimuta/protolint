@@ -73,6 +73,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Line:     5,
 						Column:   10,
 					},
+					"SERVICE_NAMES_UPPER_CAMEL_CASE",
 					`Service name "serviceName" must be UpperCamelCase`,
 				),
 				report.Failuref(
@@ -82,6 +83,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"SERVICE_NAMES_UPPER_CAMEL_CASE",
 					`Service name "Service_name" must be UpperCamelCase`,
 				),
 			},

@@ -114,6 +114,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Line:     7,
 						Column:   15,
 					},
+					"MESSAGES_HAVE_COMMENT",
 					`Message "MessageName" should have a comment`,
 				),
 				report.Failuref(
@@ -123,6 +124,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"MESSAGES_HAVE_COMMENT",
 					`Message "MessageName2" should have a comment`,
 				),
 			},
@@ -172,6 +174,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Line:     7,
 						Column:   15,
 					},
+					"MESSAGES_HAVE_COMMENT",
 					`Message "MessageName" should have a comment of the form "// MessageName ..."`,
 				),
 				report.Failuref(
@@ -181,6 +184,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"MESSAGES_HAVE_COMMENT",
 					`Message "MessageName2" should have a comment of the form "// MessageName2 ..."`,
 				),
 			},

@@ -121,6 +121,7 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Line:     5,
 						Column:   10,
 					},
+					"FIELD_NAMES_EXCLUDE_PREPOSITIONS",
 					`Field name "reason_for_error" should not include a preposition "for"`,
 				),
 				report.Failuref(
@@ -130,6 +131,7 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"FIELD_NAMES_EXCLUDE_PREPOSITIONS",
 					`Field name "cpu_usage_at_time_of_failure" should not include a preposition "at"`,
 				),
 				report.Failuref(
@@ -139,6 +141,7 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"FIELD_NAMES_EXCLUDE_PREPOSITIONS",
 					`Field name "cpu_usage_at_time_of_failure" should not include a preposition "of"`,
 				),
 				report.Failuref(
@@ -148,6 +151,7 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Line:     14,
 						Column:   30,
 					},
+					"FIELD_NAMES_EXCLUDE_PREPOSITIONS",
 					`Field name "name_of_song" should not include a preposition "of"`,
 				),
 				report.Failuref(
@@ -157,6 +161,7 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Line:     21,
 						Column:   45,
 					},
+					"FIELD_NAMES_EXCLUDE_PREPOSITIONS",
 					`Field name "name_of_song2" should not include a preposition "of"`,
 				),
 			},
@@ -206,6 +211,7 @@ func TestFieldNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"FIELD_NAMES_EXCLUDE_PREPOSITIONS",
 					`Field name "version_of_support_end" should not include a preposition "of"`,
 				),
 			},

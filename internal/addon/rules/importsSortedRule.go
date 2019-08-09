@@ -55,7 +55,7 @@ func (r ImportsSortedRule) Apply(
 	}
 
 	v := &importsSortedVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 		protoLines:     lines,
 		fixMode:        r.fixMode,
 		newline:        r.newline,

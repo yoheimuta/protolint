@@ -40,7 +40,7 @@ func (r RPCsHaveCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r RPCsHaveCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &rpcsHaveCommentVisitor{
-		BaseAddVisitor:          visitor.NewBaseAddVisitor(),
+		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID()),
 		shouldFollowGolangStyle: r.shouldFollowGolangStyle,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
