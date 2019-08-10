@@ -43,7 +43,7 @@ func NewFlags(
 	f.Var(
 		&rf,
 		"reporter",
-		"formatter to output results in the specific format. Available reporters are 'plain'(default).",
+		`formatter to output results in the specific format. Available reporters are "plain"(default) and "junit".`,
 	)
 	f.BoolVar(
 		&f.Verbose,

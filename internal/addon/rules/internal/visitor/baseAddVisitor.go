@@ -9,12 +9,15 @@ import (
 // BaseAddVisitor represents a base visitor which can accumulate failures.
 type BaseAddVisitor struct {
 	BaseVisitor
+	ruleID   string
 	failures []report.Failure
 }
 
 // NewBaseAddVisitor creates a BaseAddVisitor.
-func NewBaseAddVisitor() *BaseAddVisitor {
-	return &BaseAddVisitor{}
+func NewBaseAddVisitor(ruleID string) *BaseAddVisitor {
+	return &BaseAddVisitor{
+		ruleID: ruleID,
+	}
 }
 
 // Failures returns the accumulated failures.
@@ -28,7 +31,7 @@ func (v *BaseAddVisitor) AddFailuref(
 	format string,
 	a ...interface{},
 ) {
-	v.failures = append(v.failures, report.Failuref(pos, format, a...))
+	v.failures = append(v.failures, report.Failuref(pos, v.ruleID, format, a...))
 }
 
 // AddFailurefWithProtoMeta adds to the internal buffer and the formatting works like fmt.Sprintf.

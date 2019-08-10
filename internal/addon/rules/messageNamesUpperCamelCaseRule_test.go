@@ -93,6 +93,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Line:     5,
 						Column:   10,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					`Message name "messageName" must be UpperCamelCase`,
 				),
 				report.Failuref(
@@ -102,6 +103,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Line:     7,
 						Column:   15,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					`Message name "Inner.MessageName" must be UpperCamelCase`,
 				),
 				report.Failuref(
@@ -111,6 +113,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					`Message name "Message_name" must be UpperCamelCase`,
 				),
 			},

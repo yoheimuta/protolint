@@ -45,7 +45,7 @@ func (r FileNamesLowerSnakeCaseRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r FileNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &fileNamesLowerSnakeCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 		excluded:       r.excluded,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

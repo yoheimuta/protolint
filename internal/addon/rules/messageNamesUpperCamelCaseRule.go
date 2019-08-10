@@ -34,7 +34,7 @@ func (r MessageNamesUpperCamelCaseRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r MessageNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &messageNamesUpperCamelCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }

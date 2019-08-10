@@ -35,14 +35,14 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit no messages",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{},
 		},
 		{
 			name: "visit a message",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -66,6 +66,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     10,
 						Column:   5,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 			},
@@ -73,7 +74,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit messages",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -107,6 +108,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     10,
 						Column:   5,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 				report.Failuref(
@@ -116,6 +118,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     20,
 						Column:   10,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 			},
@@ -123,7 +126,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit messages recursively",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 				next:           true,
 			},
 			inputProto: &parser.Proto{
@@ -160,6 +163,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     10,
 						Column:   5,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 				report.Failuref(
@@ -169,6 +173,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     20,
 						Column:   10,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 			},
@@ -176,7 +181,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit a message. one is disabled.",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -216,6 +221,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     20,
 						Column:   10,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 			},
@@ -223,7 +229,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit a message. one is disabled by an inline comment.",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -261,6 +267,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     20,
 						Column:   10,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 			},
@@ -268,7 +275,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit messages. others are disabled.",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -323,6 +330,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     30,
 						Column:   15,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 			},
@@ -330,7 +338,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit messages. others are disabled by a last line comment.",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor(),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -383,6 +391,7 @@ func TestRunVisitor(t *testing.T) {
 						Line:     30,
 						Column:   15,
 					},
+					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
 					"Test Message",
 				),
 			},

@@ -34,7 +34,7 @@ func (r FieldNamesLowerSnakeCaseRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r FieldNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &fieldNamesLowerSnakeCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }

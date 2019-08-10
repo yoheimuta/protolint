@@ -40,7 +40,7 @@ func (r FieldsHaveCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r FieldsHaveCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &fieldsHaveCommentVisitor{
-		BaseAddVisitor:          visitor.NewBaseAddVisitor(),
+		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID()),
 		shouldFollowGolangStyle: r.shouldFollowGolangStyle,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

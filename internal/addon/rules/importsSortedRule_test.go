@@ -44,6 +44,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Line:     3,
 						Column:   1,
 					},
+					"IMPORTS_SORTED",
 					`Imports are not sorted.`,
 				),
 				report.Failuref(
@@ -53,6 +54,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Line:     4,
 						Column:   1,
 					},
+					"IMPORTS_SORTED",
 					`Imports are not sorted.`,
 				),
 			},
@@ -68,6 +70,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Line:     3,
 						Column:   1,
 					},
+					"IMPORTS_SORTED",
 					`Imports are not sorted.`,
 				),
 				report.Failuref(
@@ -77,6 +80,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Line:     4,
 						Column:   1,
 					},
+					"IMPORTS_SORTED",
 					`Imports are not sorted.`,
 				),
 				report.Failuref(
@@ -86,6 +90,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Line:     9,
 						Column:   1,
 					},
+					"IMPORTS_SORTED",
 					`Imports are not sorted.`,
 				),
 				report.Failuref(
@@ -95,6 +100,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   1,
 					},
+					"IMPORTS_SORTED",
 					`Imports are not sorted.`,
 				),
 			},

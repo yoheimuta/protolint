@@ -34,7 +34,7 @@ dev/install/dep:
 	./.circleci/install_dep.sh
 
 ## ARG is command arguments.
-ARG=lint
+ARG=lint _example/proto
 
 ## run/cmd/protolint runs protolint with ARG
 run/cmd/protolint:

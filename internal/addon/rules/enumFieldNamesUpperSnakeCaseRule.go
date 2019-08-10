@@ -34,7 +34,7 @@ func (r EnumFieldNamesUpperSnakeCaseRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r EnumFieldNamesUpperSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumFieldNamesUpperSnakeCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }

@@ -43,7 +43,7 @@ func (r MessagesHaveCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r MessagesHaveCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &messagesHaveCommentVisitor{
-		BaseAddVisitor:          visitor.NewBaseAddVisitor(),
+		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID()),
 		shouldFollowGolangStyle: r.shouldFollowGolangStyle,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

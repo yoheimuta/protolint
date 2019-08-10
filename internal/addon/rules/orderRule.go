@@ -38,7 +38,7 @@ func (r OrderRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r OrderRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &orderVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 		state:          initialOrderState,
 		machine:        newOrderStateTransition(),
 	}

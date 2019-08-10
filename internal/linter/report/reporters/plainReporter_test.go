@@ -25,6 +25,7 @@ func TestPlainReporter_Report(t *testing.T) {
 						Line:     5,
 						Column:   10,
 					},
+					"ENUM_NAMES_UPPER_CAMEL_CASE",
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
 				report.Failuref(
@@ -34,6 +35,7 @@ func TestPlainReporter_Report(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"ENUM_NAMES_UPPER_CAMEL_CASE",
 					`EnumField name "SECOND.VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
 			},

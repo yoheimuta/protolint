@@ -36,7 +36,7 @@ func (r PackageNameLowerCaseRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r PackageNameLowerCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &packageNameLowerCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }

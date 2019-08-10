@@ -56,6 +56,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 						Line:     3,
 						Column:   1,
 					},
+					"MAX_LINE_LENGTH",
 					`The line length is 91, but it must be shorter than 80`,
 				),
 				report.Failuref(
@@ -64,6 +65,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 						Line:     11,
 						Column:   1,
 					},
+					"MAX_LINE_LENGTH",
 					`The line length is 88, but it must be shorter than 80`,
 				),
 			},

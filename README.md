@@ -29,6 +29,7 @@ protolint .                                 # same as "protolint lint ."
 protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
 protolint lint -v .                         # with verbose output to investigate the parsing error
+protolint lint -reporter junit .            # output results in JUnit XML format 
 protolint list                              # list all current lint rules being used
 ```
 
@@ -189,6 +190,17 @@ __RPC_NAMES_UPPER_CAMEL_CASE__
   rpc GetSomething(FooRequest) returns (FooResponse);
 }
 ```
+
+## Reporters
+
+protolint comes with several built-in reporters(aka. formatters) to control the appearance of the linting results.
+
+You can specify a reporter using the -reporter flag on the command line. For example, `-reporter junit` uses the junit reporter.
+
+The built-in reporter options are:
+
+- plain (default)
+- junit
 
 ## Configuring
 
