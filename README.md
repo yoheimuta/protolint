@@ -1,11 +1,12 @@
 # protolint [![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
 
-protolint is a command line tool which lints Protocol Buffer files (proto2+proto3):
+protolint is the pluggable linting utility for Protocol Buffer files (proto2+proto3):
 
 - Runs fast because this works without compiler.
 - Easy to follow the official style guide. The rules and the style guide correspond to each other exactly.
-- Allow to disable rules with a comment in a Protocol Buffer file.
+- Allows to disable rules with a comment in a Protocol Buffer file.
   - It is useful for projects which must keep API compatibility while enforce the style guide as much as possible.
+- Loads plugins to contain your custom lint rules.
 - Undergone testing for all rules.
 
 ## Installation
@@ -30,6 +31,7 @@ protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
 protolint lint -v .                         # with verbose output to investigate the parsing error
 protolint lint -reporter junit .            # output results in JUnit XML format 
+protolint lint -plugin ./my_custom_rule1 -plugin ./my_custom_rule2 .   # run custom lint rules.
 protolint list                              # list all current lint rules being used
 ```
 
@@ -190,6 +192,12 @@ __RPC_NAMES_UPPER_CAMEL_CASE__
   rpc GetSomething(FooRequest) returns (FooResponse);
 }
 ```
+
+## Creating your custom rules
+
+protolint is the pluggable linter so that you can freely create custom lint rules.
+
+A complete sample project (aka plugin) is included in this repo under the [_example/plugin](_example/plugin) directory.
 
 ## Reporters
 
