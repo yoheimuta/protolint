@@ -29,7 +29,6 @@ func newAllInternalRules(
 	option config.RulesOption,
 	fixMode bool,
 ) rule.Rules {
-	return []rule.Rule{}
 	fileNamesLowerSnakeCase := option.FileNamesLowerSnakeCase
 	indent := option.Indent
 	maxLineLength := option.MaxLineLength
