@@ -2,8 +2,9 @@ package customrules
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/protolint/internal/addon/rules/lib/visitor"
 	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/internal/strs"
 )
 
 // EnumNamesLowerSnakeCaseRule verifies that all enum names are LowerSnakeCase.
@@ -31,8 +32,20 @@ func (r EnumNamesLowerSnakeCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r EnumNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	// TODO:
-	return []report.Failure{
-		report.Failuref(meta.Position{}, r.ID(), "Custom Rule"),
-	}, nil
+	v := &enumNamesLowerSnakeCaseVisitor{
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+	}
+	return visitor.RunVisitor(v, proto, r.ID())
+}
+
+type enumNamesLowerSnakeCaseVisitor struct {
+	*visitor.BaseAddVisitor
+}
+
+// VisitEnum checks the enum field.
+func (v *enumNamesLowerSnakeCaseVisitor) VisitEnum(e *parser.Enum) bool {
+	if !strs.IsLowerSnakeCase(e.EnumName) {
+		v.AddFailuref(e.Meta.Pos, "Enum name %q must be underscore_separated_names", e.EnumName)
+	}
+	return false
 }
