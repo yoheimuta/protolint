@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolint/internal/addon/rules/internal/visitor"
+	"github.com/yoheimuta/protolint/internal/addon/rules/lib/visitor"
 	"github.com/yoheimuta/protolint/internal/linter/report"
 	"github.com/yoheimuta/protolint/internal/stringsutil"
 	"github.com/yoheimuta/protolint/internal/strs"

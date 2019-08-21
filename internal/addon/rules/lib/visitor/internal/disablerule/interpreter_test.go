@@ -3,7 +3,7 @@ package disablerule_test
 import (
 	"testing"
 
-	"github.com/yoheimuta/protolint/internal/addon/rules/internal/visitor/internal/disablerule"
+	"github.com/yoheimuta/protolint/internal/addon/rules/lib/visitor/internal/disablerule"
 
 	"github.com/yoheimuta/go-protoparser/parser"
 )
