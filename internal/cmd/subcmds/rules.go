@@ -1,6 +1,8 @@
 package subcmds
 
 import (
+	"github.com/yoheimuta/protolint/internal/addon/plugin"
+	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/internal/linter/config"
 	"github.com/yoheimuta/protolint/internal/linter/rule"
@@ -8,6 +10,22 @@ import (
 
 // NewAllRules creates new all rules.
 func NewAllRules(
+	option config.RulesOption,
+	fixMode bool,
+	verbose bool,
+	plugins []shared.RuleSet,
+) (rule.Rules, error) {
+	rs := newAllInternalRules(option, fixMode)
+
+	es, err := plugin.GetExternalRules(plugins, fixMode, verbose)
+	if err != nil {
+		return nil, err
+	}
+	rs = append(rs, es...)
+	return rs, nil
+}
+
+func newAllInternalRules(
 	option config.RulesOption,
 	fixMode bool,
 ) rule.Rules {

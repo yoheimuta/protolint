@@ -3,6 +3,10 @@ package lint
 import (
 	"flag"
 
+	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
+
+	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
+
 	"github.com/yoheimuta/protolint/internal/linter/report/reporters"
 
 	"github.com/yoheimuta/protolint/internal/linter/report"
@@ -16,6 +20,7 @@ type Flags struct {
 	FixMode       bool
 	Reporter      report.Reporter
 	Verbose       bool
+	Plugins       []shared.RuleSet
 }
 
 // NewFlags creates a new Flags.
@@ -27,6 +32,7 @@ func NewFlags(
 		Reporter: reporters.PlainReporter{},
 	}
 	var rf reporterFlag
+	var pf subcmds.PluginFlag
 
 	f.StringVar(
 		&f.ConfigDirPath,
@@ -45,6 +51,11 @@ func NewFlags(
 		"reporter",
 		`formatter to output results in the specific format. Available reporters are "plain"(default) and "junit".`,
 	)
+	f.Var(
+		&pf,
+		"plugin",
+		`plugins to provide custom lint rule set. Note that it's necessary to specify it as path format'`,
+	)
 	f.BoolVar(
 		&f.Verbose,
 		"v",
@@ -56,5 +67,6 @@ func NewFlags(
 	if rf.reporter != nil {
 		f.Reporter = rf.reporter
 	}
+	f.Plugins = pf.Plugins()
 	return f
 }
