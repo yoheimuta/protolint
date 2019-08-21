@@ -5,7 +5,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/plugin/proto"
 	"github.com/yoheimuta/protolint/internal/linter/file"
-	"github.com/yoheimuta/protolint/internal/linter/rule"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 type ruleSet struct {

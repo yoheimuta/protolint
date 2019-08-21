@@ -15,7 +15,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/setting_test"
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
-	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/linter/report"
 )
 
 func TestIndentRule_Apply(t *testing.T) {

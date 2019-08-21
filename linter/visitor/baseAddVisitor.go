@@ -3,7 +3,7 @@ package visitor
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
-	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/linter/report"
 )
 
 // BaseAddVisitor represents a base visitor which can accumulate failures.

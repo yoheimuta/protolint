@@ -8,7 +8,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/parser"
 	"github.com/yoheimuta/protolint/internal/addon/rules"
-	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/linter/report"
 )
 
 func TestRPCsHaveCommentRule_Apply(t *testing.T) {

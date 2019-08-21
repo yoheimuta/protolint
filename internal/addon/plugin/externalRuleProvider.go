@@ -4,7 +4,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/addon/plugin/proto"
 	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
 
-	"github.com/yoheimuta/protolint/internal/linter/rule"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // GetExternalRules provides the external rules.

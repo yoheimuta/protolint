@@ -5,7 +5,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/internal/linter/config"
-	"github.com/yoheimuta/protolint/internal/linter/rule"
+	internalrule "github.com/yoheimuta/protolint/internal/linter/rule"
 )
 
 // NewAllRules creates new all rules.
@@ -14,7 +14,7 @@ func NewAllRules(
 	fixMode bool,
 	verbose bool,
 	plugins []shared.RuleSet,
-) (rule.Rules, error) {
+) (internalrule.Rules, error) {
 	rs := newAllInternalRules(option, fixMode)
 
 	es, err := plugin.GetExternalRules(plugins, fixMode, verbose)
@@ -28,7 +28,7 @@ func NewAllRules(
 func newAllInternalRules(
 	option config.RulesOption,
 	fixMode bool,
-) rule.Rules {
+) internalrule.Rules {
 	fileNamesLowerSnakeCase := option.FileNamesLowerSnakeCase
 	indent := option.Indent
 	maxLineLength := option.MaxLineLength
@@ -44,7 +44,7 @@ func newAllInternalRules(
 	enumsHaveComment := option.EnumsHaveComment
 	enumFieldsHaveComment := option.EnumFieldsHaveComment
 
-	return rule.Rules{
+	return internalrule.Rules{
 		rules.NewFileNamesLowerSnakeCaseRule(
 			fileNamesLowerSnakeCase.Excludes,
 		),

@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/parser/meta"
-	"github.com/yoheimuta/protolint/internal/linter/report"
 	"github.com/yoheimuta/protolint/internal/linter/report/reporters"
+	"github.com/yoheimuta/protolint/linter/report"
 )
 
 func TestPlainReporter_Report(t *testing.T) {

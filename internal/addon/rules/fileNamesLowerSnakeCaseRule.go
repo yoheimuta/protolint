@@ -7,9 +7,9 @@ import (
 	"github.com/yoheimuta/protolint/internal/stringsutil"
 
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolint/internal/addon/rules/internal/visitor"
-	"github.com/yoheimuta/protolint/internal/linter/report"
-	"github.com/yoheimuta/protolint/internal/strs"
+	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/strs"
+	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // FileNamesLowerSnakeCaseRule verifies that all file names are lower_snake_case.proto.

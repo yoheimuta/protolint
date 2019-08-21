@@ -8,7 +8,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/parser"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
 	"github.com/yoheimuta/protolint/internal/addon/plugin/proto"
-	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/linter/report"
 )
 
 // externalRule represents a customized rule that works as a plugin.

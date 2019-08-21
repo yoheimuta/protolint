@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/yoheimuta/protolint/internal/strs"
+	"github.com/yoheimuta/protolint/linter/strs"
 )
 
 func TestIsUpperCamelCase(t *testing.T) {
