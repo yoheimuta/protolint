@@ -143,6 +143,10 @@ func TestIndentRule_Apply(t *testing.T) {
 				),
 			},
 		},
+		{
+			name:           "handle the proto containing extend. Fix https://github.com/yoheimuta/protolint/issues/63",
+			inputProtoPath: setting_test.TestDataPath("rules", "indentrule", "issue_63.proto"),
+		},
 	}
 
 	for _, test := range tests {
