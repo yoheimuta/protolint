@@ -131,10 +131,42 @@ func (v indentVisitor) VisitEnumField(f *parser.EnumField) (next bool) {
 	return false
 }
 
+func (v indentVisitor) VisitExtend(e *parser.Extend) (next bool) {
+	v.validateIndent(e.Meta.Pos)
+	if e.Meta.Pos.Line < e.Meta.LastPos.Line {
+		v.validateIndent(e.Meta.LastPos)
+	}
+	for _, comment := range e.Comments {
+		v.validateIndent(comment.Meta.Pos)
+	}
+
+	defer v.nest()()
+	for _, body := range e.ExtendBody {
+		body.Accept(v)
+	}
+	return false
+}
+
 func (v indentVisitor) VisitField(f *parser.Field) (next bool) {
 	v.validateIndent(f.Meta.Pos)
 	for _, comment := range f.Comments {
 		v.validateIndent(comment.Meta.Pos)
+	}
+	return false
+}
+
+func (v indentVisitor) VisitGroupField(f *parser.GroupField) (next bool) {
+	v.validateIndent(f.Meta.Pos)
+	if f.Meta.Pos.Line < f.Meta.LastPos.Line {
+		v.validateIndent(f.Meta.LastPos)
+	}
+	for _, comment := range f.Comments {
+		v.validateIndent(comment.Meta.Pos)
+	}
+
+	defer v.nest()()
+	for _, body := range f.MessageBody {
+		body.Accept(v)
 	}
 	return false
 }
