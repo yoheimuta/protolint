@@ -1,0 +1,40 @@
+syntax = "proto3";
+package proto;
+
+service RuleSetService {
+  rpc ListRules(ListRulesRequest) returns (ListRulesResponse);
+  rpc Apply(ApplyRequest) returns (ApplyResponse);
+}
+
+message ListRulesRequest {
+  bool verbose = 1;
+  bool fix_mode = 2;
+}
+
+message ListRulesResponse {
+  message Rule {
+    string id = 1;
+    string purpose = 2;
+  }
+  repeated Rule rules = 1;
+}
+
+message ApplyRequest {
+  string id = 1;
+  string path = 2;
+}
+
+message ApplyResponse {
+  message Position {
+    int32 offset = 1;
+    int32 line = 2;
+    int32 column = 3;
+  }
+
+  message Failure {
+    string message = 1;
+    Position pos = 2;
+  }
+
+  repeated Failure failures = 1;
+}
