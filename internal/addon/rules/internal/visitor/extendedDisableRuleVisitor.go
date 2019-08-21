@@ -2,7 +2,7 @@ package visitor
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolint/internal/addon/rules/internal/disablerule"
+	"github.com/yoheimuta/protolint/internal/addon/rules/internal/visitor/internal/disablerule"
 	"github.com/yoheimuta/protolint/internal/linter/report"
 )
 

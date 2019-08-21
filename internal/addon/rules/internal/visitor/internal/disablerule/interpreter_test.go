@@ -3,8 +3,9 @@ package disablerule_test
 import (
 	"testing"
 
+	"github.com/yoheimuta/protolint/internal/addon/rules/internal/visitor/internal/disablerule"
+
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolint/internal/addon/rules/internal/disablerule"
 )
 
 func TestInterpreter_Interpret(t *testing.T) {
