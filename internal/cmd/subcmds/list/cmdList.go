@@ -8,8 +8,8 @@ import (
 	"fmt"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
-	"github.com/yoheimuta/protolint/internal/linter/rule"
 	"github.com/yoheimuta/protolint/internal/osutil"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // CmdList is a rule list command.

@@ -6,7 +6,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/linter/config"
 	"github.com/yoheimuta/protolint/internal/linter/file"
 	"github.com/yoheimuta/protolint/internal/linter/report"
-	"github.com/yoheimuta/protolint/internal/linter/rule"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // CmdLintConfig is a config for lint command.

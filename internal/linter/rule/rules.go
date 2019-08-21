@@ -1,7 +1,9 @@
 package rule
 
+import "github.com/yoheimuta/protolint/linter/rule"
+
 // Rules is a list of Rules.
-type Rules []Rule
+type Rules []rule.Rule
 
 // Default returns a default set of rules.
 func (rs Rules) Default() Rules {
@@ -19,7 +21,7 @@ func (rs Rules) IDs() []string {
 	return ruleIDs(rs)
 }
 
-func ruleIDs(rules []Rule) []string {
+func ruleIDs(rules []rule.Rule) []string {
 	var ids []string
 	for _, rule := range rules {
 		ids = append(ids, rule.ID())
