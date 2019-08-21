@@ -7,8 +7,8 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/parser"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
-	"github.com/yoheimuta/protolint/internal/addon/rules/lib/visitor"
 	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 const (

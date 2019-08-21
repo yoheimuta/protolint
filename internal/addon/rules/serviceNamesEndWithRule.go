@@ -4,8 +4,8 @@ import (
 	"strings"
 
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolint/internal/addon/rules/lib/visitor"
 	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // ServiceNamesEndWithRule verifies that all service names end with the specified value.
