@@ -15,7 +15,7 @@ test/lint:
 	(! gofmt -s -d `find . -name vendor -prune -type f -o -name '*.go'` | grep '^')
 	golint -set_exit_status `go list ./...`
 	# checks the import format.
-	(! goimports -l `find . -name vendor -prune -type f -o -name '*.go'` | grep 'go')
+	(! goimports -l `find . -name vendor -prune -type f -o -name '*.go'` | grep -v 'pb.go' | grep 'go')
 	# checks the error the compiler can't find.
 	go vet ./...
 	# checks shadowed variables.
@@ -33,6 +33,10 @@ test/lint:
 dev/install/dep:
 	./.circleci/install_dep.sh
 
+## dev/build/proto builds proto files under the _proto directory.
+dev/build/proto:
+	protoc -I _proto _proto/*.proto --go_out=plugins=grpc:internal/addon/plugin/proto
+
 ## ARG is command arguments.
 ARG=lint _example/proto
 
@@ -47,3 +51,7 @@ run/cmd/protolint/exampleconfig:
 ## build/cmd/protolint builds protolint
 build/cmd/protolint:
 	go build -o protolint cmd/protolint/main.go
+
+## build/example/plugin builds a plugin
+build/example/plugin:
+	go build -o plugin_example _example/plugin/main.go
