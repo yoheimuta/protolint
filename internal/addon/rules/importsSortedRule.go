@@ -4,8 +4,8 @@ import (
 	"sort"
 
 	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/protolint/internal/linter/report"
 	"github.com/yoheimuta/protolint/internal/osutil"
+	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 

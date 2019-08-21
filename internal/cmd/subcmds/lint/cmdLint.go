@@ -8,8 +8,8 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/linter"
 	"github.com/yoheimuta/protolint/internal/linter/file"
-	"github.com/yoheimuta/protolint/internal/linter/report"
 	"github.com/yoheimuta/protolint/internal/osutil"
+	"github.com/yoheimuta/protolint/linter/report"
 )
 
 // CmdLint is a lint command.

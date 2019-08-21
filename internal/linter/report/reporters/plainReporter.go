@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/linter/report"
 )
 
 // PlainReporter prints failures as it is.
