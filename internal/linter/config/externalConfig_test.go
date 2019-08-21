@@ -84,6 +84,12 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 		},
 	}
 
+	allRules, err := subcmds.NewAllRules(config.RulesOption{}, false, false, nil)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
 	for _, test := range []struct {
 		name                string
 		externalConfig      config.ExternalConfig
@@ -145,8 +151,8 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 		{
 			name:                "not skip default one",
 			externalConfig:      config.ExternalConfig{},
-			inputRuleID:         subcmds.NewAllRules(config.RulesOption{}, false).Default().IDs()[0],
-			inputDefaultRuleIDs: subcmds.NewAllRules(config.RulesOption{}, false).Default().IDs(),
+			inputRuleID:         allRules.Default().IDs()[0],
+			inputDefaultRuleIDs: allRules.Default().IDs(),
 		},
 		{
 			name:             "exclude the directory",

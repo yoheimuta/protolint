@@ -39,7 +39,11 @@ func (c *CmdList) Run() osutil.ExitCode {
 }
 
 func (c *CmdList) run() error {
-	rules := hasIDAndPurposes()
+	rules, err := hasIDAndPurposes()
+	if err != nil {
+		return err
+	}
+
 	for _, r := range rules {
 		_, err := fmt.Fprintf(
 			c.stdout,
@@ -59,10 +63,15 @@ type hasIDAndPurpose interface {
 	rule.HasPurpose
 }
 
-func hasIDAndPurposes() []hasIDAndPurpose {
+func hasIDAndPurposes() ([]hasIDAndPurpose, error) {
+	rs, err := subcmds.NewAllRules(config.RulesOption{}, false, false, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	var rules []hasIDAndPurpose
-	for _, r := range subcmds.NewAllRules(config.RulesOption{}, false) {
+	for _, r := range rs {
 		rules = append(rules, r)
 	}
-	return rules
+	return rules, nil
 }

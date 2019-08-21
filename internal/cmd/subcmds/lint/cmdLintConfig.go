@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 	"github.com/yoheimuta/protolint/internal/linter/config"
 	"github.com/yoheimuta/protolint/internal/linter/file"
@@ -14,6 +15,7 @@ type CmdLintConfig struct {
 	fixMode  bool
 	verbose  bool
 	reporter report.Reporter
+	plugins  []shared.RuleSet
 }
 
 // NewCmdLintConfig creates a new CmdLintConfig.
@@ -26,6 +28,7 @@ func NewCmdLintConfig(
 		fixMode:  flags.FixMode,
 		verbose:  flags.Verbose,
 		reporter: flags.Reporter,
+		plugins:  flags.Plugins,
 	}
 }
 
@@ -33,7 +36,10 @@ func NewCmdLintConfig(
 func (c CmdLintConfig) GenRules(
 	f file.ProtoFile,
 ) ([]rule.HasApply, error) {
-	allRules := subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode)
+	allRules, err := subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode, c.verbose, c.plugins)
+	if err != nil {
+		return nil, err
+	}
 
 	var defaultRuleIDs []string
 	if c.external.Lint.Rules.AllDefault {
