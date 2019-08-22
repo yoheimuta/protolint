@@ -35,5 +35,5 @@ message outer {
   message SpecialEndOfSupport {}
 }
 service SearchApi {
-    rpc search (SearchRequest) returns (SearchResponse);
-}
+    rpc search (SearchRequest) returns (SearchResponse) {};
+};
