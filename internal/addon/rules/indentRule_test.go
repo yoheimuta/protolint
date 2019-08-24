@@ -147,6 +147,11 @@ func TestIndentRule_Apply(t *testing.T) {
 			name:           "handle the proto containing extend. Fix https://github.com/yoheimuta/protolint/issues/63",
 			inputProtoPath: setting_test.TestDataPath("rules", "indentrule", "issue_63.proto"),
 		},
+		{
+			name: `handle the case that the last rpc method of a service is having a statement block.
+Fix https://github.com/yoheimuta/protolint/issues/74`,
+			inputProtoPath: setting_test.TestDataPath("rules", "indentrule", "issue_74.proto"),
+		},
 	}
 
 	for _, test := range tests {

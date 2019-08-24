@@ -1,0 +1,4 @@
+syntax = "proto3";
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse) {}
+}
