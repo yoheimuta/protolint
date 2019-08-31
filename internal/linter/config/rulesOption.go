@@ -16,4 +16,5 @@ type RulesOption struct {
 	FieldsHaveComment               FieldsHaveCommentOption               `yaml:"fields_have_comment"`
 	EnumsHaveComment                EnumsHaveCommentOption                `yaml:"enums_have_comment"`
 	EnumFieldsHaveComment           EnumFieldsHaveCommentOption           `yaml:"enum_fields_have_comment"`
+	SyntaxConsistent                SyntaxConsistentOption                `yaml:"syntax_consistent"`
 }

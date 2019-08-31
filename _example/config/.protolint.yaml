@@ -50,6 +50,7 @@ lint:
       - FIELDS_HAVE_COMMENT
       - ENUMS_HAVE_COMMENT
       - ENUM_FIELDS_HAVE_COMMENT
+      - SYNTAX_CONSISTENT
 
     # The specific linters to remove.
     remove:
@@ -140,3 +141,8 @@ lint:
     enum_fields_have_comment:
       # Comments need to begin with the name of the thing being described. default is false.
       should_follow_golang_style: true
+
+    # SYNTAX_CONSISTENT rule option.
+    syntax_consistent:
+      # Default is proto3.
+      version: proto2
