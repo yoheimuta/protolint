@@ -29,6 +29,7 @@ func newAllInternalRules(
 	option config.RulesOption,
 	fixMode bool,
 ) internalrule.Rules {
+	syntaxConsistent := option.SyntaxConsistent
 	fileNamesLowerSnakeCase := option.FileNamesLowerSnakeCase
 	indent := option.Indent
 	maxLineLength := option.MaxLineLength
@@ -45,6 +46,9 @@ func newAllInternalRules(
 	enumFieldsHaveComment := option.EnumFieldsHaveComment
 
 	return internalrule.Rules{
+		rules.NewSyntaxConsistentRule(
+			syntaxConsistent.Version,
+		),
 		rules.NewFileNamesLowerSnakeCaseRule(
 			fileNamesLowerSnakeCase.Excludes,
 		),
