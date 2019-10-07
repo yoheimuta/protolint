@@ -26,7 +26,7 @@ type Flags struct {
 // NewFlags creates a new Flags.
 func NewFlags(
 	args []string,
-) Flags {
+) (Flags, error) {
 	f := Flags{
 		FlagSet:  flag.NewFlagSet("lint", flag.ExitOnError),
 		Reporter: reporters.PlainReporter{},
@@ -67,6 +67,11 @@ func NewFlags(
 	if rf.reporter != nil {
 		f.Reporter = rf.reporter
 	}
-	f.Plugins = pf.Plugins()
-	return f
+
+	plugins, err := pf.BuildPlugins(f.Verbose)
+	if err != nil {
+		return Flags{}, err
+	}
+	f.Plugins = plugins
+	return f, nil
 }

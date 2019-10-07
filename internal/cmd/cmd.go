@@ -73,7 +73,11 @@ func doLint(
 		return osutil.ExitFailure
 	}
 
-	flags := lint.NewFlags(args)
+	flags, err := lint.NewFlags(args)
+	if err != nil {
+		_, _ = fmt.Fprint(stderr, err)
+		return osutil.ExitFailure
+	}
 	if len(flags.Args()) < 1 {
 		_, _ = fmt.Fprintln(stderr, "protolint lint requires at least one argument. See Usage.")
 		_, _ = fmt.Fprint(stderr, help)
