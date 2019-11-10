@@ -6,9 +6,9 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/yoheimuta/go-protoparser/parser/meta"
-
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/protolint/linter/disablerule"
 	"github.com/yoheimuta/protolint/linter/report"
 )
 
@@ -79,30 +79,35 @@ func (r MaxLineLengthRule) Apply(proto *parser.Proto) (
 		}
 	}()
 
-	var currentLineCount int
+	var lines []string
 	scanner := bufio.NewScanner(reader)
 	for scanner.Scan() {
-		currentLineCount++
-
-		line := scanner.Text()
-		line = strings.Replace(line, "\t", strings.Repeat(" ", r.tabChars), -1)
-		lineCount := utf8.RuneCountInString(line)
-		if r.maxChars < lineCount {
-			failures = append(failures, report.Failuref(
-				meta.Position{
-					Filename: fileName,
-					Line:     currentLineCount,
-					Column:   1,
-				},
-				r.ID(),
-				"The line length is %d, but it must be shorter than %d",
-				lineCount,
-				r.maxChars,
-			))
-		}
+		lines = append(lines, scanner.Text())
 	}
+
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
+
+	disablerule.NewInterpreter(r.ID()).CallEachIfValid(
+		lines,
+		func(index int, line string) {
+			line = strings.Replace(line, "\t", strings.Repeat(" ", r.tabChars), -1)
+			lineCount := utf8.RuneCountInString(line)
+			if r.maxChars < lineCount {
+				failures = append(failures, report.Failuref(
+					meta.Position{
+						Filename: fileName,
+						Line:     index + 1,
+						Column:   1,
+					},
+					r.ID(),
+					"The line length is %d, but it must be shorter than %d",
+					lineCount,
+					r.maxChars,
+				))
+			}
+		},
+	)
 	return failures, nil
 }
