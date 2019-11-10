@@ -62,7 +62,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "max_line_length_rule.proto"),
-						Line:     11,
+						Line:     15,
 						Column:   1,
 					},
 					"MAX_LINE_LENGTH",

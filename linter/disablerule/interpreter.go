@@ -31,6 +31,55 @@ func (i *Interpreter) Interpret(
 		i.isDisabled
 }
 
+// CallEachIfValid calls a given function each time the line is not disabled.
+func (i *Interpreter) CallEachIfValid(
+	lines []string,
+	f func(index int, line string),
+) {
+	shouldSkip := false
+
+	for index, line := range lines {
+		cmd, err := newCommand(line)
+		if err != nil {
+			if !i.isDisabled && !shouldSkip {
+				f(index, line)
+			}
+			if shouldSkip {
+				shouldSkip = false
+			}
+			continue
+		}
+
+		if cmd.enabled(i.ruleID) {
+			i.isDisabled = false
+			f(index, line)
+			continue
+		}
+
+		if cmd.disabled(i.ruleID) {
+			i.isDisabled = true
+			continue
+		}
+
+		if cmd.disabledThis(i.ruleID) {
+			continue
+		}
+
+		if cmd.disabledNext(i.ruleID) {
+			shouldSkip = true
+			f(index, line)
+			continue
+		}
+
+		if shouldSkip {
+			shouldSkip = false
+			continue
+		}
+
+		f(index, line)
+	}
+}
+
 func (i *Interpreter) interpret(
 	cmds commands,
 ) bool {

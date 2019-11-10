@@ -2,8 +2,8 @@ package visitor
 
 import (
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/protolint/linter/disablerule"
 	"github.com/yoheimuta/protolint/linter/report"
-	"github.com/yoheimuta/protolint/linter/visitor/internal/disablerule"
 )
 
 // TODO: To work `enable comments` more precisely, this implementation has to be modified.

@@ -1,9 +1,10 @@
 package disablerule_test
 
 import (
+	"reflect"
 	"testing"
 
-	"github.com/yoheimuta/protolint/linter/visitor/internal/disablerule"
+	"github.com/yoheimuta/protolint/linter/disablerule"
 
 	"github.com/yoheimuta/go-protoparser/parser"
 )
@@ -222,6 +223,179 @@ protolint:disable:next ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
 				if got != expect.wantIsDisabled {
 					t.Errorf("[%s] got %v, but want %v", expect.name, got, expect.wantIsDisabled)
 				}
+			}
+		})
+	}
+}
+
+func TestInterpreter_CallEachIfValid(t *testing.T) {
+	type outputType struct {
+		index int
+		line  string
+	}
+	tests := []struct {
+		name            string
+		inputRuleID     string
+		inputLines      []string
+		wantOutputLines []outputType
+	}{
+		{
+			name:        "All lines are valid, so the function is called for each line.",
+			inputRuleID: "MAX_LINE_LENGTH",
+			inputLines: []string{
+				`enum enumAllowingAlias {`,
+				`// disable:next MAX_LINE_LENGTH`,
+				`option allow_alias = true;`,
+				`}`,
+			},
+			wantOutputLines: []outputType{
+				{
+					index: 0,
+					line:  `enum enumAllowingAlias {`,
+				},
+				{
+					index: 1,
+					line:  `// disable:next MAX_LINE_LENGTH`,
+				},
+				{
+					index: 2,
+					line:  `option allow_alias = true;`,
+				},
+				{
+					index: 3,
+					line:  `}`,
+				},
+			},
+		},
+		{
+			name:        "protolint:disable:next works.",
+			inputRuleID: "MAX_LINE_LENGTH",
+			inputLines: []string{
+				`enum enumAllowingAlias {`,
+				`// protolint:disable:next MAX_LINE_LENGTH`,
+				`option allow_alias = true;`,
+				`}`,
+			},
+			wantOutputLines: []outputType{
+				{
+					index: 0,
+					line:  `enum enumAllowingAlias {`,
+				},
+				{
+					index: 1,
+					line:  `// protolint:disable:next MAX_LINE_LENGTH`,
+				},
+				{
+					index: 3,
+					line:  `}`,
+				},
+			},
+		},
+		{
+			name:        "protolint:disable:this works.",
+			inputRuleID: "MAX_LINE_LENGTH",
+			inputLines: []string{
+				`enum enumAllowingAlias { // protolint:disable:this MAX_LINE_LENGTH`,
+				`option allow_alias = true;`,
+				`}`,
+			},
+			wantOutputLines: []outputType{
+				{
+					index: 1,
+					line:  `option allow_alias = true;`,
+				},
+				{
+					index: 2,
+					line:  `}`,
+				},
+			},
+		},
+		{
+			name:        "protolint:disable and protolint:enable works",
+			inputRuleID: "MAX_LINE_LENGTH",
+			inputLines: []string{
+				`enum enumAllowingAlias {`,
+				`// protolint:disable MAX_LINE_LENGTH`,
+				`option allow_alias = true;`,
+				`UNKNOWN = 0;`,
+				`// protolint:enable MAX_LINE_LENGTH`,
+				`STARTED = 1;`,
+				`}`,
+			},
+			wantOutputLines: []outputType{
+				{
+					index: 0,
+					line:  `enum enumAllowingAlias {`,
+				},
+				{
+					index: 4,
+					line:  `// protolint:enable MAX_LINE_LENGTH`,
+				},
+				{
+					index: 5,
+					line:  `STARTED = 1;`,
+				},
+				{
+					index: 6,
+					line:  `}`,
+				},
+			},
+		},
+		{
+			name:        "the mix of protolint:disable commands works",
+			inputRuleID: "MAX_LINE_LENGTH",
+			inputLines: []string{
+				`// protolint:disable:next MAX_LINE_LENGTH`,
+				`enum enumAllowingAlias {`,
+				`// protolint:disable MAX_LINE_LENGTH`,
+				`option allow_alias = true; // protolint:disable:this MAX_LINE_LENGTH`,
+				`UNKNOWN = 0;`,
+				`// protolint:enable MAX_LINE_LENGTH`,
+				`STARTED = 1;`,
+				`RUNNING = 2; // protolint:disable:this MAX_LINE_LENGTH`,
+				`// protolint:disable:next MAX_LINE_LENGTH`,
+				`STOPPED = 3;`,
+				`}`,
+			},
+			wantOutputLines: []outputType{
+				{
+					index: 0,
+					line:  `// protolint:disable:next MAX_LINE_LENGTH`,
+				},
+				{
+					index: 5,
+					line:  `// protolint:enable MAX_LINE_LENGTH`,
+				},
+				{
+					index: 6,
+					line:  `STARTED = 1;`,
+				},
+				{
+					index: 8,
+					line:  `// protolint:disable:next MAX_LINE_LENGTH`,
+				},
+				{
+					index: 10,
+					line:  `}`,
+				},
+			},
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			interpreter := disablerule.NewInterpreter(test.inputRuleID)
+
+			var got []outputType
+			interpreter.CallEachIfValid(test.inputLines, func(index int, line string) {
+				got = append(got, outputType{
+					index: index,
+					line:  line,
+				})
+			})
+			if !reflect.DeepEqual(got, test.wantOutputLines) {
+				t.Errorf("got %v, but want %v", got, test.wantOutputLines)
 			}
 		})
 	}
