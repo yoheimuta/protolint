@@ -53,6 +53,12 @@ A [GitHub Action](https://github.com/features/actions) to run protolint in your 
 
 - [protolint-action](https://github.com/plexsystems/protolint-action)
 
+## CI Integration
+
+Jenkins Plugins
+
+- [warnings-ng](https://github.com/jenkinsci/warnings-ng-plugin) and any that use [violatons-lib](https://github.com/tomasbjerre/violations-lib)
+
 ## Rules
 
 See `internal/addon/rules` in detail.
