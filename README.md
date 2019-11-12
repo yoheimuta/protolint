@@ -30,7 +30,8 @@ In the downloads section of each release, you can find pre-built binaries in .ta
 
 ### From Source
 
-The binary can be installed from source if Go is avilable.
+The binary can be installed from source if Go is avilable. 
+However, I recommend using one of the pre-built binaries instead because it doesn't include the version info.
 
 ```
 go get -u -v github.com/yoheimuta/protolint/cmd/protolint
