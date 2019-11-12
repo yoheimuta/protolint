@@ -10,6 +10,8 @@ builds:
     - windows
     - darwin
     - linux
+  ldflags:
+    - -s -w -X github.com/yoheimuta/protolint/internal/cmd.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd.revision={{.ShortCommit}}
 archive:
   replacements:
     darwin: Darwin

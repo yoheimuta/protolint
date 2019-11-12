@@ -50,7 +50,10 @@ run/cmd/protolint/exampleconfig:
 
 ## build/cmd/protolint builds protolint
 build/cmd/protolint:
-	go build -o protolint cmd/protolint/main.go
+	go build \
+		-ldflags "-X github.com/yoheimuta/protolint/internal/cmd.version=`git describe --tags --abbrev=0` -X github.com/yoheimuta/protolint/internal/cmd.revision=`git rev-parse --short HEAD`" \
+		-o protolint \
+		cmd/protolint/main.go
 
 ## build/example/plugin builds a plugin
 build/example/plugin:

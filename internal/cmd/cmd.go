@@ -14,18 +14,24 @@ const (
 Protocol Buffer Linter Command.
 
 Usage:
-  protolint .
-  protolint lint .
-  protolint lint -fix .
-  protolint lint -v .
-  protolint lint example.proto example2.proto
-  protolint list
+	protolint <command> [arguments]
+
+The commands are:
+	lint     lint protocol buffer files
+	list     list all current lint rules being used
+	version  print protolint version
 `
 )
 
 const (
-	subCmdLint = "lint"
-	subCmdList = "list"
+	subCmdLint    = "lint"
+	subCmdList    = "list"
+	subCmdVersion = "version"
+)
+
+var (
+	version  = "master"
+	revision = "latest"
 )
 
 // Do runs the command logic.
@@ -57,6 +63,8 @@ func doSub(
 		return doLint(args[1:], stdout, stderr)
 	case subCmdList:
 		return doList(stdout, stderr)
+	case subCmdVersion:
+		return doVersion(stdout)
 	default:
 		return doLint(args, stdout, stderr)
 	}
@@ -105,4 +113,11 @@ func doList(
 		stderr,
 	)
 	return subCmd.Run()
+}
+
+func doVersion(
+	stdout io.Writer,
+) osutil.ExitCode {
+	_, _ = fmt.Fprintln(stdout, "protolint version "+version+"("+revision+")")
+	return osutil.ExitSuccess
 }

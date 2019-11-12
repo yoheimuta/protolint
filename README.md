@@ -48,6 +48,7 @@ protolint lint -v .                         # with verbose output to investigate
 protolint lint -reporter junit .            # output results in JUnit XML format
 protolint lint -plugin ./my_custom_rule1 -plugin ./my_custom_rule2 .   # run custom lint rules.
 protolint list                              # list all current lint rules being used
+protolint version                           # print protolint version
 ```
 
 protolint does not require configuration by default, for the majority of projects it should work out of the box.
