@@ -11,15 +11,30 @@ protolint is the pluggable linting utility for Protocol Buffer files (proto2+pro
 
 ## Installation
 
+### Via Homebrew
+
+protolint can be installed for Mac or Linux using Homebrew via the [yoheimuta/protolint](https://github.com/yoheimuta/homebrew-protolint) tap.
+
 ```
-go get -u -v github.com/yoheimuta/protolint/cmd/protolint
+brew tap yoheimuta/protolint
+brew install protolint
 ```
 
-For non-Go users, the simplest way to install the protolint is to download a pre-built binary from this release page:
+### Via GitHub Releases
+
+You can also download a pre-built binary from this release page:
 
 - https://github.com/yoheimuta/protolint/releases
 
 In the downloads section of each release, you can find pre-built binaries in .tar.gz packages.
+
+### From Source
+
+The binary can be installed from source if Go is avilable.
+
+```
+go get -u -v github.com/yoheimuta/protolint/cmd/protolint
+```
 
 ## Usage
 
