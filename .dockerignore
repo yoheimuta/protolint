@@ -1,0 +1,7 @@
+.circleci
+_example
+_proto
+_testdata
+.goreleaser.yml
+Dockerfile.protolint
+README.md
