@@ -21,14 +21,23 @@ func (f *reporterFlag) Set(value string) error {
 		return fmt.Errorf("reporter is already set")
 	}
 
+	r, err := GetReporter(value)
+	if err != nil {
+		return err
+	}
+	f.raw = value
+	f.reporter = r
+	return nil
+}
+
+// GetReporter returns a reporter from the specified key.
+func GetReporter(value string) (report.Reporter, error) {
 	rs := map[string]report.Reporter{
 		"plain": reporters.PlainReporter{},
 		"junit": reporters.JUnitReporter{},
 	}
 	if r, ok := rs[value]; ok {
-		f.raw = value
-		f.reporter = r
-		return nil
+		return r, nil
 	}
-	return fmt.Errorf(`available reporters are "plain" and "junit"`)
+	return nil, fmt.Errorf(`available reporters are "plain" and "junit"`)
 }

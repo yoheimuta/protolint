@@ -16,6 +16,7 @@ import (
 type Flags struct {
 	*flag.FlagSet
 
+	FilePaths     []string
 	ConfigDirPath string
 	FixMode       bool
 	Reporter      report.Reporter
@@ -73,5 +74,7 @@ func NewFlags(
 		return Flags{}, err
 	}
 	f.Plugins = plugins
+
+	f.FilePaths = f.Args()
 	return f, nil
 }

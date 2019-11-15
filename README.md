@@ -8,6 +8,11 @@ protolint is the pluggable linting utility for Protocol Buffer files (proto2+pro
   - It is useful for projects which must keep API compatibility while enforce the style guide as much as possible.
 - Loads plugins to contain your custom lint rules.
 - Undergone testing for all rules.
+- Many integration supports.
+  - protoc plugin
+  - Editor integration
+  - GitHub Action
+  - CI Integration
 
 ## Installation
 
@@ -41,7 +46,7 @@ protolint ships a Docker image [yoheimuta/protolint](https://hub.docker.com/r/yo
 
 ### From Source
 
-The binary can be installed from source if Go is avilable. 
+The binary can be installed from source if Go is available.
 However, I recommend using one of the pre-built binaries instead because it doesn't include the version info.
 
 ```
@@ -86,6 +91,12 @@ A [GitHub Action](https://github.com/features/actions) to run protolint in your 
 Jenkins Plugins
 
 - [warnings-ng](https://github.com/jenkinsci/warnings-ng-plugin) and any that use [violatons-lib](https://github.com/tomasbjerre/violations-lib)
+
+## Use as a protoc plugin
+
+protolint also maintains a binary [protoc-gen-protolint](cmd/protoc-gen-protolint) that performs the lint functionality as a protoc plugin.
+
+This is useful in situations where you already have a protoc plugin workflow.
 
 ## Rules
 

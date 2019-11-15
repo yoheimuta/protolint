@@ -58,3 +58,9 @@ build/cmd/protolint:
 ## build/example/plugin builds a plugin
 build/example/plugin:
 	go build -o plugin_example _example/plugin/main.go
+
+## build/cmd/protoc-gen-protolint builds protoc-gen-protolint
+build/cmd/protoc-gen-protolint:
+	go build \
+		-o protoc-gen-protolint \
+		cmd/protoc-gen-protolint/main.go
