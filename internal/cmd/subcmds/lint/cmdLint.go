@@ -27,7 +27,7 @@ func NewCmdLint(
 	stdout io.Writer,
 	stderr io.Writer,
 ) (*CmdLint, error) {
-	protoSet, err := file.NewProtoSet(flags.Args())
+	protoSet, err := file.NewProtoSet(flags.FilePaths)
 	if err != nil {
 		return nil, err
 	}
