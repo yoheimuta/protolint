@@ -19,6 +19,12 @@ go get -u -v github.com/yoheimuta/protolint/cmd/protoc-gen-protolint
 protoc --protolint_out=. *.proto
 ```
 
+A version subcommand is supported.
+
+```
+protoc-gen-protolint version
+```
+
 All flags, which is supported by protolint are passed as an option to the plugin as a comma separated text. It should look like below.
 
 ```
