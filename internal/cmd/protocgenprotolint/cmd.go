@@ -16,12 +16,26 @@ import (
 	"github.com/yoheimuta/protolint/internal/osutil"
 )
 
+var (
+	version  = "master"
+	revision = "latest"
+)
+
+const (
+	subCmdVersion = "version"
+)
+
 // Do runs the command logic.
 func Do(
+	args []string,
 	stdin io.Reader,
 	stdout io.Writer,
 	stderr io.Writer,
 ) osutil.ExitCode {
+	if 0 < len(args) && args[0] == subCmdVersion {
+		return doVersion(stdout)
+	}
+
 	subCmd, err := newSubCmd(stdin, stdout, stderr)
 	if err != nil {
 		_, _ = fmt.Fprintln(stderr, err)
@@ -115,4 +129,11 @@ func newFlags(
 	flags.Plugins = plugins
 
 	return &flags, nil
+}
+
+func doVersion(
+	stdout io.Writer,
+) osutil.ExitCode {
+	_, _ = fmt.Fprintln(stdout, "protoc-gen-protolint version "+version+"("+revision+")")
+	return osutil.ExitSuccess
 }
