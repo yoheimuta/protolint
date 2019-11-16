@@ -2,26 +2,30 @@ before:
   hooks:
     - go mod download
 builds:
-- env:
-  - CGO_ENABLED=0
-  main: ./cmd/protolint/main.go
-  binary: protolint
-  goos:
-    - windows
-    - darwin
-    - linux
-  ldflags:
-    - -s -w -X github.com/yoheimuta/protolint/internal/cmd.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd.revision={{.ShortCommit}}
-- env:
-    - CGO_ENABLED=0
-  main: ./cmd/protoc-gen-protolint/main.go
-  binary: protoc-gen-protolint
-  goos:
-    - windows
-    - darwin
-    - linux
-  ldflags:
-    - -s -w -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.revision={{.ShortCommit}}
+  -
+    id: protolint
+    env:
+      - CGO_ENABLED=0
+    main: ./cmd/protolint/main.go
+    binary: protolint
+    goos:
+      - windows
+      - darwin
+      - linux
+    ldflags:
+      - -s -w -X github.com/yoheimuta/protolint/internal/cmd.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd.revision={{.ShortCommit}}
+  -
+    id: protoc-gen-protolint
+    env:
+      - CGO_ENABLED=0
+    main: ./cmd/protoc-gen-protolint/main.go
+    binary: protoc-gen-protolint
+    goos:
+      - windows
+      - darwin
+      - linux
+    ldflags:
+      - -s -w -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.revision={{.ShortCommit}}
 archive:
   replacements:
     darwin: Darwin
