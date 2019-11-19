@@ -260,6 +260,7 @@ The built-in reporter options are:
 
 - plain (default)
 - junit
+- unix
 
 ## Configuring
 
