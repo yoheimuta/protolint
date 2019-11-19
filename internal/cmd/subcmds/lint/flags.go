@@ -16,12 +16,13 @@ import (
 type Flags struct {
 	*flag.FlagSet
 
-	FilePaths     []string
-	ConfigDirPath string
-	FixMode       bool
-	Reporter      report.Reporter
-	Verbose       bool
-	Plugins       []shared.RuleSet
+	FilePaths      []string
+	ConfigDirPath  string
+	FixMode        bool
+	Reporter       report.Reporter
+	OutputFilePath string
+	Verbose        bool
+	Plugins        []shared.RuleSet
 }
 
 // NewFlags creates a new Flags.
@@ -51,6 +52,12 @@ func NewFlags(
 		&rf,
 		"reporter",
 		`formatter to output results in the specific format. Available reporters are "plain"(default), "junit", and "unix".`,
+	)
+	f.StringVar(
+		&f.OutputFilePath,
+		"output_file",
+		"",
+		"path/to/output.txt",
 	)
 	f.Var(
 		&pf,

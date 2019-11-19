@@ -107,6 +107,11 @@ func newFlags(
 				return nil, err
 			}
 			flags.Reporter = r
+		case "output_file":
+			if len(params) != 2 {
+				return nil, fmt.Errorf("output_file should be specified")
+			}
+			flags.OutputFilePath = params[1]
 		case "plugin":
 			if len(params) != 2 {
 				return nil, fmt.Errorf("plugin should be specified")
