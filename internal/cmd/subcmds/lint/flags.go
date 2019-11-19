@@ -50,7 +50,7 @@ func NewFlags(
 	f.Var(
 		&rf,
 		"reporter",
-		`formatter to output results in the specific format. Available reporters are "plain"(default) and "junit".`,
+		`formatter to output results in the specific format. Available reporters are "plain"(default), "junit", and "unix".`,
 	)
 	f.Var(
 		&pf,

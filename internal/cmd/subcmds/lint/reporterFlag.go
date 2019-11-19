@@ -35,9 +35,10 @@ func GetReporter(value string) (report.Reporter, error) {
 	rs := map[string]report.Reporter{
 		"plain": reporters.PlainReporter{},
 		"junit": reporters.JUnitReporter{},
+		"unix":  reporters.UnixReporter{},
 	}
 	if r, ok := rs[value]; ok {
 		return r, nil
 	}
-	return nil, fmt.Errorf(`available reporters are "plain" and "junit"`)
+	return nil, fmt.Errorf(`available reporters are "plain", "junit", and "unix"`)
 }
