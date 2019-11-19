@@ -3,6 +3,7 @@ package lint
 import (
 	"fmt"
 	"io"
+	"os"
 
 	"github.com/yoheimuta/protolint/internal/linter/config"
 
@@ -19,6 +20,7 @@ type CmdLint struct {
 	stderr     io.Writer
 	protoFiles []file.ProtoFile
 	config     CmdLintConfig
+	output     io.Writer
 }
 
 // NewCmdLint creates a new CmdLint.
@@ -41,12 +43,21 @@ func NewCmdLint(
 		flags,
 	)
 
+	output := stderr
+	if 0 < len(flags.OutputFilePath) {
+		output, err = os.OpenFile(flags.OutputFilePath, os.O_WRONLY|os.O_CREATE, 0666)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return &CmdLint{
 		l:          linter.NewLinter(),
 		stdout:     stdout,
 		stderr:     stderr,
 		protoFiles: protoSet.ProtoFiles(),
 		config:     lintConfig,
+		output:     output,
 	}, nil
 }
 
@@ -58,7 +69,7 @@ func (c *CmdLint) Run() osutil.ExitCode {
 		return osutil.ExitFailure
 	}
 
-	err = c.config.reporter.Report(c.stderr, failures)
+	err = c.config.reporter.Report(c.output, failures)
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
 		return osutil.ExitFailure
