@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package test;
+
+message Test {
+    enum State {
+        UNKNOWN_STATE = 0;
+        CLEAR = 1;
+        PULLED = 2;
+        STARTED = 3;
+    };
+}
+
+message TestResponse {
+}
+
+service RunnerService {
+    rpc ReceiveTest (Test) returns (TestResponse);
+}
