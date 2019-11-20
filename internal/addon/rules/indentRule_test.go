@@ -261,6 +261,18 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 		return
 	}
 
+	correctIssue99Path, err := newTestIndentData("issue_99.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	incorrectIssue99Path, err := newTestIndentData("incorrect_issue_99.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
 	tests := []struct {
 		name            string
 		inputTestData   testData
@@ -295,6 +307,16 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 			name:            "incorrect message",
 			inputTestData:   incorrectMessagePath,
 			wantCorrectData: correctMessagePath,
+		},
+		{
+			name:            "correct issue_99",
+			inputTestData:   correctIssue99Path,
+			wantCorrectData: correctIssue99Path,
+		},
+		{
+			name:            "incorrect issue_99",
+			inputTestData:   incorrectIssue99Path,
+			wantCorrectData: correctIssue99Path,
 		},
 	}
 

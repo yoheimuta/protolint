@@ -2,6 +2,7 @@ package rules
 
 import (
 	"strings"
+	"unicode"
 
 	"github.com/yoheimuta/protolint/internal/osutil"
 
@@ -295,7 +296,12 @@ func (v indentVisitor) validateIndent(
 	pos meta.Position,
 ) {
 	line := v.protoLines[pos.Line-1]
-	leading := string([]rune(line)[0 : pos.Column-1])
+	leading := ""
+	for _, r := range string([]rune(line)[0 : pos.Column-1]) {
+		if unicode.IsSpace(r) {
+			leading += string(r)
+		}
+	}
 
 	indentation := strings.Repeat(v.style, v.currentLevel)
 	if leading == indentation {
