@@ -43,3 +43,22 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
+brews:
+  -
+    name: protolint
+    github:
+      owner: yoheimuta
+      name: homebrew-protolint
+    commit_author:
+      name: goreleaserbot
+      email: yoheimuta@gmail.com
+    folder: Formula
+    description: "A pluggable tool to enforce Protocol Buffer style and conventions."
+    homepage: "https://github.com/yoheimuta/protolint"
+    test: |
+      system "#{bin}/protolint version"
+      system "#{bin}/protoc-gen-protolint version"
+    install: |
+      bin.install "protolint"
+      bin.install "protoc-gen-protolint"
+      prefix.install "LICENSE"
