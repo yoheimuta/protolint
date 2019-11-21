@@ -75,7 +75,7 @@ func TestGetExternalConfig(t *testing.T) {
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			got, err := config.GetExternalConfig(test.inputDirPath)
+			got, err := config.GetExternalConfig("", test.inputDirPath)
 			if test.wantExistErr {
 				if err == nil {
 					t.Errorf("got err nil, but want err")
