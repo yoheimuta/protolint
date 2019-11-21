@@ -58,7 +58,7 @@ func NewFlags(
 	f.Var(
 		&rf,
 		"reporter",
-		`formatter to output results in the specific format. Available reporters are "plain"(default), "junit", and "unix".`,
+		`formatter to output results in the specific format. Available reporters are "plain"(default), "junit", "json", and "unix".`,
 	)
 	f.StringVar(
 		&f.OutputFilePath,
