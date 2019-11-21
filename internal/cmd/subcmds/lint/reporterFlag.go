@@ -36,6 +36,7 @@ func GetReporter(value string) (report.Reporter, error) {
 		"plain": reporters.PlainReporter{},
 		"junit": reporters.JUnitReporter{},
 		"unix":  reporters.UnixReporter{},
+		"json":  reporters.JSONReporter{},
 	}
 	if r, ok := rs[value]; ok {
 		return r, nil
