@@ -15,9 +15,10 @@ const (
 
 // GetExternalConfig provides the externalConfig.
 func GetExternalConfig(
+	filePath string,
 	dirPath string,
 ) (ExternalConfig, error) {
-	filePath, err := getExternalConfigPath(dirPath)
+	filePath, err := getExternalConfigPath(filePath, dirPath)
 	if err != nil {
 		return ExternalConfig{}, err
 	}
@@ -42,8 +43,12 @@ func GetExternalConfig(
 }
 
 func getExternalConfigPath(
+	filePath string,
 	dirPath string,
 ) (string, error) {
+	if 0 < len(filePath) {
+		return filePath, nil
+	}
 	for _, name := range []string{
 		externalConfigFileName,
 		externalConfigFileName2,
