@@ -17,6 +17,7 @@ type Flags struct {
 	*flag.FlagSet
 
 	FilePaths      []string
+	ConfigPath     string
 	ConfigDirPath  string
 	FixMode        bool
 	Reporter       report.Reporter
@@ -37,10 +38,16 @@ func NewFlags(
 	var pf subcmds.PluginFlag
 
 	f.StringVar(
+		&f.ConfigPath,
+		"config_path",
+		"",
+		"path/to/protolint.yaml. Note that if both are set, config_dir_path is ignored.",
+	)
+	f.StringVar(
 		&f.ConfigDirPath,
 		"config_dir_path",
 		"",
-		"path/to/protolint.yaml",
+		"path/to/the_directory_including_protolint.yaml",
 	)
 	f.BoolVar(
 		&f.FixMode,

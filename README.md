@@ -59,6 +59,7 @@ go get -u -v github.com/yoheimuta/protolint/cmd/protolint
 protolint lint example.proto example2.proto # file mode, specify multiple specific files
 protolint lint .                            # directory mode, search for all .proto files recursively
 protolint .                                 # same as "protolint lint ."
+protolint lint -config_path=path/to/your_protolint.yaml . # use path/to/your_protolint.yaml
 protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
 protolint lint -v .                         # with verbose output to investigate the parsing error
@@ -297,6 +298,7 @@ Refer to [_example/config/.protolint.yaml](_example/config/.protolint.yaml) for 
 
 protolint will search a current working directory for the config file by default.
 And it can search the specified directory with `-config_dir_path` flag.
+It can also search the specified file with `--config_path` flag.
 
 ## Motivation
 

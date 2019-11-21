@@ -34,7 +34,7 @@ func NewCmdLint(
 		return nil, err
 	}
 
-	externalConfig, err := config.GetExternalConfig(flags.ConfigDirPath)
+	externalConfig, err := config.GetExternalConfig(flags.ConfigPath, flags.ConfigDirPath)
 	if err != nil {
 		return nil, err
 	}
