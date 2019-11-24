@@ -8,7 +8,7 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/mitchellh/go-testing-interface v1.0.0 // indirect
 	github.com/stretchr/testify v1.4.0 // indirect
-	github.com/yoheimuta/go-protoparser v3.4.0+incompatible
+	github.com/yoheimuta/go-protoparser v1.3.1-0.20191124070251-d3645978b4cf
 	golang.org/x/net v0.0.0-20191112182307-2180aed22343 // indirect
 	golang.org/x/sys v0.0.0-20191113165036-4c7a9d0fe056 // indirect
 	golang.org/x/text v0.3.2 // indirect
