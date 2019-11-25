@@ -6,7 +6,8 @@ type ExitCode int
 // ExitCode constants.
 const (
 	ExitSuccess ExitCode = iota
-	ExitFailure
+	ExitInternalFailure
+	ExitRuntimeFailure // runtime exceptions in go throw 2 by default
 	ExitLintFailure
 	ExitParseFailure
 )

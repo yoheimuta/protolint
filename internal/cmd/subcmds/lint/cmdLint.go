@@ -73,13 +73,13 @@ func (c *CmdLint) Run() osutil.ExitCode {
 		}
 
 		_, _ = fmt.Fprintln(c.stderr, err)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 
 	err = c.config.reporter.Report(c.output, failures)
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 
 	if 0 < len(failures) {

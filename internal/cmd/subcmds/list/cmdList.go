@@ -33,7 +33,7 @@ func NewCmdList(
 func (c *CmdList) Run() osutil.ExitCode {
 	err := c.run()
 	if err != nil {
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 	return osutil.ExitSuccess
 }
