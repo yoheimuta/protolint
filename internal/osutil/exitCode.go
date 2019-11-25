@@ -7,4 +7,6 @@ type ExitCode int
 const (
 	ExitSuccess ExitCode = iota
 	ExitFailure
+	ExitLintFailure
+	ExitParseFailure
 )

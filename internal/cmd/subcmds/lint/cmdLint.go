@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -65,6 +66,12 @@ func NewCmdLint(
 func (c *CmdLint) Run() osutil.ExitCode {
 	failures, err := c.run()
 	if err != nil {
+		pe := ParseError{}
+		if errors.As(err, &pe) {
+			_, _ = fmt.Fprintln(c.stderr, pe)
+			return osutil.ExitParseFailure
+		}
+
 		_, _ = fmt.Fprintln(c.stderr, err)
 		return osutil.ExitFailure
 	}
@@ -76,7 +83,7 @@ func (c *CmdLint) Run() osutil.ExitCode {
 	}
 
 	if 0 < len(failures) {
-		return osutil.ExitFailure
+		return osutil.ExitLintFailure
 	}
 
 	return osutil.ExitSuccess
@@ -95,6 +102,14 @@ func (c *CmdLint) run() ([]report.Failure, error) {
 	return allFailures, nil
 }
 
+type ParseError struct {
+	Message string
+}
+
+func (p ParseError) Error() string {
+	return p.Message
+}
+
 func (c *CmdLint) runOneFile(
 	f file.ProtoFile,
 ) ([]report.Failure, error) {
@@ -111,9 +126,9 @@ func (c *CmdLint) runOneFile(
 	proto, err := f.Parse(c.config.verbose)
 	if err != nil {
 		if c.config.verbose {
-			return nil, err
+			return nil, ParseError{Message: err.Error()}
 		}
-		return nil, fmt.Errorf("%s. Use -v for more details", err)
+		return nil, ParseError{Message: fmt.Sprintf("%s. Use -v for more details", err)}
 	}
 
 	return c.l.Run(proto, rs)
