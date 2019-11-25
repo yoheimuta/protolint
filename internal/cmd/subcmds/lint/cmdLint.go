@@ -1,7 +1,6 @@
 package lint
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -66,14 +65,14 @@ func NewCmdLint(
 func (c *CmdLint) Run() osutil.ExitCode {
 	failures, err := c.run()
 	if err != nil {
-		pe := ParseError{}
-		if errors.As(err, &pe) {
-			_, _ = fmt.Fprintln(c.stderr, pe)
-			return osutil.ExitParseFailure
-		}
-
 		_, _ = fmt.Fprintln(c.stderr, err)
-		return osutil.ExitInternalFailure
+
+		switch err.(type) {
+		case ParseError:
+			return osutil.ExitParseFailure
+		default:
+			return osutil.ExitInternalFailure
+		}
 	}
 
 	err = c.config.reporter.Report(c.output, failures)
