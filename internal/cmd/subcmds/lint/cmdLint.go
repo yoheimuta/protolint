@@ -102,6 +102,7 @@ func (c *CmdLint) run() ([]report.Failure, error) {
 	return allFailures, nil
 }
 
+// ParseError represents the error returned through a parsing exception.
 type ParseError struct {
 	Message string
 }
