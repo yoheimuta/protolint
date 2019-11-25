@@ -43,7 +43,7 @@ func NewCmdLint(
 		flags,
 	)
 
-	output := stderr
+	output := stdout
 	if 0 < len(flags.OutputFilePath) {
 		output, err = os.OpenFile(flags.OutputFilePath, os.O_WRONLY|os.O_CREATE, 0666)
 		if err != nil {
