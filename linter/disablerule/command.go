@@ -32,7 +32,7 @@ func newCommand(
 ) (command, error) {
 	subs := reDisable.FindStringSubmatch(comment)
 	if len(subs) == 2 {
-		ruleIDs := strings.Split(subs[1], " ")
+		ruleIDs := strings.Fields(strings.TrimSpace(subs[1]))
 		return command{
 			ruleIDs: ruleIDs,
 			t:       commandDisable,
@@ -41,7 +41,7 @@ func newCommand(
 
 	subs = reEnable.FindStringSubmatch(comment)
 	if len(subs) == 2 {
-		ruleIDs := strings.Split(subs[1], " ")
+		ruleIDs := strings.Fields(strings.TrimSpace(subs[1]))
 		return command{
 			ruleIDs: ruleIDs,
 			t:       commandEnable,
@@ -50,7 +50,7 @@ func newCommand(
 
 	subs = reDisableNext.FindStringSubmatch(comment)
 	if len(subs) == 2 {
-		ruleIDs := strings.Split(subs[1], " ")
+		ruleIDs := strings.Fields(strings.TrimSpace(subs[1]))
 		return command{
 			ruleIDs: ruleIDs,
 			t:       commandDisableNext,
@@ -59,7 +59,7 @@ func newCommand(
 
 	subs = reDisableThis.FindStringSubmatch(comment)
 	if len(subs) == 2 {
-		ruleIDs := strings.Split(subs[1], " ")
+		ruleIDs := strings.Fields(strings.TrimSpace(subs[1]))
 		return command{
 			ruleIDs: ruleIDs,
 			t:       commandDisableThis,
