@@ -66,13 +66,7 @@ func (c *CmdLint) Run() osutil.ExitCode {
 	failures, err := c.run()
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
-
-		switch err.(type) {
-		case ParseError:
-			return osutil.ExitParseFailure
-		default:
-			return osutil.ExitInternalFailure
-		}
+		return osutil.ExitInternalFailure
 	}
 
 	err = c.config.reporter.Report(c.output, failures)

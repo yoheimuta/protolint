@@ -5,9 +5,7 @@ type ExitCode int
 
 // ExitCode constants.
 const (
-	ExitSuccess ExitCode = iota
-	ExitInternalFailure
-	ExitRuntimeFailure // runtime exceptions in go throw 2 by default
-	ExitLintFailure
-	ExitParseFailure
+	ExitSuccess         ExitCode = iota
+	ExitLintFailure              // Lint errors, exclusively.
+	ExitInternalFailure          // All other errors: parsing, internal, runtime errors.
 )
