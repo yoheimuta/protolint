@@ -43,7 +43,7 @@ func Do(
 	switch {
 	case len(args) == 0:
 		_, _ = fmt.Fprint(stderr, help)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	default:
 		return doSub(
 			args,
@@ -78,18 +78,18 @@ func doLint(
 	if len(args) < 1 {
 		_, _ = fmt.Fprintln(stderr, "protolint lint requires at least one argument. See Usage.")
 		_, _ = fmt.Fprint(stderr, help)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 
 	flags, err := lint.NewFlags(args)
 	if err != nil {
 		_, _ = fmt.Fprint(stderr, err)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 	if len(flags.Args()) < 1 {
 		_, _ = fmt.Fprintln(stderr, "protolint lint requires at least one argument. See Usage.")
 		_, _ = fmt.Fprint(stderr, help)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 
 	subCmd, err := lint.NewCmdLint(
@@ -99,7 +99,7 @@ func doLint(
 	)
 	if err != nil {
 		_, _ = fmt.Fprint(stderr, err)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 	return subCmd.Run()
 }

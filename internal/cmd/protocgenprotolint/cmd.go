@@ -39,7 +39,7 @@ func Do(
 	subCmd, err := newSubCmd(stdin, stdout, stderr)
 	if err != nil {
 		_, _ = fmt.Fprintln(stderr, err)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 	return subCmd.Run()
 }

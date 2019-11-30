@@ -66,17 +66,17 @@ func (c *CmdLint) Run() osutil.ExitCode {
 	failures, err := c.run()
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 
 	err = c.config.reporter.Report(c.output, failures)
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
-		return osutil.ExitFailure
+		return osutil.ExitInternalFailure
 	}
 
 	if 0 < len(failures) {
-		return osutil.ExitFailure
+		return osutil.ExitLintFailure
 	}
 
 	return osutil.ExitSuccess
@@ -95,6 +95,15 @@ func (c *CmdLint) run() ([]report.Failure, error) {
 	return allFailures, nil
 }
 
+// ParseError represents the error returned through a parsing exception.
+type ParseError struct {
+	Message string
+}
+
+func (p ParseError) Error() string {
+	return p.Message
+}
+
 func (c *CmdLint) runOneFile(
 	f file.ProtoFile,
 ) ([]report.Failure, error) {
@@ -111,9 +120,9 @@ func (c *CmdLint) runOneFile(
 	proto, err := f.Parse(c.config.verbose)
 	if err != nil {
 		if c.config.verbose {
-			return nil, err
+			return nil, ParseError{Message: err.Error()}
 		}
-		return nil, fmt.Errorf("%s. Use -v for more details", err)
+		return nil, ParseError{Message: fmt.Sprintf("%s. Use -v for more details", err)}
 	}
 
 	return c.l.Run(proto, rs)
