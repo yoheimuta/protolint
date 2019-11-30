@@ -2,7 +2,7 @@ version: 2
 jobs:
   lint:
     docker:
-      - image: circleci/golang:1.12.5
+      - image: circleci/golang:1.13.4
         environment:
           GO111MODULE: "on"
     working_directory: /go/src/github.com/yoheimuta/protolint
@@ -12,7 +12,7 @@ jobs:
       - run: make test/lint
   test:
     docker:
-      - image: circleci/golang:1.12.5
+      - image: circleci/golang:1.13.4
         environment:
           GO111MODULE: "on"
     working_directory: /go/src/github.com/yoheimuta/protolint
@@ -21,7 +21,7 @@ jobs:
       - run: make test
   deploy:
     docker:
-      - image: circleci/golang:1.12.5
+      - image: circleci/golang:1.13.4
         environment:
           GO111MODULE: "on"
     working_directory: /go/src/github.com/yoheimuta/protolint
