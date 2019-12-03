@@ -1,9 +1,8 @@
 package file_test
 
 import (
-	"testing"
-
 	"path/filepath"
+	"testing"
 
 	"github.com/yoheimuta/protolint/internal/linter/file"
 	"github.com/yoheimuta/protolint/internal/setting_test"

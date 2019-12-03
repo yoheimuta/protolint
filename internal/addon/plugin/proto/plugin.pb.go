@@ -6,15 +6,18 @@ package proto
 import (
 	context "context"
 	fmt "fmt"
+	math "math"
+
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
-	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ = proto.Marshal
-var _ = fmt.Errorf
-var _ = math.Inf
+var (
+	_ = proto.Marshal
+	_ = fmt.Errorf
+	_ = math.Inf
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -40,15 +43,19 @@ func (*ListRulesRequest) Descriptor() ([]byte, []int) {
 func (m *ListRulesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListRulesRequest.Unmarshal(m, b)
 }
+
 func (m *ListRulesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ListRulesRequest.Marshal(b, m, deterministic)
 }
+
 func (m *ListRulesRequest) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ListRulesRequest.Merge(m, src)
 }
+
 func (m *ListRulesRequest) XXX_Size() int {
 	return xxx_messageInfo_ListRulesRequest.Size(m)
 }
+
 func (m *ListRulesRequest) XXX_DiscardUnknown() {
 	xxx_messageInfo_ListRulesRequest.DiscardUnknown(m)
 }
@@ -86,15 +93,19 @@ func (*ListRulesResponse) Descriptor() ([]byte, []int) {
 func (m *ListRulesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListRulesResponse.Unmarshal(m, b)
 }
+
 func (m *ListRulesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ListRulesResponse.Marshal(b, m, deterministic)
 }
+
 func (m *ListRulesResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ListRulesResponse.Merge(m, src)
 }
+
 func (m *ListRulesResponse) XXX_Size() int {
 	return xxx_messageInfo_ListRulesResponse.Size(m)
 }
+
 func (m *ListRulesResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_ListRulesResponse.DiscardUnknown(m)
 }
@@ -126,15 +137,19 @@ func (*ListRulesResponse_Rule) Descriptor() ([]byte, []int) {
 func (m *ListRulesResponse_Rule) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListRulesResponse_Rule.Unmarshal(m, b)
 }
+
 func (m *ListRulesResponse_Rule) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ListRulesResponse_Rule.Marshal(b, m, deterministic)
 }
+
 func (m *ListRulesResponse_Rule) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ListRulesResponse_Rule.Merge(m, src)
 }
+
 func (m *ListRulesResponse_Rule) XXX_Size() int {
 	return xxx_messageInfo_ListRulesResponse_Rule.Size(m)
 }
+
 func (m *ListRulesResponse_Rule) XXX_DiscardUnknown() {
 	xxx_messageInfo_ListRulesResponse_Rule.DiscardUnknown(m)
 }
@@ -173,15 +188,19 @@ func (*ApplyRequest) Descriptor() ([]byte, []int) {
 func (m *ApplyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyRequest.Unmarshal(m, b)
 }
+
 func (m *ApplyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ApplyRequest.Marshal(b, m, deterministic)
 }
+
 func (m *ApplyRequest) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ApplyRequest.Merge(m, src)
 }
+
 func (m *ApplyRequest) XXX_Size() int {
 	return xxx_messageInfo_ApplyRequest.Size(m)
 }
+
 func (m *ApplyRequest) XXX_DiscardUnknown() {
 	xxx_messageInfo_ApplyRequest.DiscardUnknown(m)
 }
@@ -219,15 +238,19 @@ func (*ApplyResponse) Descriptor() ([]byte, []int) {
 func (m *ApplyResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyResponse.Unmarshal(m, b)
 }
+
 func (m *ApplyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ApplyResponse.Marshal(b, m, deterministic)
 }
+
 func (m *ApplyResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ApplyResponse.Merge(m, src)
 }
+
 func (m *ApplyResponse) XXX_Size() int {
 	return xxx_messageInfo_ApplyResponse.Size(m)
 }
+
 func (m *ApplyResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_ApplyResponse.DiscardUnknown(m)
 }
@@ -260,15 +283,19 @@ func (*ApplyResponse_Position) Descriptor() ([]byte, []int) {
 func (m *ApplyResponse_Position) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyResponse_Position.Unmarshal(m, b)
 }
+
 func (m *ApplyResponse_Position) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ApplyResponse_Position.Marshal(b, m, deterministic)
 }
+
 func (m *ApplyResponse_Position) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ApplyResponse_Position.Merge(m, src)
 }
+
 func (m *ApplyResponse_Position) XXX_Size() int {
 	return xxx_messageInfo_ApplyResponse_Position.Size(m)
 }
+
 func (m *ApplyResponse_Position) XXX_DiscardUnknown() {
 	xxx_messageInfo_ApplyResponse_Position.DiscardUnknown(m)
 }
@@ -314,15 +341,19 @@ func (*ApplyResponse_Failure) Descriptor() ([]byte, []int) {
 func (m *ApplyResponse_Failure) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyResponse_Failure.Unmarshal(m, b)
 }
+
 func (m *ApplyResponse_Failure) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ApplyResponse_Failure.Marshal(b, m, deterministic)
 }
+
 func (m *ApplyResponse_Failure) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ApplyResponse_Failure.Merge(m, src)
 }
+
 func (m *ApplyResponse_Failure) XXX_Size() int {
 	return xxx_messageInfo_ApplyResponse_Failure.Size(m)
 }
+
 func (m *ApplyResponse_Failure) XXX_DiscardUnknown() {
 	xxx_messageInfo_ApplyResponse_Failure.DiscardUnknown(m)
 }
@@ -383,8 +414,10 @@ var fileDescriptor_22a625af4bc1cc87 = []byte{
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConn
+var (
+	_ context.Context
+	_ grpc.ClientConn
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.

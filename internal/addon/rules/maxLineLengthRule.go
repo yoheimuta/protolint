@@ -6,8 +6,9 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
+
 	"github.com/yoheimuta/protolint/linter/disablerule"
 	"github.com/yoheimuta/protolint/linter/report"
 )

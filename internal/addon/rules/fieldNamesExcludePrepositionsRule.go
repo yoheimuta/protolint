@@ -3,41 +3,40 @@ package rules
 import (
 	"strings"
 
-	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
+
 	"github.com/yoheimuta/protolint/internal/stringsutil"
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
-var (
-	// Default values are a conservative list picked out from all preposition candidates.
-	// See https://www.talkenglish.com/vocabulary/top-50-prepositions.aspx
-	defaultPrepositions = []string{
-		"of",
-		"with",
-		"at",
-		"from",
-		"into",
-		"during",
-		"including",
-		"until",
-		"against",
-		"among",
-		"throughout",
-		"despite",
-		"towards",
-		"upon",
-		"concerning",
+// Default values are a conservative list picked out from all preposition candidates.
+// See https://www.talkenglish.com/vocabulary/top-50-prepositions.aspx
+var defaultPrepositions = []string{
+	"of",
+	"with",
+	"at",
+	"from",
+	"into",
+	"during",
+	"including",
+	"until",
+	"against",
+	"among",
+	"throughout",
+	"despite",
+	"towards",
+	"upon",
+	"concerning",
 
-		"to",
-		"in",
-		"for",
-		"on",
-		"by",
-		"about",
-	}
-)
+	"to",
+	"in",
+	"for",
+	"on",
+	"by",
+	"about",
+}
 
 // FieldNamesExcludePrepositionsRule verifies that all field names don't include prepositions (e.g. "for", "during", "at").
 // It is assumed that the field names are underscore_separated_names.
