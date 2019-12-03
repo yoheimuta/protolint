@@ -4,8 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/yoheimuta/protolint/internal/linter/config"
 	"gopkg.in/yaml.v2"
+
+	"github.com/yoheimuta/protolint/internal/linter/config"
 )
 
 func TestImportsSortedOption_UnmarshalYAML(t *testing.T) {

@@ -6,7 +6,8 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/stringsutil"
 
-	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
+
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"

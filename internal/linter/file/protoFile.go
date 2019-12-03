@@ -3,8 +3,8 @@ package file
 import (
 	"os"
 
-	protoparser "github.com/yoheimuta/go-protoparser"
-	"github.com/yoheimuta/go-protoparser/parser"
+	protoparser "github.com/yoheimuta/go-protoparser/v4"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
 )
 
 // ProtoFile is a Protocol Buffer file.

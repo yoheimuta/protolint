@@ -1,11 +1,10 @@
 package list
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/yoheimuta/protolint/internal/linter/config"
-
-	"fmt"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 	"github.com/yoheimuta/protolint/internal/osutil"

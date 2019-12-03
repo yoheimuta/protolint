@@ -1,6 +1,6 @@
 package disablerule
 
-import "github.com/yoheimuta/go-protoparser/parser"
+import "github.com/yoheimuta/go-protoparser/v4/parser"
 
 // Interpreter represents an interpreter for disable rule comments.
 type Interpreter struct {

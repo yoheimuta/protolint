@@ -1,7 +1,7 @@
 package visitor
 
 import (
-	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
 )
 
 // BaseVisitor represents a base visitor with noop logic.

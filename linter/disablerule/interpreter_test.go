@@ -6,7 +6,7 @@ import (
 
 	"github.com/yoheimuta/protolint/linter/disablerule"
 
-	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
 )
 
 func TestInterpreter_Interpret(t *testing.T) {

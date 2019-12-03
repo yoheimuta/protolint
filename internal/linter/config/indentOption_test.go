@@ -5,8 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yoheimuta/protolint/internal/linter/config"
 	yaml "gopkg.in/yaml.v2"
+
+	"github.com/yoheimuta/protolint/internal/linter/config"
 )
 
 func TestIndentOption_UnmarshalYAML(t *testing.T) {
