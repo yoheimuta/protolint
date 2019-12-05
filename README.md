@@ -87,6 +87,10 @@ JetBrains IntelliJ IDEA, GoLand, WebStorm, PHPStorm, PyCharm...
 
 - [intellij-protolint](https://github.com/yoheimuta/intellij-protolint)
 
+Vim
+
+- [vim-protolint](https://github.com/yoheimuta/vim-protolint)
+
 ## GitHub Action
 
 A [GitHub Action](https://github.com/features/actions) to run protolint in your workflows
