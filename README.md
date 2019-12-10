@@ -1,4 +1,4 @@
-# protolint 
+# protolint
 [![CircleCI](https://circleci.com/gh/yoheimuta/protolint/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/protolint/tree/master)
 [![Release](https://img.shields.io/github/v/release/yoheimuta/protolint?include_prereleases)](https://github.com/yoheimuta/protolint/releases)[
 ![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)
@@ -18,6 +18,12 @@ protolint is the pluggable linting utility for Protocol Buffer files (proto2+pro
   - Editor integration
   - GitHub Action
   - CI Integration
+
+## Demo
+
+For example, vim-protolint works like the following.
+
+<img src="_doc/demo.gif" alt="demo" width="600"/>
 
 ## Installation
 
