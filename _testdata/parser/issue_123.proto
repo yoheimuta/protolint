@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+service Foo {
+    rpc Bar(Baz) returns (Baz) {
+        option (opt) = {
+            empty : {}
+        };
+    }
+}
+
+message Baz {}
