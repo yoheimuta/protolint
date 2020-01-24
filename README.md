@@ -318,7 +318,7 @@ It can also search the specified file with `--config_path` flag.
 
 ## Motivation
 
-There exists the similar protobuf linters as of 2018-12-20.
+There exists the similar protobuf linters as of 2018/12/20.
 
 One is a plug-in for Google's Protocol Buffers compiler.
 
@@ -330,6 +330,13 @@ Other is a command line tool which also lints Protocol Buffer files.
 - While it has a lot of features other than lint, it seems cumbersome for users who just want the linter.
 - The lint rule slants towards to be opinionated.
 - Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to understand both rules and the guide in detail, and then to combine the rules accurately.
+
+### Other tools
+
+I wrote an article comparing various Protocol Buffer Linters, including protolint, on 2019/12/17.
+
+- https://qiita.com/yoheimuta/items/da7678fcd046b93a2637
+  - NOTE: This one is written in Japanese.
 
 ## Dependencies
 
