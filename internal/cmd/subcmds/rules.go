@@ -91,6 +91,8 @@ func newAllInternalRules(
 		rules.NewFieldsHaveCommentRule(
 			fieldsHaveComment.ShouldFollowGolangStyle,
 		),
+		rules.NewProto3FieldsAvoidRequiredRule(),
+		rules.NewProto3GroupsAvoidRule(),
 
 		rules.NewMessageNamesUpperCamelCaseRule(),
 		rules.NewMessageNamesExcludePrepositionsRule(

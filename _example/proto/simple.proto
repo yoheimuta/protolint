@@ -33,6 +33,10 @@ message outer {
   string  end_of_support_version= 6;
     message AccountForAdmin {}
   message SpecialEndOfSupport {}
+  required inner inner_message = 7;
+  group Result = 8 {
+    string url = 9;
+  }
 }
 service SearchApi {
     rpc search (SearchRequest) returns (SearchResponse) {};
