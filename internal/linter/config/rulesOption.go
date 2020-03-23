@@ -17,4 +17,5 @@ type RulesOption struct {
 	EnumsHaveComment                EnumsHaveCommentOption                `yaml:"enums_have_comment"`
 	EnumFieldsHaveComment           EnumFieldsHaveCommentOption           `yaml:"enum_fields_have_comment"`
 	SyntaxConsistent                SyntaxConsistentOption                `yaml:"syntax_consistent"`
+	RepeatedFieldNamesPluralized    RepeatedFieldNamesPluralizedOption    `yaml:"repeated_field_names_pluralized"`
 }

@@ -7,6 +7,7 @@ import (
 )
 
 // Proto3FieldsAvoidRequiredRule verifies that all fields should avoid required for proto3.
+// See https://developers.google.com/protocol-buffers/docs/style#things-to-avoid
 type Proto3FieldsAvoidRequiredRule struct {
 }
 

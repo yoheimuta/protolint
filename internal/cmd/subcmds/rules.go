@@ -44,6 +44,7 @@ func newAllInternalRules(
 	fieldsHaveComment := option.FieldsHaveComment
 	enumsHaveComment := option.EnumsHaveComment
 	enumFieldsHaveComment := option.EnumFieldsHaveComment
+	repeatedFieldNamesPluralized := option.RepeatedFieldNamesPluralized
 
 	return internalrule.Rules{
 		rules.NewSyntaxConsistentRule(
@@ -93,6 +94,12 @@ func newAllInternalRules(
 		),
 		rules.NewProto3FieldsAvoidRequiredRule(),
 		rules.NewProto3GroupsAvoidRule(),
+		rules.NewRepeatedFieldNamesPluralizedRule(
+			repeatedFieldNamesPluralized.PluralRules,
+			repeatedFieldNamesPluralized.SingularRules,
+			repeatedFieldNamesPluralized.UncountableRules,
+			repeatedFieldNamesPluralized.IrregularRules,
+		),
 
 		rules.NewMessageNamesUpperCamelCaseRule(),
 		rules.NewMessageNamesExcludePrepositionsRule(

@@ -37,6 +37,11 @@ message outer {
   group Result = 8 {
     string url = 9;
   }
+  repeated group Result = 10 {
+  }
+  repeated inner paper = 11;
+  repeated group Regular = 12 {
+  }
 }
 service SearchApi {
     rpc search (SearchRequest) returns (SearchResponse) {};

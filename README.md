@@ -146,6 +146,7 @@ Some rules support a feature that automatically fixed the problems.
 | Yes | INDENT    | Enforces a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 2 spaces. You can configure the detail with `.protolint.yaml`. |
 | Yes | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
 | Yes | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
+| Yes | REPEATED_FIELD_NAMES_PLURALIZED   | Verifies that repeated field names are pluralized names.            |
 | No | SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. You can configure the specific suffix with `.protolint.yaml`. |
 | No | FIELD_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
 | No | MESSAGE_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all message names don't include prepositions (e.g. "With", "For"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
@@ -262,6 +263,13 @@ __RPC_NAMES_UPPER_CAMEL_CASE__
   rpc get_something(FooRequest) returns (FooResponse);
   rpc GetSomething(FooRequest) returns (FooResponse);
 }
+```
+
+__REPEATED_FIELD_NAMES_PLURALIZED__
+
+```diff
+-  repeated string song_name = 1;
++  repeated string song_names = 1;
 ```
 
 ## Creating your custom rules

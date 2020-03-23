@@ -50,6 +50,7 @@ lint:
       - FIELDS_HAVE_COMMENT
       - PROTO3_FIELDS_AVOID_REQUIRED
       - PROTO3_GROUPS_AVOID
+      - REPEATED_FIELD_NAMES_PLURALIZED
       - ENUMS_HAVE_COMMENT
       - ENUM_FIELDS_HAVE_COMMENT
       - SYNTAX_CONSISTENT
@@ -102,6 +103,15 @@ lint:
       # The specific keywords including prepositions to ignore. E.g. end_of_support is a term you would like to use, and skip checking.
       excludes:
         - end_of_support
+
+    # REPEATED_FIELD_NAMES_PLURALIZED rule option.
+    ## The spec for each rules follows the implementation of https://github.com/gertd/go-pluralize.
+    ## Plus, you can refer to this rule's test code.
+    repeated_field_names_pluralized:
+      uncountable_rules:
+        - paper
+      irregular_rules:
+        Irregular: Regular
 
     # MESSAGE_NAMES_EXCLUDE_PREPOSITIONS rule option.
     message_names_exclude_prepositions:
