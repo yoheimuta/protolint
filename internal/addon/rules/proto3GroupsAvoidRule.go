@@ -7,6 +7,7 @@ import (
 )
 
 // Proto3GroupsAvoidRule verifies that all groups should be avoided for proto3.
+// See https://developers.google.com/protocol-buffers/docs/style#things-to-avoid
 type Proto3GroupsAvoidRule struct {
 }
 
@@ -49,7 +50,7 @@ func (v *proto3GroupsAvoidVisitor) VisitSyntax(s *parser.Syntax) bool {
 	return false
 }
 
-// VisitField checks the field.
+// VisitGroupField checks the group field.
 func (v *proto3GroupsAvoidVisitor) VisitGroupField(field *parser.GroupField) bool {
 	if v.isProto3 {
 		v.AddFailuref(field.Meta.Pos, `Group %q should be avoided for proto3`, field.GroupName)
