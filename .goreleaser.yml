@@ -54,7 +54,7 @@ brews:
       name: goreleaserbot
       email: yoheimuta@gmail.com
     folder: Formula
-    description: "A pluggable tool to enforce Protocol Buffer style and conventions."
+    description: "Pluggable tool to enforce Protocol Buffer style and conventions"
     homepage: "https://github.com/yoheimuta/protolint"
     test: |
       system "#{bin}/protolint version"
