@@ -101,6 +101,7 @@ Vim
 
 A [GitHub Action](https://github.com/features/actions) to run protolint in your workflows
 
+- [super-linter](https://github.com/github/super-linter)
 - [protolint-action](https://github.com/plexsystems/protolint-action)
 
 ## CI Integration
