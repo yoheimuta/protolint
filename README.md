@@ -74,6 +74,7 @@ protolint lint -config_path=path/to/your_protolint.yaml . # use path/to/your_pro
 protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
 protolint lint -v .                         # with verbose output to investigate the parsing error
+protolint lint -no-error-on-unmatched-pattern . # exits with success code even if no file is found (file & directory mode)
 protolint lint -reporter junit .            # output results in JUnit XML format
 protolint lint -output_file=path/to/out.txt # output results to path/to/out.txt
 protolint lint -plugin ./my_custom_rule1 -plugin ./my_custom_rule2 .   # run custom lint rules.
