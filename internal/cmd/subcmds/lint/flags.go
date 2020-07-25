@@ -16,14 +16,15 @@ import (
 type Flags struct {
 	*flag.FlagSet
 
-	FilePaths      []string
-	ConfigPath     string
-	ConfigDirPath  string
-	FixMode        bool
-	Reporter       report.Reporter
-	OutputFilePath string
-	Verbose        bool
-	Plugins        []shared.RuleSet
+	FilePaths                 []string
+	ConfigPath                string
+	ConfigDirPath             string
+	FixMode                   bool
+	Reporter                  report.Reporter
+	OutputFilePath            string
+	Verbose                   bool
+	NoErrorOnUnmatchedPattern bool
+	Plugins                   []shared.RuleSet
 }
 
 // NewFlags creates a new Flags.
@@ -76,6 +77,12 @@ func NewFlags(
 		"v",
 		false,
 		"verbose output that includes parsing process details",
+	)
+	f.BoolVar(
+		&f.NoErrorOnUnmatchedPattern,
+		"no-error-on-unmatched-pattern",
+		false,
+		"exits with 0 when no file is matched",
 	)
 
 	_ = f.Parse(args)

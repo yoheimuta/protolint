@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds/lint"
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds/list"
@@ -99,6 +100,11 @@ func doLint(
 	)
 	if err != nil {
 		_, _ = fmt.Fprint(stderr, err)
+		if flags.NoErrorOnUnmatchedPattern &&
+			(strings.Contains(err.Error(), "not found protocol buffer files") ||
+				strings.Contains(err.Error(), "system cannot find the file")) {
+			return osutil.ExitSuccess
+		}
 		return osutil.ExitInternalFailure
 	}
 	return subCmd.Run()
