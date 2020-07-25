@@ -328,6 +328,14 @@ protolint will search a current working directory for the config file by default
 And it can search the specified directory with `-config_dir_path` flag.
 It can also search the specified file with `--config_path` flag.
 
+## Exit codes
+
+When linting files, protolint will exit with one of the following exit codes:
+
+- `0`: Linting was successful and there are no linting errors.
+- `1`: Linting was successful and there is at least one linting error.
+- `2`: Linting was unsuccessful due to all other errors, such as parsing, internal, and runtime errors.
+
 ## Motivation
 
 There exists the similar protobuf linters as of 2018/12/20.
