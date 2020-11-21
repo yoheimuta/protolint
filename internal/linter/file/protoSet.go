@@ -44,6 +44,10 @@ func collectAllProtoFilesFromArgs(
 	if err != nil {
 		return nil, err
 	}
+	// Eval a possible symlink for the cwd to calculate the correct relative paths in the next step.
+	if newPath, err := filepath.EvalSymlinks(absCwd); err == nil {
+		absCwd = newPath
+	}
 
 	var fs []ProtoFile
 	for _, path := range targetPaths {
