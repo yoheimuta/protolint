@@ -80,7 +80,7 @@ func (r IndentRule) Apply(
 		fixMode:        r.fixMode,
 		newline:        r.newline,
 		protoFileName:  fileName,
-		indentFixes:    make(map[int]indentFix),
+		indentFixes:    make(map[int][]indentFix),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
@@ -99,7 +99,7 @@ type indentVisitor struct {
 	fixMode       bool
 	newline       string
 	protoFileName string
-	indentFixes   map[int]indentFix
+	indentFixes   map[int][]indentFix
 }
 
 func (v indentVisitor) Finally() error {
@@ -305,6 +305,13 @@ func (v indentVisitor) validateIndent(
 	}
 
 	indentation := strings.Repeat(v.style, v.currentLevel)
+	if v.fixMode {
+		v.indentFixes[pos.Line-1] = append(v.indentFixes[pos.Line-1], indentFix{
+			currentChars: len(leading),
+			replacement:  indentation,
+		})
+	}
+
 	if leading == indentation {
 		return
 	}
@@ -314,13 +321,6 @@ func (v indentVisitor) validateIndent(
 		leading,
 		indentation,
 	)
-
-	if v.fixMode {
-		v.indentFixes[pos.Line-1] = indentFix{
-			currentChars: len(leading),
-			replacement:  indentation,
-		}
-	}
 }
 
 func (v *indentVisitor) nest() func() {
@@ -336,7 +336,7 @@ func (v indentVisitor) fix() error {
 	var fixedLines []string
 	for i, line := range v.protoLines {
 		if fix, ok := v.indentFixes[i]; ok {
-			line = fix.replacement + line[fix.currentChars:]
+			line = fix[0].replacement + line[fix[0].currentChars:]
 			shouldFixed = true
 		}
 		fixedLines = append(fixedLines, line)
