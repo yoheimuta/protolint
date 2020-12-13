@@ -273,6 +273,18 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 		return
 	}
 
+	incorrectIssue139Path, err := newTestIndentData("incorrect_issue_139.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	correctIssue139Path, err := newTestIndentData("correct_issue_139.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
 	tests := []struct {
 		name            string
 		inputTestData   testData
@@ -317,6 +329,11 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 			name:            "incorrect issue_99",
 			inputTestData:   incorrectIssue99Path,
 			wantCorrectData: correctIssue99Path,
+		},
+		{
+			name:            "do nothing against inner elements on the same line. Fix https://github.com/yoheimuta/protolint/issues/139",
+			inputTestData:   incorrectIssue139Path,
+			wantCorrectData: correctIssue139Path,
 		},
 	}
 
