@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package foobar;
+
+option java_package = "com.test.foo.bar";
+
+  message TestMessage { string test_field = 1; }

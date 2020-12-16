@@ -8,7 +8,7 @@ message TestMessage { string test_field = 1; }
 
 message TestMessageWithTwoInnerElements { string test_field = 1; string test_field2 = 2; }
 
-  message TestMessageWithWrongOuterIndentation { string test_field = 1; }
+message TestMessageWithWrongOuterIndentation { string test_field = 1; }
 
 message TestMessageWithoutExtraSpaces {string test_field = 1;}
 
