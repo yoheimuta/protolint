@@ -465,9 +465,34 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 				)
 			}
 
-			err = test.inputTestData.restore()
+			// restore the file
+			defer func() {
+				err = test.inputTestData.restore()
+				if err != nil {
+					t.Errorf("got err %v", err)
+				}
+			}()
+
+			// check whether the modified content can pass the lint in the end.
+			ruleOnlyCheck := rules.NewIndentRule(
+				space2,
+				"\n",
+				!test.inputInsertNewline,
+				false,
+			)
+			proto, err = file.NewProtoFile(test.inputTestData.filePath, test.inputTestData.filePath).Parse(false)
 			if err != nil {
-				t.Errorf("got err %v", err)
+				t.Errorf(err.Error())
+				return
+			}
+			gotCheck, err := ruleOnlyCheck.Apply(proto)
+			if err != nil {
+				t.Errorf("got err %v, but want nil", err)
+				return
+			}
+			if 0 < len(gotCheck) {
+				t.Errorf("got failures %v, but want no failures", gotCheck)
+				return
 			}
 		})
 	}
