@@ -23,15 +23,17 @@ const (
 
 // IndentRule enforces a consistent indentation style.
 type IndentRule struct {
-	style   string
-	newline string
-	fixMode bool
+	style            string
+	newline          string
+	notInsertNewline bool
+	fixMode          bool
 }
 
 // NewIndentRule creates a new IndentRule.
 func NewIndentRule(
 	style string,
 	newline string,
+	notInsertNewline bool,
 	fixMode bool,
 ) IndentRule {
 	if len(style) == 0 {
@@ -42,9 +44,10 @@ func NewIndentRule(
 	}
 
 	return IndentRule{
-		style:   style,
-		newline: newline,
-		fixMode: fixMode,
+		style:            style,
+		newline:          newline,
+		notInsertNewline: notInsertNewline,
+		fixMode:          fixMode,
 	}
 }
 
@@ -74,13 +77,14 @@ func (r IndentRule) Apply(
 	}
 
 	v := &indentVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
-		style:          r.style,
-		protoLines:     lines,
-		fixMode:        r.fixMode,
-		newline:        r.newline,
-		protoFileName:  fileName,
-		indentFixes:    make(map[int]indentFix),
+		BaseAddVisitor:   visitor.NewBaseAddVisitor(r.ID()),
+		style:            r.style,
+		protoLines:       lines,
+		fixMode:          r.fixMode,
+		newline:          r.newline,
+		notInsertNewline: r.notInsertNewline,
+		protoFileName:    fileName,
+		indentFixes:      make(map[int][]indentFix),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
@@ -88,6 +92,9 @@ func (r IndentRule) Apply(
 type indentFix struct {
 	currentChars int
 	replacement  string
+	level        int
+	pos          meta.Position
+	isLast       bool
 }
 
 type indentVisitor struct {
@@ -96,10 +103,11 @@ type indentVisitor struct {
 	protoLines   []string
 	currentLevel int
 
-	fixMode       bool
-	newline       string
-	protoFileName string
-	indentFixes   map[int]indentFix
+	fixMode          bool
+	newline          string
+	notInsertNewline bool
+	protoFileName    string
+	indentFixes      map[int][]indentFix
 }
 
 func (v indentVisitor) Finally() error {
@@ -110,12 +118,10 @@ func (v indentVisitor) Finally() error {
 }
 
 func (v indentVisitor) VisitEnum(e *parser.Enum) (next bool) {
-	v.validateIndent(e.Meta.Pos)
-	if e.Meta.Pos.Line < e.Meta.LastPos.Line {
-		v.validateIndent(e.Meta.LastPos)
-	}
+	v.validateIndentLeading(e.Meta.Pos)
+	defer func() { v.validateIndentLast(e.Meta.LastPos) }()
 	for _, comment := range e.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 
 	defer v.nest()()
@@ -126,20 +132,18 @@ func (v indentVisitor) VisitEnum(e *parser.Enum) (next bool) {
 }
 
 func (v indentVisitor) VisitEnumField(f *parser.EnumField) (next bool) {
-	v.validateIndent(f.Meta.Pos)
+	v.validateIndentLeading(f.Meta.Pos)
 	for _, comment := range f.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
 func (v indentVisitor) VisitExtend(e *parser.Extend) (next bool) {
-	v.validateIndent(e.Meta.Pos)
-	if e.Meta.Pos.Line < e.Meta.LastPos.Line {
-		v.validateIndent(e.Meta.LastPos)
-	}
+	v.validateIndentLeading(e.Meta.Pos)
+	defer func() { v.validateIndentLast(e.Meta.LastPos) }()
 	for _, comment := range e.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 
 	defer v.nest()()
@@ -150,20 +154,18 @@ func (v indentVisitor) VisitExtend(e *parser.Extend) (next bool) {
 }
 
 func (v indentVisitor) VisitField(f *parser.Field) (next bool) {
-	v.validateIndent(f.Meta.Pos)
+	v.validateIndentLeading(f.Meta.Pos)
 	for _, comment := range f.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
 func (v indentVisitor) VisitGroupField(f *parser.GroupField) (next bool) {
-	v.validateIndent(f.Meta.Pos)
-	if f.Meta.Pos.Line < f.Meta.LastPos.Line {
-		v.validateIndent(f.Meta.LastPos)
-	}
+	v.validateIndentLeading(f.Meta.Pos)
+	defer func() { v.validateIndentLast(f.Meta.LastPos) }()
 	for _, comment := range f.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 
 	defer v.nest()()
@@ -174,28 +176,26 @@ func (v indentVisitor) VisitGroupField(f *parser.GroupField) (next bool) {
 }
 
 func (v indentVisitor) VisitImport(i *parser.Import) (next bool) {
-	v.validateIndent(i.Meta.Pos)
+	v.validateIndentLeading(i.Meta.Pos)
 	for _, comment := range i.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
 func (v indentVisitor) VisitMapField(m *parser.MapField) (next bool) {
-	v.validateIndent(m.Meta.Pos)
+	v.validateIndentLeading(m.Meta.Pos)
 	for _, comment := range m.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
 func (v indentVisitor) VisitMessage(m *parser.Message) (next bool) {
-	v.validateIndent(m.Meta.Pos)
-	if m.Meta.Pos.Line < m.Meta.LastPos.Line {
-		v.validateIndent(m.Meta.LastPos)
-	}
+	v.validateIndentLeading(m.Meta.Pos)
+	defer func() { v.validateIndentLast(m.Meta.LastPos) }()
 	for _, comment := range m.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 
 	defer v.nest()()
@@ -206,12 +206,10 @@ func (v indentVisitor) VisitMessage(m *parser.Message) (next bool) {
 }
 
 func (v indentVisitor) VisitOneof(o *parser.Oneof) (next bool) {
-	v.validateIndent(o.Meta.Pos)
-	if o.Meta.Pos.Line < o.Meta.LastPos.Line {
-		v.validateIndent(o.Meta.LastPos)
-	}
+	v.validateIndentLeading(o.Meta.Pos)
+	defer func() { v.validateIndentLast(o.Meta.LastPos) }()
 	for _, comment := range o.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 
 	defer v.nest()()
@@ -222,44 +220,57 @@ func (v indentVisitor) VisitOneof(o *parser.Oneof) (next bool) {
 }
 
 func (v indentVisitor) VisitOneofField(f *parser.OneofField) (next bool) {
-	v.validateIndent(f.Meta.Pos)
+	v.validateIndentLeading(f.Meta.Pos)
 	for _, comment := range f.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
 func (v indentVisitor) VisitOption(o *parser.Option) (next bool) {
-	v.validateIndent(o.Meta.Pos)
+	v.validateIndentLeading(o.Meta.Pos)
 	for _, comment := range o.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
 func (v indentVisitor) VisitPackage(p *parser.Package) (next bool) {
-	v.validateIndent(p.Meta.Pos)
+	v.validateIndentLeading(p.Meta.Pos)
 	for _, comment := range p.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
 func (v indentVisitor) VisitReserved(r *parser.Reserved) (next bool) {
-	v.validateIndent(r.Meta.Pos)
+	v.validateIndentLeading(r.Meta.Pos)
 	for _, comment := range r.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
 func (v indentVisitor) VisitRPC(r *parser.RPC) (next bool) {
-	v.validateIndent(r.Meta.Pos)
-	if r.Meta.Pos.Line < r.Meta.LastPos.Line {
-		v.validateIndent(r.Meta.LastPos)
-	}
+	v.validateIndentLeading(r.Meta.Pos)
+	defer func() {
+		line := v.protoLines[r.Meta.LastPos.Line-1]
+		runes := []rune(line)
+		for i := r.Meta.LastPos.Column - 2; 0 < i; i-- {
+			r := runes[i]
+			if r == '{' || r == ')' {
+				// skip validating the indentation when the line ends with {}, {};, or );
+				return
+			}
+			if r == '}' || unicode.IsSpace(r) {
+				continue
+			}
+			break
+		}
+		v.validateIndentLast(r.Meta.LastPos)
+	}()
 	for _, comment := range r.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 
 	defer v.nest()()
@@ -270,12 +281,10 @@ func (v indentVisitor) VisitRPC(r *parser.RPC) (next bool) {
 }
 
 func (v indentVisitor) VisitService(s *parser.Service) (next bool) {
-	v.validateIndent(s.Meta.Pos)
-	if s.Meta.Pos.Line < s.Meta.LastPos.Line {
-		v.validateIndent(s.Meta.LastPos)
-	}
+	v.validateIndentLeading(s.Meta.Pos)
+	defer func() { v.validateIndentLast(s.Meta.LastPos) }()
 	for _, comment := range s.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 
 	defer v.nest()()
@@ -286,40 +295,64 @@ func (v indentVisitor) VisitService(s *parser.Service) (next bool) {
 }
 
 func (v indentVisitor) VisitSyntax(s *parser.Syntax) (next bool) {
-	v.validateIndent(s.Meta.Pos)
+	v.validateIndentLeading(s.Meta.Pos)
 	for _, comment := range s.Comments {
-		v.validateIndent(comment.Meta.Pos)
+		v.validateIndentLeading(comment.Meta.Pos)
 	}
 	return false
 }
 
+func (v indentVisitor) validateIndentLeading(
+	pos meta.Position,
+) {
+	v.validateIndent(pos, false)
+}
+
+func (v indentVisitor) validateIndentLast(
+	pos meta.Position,
+) {
+	v.validateIndent(pos, true)
+}
+
 func (v indentVisitor) validateIndent(
 	pos meta.Position,
+	isLast bool,
 ) {
 	line := v.protoLines[pos.Line-1]
 	leading := ""
-	for _, r := range string([]rune(line)[0 : pos.Column-1]) {
+	for _, r := range string([]rune(line)[:pos.Column-1]) {
 		if unicode.IsSpace(r) {
 			leading += string(r)
 		}
 	}
 
 	indentation := strings.Repeat(v.style, v.currentLevel)
+	v.indentFixes[pos.Line-1] = append(v.indentFixes[pos.Line-1], indentFix{
+		currentChars: len(leading),
+		replacement:  indentation,
+		level:        v.currentLevel,
+		pos:          pos,
+		isLast:       isLast,
+	})
+
 	if leading == indentation {
 		return
 	}
-	v.AddFailuref(
-		pos,
-		`Found an incorrect indentation style "%s". "%s" is correct.`,
-		leading,
-		indentation,
-	)
-
-	if v.fixMode {
-		v.indentFixes[pos.Line-1] = indentFix{
-			currentChars: len(leading),
-			replacement:  indentation,
-		}
+	if 1 < len(v.indentFixes[pos.Line-1]) && v.notInsertNewline {
+		return
+	}
+	if len(v.indentFixes[pos.Line-1]) == 1 {
+		v.AddFailuref(
+			pos,
+			`Found an incorrect indentation style "%s". "%s" is correct.`,
+			leading,
+			indentation,
+		)
+	} else {
+		v.AddFailuref(
+			pos,
+			`Found a possible incorrect indentation style. Inserting a new line is recommended.`,
+		)
 	}
 }
 
@@ -335,11 +368,45 @@ func (v indentVisitor) fix() error {
 
 	var fixedLines []string
 	for i, line := range v.protoLines {
-		if fix, ok := v.indentFixes[i]; ok {
-			line = fix.replacement + line[fix.currentChars:]
+		lines := []string{line}
+		if fixes, ok := v.indentFixes[i]; ok {
+			lines[0] = fixes[0].replacement + line[fixes[0].currentChars:]
 			shouldFixed = true
+
+			if 1 < len(fixes) && !v.notInsertNewline {
+				// compose multiple lines in reverse order from right to left on one line.
+				var rlines []string
+				for j := len(fixes) - 1; 0 <= j; j-- {
+					indentation := strings.Repeat(v.style, fixes[j].level)
+					if fixes[j].isLast {
+						// deal with last position followed by ';'. See https://github.com/yoheimuta/protolint/issues/99
+						for line[fixes[j].pos.Column-1] == ';' {
+							fixes[j].pos.Column--
+						}
+					}
+
+					endColumn := len(line)
+					if j < len(fixes)-1 {
+						endColumn = fixes[j+1].pos.Column - 1
+					}
+					text := line[fixes[j].pos.Column-1 : endColumn]
+					text = strings.TrimRightFunc(text, func(r rune) bool {
+						// removing right spaces is a possible side effect that users do not expect,
+						// but it's probably acceptable and usually recommended.
+						return unicode.IsSpace(r)
+					})
+
+					rlines = append(rlines, indentation+text)
+				}
+
+				// sort the multiple lines in order
+				lines = []string{}
+				for j := len(rlines) - 1; 0 <= j; j-- {
+					lines = append(lines, rlines[j])
+				}
+			}
 		}
-		fixedLines = append(fixedLines, line)
+		fixedLines = append(fixedLines, lines...)
 	}
 
 	if !shouldFixed {

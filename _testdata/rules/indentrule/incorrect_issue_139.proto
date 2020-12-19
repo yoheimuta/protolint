@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package foobar;
+
+option java_package = "com.test.foo.bar";
+
+message TestMessage { string test_field = 1; }
+
+message TestMessageWithTwoInnerElements { string test_field = 1; string test_field2 = 2; }
+
+  message TestMessageWithWrongOuterIndentation { string test_field = 1; }
+
+message TestMessageWithoutExtraSpaces {string test_field = 1;}
+
+message TestMessageWithFollowedSemicolon {string test_field = 1;};
+
+enum enumAllowingAlias { UNKNOWN = 0; option allow_alias = true; }
+
+message TestMessageWithFollowedSemicolon { enum EnumAllowingAlias { UNKNOWN = 0; option allow_alias = true; } EnumAllowingAlias enum_field =1; };
+
+service SearchApi { rpc search (SearchRequest) returns (SearchResponse) {};};
+
+service SearchApi { rpc search (SearchRequest) returns (SearchResponse) {}};
+
+service SearchApi { rpc search (SearchRequest) returns (SearchResponse);};
+
+service camelCaseServiceName { rpc Empty(google.protobuf.Empty) returns (google.protobuf.Empty) { option (google.api.http) = { get: "/v2/example/empty", };}}

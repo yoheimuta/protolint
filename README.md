@@ -145,7 +145,7 @@ Some rules support a feature that automatically fixed the problems.
 | Yes | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | Yes | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
 | Yes | MAX_LINE_LENGTH    | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |
-| Yes | INDENT    | Enforces a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 2 spaces. You can configure the detail with `.protolint.yaml`. |
+| Yes | INDENT    | Enforces a consistent indentation style. The --fix option on the command line can automatically fix some of the problems reported by this rule. The default style is 2 spaces. Inserting appropriate new lines is also forced by default. You can configure the detail with `.protolint.yaml`. |
 | Yes | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
 | Yes | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
 | Yes | REPEATED_FIELD_NAMES_PLURALIZED   | Verifies that repeated field names are pluralized names.            |
@@ -272,6 +272,27 @@ __REPEATED_FIELD_NAMES_PLURALIZED__
 ```diff
 -  repeated string song_name = 1;
 +  repeated string song_names = 1;
+```
+
+__INDENT__
+
+```diff
+ enum enumAllowingAlias {
+   UNKNOWN = 0;
+-        option allow_alias = true;
++  option allow_alias = true;
+   STARTED = 1;
+-     RUNNING = 2 [(custom_option) = "hello world"];
++  RUNNING = 2 [(custom_option) = "hello world"];
+- }
++}
+```
+
+```diff
+-   message TestMessage { string test_field = 1; }
++ message TestMessage {
++  string test_field = 1;
++}
 ```
 
 ## Creating your custom rules

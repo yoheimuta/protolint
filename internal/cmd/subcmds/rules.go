@@ -57,6 +57,7 @@ func newAllInternalRules(
 		rules.NewIndentRule(
 			indent.Style,
 			indent.Newline,
+			indent.NotInsertNewline,
 			fixMode,
 		),
 		rules.NewMaxLineLengthRule(

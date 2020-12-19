@@ -22,11 +22,12 @@ func TestIndentRule_Apply(t *testing.T) {
 	defaultSpace := strings.Repeat(" ", 2)
 
 	tests := []struct {
-		name           string
-		inputStyle     string
-		inputProtoPath string
-		wantFailures   []report.Failure
-		wantExistErr   bool
+		name               string
+		inputStyle         string
+		inputProtoPath     string
+		inputInsertNewline bool
+		wantFailures       []report.Failure
+		wantExistErr       bool
 	}{
 		{
 			name:           "correct syntax",
@@ -62,18 +63,6 @@ func TestIndentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_enum.proto"),
-						Offset:   162,
-						Line:     7,
-						Column:   2,
-					},
-					"INDENT",
-					`Found an incorrect indentation style "%s". "%s" is correct.`,
-					" ",
-					"",
-				),
-				report.Failuref(
-					meta.Position{
-						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_enum.proto"),
 						Offset:   67,
 						Line:     4,
 						Column:   9,
@@ -94,6 +83,18 @@ func TestIndentRule_Apply(t *testing.T) {
 					`Found an incorrect indentation style "%s". "%s" is correct.`,
 					"     ",
 					defaultSpace,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_enum.proto"),
+						Offset:   162,
+						Line:     7,
+						Column:   2,
+					},
+					"INDENT",
+					`Found an incorrect indentation style "%s". "%s" is correct.`,
+					" ",
+					"",
 				),
 			},
 		},
@@ -152,6 +153,70 @@ func TestIndentRule_Apply(t *testing.T) {
 Fix https://github.com/yoheimuta/protolint/issues/74`,
 			inputProtoPath: setting_test.TestDataPath("rules", "indentrule", "issue_74.proto"),
 		},
+		{
+			name: `skip wrong indentations of inner elements on the same line.
+Fix https://github.com/yoheimuta/protolint/issues/139`,
+			inputProtoPath: setting_test.TestDataPath("rules", "indentrule", "issue_139.proto"),
+		},
+		{
+			name: `detect only a toplevel indentation mistake and skip other than that on the same line.
+Fix https://github.com/yoheimuta/protolint/issues/139`,
+			inputProtoPath: setting_test.TestDataPath("rules", "indentrule", "incorrect_issue_139.proto"),
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{
+						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_issue_139.proto"),
+						Offset:   222,
+						Line:     11,
+						Column:   3,
+					},
+					"INDENT",
+					`Found an incorrect indentation style "%s". "%s" is correct.`,
+					"  ",
+					"",
+				),
+			},
+		},
+		{
+			name: `do not skip wrong indentations of inner elements on the same line.
+Fix https://github.com/yoheimuta/protolint/issues/139`,
+			inputProtoPath:     setting_test.TestDataPath("rules", "indentrule", "incorrect_issue_139_short.proto"),
+			inputInsertNewline: true,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{
+						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_issue_139_short.proto"),
+						Offset:   82,
+						Line:     7,
+						Column:   3,
+					},
+					"INDENT",
+					`Found an incorrect indentation style "%s". "%s" is correct.`,
+					"  ",
+					"",
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_issue_139_short.proto"),
+						Offset:   104,
+						Line:     7,
+						Column:   25,
+					},
+					"INDENT",
+					`Found a possible incorrect indentation style. Inserting a new line is recommended.`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: setting_test.TestDataPath("rules", "indentrule", "incorrect_issue_139_short.proto"),
+						Offset:   127,
+						Line:     7,
+						Column:   48,
+					},
+					"INDENT",
+					`Found a possible incorrect indentation style. Inserting a new line is recommended.`,
+				),
+			},
+		},
 	}
 
 	for _, test := range tests {
@@ -160,6 +225,7 @@ Fix https://github.com/yoheimuta/protolint/issues/74`,
 			rule := rules.NewIndentRule(
 				test.inputStyle,
 				"\n",
+				!test.inputInsertNewline,
 				false,
 			)
 
@@ -183,6 +249,24 @@ Fix https://github.com/yoheimuta/protolint/issues/74`,
 
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
+				if len(got) != len(test.wantFailures) {
+					t.Errorf("len(got) %v, but len(want) %v", len(got), len(test.wantFailures))
+					return
+				}
+				for k, v := range got {
+					if !reflect.DeepEqual(v.Pos(), test.wantFailures[k].Pos()) {
+						t.Errorf("got[%v].Pos() %v(offset=%v), but want[%v].Pos() %v", k, v.Pos(), v.Pos().Offset, k, test.wantFailures[k].Pos())
+						continue
+					}
+					if !reflect.DeepEqual(v.Message(), test.wantFailures[k].Message()) {
+						t.Errorf("got[%v].Message() %v, but want[%v].Message() %v", k, v.Message(), k, test.wantFailures[k].Message())
+						continue
+					}
+					if !reflect.DeepEqual(v, test.wantFailures[k]) {
+						t.Errorf("got[%v] %v, but want[%v] %v", k, v, k, test.wantFailures[k])
+						continue
+					}
+				}
 			}
 		})
 	}
@@ -273,10 +357,29 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 		return
 	}
 
+	incorrectIssue139Path, err := newTestIndentData("incorrect_issue_139.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	correctIssue139Path, err := newTestIndentData("issue_139.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	correctIssue139InsertPath, err := newTestIndentData("issue_139_insert_linebreaks.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
 	tests := []struct {
-		name            string
-		inputTestData   testData
-		wantCorrectData testData
+		name               string
+		inputTestData      testData
+		inputInsertNewline bool
+		wantCorrectData    testData
 	}{
 		{
 			name:            "correct syntax",
@@ -318,6 +421,17 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 			inputTestData:   incorrectIssue99Path,
 			wantCorrectData: correctIssue99Path,
 		},
+		{
+			name:            "do nothing against inner elements on the same line. Fix https://github.com/yoheimuta/protolint/issues/139",
+			inputTestData:   incorrectIssue139Path,
+			wantCorrectData: correctIssue139Path,
+		},
+		{
+			name:               "insert linebreaks against inner elements on the same line. Fix https://github.com/yoheimuta/protolint/issues/139",
+			inputTestData:      incorrectIssue139Path,
+			inputInsertNewline: true,
+			wantCorrectData:    correctIssue139InsertPath,
+		},
 	}
 
 	for _, test := range tests {
@@ -326,6 +440,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 			rule := rules.NewIndentRule(
 				space2,
 				"\n",
+				!test.inputInsertNewline,
 				true,
 			)
 
@@ -350,9 +465,34 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 				)
 			}
 
-			err = test.inputTestData.restore()
+			// restore the file
+			defer func() {
+				err = test.inputTestData.restore()
+				if err != nil {
+					t.Errorf("got err %v", err)
+				}
+			}()
+
+			// check whether the modified content can pass the lint in the end.
+			ruleOnlyCheck := rules.NewIndentRule(
+				space2,
+				"\n",
+				!test.inputInsertNewline,
+				false,
+			)
+			proto, err = file.NewProtoFile(test.inputTestData.filePath, test.inputTestData.filePath).Parse(false)
 			if err != nil {
-				t.Errorf("got err %v", err)
+				t.Errorf(err.Error())
+				return
+			}
+			gotCheck, err := ruleOnlyCheck.Apply(proto)
+			if err != nil {
+				t.Errorf("got err %v, but want nil", err)
+				return
+			}
+			if 0 < len(gotCheck) {
+				t.Errorf("got failures %v, but want no failures", gotCheck)
+				return
 			}
 		})
 	}

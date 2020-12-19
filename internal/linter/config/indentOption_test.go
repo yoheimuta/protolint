@@ -86,6 +86,15 @@ newline: "\r\n"
 				Newline: "\r\n",
 			},
 		},
+		{
+			name: "support not_insert_newline",
+			inputConfig: []byte(`
+not_insert_newline: true
+`),
+			wantIndentOption: config.IndentOption{
+				NotInsertNewline: true,
+			},
+		},
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
