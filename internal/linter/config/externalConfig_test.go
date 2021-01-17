@@ -15,7 +15,7 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 					ID: "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
 					Files: []string{
 						"path/to/foo.proto",
-						"path/to/bar.proto",
+						"/path/to/bar.proto",
 					},
 				},
 				{
@@ -28,7 +28,13 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			Directories: config.Directories{
 				Exclude: []string{
 					"path/to/dir",
-					"path/to/dir2",
+					"/path/to/dir2",
+				},
+			},
+			Files: config.Files{
+				Exclude: []string{
+					"path/to/file.proto",
+					"/path/to/file2.proto",
 				},
 			},
 			Rules: struct {
@@ -41,6 +47,8 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 				Add: []string{
 					"FIELD_NAMES_LOWER_SNAKE_CASE",
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					"ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+					"ENUM_NAMES_UPPER_CAMEL_CASE",
 				},
 				Remove: []string{
 					"RPC_NAMES_UPPER_CAMEL_CASE",
@@ -106,6 +114,13 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			wantSkipRule:     true,
 		},
 		{
+			name:             "ignore ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			inputDisplayPath: "/path/to/bar.proto",
+			wantSkipRule:     true,
+		},
+		{
 			name:             "ignore ENUM_NAMES_UPPER_CAMEL_CASE",
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "ENUM_NAMES_UPPER_CAMEL_CASE",
@@ -116,6 +131,18 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			name:             "not ignore FIELD_NAMES_LOWER_SNAKE_CASE",
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "/path/to/bar.proto",
+		},
+		{
+			name:             "not ignore ENUM_FIELD_NAMES_UPPER_SNAKE_CASE because of a file mismatch",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			inputDisplayPath: "path/to/baz.proto",
+		},
+		{
+			name:             "not ignore ENUM_NAMES_UPPER_CAMEL_CASE because of a file mismatch",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "ENUM_NAMES_UPPER_CAMEL_CASE",
 			inputDisplayPath: "path/to/bar.proto",
 		},
 		{
@@ -165,14 +192,14 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			name:             "exclude the another directory",
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
-			inputDisplayPath: "path/to/dir2/bar.proto",
+			inputDisplayPath: "/path/to/dir2/bar.proto",
 			wantSkipRule:     true,
 		},
 		{
 			name:             "exclude the child directory",
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
-			inputDisplayPath: "path/to/dir2/child/bar.proto",
+			inputDisplayPath: "/path/to/dir2/child/bar.proto",
 			wantSkipRule:     true,
 		},
 		{
@@ -180,6 +207,32 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
 			inputDisplayPath: "path/to/dir3/bar.proto",
+		},
+		{
+			name:             "exclude the matched file",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "path/to/file.proto",
+			wantSkipRule:     true,
+		},
+		{
+			name:             "exclude the matched file",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "/path/to/file2.proto",
+			wantSkipRule:     true,
+		},
+		{
+			name:             "not exclude the unmatched file",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "/path/to/file3.proto",
+		},
+		{
+			name:             "not exclude the unmatched file path",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: "path/to1/file.proto",
 		},
 	} {
 		test := test
