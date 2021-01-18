@@ -3,6 +3,8 @@ package config_test
 import (
 	"testing"
 
+	"github.com/yoheimuta/protolint/internal/filepathutil"
+
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 	"github.com/yoheimuta/protolint/internal/linter/config"
 )
@@ -16,6 +18,7 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 					Files: []string{
 						"path/to/foo.proto",
 						"/path/to/bar.proto",
+						`\path\to\bar_windows.proto`,
 					},
 				},
 				{
@@ -99,12 +102,13 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 	}
 
 	for _, test := range []struct {
-		name                string
-		externalConfig      config.ExternalConfig
-		inputRuleID         string
-		inputDisplayPath    string
-		inputDefaultRuleIDs []string
-		wantSkipRule        bool
+		name                        string
+		externalConfig              config.ExternalConfig
+		inputRuleID                 string
+		inputDisplayPath            string
+		inputDefaultRuleIDs         []string
+		inputIsWindowsPathSeparator bool
+		wantSkipRule                bool
 	}{
 		{
 			name:             "ignore ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
@@ -128,6 +132,22 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			wantSkipRule:     true,
 		},
 		{
+			name:                        "ignore a windows path by referring to a windows path",
+			externalConfig:              noDefaultExternalConfig,
+			inputRuleID:                 "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			inputDisplayPath:            `\path\to\bar_windows.proto`,
+			inputIsWindowsPathSeparator: true,
+			wantSkipRule:                true,
+		},
+		{
+			name:                        "ignore a windows path by referring to an unix path",
+			externalConfig:              noDefaultExternalConfig,
+			inputRuleID:                 "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			inputDisplayPath:            `path\to\foo.proto`,
+			inputIsWindowsPathSeparator: true,
+			wantSkipRule:                true,
+		},
+		{
 			name:             "not ignore FIELD_NAMES_LOWER_SNAKE_CASE",
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
@@ -144,6 +164,12 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "ENUM_NAMES_UPPER_CAMEL_CASE",
 			inputDisplayPath: "path/to/bar.proto",
+		},
+		{
+			name:             "not ignore an unix path by referring to a windows path",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			inputDisplayPath: `/path/to/bar_windows.proto`,
 		},
 		{
 			name:           "not skip Add rules",
@@ -237,6 +263,16 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
+			osPathSep := '/'
+			if test.inputIsWindowsPathSeparator {
+				osPathSep = '\\'
+			}
+			prevOSPathSep := filepathutil.OSPathSeparator
+			filepathutil.OSPathSeparator = osPathSep
+			defer func() {
+				filepathutil.OSPathSeparator = prevOSPathSep
+			}()
+
 			got := test.externalConfig.ShouldSkipRule(
 				test.inputRuleID,
 				test.inputDisplayPath,
