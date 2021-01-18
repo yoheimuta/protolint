@@ -38,6 +38,7 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 				Exclude: []string{
 					"path/to/file.proto",
 					"/path/to/file2.proto",
+					`path\to\file_windows.proto`,
 				},
 			},
 			Rules: struct {
@@ -249,6 +250,22 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			wantSkipRule:     true,
 		},
 		{
+			name:                        "exclude the matched windows file",
+			externalConfig:              noDefaultExternalConfig,
+			inputRuleID:                 "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath:            `path\to\file_windows.proto`,
+			inputIsWindowsPathSeparator: true,
+			wantSkipRule:                true,
+		},
+		{
+			name:                        "exclude the matched windows file by referring to an unix file",
+			externalConfig:              noDefaultExternalConfig,
+			inputRuleID:                 "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath:            `\path\to\file2.proto`,
+			inputIsWindowsPathSeparator: true,
+			wantSkipRule:                true,
+		},
+		{
 			name:             "not exclude the unmatched file",
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
@@ -259,6 +276,12 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
 			inputDisplayPath: "path/to1/file.proto",
+		},
+		{
+			name:             "not exclude the unix file by referring to a windows path",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: `path/to/file_windows.proto`,
 		},
 	} {
 		test := test
