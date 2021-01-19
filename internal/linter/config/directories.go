@@ -1,8 +1,7 @@
 package config
 
 import (
-	"os"
-	"strings"
+	"github.com/yoheimuta/protolint/internal/filepathutil"
 )
 
 // Directories represents the target directories.
@@ -14,7 +13,8 @@ func (d Directories) shouldSkipRule(
 	displayPath string,
 ) bool {
 	for _, exclude := range d.Exclude {
-		if strings.HasPrefix(displayPath, exclude+string(os.PathSeparator)) {
+		if filepathutil.HasUnixPathPrefix(displayPath,
+			exclude+string(filepathutil.OSPathSeparator)) {
 			return true
 		}
 	}
