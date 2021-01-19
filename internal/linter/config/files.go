@@ -1,5 +1,7 @@
 package config
 
+import "github.com/yoheimuta/protolint/internal/stringsutil"
+
 // Files represents the target files.
 type Files struct {
 	Exclude []string `yaml:"exclude"`
@@ -8,10 +10,5 @@ type Files struct {
 func (d Files) shouldSkipRule(
 	displayPath string,
 ) bool {
-	for _, exclude := range d.Exclude {
-		if displayPath == exclude {
-			return true
-		}
-	}
-	return false
+	return stringsutil.ContainsCrossPlatformPathInSlice(displayPath, d.Exclude)
 }

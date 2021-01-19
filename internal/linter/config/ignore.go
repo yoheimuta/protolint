@@ -15,5 +15,5 @@ func (i Ignore) shouldSkipRule(
 	if i.ID != ruleID {
 		return false
 	}
-	return stringsutil.ContainsStringInSlice(displayPath, i.Files)
+	return stringsutil.ContainsCrossPlatformPathInSlice(displayPath, i.Files)
 }
