@@ -32,6 +32,7 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 				Exclude: []string{
 					"path/to/dir",
 					"/path/to/dir2",
+					`\path\to\dir_windows`,
 				},
 			},
 			Files: config.Files{
@@ -230,10 +231,32 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 			wantSkipRule:     true,
 		},
 		{
+			name:                        "exclude the matched windows directory",
+			externalConfig:              noDefaultExternalConfig,
+			inputRuleID:                 "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath:            `\path\to\dir_windows\foo.proto`,
+			inputIsWindowsPathSeparator: true,
+			wantSkipRule:                true,
+		},
+		{
+			name:                        "exclude the matched windows directory by referring to an unix filepath",
+			externalConfig:              noDefaultExternalConfig,
+			inputRuleID:                 "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath:            `\path\to\dir2\child\bar.proto`,
+			inputIsWindowsPathSeparator: true,
+			wantSkipRule:                true,
+		},
+		{
 			name:             "not exclude the another directory",
 			externalConfig:   noDefaultExternalConfig,
 			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
 			inputDisplayPath: "path/to/dir3/bar.proto",
+		},
+		{
+			name:             "not exclude the unix directory by referring to a windows directory",
+			externalConfig:   noDefaultExternalConfig,
+			inputRuleID:      "FIELD_NAMES_LOWER_SNAKE_CASE",
+			inputDisplayPath: `/path/to/dir_windows/bar.proto`,
 		},
 		{
 			name:             "exclude the matched file",
