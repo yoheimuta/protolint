@@ -31,7 +31,7 @@ For example, vim-protolint works like the following.
 
 protolint can be installed for Mac or Linux using Homebrew via the [yoheimuta/protolint](https://github.com/yoheimuta/homebrew-protolint) tap.
 
-```
+```sh
 brew tap yoheimuta/protolint
 brew install protolint
 ```
@@ -60,13 +60,13 @@ protolint ships a Docker image [yoheimuta/protolint](https://hub.docker.com/r/yo
 The binary can be installed from source if Go is available.
 However, I recommend using one of the pre-built binaries instead because it doesn't include the version info.
 
-```
+```sh
 go get -u -v github.com/yoheimuta/protolint/cmd/protolint
 ```
 
 ## Usage
 
-```
+```sh
 protolint lint example.proto example2.proto # file mode, specify multiple specific files
 protolint lint .                            # directory mode, search for all .proto files recursively
 protolint .                                 # same as "protolint lint ."
@@ -83,6 +83,17 @@ protolint version                           # print protolint version
 ```
 
 protolint does not require configuration by default, for the majority of projects it should work out of the box.
+
+## Version Control Integration
+
+protolint is available as a [pre-commit](https://pre-commit.com) hook.  Add this to your `.pre-commit-config.yaml` in your repository:
+```yaml
+repos:
+  - repo: https://github.com/yoheimuta/protolint
+    rev: v0.27.0
+    hooks:
+      - id: protolint
+```
 
 ## Editor Integration
 
