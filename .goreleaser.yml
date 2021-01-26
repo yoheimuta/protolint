@@ -47,7 +47,7 @@ changelog:
 brews:
   -
     name: protolint
-    github:
+    tap:
       owner: yoheimuta
       name: homebrew-protolint
     commit_author:
