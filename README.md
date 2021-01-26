@@ -90,7 +90,7 @@ protolint is available as a [pre-commit](https://pre-commit.com) hook.  Add this
 ```yaml
 repos:
   - repo: https://github.com/yoheimuta/protolint
-    rev: v0.27.0
+    rev: master
     hooks:
       - id: protolint
 ```
