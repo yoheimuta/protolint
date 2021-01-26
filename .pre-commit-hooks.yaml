@@ -1,0 +1,7 @@
+---
+- id: protolint
+  name: Lint Protocol Buffer Files
+  description: Runs protolint Docker image to lint Protocol Buffer files
+  language: docker_image
+  types: ["proto"]
+  entry: yoheimuta/protolint lint
