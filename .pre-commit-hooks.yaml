@@ -1,6 +1,12 @@
 ---
 - id: protolint
   name: Lint Protocol Buffer Files
+  description: Runs protolint to lint Protocol Buffer files
+  language: go
+  types: ["proto"]
+  entry: protolint lint
+- id: protolint-docker
+  name: Lint Protocol Buffer Files
   description: Runs protolint Docker image to lint Protocol Buffer files
   language: docker_image
   types: ["proto"]
