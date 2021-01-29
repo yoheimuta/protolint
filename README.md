@@ -86,13 +86,21 @@ protolint does not require configuration by default, for the majority of project
 
 ## Version Control Integration
 
-protolint is available as a [pre-commit](https://pre-commit.com) hook.  Add this to your `.pre-commit-config.yaml` in your repository:
+protolint is available as a [pre-commit](https://pre-commit.com) hook.  Add this to your `.pre-commit-config.yaml` in your repository to run protolint with Go:
 ```yaml
 repos:
   - repo: https://github.com/yoheimuta/protolint
     rev: master
     hooks:
       - id: protolint
+```
+or alternatively use this to run protolint with Docker:
+```yaml
+repos:
+  - repo: https://github.com/yoheimuta/protolint
+    rev: master
+    hooks:
+      - id: protolint-docker
 ```
 
 ## Editor Integration
