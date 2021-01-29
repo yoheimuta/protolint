@@ -2,7 +2,7 @@
 - id: protolint
   name: Lint Protocol Buffer Files
   description: Runs protolint to lint Protocol Buffer files
-  language: go
+  language: golang
   types: ["proto"]
   entry: protolint lint
 - id: protolint-docker
