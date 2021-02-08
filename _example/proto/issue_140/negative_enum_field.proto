@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+enum TestNegativeValue {
+    NEGATIVE_CONSTANT = -1;
+    ZERO_CONSTANT = 0;
+    POSITIVE_CONSTANT = 1;
+}
