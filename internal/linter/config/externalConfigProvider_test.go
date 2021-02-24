@@ -12,6 +12,7 @@ import (
 func TestGetExternalConfig(t *testing.T) {
 	for _, test := range []struct {
 		name               string
+		inputFilePath      string
 		inputDirPath       string
 		wantExternalConfig config.ExternalConfig
 		wantExistErr       bool
@@ -72,10 +73,24 @@ func TestGetExternalConfig(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:         "load .protolint.yaml",
+			inputDirPath: setting_test.TestDataPath("validconfig", "hidden"),
+			wantExternalConfig: config.ExternalConfig{
+				Lint: config.Lint{},
+			},
+		},
+		{
+			name:          "load my_protolint.yaml",
+			inputFilePath: setting_test.TestDataPath("validconfig", "particular_name", "my_protolint.yaml"),
+			wantExternalConfig: config.ExternalConfig{
+				Lint: config.Lint{},
+			},
+		},
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			got, err := config.GetExternalConfig("", test.inputDirPath)
+			got, err := config.GetExternalConfig(test.inputFilePath, test.inputDirPath)
 			if test.wantExistErr {
 				if err == nil {
 					t.Errorf("got err nil, but want err")
