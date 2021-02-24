@@ -101,6 +101,34 @@ func TestGetExternalConfig(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:         "load protolint.yml",
+			inputDirPath: setting_test.TestDataPath("validconfig", "yml"),
+			wantExternalConfig: config.ExternalConfig{
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
+			name:         "load .protolint.yml",
+			inputDirPath: setting_test.TestDataPath("validconfig", "yml_hidden"),
+			wantExternalConfig: config.ExternalConfig{
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
