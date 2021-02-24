@@ -1,1 +1,5 @@
 lint:
+  rules_option:
+    indent:
+      style: tab
+      newline: "\n"

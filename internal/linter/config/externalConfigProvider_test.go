@@ -77,14 +77,28 @@ func TestGetExternalConfig(t *testing.T) {
 			name:         "load .protolint.yaml",
 			inputDirPath: setting_test.TestDataPath("validconfig", "hidden"),
 			wantExternalConfig: config.ExternalConfig{
-				Lint: config.Lint{},
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
 			},
 		},
 		{
 			name:          "load my_protolint.yaml",
 			inputFilePath: setting_test.TestDataPath("validconfig", "particular_name", "my_protolint.yaml"),
 			wantExternalConfig: config.ExternalConfig{
-				Lint: config.Lint{},
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
 			},
 		},
 	} {
