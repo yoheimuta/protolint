@@ -129,6 +129,16 @@ func TestGetExternalConfig(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:         "not found a config file even so inputDirPath is set",
+			inputDirPath: setting_test.TestDataPath("validconfig", "particular_name"),
+			wantExistErr: true,
+		},
+		{
+			name:          "not found a config file even so inputFilePath is set",
+			inputFilePath: setting_test.TestDataPath("validconfig", "particular_name", "not_found.yaml"),
+			wantExistErr:  true,
+		},
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
