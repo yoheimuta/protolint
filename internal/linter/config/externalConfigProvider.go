@@ -1,9 +1,11 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -20,15 +22,15 @@ func GetExternalConfig(
 	filePath string,
 	dirPath string,
 ) (ExternalConfig, error) {
-	filePath, err := getExternalConfigPath(filePath, dirPath)
+	newPath, err := getExternalConfigPath(filePath, dirPath)
 	if err != nil {
+		if len(filePath) == 0 && len(dirPath) == 0 {
+			return ExternalConfig{}, nil
+		}
 		return ExternalConfig{}, err
 	}
-	if len(filePath) == 0 {
-		return ExternalConfig{}, nil
-	}
 
-	data, err := ioutil.ReadFile(filePath)
+	data, err := ioutil.ReadFile(newPath)
 	if err != nil {
 		return ExternalConfig{}, err
 	}
@@ -51,6 +53,8 @@ func getExternalConfigPath(
 	if 0 < len(filePath) {
 		return filePath, nil
 	}
+
+	var checkedPaths []string
 	for _, name := range []string{
 		externalConfigFileName,
 		externalConfigFileName2,
@@ -60,6 +64,7 @@ func getExternalConfigPath(
 			externalConfigFileExtension2,
 		} {
 			filePath := filepath.Join(dirPath, name+ext)
+			checkedPaths = append(checkedPaths, filePath)
 			if _, err := os.Stat(filePath); err != nil {
 				if os.IsNotExist(err) {
 					continue
@@ -69,5 +74,5 @@ func getExternalConfigPath(
 			return filePath, nil
 		}
 	}
-	return "", nil
+	return "", fmt.Errorf("not found config file by searching `%s`", strings.Join(checkedPaths, ","))
 }
