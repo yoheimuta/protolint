@@ -3,6 +3,7 @@ package lint
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 
 	"github.com/yoheimuta/protolint/internal/linter/config"
@@ -38,8 +39,18 @@ func NewCmdLint(
 	if err != nil {
 		return nil, err
 	}
+	if flags.Verbose {
+		if externalConfig != nil {
+			log.Printf("[INFO] protolint loads a config file at %s\n", externalConfig.SourcePath)
+		} else {
+			log.Println("[INFO] protolint doesn't load a config file")
+		}
+	}
+	if externalConfig == nil {
+		externalConfig = &(config.ExternalConfig{})
+	}
 	lintConfig := NewCmdLintConfig(
-		externalConfig,
+		*externalConfig,
 		flags,
 	)
 

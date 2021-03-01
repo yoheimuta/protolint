@@ -21,29 +21,30 @@ const (
 func GetExternalConfig(
 	filePath string,
 	dirPath string,
-) (ExternalConfig, error) {
+) (*ExternalConfig, error) {
 	newPath, err := getExternalConfigPath(filePath, dirPath)
 	if err != nil {
 		if len(filePath) == 0 && len(dirPath) == 0 {
-			return ExternalConfig{}, nil
+			return nil, nil
 		}
-		return ExternalConfig{}, err
+		return nil, err
 	}
 
 	data, err := ioutil.ReadFile(newPath)
 	if err != nil {
-		return ExternalConfig{}, err
+		return nil, err
 	}
 	if len(data) == 0 {
-		return ExternalConfig{}, nil
+		return nil, nil
 	}
 
 	var config ExternalConfig
 	if err := yaml.UnmarshalStrict(data, &config); err != nil {
-		return config, err
+		return nil, err
 	}
+	config.SourcePath = newPath
 
-	return config, nil
+	return &config, nil
 }
 
 func getExternalConfigPath(
