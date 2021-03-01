@@ -11,7 +11,8 @@ type Lint struct {
 
 // ExternalConfig represents the external configuration.
 type ExternalConfig struct {
-	Lint Lint
+	SourcePath string
+	Lint       Lint
 }
 
 // ShouldSkipRule checks whether to skip applying the rule to the file.

@@ -99,7 +99,7 @@ func doLint(
 		stderr,
 	)
 	if err != nil {
-		_, _ = fmt.Fprint(stderr, err)
+		_, _ = fmt.Fprintln(stderr, err)
 		if flags.NoErrorOnUnmatchedPattern &&
 			(strings.Contains(err.Error(), "not found protocol buffer files") ||
 				strings.Contains(err.Error(), "system cannot find the file")) {

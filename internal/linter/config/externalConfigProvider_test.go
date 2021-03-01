@@ -14,7 +14,7 @@ func TestGetExternalConfig(t *testing.T) {
 		name               string
 		inputFilePath      string
 		inputDirPath       string
-		wantExternalConfig config.ExternalConfig
+		wantExternalConfig *config.ExternalConfig
 		wantExistErr       bool
 	}{
 		{
@@ -28,7 +28,8 @@ func TestGetExternalConfig(t *testing.T) {
 		{
 			name:         "valid config file",
 			inputDirPath: setting_test.TestDataPath("validconfig"),
-			wantExternalConfig: config.ExternalConfig{
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("validconfig", "protolint.yaml"),
 				Lint: config.Lint{
 					Ignores: []config.Ignore{
 						{
@@ -76,7 +77,8 @@ func TestGetExternalConfig(t *testing.T) {
 		{
 			name:         "load .protolint.yaml",
 			inputDirPath: setting_test.TestDataPath("validconfig", "hidden"),
-			wantExternalConfig: config.ExternalConfig{
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("validconfig", "hidden", ".protolint.yaml"),
 				Lint: config.Lint{
 					RulesOption: config.RulesOption{
 						Indent: config.IndentOption{
@@ -90,7 +92,8 @@ func TestGetExternalConfig(t *testing.T) {
 		{
 			name:          "load my_protolint.yaml",
 			inputFilePath: setting_test.TestDataPath("validconfig", "particular_name", "my_protolint.yaml"),
-			wantExternalConfig: config.ExternalConfig{
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("validconfig", "particular_name", "my_protolint.yaml"),
 				Lint: config.Lint{
 					RulesOption: config.RulesOption{
 						Indent: config.IndentOption{
@@ -104,7 +107,8 @@ func TestGetExternalConfig(t *testing.T) {
 		{
 			name:         "load protolint.yml",
 			inputDirPath: setting_test.TestDataPath("validconfig", "yml"),
-			wantExternalConfig: config.ExternalConfig{
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("validconfig", "yml", "protolint.yml"),
 				Lint: config.Lint{
 					RulesOption: config.RulesOption{
 						Indent: config.IndentOption{
@@ -118,7 +122,8 @@ func TestGetExternalConfig(t *testing.T) {
 		{
 			name:         "load .protolint.yml",
 			inputDirPath: setting_test.TestDataPath("validconfig", "yml_hidden"),
-			wantExternalConfig: config.ExternalConfig{
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("validconfig", "yml_hidden", ".protolint.yml"),
 				Lint: config.Lint{
 					RulesOption: config.RulesOption{
 						Indent: config.IndentOption{
@@ -128,6 +133,16 @@ func TestGetExternalConfig(t *testing.T) {
 					},
 				},
 			},
+		},
+		{
+			name:         "not found a config file even so inputDirPath is set",
+			inputDirPath: setting_test.TestDataPath("validconfig", "particular_name"),
+			wantExistErr: true,
+		},
+		{
+			name:          "not found a config file even so inputFilePath is set",
+			inputFilePath: setting_test.TestDataPath("validconfig", "particular_name", "not_found.yaml"),
+			wantExistErr:  true,
 		},
 	} {
 		test := test
