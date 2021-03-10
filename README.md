@@ -160,7 +160,7 @@ Some rules support a feature that automatically fixed the problems.
 | Yes | IMPORTS_SORTED                    | Verifies that all imports are sorted. The --fix option on the command line can automatically fix some of the problems reported by this rule. |
 | Yes | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
 | Yes | ORDER                             | Verifies that all files should be ordered in the specific manner. |
-| Yes | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name only contains lowercase letters, digits and/or periods. |
+| Yes | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name should not contain any lowercase letters. |
 | Yes | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | Yes | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
 | Yes | MAX_LINE_LENGTH    | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |

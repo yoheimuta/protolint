@@ -71,7 +71,7 @@ func TestPackageNameLowerCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"PACKAGE_NAME_LOWER_CASE",
-					`Package name "myV1Package" must only contains lowercase letters, digits and/or periods.`,
+					`Package name "myV1Package" must not contain any uppercase letter.`,
 				),
 			},
 		},

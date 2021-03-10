@@ -1,8 +1,6 @@
 package rules
 
 import (
-	"strings"
-
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
@@ -10,7 +8,7 @@ import (
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
-// PackageNameLowerCaseRule verifies that the package name only contains lowercase letters, digits and/or periods.
+// PackageNameLowerCaseRule verifies that the package name doesn't contain any uppercase letters.
 // See https://developers.google.com/protocol-buffers/docs/style#packages.
 type PackageNameLowerCaseRule struct{}
 
@@ -26,7 +24,7 @@ func (r PackageNameLowerCaseRule) ID() string {
 
 // Purpose returns the purpose of this rule.
 func (r PackageNameLowerCaseRule) Purpose() string {
-	return "Verifies that the package name only contains lowercase letters, digits and/or periods."
+	return "Verifies that the package name doesn't contain any uppercase letters."
 }
 
 // IsOfficial decides whether or not this rule belongs to the official guide.
@@ -49,11 +47,11 @@ type packageNameLowerCaseVisitor struct {
 // VisitPackage checks the package.
 func (v *packageNameLowerCaseVisitor) VisitPackage(p *parser.Package) bool {
 	if !isPackageLowerCase(p.Name) {
-		v.AddFailuref(p.Meta.Pos, "Package name %q must only contains lowercase letters, digits and/or periods.", p.Name)
+		v.AddFailuref(p.Meta.Pos, "Package name %q must not contain any uppercase letter.", p.Name)
 	}
 	return false
 }
 
 func isPackageLowerCase(packageName string) bool {
-	return strs.IsLowerCase(strings.Replace(packageName, ".", "", -1))
+	return !strs.HasAnyUpperCase(packageName)
 }
