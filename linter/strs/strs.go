@@ -81,14 +81,14 @@ func isSnake(s string) bool {
 	return true
 }
 
-// IsLowerCase returns true if s only contain characters in the range a-z0-9.
-func IsLowerCase(s string) bool {
+// HasAnyUpperCase returns true if s contains any of characters in the range A-Z.
+func HasAnyUpperCase(s string) bool {
 	for _, r := range s {
-		if !(isLower(r) || isDigit(r)) {
-			return false
+		if isUpper(r) {
+			return true
 		}
 	}
-	return true
+	return false
 }
 
 // toSnake converts s to snake_case.
