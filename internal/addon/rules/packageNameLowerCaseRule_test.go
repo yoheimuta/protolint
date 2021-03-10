@@ -75,6 +75,16 @@ func TestPackageNameLowerCaseRule_Apply(t *testing.T) {
 				),
 			},
 		},
+		{
+			name: "no failures for proto with the package name including _",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Package{
+						Name: "my.some_service",
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
