@@ -152,6 +152,7 @@ Some rules support a feature that automatically fixed the problems.
 
 | Official | ID                                | Purpose                                                                  |
 |----------|-----------------------------------|--------------------------------------------------------------------------|
+| Yes | ENUM_FIELD_NAMES_PREFIX | Verifies that enum field names are prefixed with its ENUM_NAME_UPPER_SNAKE_CASE.        |
 | Yes | ENUM_FIELD_NAMES_UPPER_SNAKE_CASE | Verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.        |
 | Yes | ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH | Verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID"). The default is "UNSPECIFIED". You can configure the specific suffix with `.protolint.yaml`. |
 | Yes | ENUM_NAMES_UPPER_CAMEL_CASE       | Verifies that all enum names are CamelCase (with an initial capital).    |
@@ -183,6 +184,15 @@ I recommend that you add `all_default: true` in `.protolint.yaml`, because all l
 
 Here are some examples that show good style enabled by default.
 `-` is a bad style, `+` is a good style:
+
+__ENUM_FIELD_NAMES_PREFIX__
+
+```diff
+enum FooBar {
+-  UNSPECIFIED = 0;
++  FOO_BAR_UNSPECIFIED = 0;
+}
+```
 
 __ENUM_FIELD_NAMES_UPPER_SNAKE_CASE__
 
