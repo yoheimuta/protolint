@@ -2,6 +2,7 @@
 package strs
 
 import (
+	"fmt"
 	"strings"
 	"unicode/utf8"
 )
@@ -89,6 +90,17 @@ func HasAnyUpperCase(s string) bool {
 		}
 	}
 	return false
+}
+
+// ToUpperSnakeCaseFromCamelCase converts s to UPPER_SNAKE_CASE from camelCase/CamelCase.
+func ToUpperSnakeCaseFromCamelCase(s string) (string, error) {
+	ws := SplitCamelCaseWord(s)
+	if ws == nil {
+		return "", fmt.Errorf("s `%s` should be camelCase", s)
+	}
+	return strings.ToUpper(
+		strings.Join(ws, "_"),
+	), nil
 }
 
 // toSnake converts s to snake_case.
