@@ -113,7 +113,11 @@ JetBrains IntelliJ IDEA, GoLand, WebStorm, PHPStorm, PyCharm...
 
 - [intellij-protolint](https://github.com/yoheimuta/intellij-protolint)
 
-Vim
+Vim([ALE engine](https://github.com/dense-analysis/ale))
+
+- [ale](https://github.com/dense-analysis/ale)'s [built-in support](https://github.com/dense-analysis/ale/blob/master/supported-tools.md)
+
+Vim([Syntastic](https://github.com/vim-syntastic/syntastic))
 
 - [vim-protolint](https://github.com/yoheimuta/vim-protolint)
 
