@@ -7,7 +7,7 @@ require (
 	github.com/hashicorp/go-plugin v1.0.1
 	github.com/yoheimuta/go-protoparser/v4 v4.3.0
 	google.golang.org/grpc v1.25.1
-	gopkg.in/yaml.v2 v2.2.5
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 go 1.13
