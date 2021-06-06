@@ -1,6 +1,7 @@
 package config_test
 
 import (
+	"os"
 	"reflect"
 	"testing"
 
@@ -14,6 +15,7 @@ func TestGetExternalConfig(t *testing.T) {
 		name               string
 		inputFilePath      string
 		inputDirPath       string
+		cwdPath            string
 		wantExternalConfig *config.ExternalConfig
 		wantExistErr       bool
 	}{
@@ -135,6 +137,36 @@ func TestGetExternalConfig(t *testing.T) {
 			},
 		},
 		{
+			name:    "load .protolint.yml at cwd automatically",
+			cwdPath: setting_test.TestDataPath("validconfig", "default"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: ".protolint.yml",
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
+			name:    "prefer .protolint.yml at cwd to one at its parent dir",
+			cwdPath: setting_test.TestDataPath("validconfig", "default", "child"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: ".protolint.yaml",
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
 			name:         "not found a config file even so inputDirPath is set",
 			inputDirPath: setting_test.TestDataPath("validconfig", "particular_name"),
 			wantExistErr: true,
@@ -147,6 +179,14 @@ func TestGetExternalConfig(t *testing.T) {
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
+			if len(test.cwdPath) != 0 {
+				err := os.Chdir(test.cwdPath)
+				if err != nil {
+					t.Errorf("got err %v", err)
+					return
+				}
+			}
+
 			got, err := config.GetExternalConfig(test.inputFilePath, test.inputDirPath)
 			if test.wantExistErr {
 				if err == nil {
