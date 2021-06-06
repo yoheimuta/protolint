@@ -167,6 +167,36 @@ func TestGetExternalConfig(t *testing.T) {
 			},
 		},
 		{
+			name:    "locate .protolint.yml at the parent when not found at cwd",
+			cwdPath: setting_test.TestDataPath("validconfig", "default", "empty_child"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("validconfig", "default", ".protolint.yml"),
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
+			name:    "locate .protolint.yml at the grand parent when not found at cwd",
+			cwdPath: setting_test.TestDataPath("validconfig", "default", "empty_child", "empty_grand_child"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("validconfig", "default", ".protolint.yml"),
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
 			name:         "not found a config file even so inputDirPath is set",
 			inputDirPath: setting_test.TestDataPath("validconfig", "particular_name"),
 			wantExistErr: true,
