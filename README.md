@@ -379,7 +379,8 @@ protolint can operate using a config file named `.protolint.yaml`.
 
 Refer to [_example/config/.protolint.yaml](_example/config/.protolint.yaml) for the config file specification.
 
-protolint will search a current working directory for the config file by default.
+protolint will automatically search a current working directory for the config file by default
+and successive parent directories all the way up to the root directory of the filesystem.
 And it can search the specified directory with `-config_dir_path` flag.
 It can also search the specified file with `--config_path` flag.
 
