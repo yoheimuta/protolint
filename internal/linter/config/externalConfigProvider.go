@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/yoheimuta/protolint/internal/stringsutil"
+
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -35,7 +37,7 @@ func GetExternalConfig(
 		return nil, err
 	}
 	if len(data) == 0 {
-		return nil, nil
+		return nil, fmt.Errorf("read %s, but the content is empty", newPath)
 	}
 
 	var config ExternalConfig
@@ -55,24 +57,40 @@ func getExternalConfigPath(
 		return filePath, nil
 	}
 
+	dirPaths := []string{dirPath}
+	if len(dirPath) == 0 {
+		absPath, err := os.Getwd()
+		if err != nil {
+			return "", err
+		}
+
+		absPath = filepath.Dir(absPath)
+		for !stringsutil.ContainsStringInSlice(absPath, dirPaths) {
+			dirPaths = append(dirPaths, absPath)
+			absPath = filepath.Dir(absPath)
+		}
+	}
+
 	var checkedPaths []string
-	for _, name := range []string{
-		externalConfigFileName,
-		externalConfigFileName2,
-	} {
-		for _, ext := range []string{
-			externalConfigFileExtension,
-			externalConfigFileExtension2,
+	for _, dir := range dirPaths {
+		for _, name := range []string{
+			externalConfigFileName,
+			externalConfigFileName2,
 		} {
-			filePath := filepath.Join(dirPath, name+ext)
-			checkedPaths = append(checkedPaths, filePath)
-			if _, err := os.Stat(filePath); err != nil {
-				if os.IsNotExist(err) {
-					continue
+			for _, ext := range []string{
+				externalConfigFileExtension,
+				externalConfigFileExtension2,
+			} {
+				filePath := filepath.Join(dir, name+ext)
+				checkedPaths = append(checkedPaths, filePath)
+				if _, err := os.Stat(filePath); err != nil {
+					if os.IsNotExist(err) {
+						continue
+					}
+					return "", err
 				}
-				return "", err
+				return filePath, nil
 			}
-			return filePath, nil
 		}
 	}
 	return "", fmt.Errorf("not found config file by searching `%s`", strings.Join(checkedPaths, ","))
