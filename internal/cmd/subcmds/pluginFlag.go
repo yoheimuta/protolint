@@ -40,7 +40,7 @@ func (f *PluginFlag) BuildPlugins(verbose bool) ([]shared.RuleSet, error) {
 		client := plugin.NewClient(&plugin.ClientConfig{
 			HandshakeConfig: shared.Handshake,
 			Plugins:         shared.PluginMap,
-			Cmd:             exec.Command("sh", "-c", value),
+			Cmd:             exec.Command(value),
 			AllowedProtocols: []plugin.Protocol{
 				plugin.ProtocolGRPC,
 			},
