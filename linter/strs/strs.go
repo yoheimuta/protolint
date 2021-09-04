@@ -15,6 +15,14 @@ func IsUpperCamelCase(s string) bool {
 	return isCamelCase(s)
 }
 
+// IsLowerCamelCase returns true if s is not empty and is camel case without an initial capital.
+func IsLowerCamelCase(s string) bool {
+	if isCapitalized(s) {
+		return false
+	}
+	return isCamelCase(s)
+}
+
 // IsUpperSnakeCase returns true if s only contains uppercase letters,
 // digits, and/or underscores. s MUST NOT begin or end with an underscore.
 func IsUpperSnakeCase(s string) bool {

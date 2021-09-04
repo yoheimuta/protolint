@@ -45,4 +45,5 @@ message outer {
 }
 service SearchApi {
     rpc search (SearchRequest) returns (SearchResponse) {};
+    rpc Search (SearchRequest) returns (SearchResponse) {};
 };

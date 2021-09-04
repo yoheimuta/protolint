@@ -113,6 +113,7 @@ func newAllInternalRules(
 		),
 
 		rules.NewRPCNamesUpperCamelCaseRule(),
+		rules.NewRPCNamesCaseRule(option.RPCNamesCaseOption.Convention),
 		rules.NewRPCsHaveCommentRule(
 			rpcsHaveComment.ShouldFollowGolangStyle,
 		),
