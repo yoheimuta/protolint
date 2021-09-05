@@ -10,7 +10,7 @@ type ConventionType int
 
 // ConventionType constants.
 const (
-	ConventionLowerCamel ConventionType = iota
+	ConventionLowerCamel ConventionType = iota + 1
 	ConventionUpperSnake
 	ConventionLowerSnake
 )
