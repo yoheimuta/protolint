@@ -29,7 +29,11 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 19.03.13
-      - run: curl -sL https://git.io/goreleaser | bash
+      - run:
+          name: Run goreleaser
+          command: |
+            echo "$DOCKERHUB_ACCESS_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            curl -sL https://git.io/goreleaser | bash
 workflows:
   version: 2
   lint_and_test:
