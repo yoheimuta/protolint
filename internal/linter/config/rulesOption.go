@@ -10,6 +10,7 @@ type RulesOption struct {
 	ServiceNamesEndWith             ServiceNamesEndWithOption             `yaml:"service_names_end_with"`
 	FieldNamesExcludePrepositions   FieldNamesExcludePrepositionsOption   `yaml:"field_names_exclude_prepositions"`
 	MessageNamesExcludePrepositions MessageNamesExcludePrepositionsOption `yaml:"message_names_exclude_prepositions"`
+	RPCNamesCaseOption              RPCNamesCaseOption                    `yaml:"rpc_names_case"`
 	MessagesHaveComment             MessagesHaveCommentOption             `yaml:"messages_have_comment"`
 	ServicesHaveComment             ServicesHaveCommentOption             `yaml:"services_have_comment"`
 	RPCsHaveComment                 RPCsHaveCommentOption                 `yaml:"rpcs_have_comment"`

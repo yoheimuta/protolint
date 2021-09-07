@@ -48,6 +48,46 @@ func TestIsUpperCamelCase(t *testing.T) {
 	}
 }
 
+func TestIsLowerCamelCase(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  bool
+	}{
+		{
+			name:  "the first letter is an uppercase character",
+			input: "Hello",
+		},
+		{
+			name:  "_ is included",
+			input: "hello_world",
+		},
+		{
+			name:  ". is included",
+			input: "hello.world",
+		},
+		{
+			name:  "the first letter is a lowercase character",
+			input: "hello",
+			want:  true,
+		},
+		{
+			name:  "the first letter is a lowercase character and rest is a camel case",
+			input: "helloWorld",
+			want:  true,
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			got := strs.IsLowerCamelCase(test.input)
+			if got != test.want {
+				t.Errorf("got %v, but want %v", got, test.want)
+			}
+		})
+	}
+}
 func TestIsUpperSnakeCase(t *testing.T) {
 	tests := []struct {
 		name  string
