@@ -63,3 +63,7 @@ brews:
       bin.install "protolint"
       bin.install "protoc-gen-protolint"
       prefix.install "LICENSE"
+dockers:
+  - image_templates:
+      - "yoheimuta/protolint:{{ .Tag }}"
+      - "yoheimuta/protolint:latest"
