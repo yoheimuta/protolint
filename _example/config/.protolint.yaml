@@ -58,6 +58,7 @@ lint:
       - ENUM_FIELDS_HAVE_COMMENT
       - SYNTAX_CONSISTENT
       - RPC_NAMES_CASE
+      - FILE_HAS_COMMENT
 
     # The specific linters to remove.
     remove:

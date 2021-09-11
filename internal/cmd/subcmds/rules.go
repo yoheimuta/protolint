@@ -47,6 +47,7 @@ func newAllInternalRules(
 	repeatedFieldNamesPluralized := option.RepeatedFieldNamesPluralized
 
 	return internalrule.Rules{
+		rules.NewFileHasCommentRule(),
 		rules.NewSyntaxConsistentRule(
 			syntaxConsistent.Version,
 		),
