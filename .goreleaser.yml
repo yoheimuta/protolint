@@ -57,8 +57,8 @@ brews:
     description: "Pluggable tool to enforce Protocol Buffer style and conventions"
     homepage: "https://github.com/yoheimuta/protolint"
     test: |
-      system "#{bin}/protolint version"
-      system "#{bin}/protoc-gen-protolint version"
+      system "#{bin}/protolint", "version"
+      system "#{bin}/protoc-gen-protolint", "version"
     install: |
       bin.install "protolint"
       bin.install "protoc-gen-protolint"
