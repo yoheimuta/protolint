@@ -1,3 +1,3 @@
 FROM scratch
-ENTRYPOINT ["/protolint"]
-COPY protolint /
+ENTRYPOINT ["/usr/local/bin/protolint"]
+COPY protolint /usr/local/bin/protolint
