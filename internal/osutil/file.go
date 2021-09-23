@@ -1,10 +1,18 @@
 package osutil
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"strings"
+)
+
+// Constants used by LineEnding.
+const (
+	lf   = "\n"
+	cr   = "\r"
+	crlf = "\r\n"
 )
 
 // ReadAllLines reads all lines from a file.
@@ -26,13 +34,14 @@ func WriteLinesToExistingFile(
 	newlineChar string,
 ) error {
 	data := strings.Join(lines, newlineChar)
-	return writeExistingFile(
+	return WriteExistingFile(
 		fileName,
 		[]byte(data),
 	)
 }
 
-func writeExistingFile(
+// WriteExistingFile writes the byte array to an existing file.
+func WriteExistingFile(
 	fileName string,
 	data []byte,
 ) error {
@@ -48,4 +57,35 @@ func writeExistingFile(
 		err = err1
 	}
 	return err
+}
+
+// DetectLineEnding detects a dominant line ending in the content.
+func DetectLineEnding(content string) (string, error) {
+	prev := ' '
+	counts := make(map[string]int)
+	for _, c := range content {
+		if c == '\r' && prev != '\n' {
+			counts[cr]++
+		} else if c == '\n' {
+			if prev == '\r' {
+				counts[crlf]++
+				counts[cr]--
+			} else {
+				counts[lf]++
+			}
+		}
+		prev = c
+	}
+	if counts[crlf]+counts[cr]+counts[lf] == 0 {
+		return "", nil
+	}
+
+	if counts[crlf] > counts[cr] && counts[crlf] > counts[lf] {
+		return crlf, nil
+	} else if counts[cr] > counts[lf] && counts[cr] > counts[crlf] {
+		return cr, nil
+	} else if counts[lf] > counts[cr] && counts[lf] > counts[crlf] {
+		return lf, nil
+	}
+	return "", fmt.Errorf("not found dominant line ending, counts=%v", counts)
 }

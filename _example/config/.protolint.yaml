@@ -59,6 +59,7 @@ lint:
       - SYNTAX_CONSISTENT
       - RPC_NAMES_CASE
       - FILE_HAS_COMMENT
+      - QUOTE_CONSISTENT
 
     # The specific linters to remove.
     remove:
@@ -92,6 +93,11 @@ lint:
     imports_sorted:
       # Available newlines are "\n", "\r", or "\r\n".
       newline: "\n"
+
+    # QUOTE_CONSISTENT rule option.
+    quote_consistent:
+      # Available quote are "double" or "single".
+      quote: double
 
     # ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH rule option.
     enum_field_names_zero_value_end_with:

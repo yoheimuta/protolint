@@ -153,6 +153,7 @@ Some rules support a feature that automatically fixed the problems.
 
 - IMPORTS_SORTED
 - INDENT
+- QUOTE_CONSISTENT
 
 | Official | ID                                | Purpose                                                                  |
 |----------|-----------------------------------|--------------------------------------------------------------------------|
@@ -173,6 +174,7 @@ Some rules support a feature that automatically fixed the problems.
 | Yes | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
 | Yes | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
 | Yes | REPEATED_FIELD_NAMES_PLURALIZED   | Verifies that repeated field names are pluralized names.            |
+| Yes | QUOTE_CONSISTENT   | Verifies that the use of quote for strings is consistent. The default is double quoted. You can configure the specific quote with `.protolint.yaml`.          |
 | No | SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. You can configure the specific suffix with `.protolint.yaml`. |
 | No | FIELD_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
 | No | MESSAGE_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all message names don't include prepositions (e.g. "With", "For"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
@@ -328,6 +330,14 @@ __INDENT__
 + message TestMessage {
 +  string test_field = 1;
 +}
+```
+
+__QUOTE_CONSISTENT__
+
+```diff
+ option java_package = "com.example.foo";
+- option go_package = 'example';
++ option go_package = "example";
 ```
 
 ## Creating your custom rules
