@@ -54,6 +54,7 @@ func newAllInternalRules(
 		rules.NewFileNamesLowerSnakeCaseRule(
 			fileNamesLowerSnakeCase.Excludes,
 		),
+		rules.NewQuoteConsistentRule(option.QuoteConsistentOption.Quote, fixMode),
 		rules.NewOrderRule(),
 		rules.NewIndentRule(
 			indent.Style,

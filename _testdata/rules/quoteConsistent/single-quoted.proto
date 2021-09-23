@@ -1,0 +1,26 @@
+syntax = 'proto3';
+
+package examplePb;
+
+option java_package = 'com.example.foo';
+option go_package = 'com.example.foo';
+
+import public 'new.proto';
+import public 'new2.proto';
+
+import 'google/protobuf/empty.proto';
+import 'google/protobuf/empty2.proto';
+
+enum enumAllowingAlias {
+    option allow_alias = true;
+    UNKNOWN = 0;
+    STARTED = 1;
+    RUNNING = 2 [(custom_option) = 'hello world'];
+    STOPPED = 3 [(custom_option) = 'hello world2'];
+}
+
+message outer {
+    option (my_option).a = true;
+    string reason_for_error = 1 [(custom_option) = 'hello world'];
+    string reason_for_error_2 = 2 [(custom_option) = 'hello world2'];
+}

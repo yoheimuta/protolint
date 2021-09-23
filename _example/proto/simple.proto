@@ -5,7 +5,7 @@ package examplePb;
 
 option java_package = "com.example.foo";
 
-import "other.proto";
+import 'other.proto';
 import public "new.proto";
 
 import "google/protobuf/empty.proto";
