@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -euxo pipefail
+set -eux
 
 go get -u golang.org/x/tools/cmd/goimports
 go get -u golang.org/x/lint/golint
