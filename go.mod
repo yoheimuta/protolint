@@ -1,7 +1,7 @@
 module github.com/yoheimuta/protolint
 
 require (
-	github.com/gertd/go-pluralize v0.1.1
+	github.com/gertd/go-pluralize v0.1.7
 	github.com/golang/protobuf v1.3.2
 	github.com/hashicorp/go-hclog v0.16.2
 	github.com/hashicorp/go-plugin v1.0.1
