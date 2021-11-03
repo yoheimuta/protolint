@@ -12,4 +12,4 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: ShellCheck
-      run: shellcheck .github/*.sh
+      run: shellcheck **/*.sh
