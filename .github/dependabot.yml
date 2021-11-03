@@ -1,18 +1,19 @@
+---
 version: 2
 updates:
-  - package-ecosystem: "gomod"
-    directory: "/"
+  - package-ecosystem: gomod
+    directory: /
     # Check for updates once a day
     schedule:
-      interval: "daily"
-  - package-ecosystem: "docker"
+      interval: daily
+  - package-ecosystem: docker
     # Look for a `Dockerfile` in the `root` directory
-    directory: "/"
+    directory: /
     # Check for updates once a week
     schedule:
-      interval: "weekly"
-  # - package-ecosystem: "github-actions"
-  #   directory: "/"
-  #   # Check for updates once a week
-  #   schedule:
-  #     interval: "weekly"
+      interval: weekly
+  - package-ecosystem: github-actions
+    directory: /
+    # Check for updates once a week
+    schedule:
+      interval: weekly

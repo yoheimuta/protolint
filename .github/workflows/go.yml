@@ -1,3 +1,4 @@
+---
 name: Go
 
 on:
@@ -9,34 +10,34 @@ jobs:
   build-and-scan:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
 
-    - name: Lint
-      run: |
-        make dev/install/dep
-        make test/lint
+      - name: Lint
+        run: |
+          make dev/install/dep
+          make test/lint
 
-    - name: Test
-      run: make test
+      - name: Test
+        run: make test
 
-    - name: Build
-      run: make build/cmd/protolint
+      - name: Build
+        run: make build/cmd/protolint
 
-    - name: Build Docker image
-      run: docker build -t docker.io/yoheimuta/protolint:${{ github.sha }} .
+      - name: Build Docker image
+        run: docker build -t docker.io/yoheimuta/protolint:${{ github.sha }} .
 
-    - name: Container image scan
-      uses: Azure/container-scan@v0.1
-      with:
-        # Docker image to scan
-        image-name: docker.io/yoheimuta/protolint:${{ github.sha }}
-        severity-threshold: LOW # optional, default is HIGH
+      - name: Container image scan
+        uses: Azure/container-scan@v0.1
+        with:
+          # Docker image to scan
+          image-name: docker.io/yoheimuta/protolint:${{ github.sha }}
+          severity-threshold: LOW  # optional, default is HIGH
 
-    - uses: hadolint/hadolint-action@v1.6.0
-      with:
-        dockerfile: Dockerfile
+      - uses: hadolint/hadolint-action@v1.6.0
+        with:
+          dockerfile: Dockerfile
