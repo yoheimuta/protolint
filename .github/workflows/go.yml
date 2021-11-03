@@ -36,3 +36,7 @@ jobs:
         # Docker image to scan
         image-name: docker.io/yoheimuta/protolint:${{ github.sha }}
         severity-threshold: LOW # optional, default is HIGH
+
+    - uses: hadolint/hadolint-action@v1.6.0
+      with:
+        dockerfile: Dockerfile
