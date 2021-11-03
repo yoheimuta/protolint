@@ -60,7 +60,7 @@ func newSubCmd(
 		return nil, err
 	}
 
-	flags, err := newFlags(req)
+	flags, err := newFlags(&req)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func newSubCmd(
 }
 
 func newFlags(
-	req protogen.CodeGeneratorRequest,
+	req *protogen.CodeGeneratorRequest,
 ) (*lint.Flags, error) {
 	flags, err := lint.NewFlags(req.FileToGenerate)
 	if err != nil {

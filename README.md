@@ -137,6 +137,7 @@ Jenkins Plugins
 ## Use as a protoc plugin
 
 protolint also maintains a binary [protoc-gen-protolint](cmd/protoc-gen-protolint) that performs the lint functionality as a protoc plugin.
+See [cmd/protoc-gen-protolint/README.md](https://github.com/yoheimuta/protolint/blob/master/cmd/protoc-gen-protolint/README.md) in detail.
 
 This is useful in situations where you already have a protoc plugin workflow.
 
