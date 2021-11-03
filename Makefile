@@ -31,7 +31,7 @@ test/lint:
 
 ## dev/install/dep installs depenencies required for development.
 dev/install/dep:
-	./.circleci/install_dep.sh
+	./.github/install_dep.sh
 
 ## dev/build/proto builds proto files under the _proto directory.
 dev/build/proto:
