@@ -1,0 +1,16 @@
+---
+name: yamllint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: yamllint
+        run: yamllint .

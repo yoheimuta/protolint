@@ -1,3 +1,4 @@
+---
 before:
   hooks:
     - go mod download
@@ -13,7 +14,7 @@ builds:
       - darwin
       - linux
     ldflags:
-      - -s -w -X github.com/yoheimuta/protolint/internal/cmd.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd.revision={{.ShortCommit}}
+      - -s -w -X github.com/yoheimuta/protolint/internal/cmd.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd.revision={{.ShortCommit}}  # yamllint disable-line rule:line-length
   -
     id: protoc-gen-protolint
     env:
@@ -25,7 +26,7 @@ builds:
       - darwin
       - linux
     ldflags:
-      - -s -w -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.revision={{.ShortCommit}}
+      - -s -w -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.revision={{.ShortCommit}}  # yamllint disable-line rule:line-length
 archives:
   -
     replacements:
@@ -35,15 +36,15 @@ archives:
       386: i386
       amd64: x86_64
 checksum:
-  name_template: 'checksums.txt'
+  name_template: checksums.txt
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
   sort: asc
   filters:
     exclude:
-    - '^docs:'
-    - '^test:'
+      - '^docs:'
+      - '^test:'
 brews:
   -
     name: protolint
@@ -54,8 +55,8 @@ brews:
       name: goreleaserbot
       email: yoheimuta@gmail.com
     folder: Formula
-    description: "Pluggable tool to enforce Protocol Buffer style and conventions"
-    homepage: "https://github.com/yoheimuta/protolint"
+    description: Pluggable tool to enforce Protocol Buffer style and conventions
+    homepage: https://github.com/yoheimuta/protolint
     test: |
       system "#{bin}/protolint", "version"
       system "#{bin}/protoc-gen-protolint", "version"
@@ -65,5 +66,5 @@ brews:
       prefix.install "LICENSE"
 dockers:
   - image_templates:
-      - "yoheimuta/protolint:{{ .Tag }}"
-      - "yoheimuta/protolint:latest"
+      - yoheimuta/protolint:{{ .Tag }}
+      - yoheimuta/protolint:latest
