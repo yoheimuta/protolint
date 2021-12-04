@@ -5,27 +5,20 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
-	"github.com/yoheimuta/protolint/internal/osutil"
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // ImportsSortedRule enforces sorted imports.
 type ImportsSortedRule struct {
-	newline string
 	fixMode bool
 }
 
 // NewImportsSortedRule creates a new ImportsSortedRule.
 func NewImportsSortedRule(
-	newline string,
 	fixMode bool,
 ) ImportsSortedRule {
-	if len(newline) == 0 {
-		newline = defaultNewline
-	}
 	return ImportsSortedRule{
-		newline: newline,
 		fixMode: fixMode,
 	}
 }
@@ -49,31 +42,23 @@ func (r ImportsSortedRule) IsOfficial() bool {
 func (r ImportsSortedRule) Apply(
 	proto *parser.Proto,
 ) ([]report.Failure, error) {
-	fileName := proto.Meta.Filename
-	lines, err := osutil.ReadAllLines(fileName, r.newline)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), true, proto)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &importsSortedVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
-		protoLines:     lines,
-		fixMode:        r.fixMode,
-		newline:        r.newline,
-		protoFileName:  fileName,
-		sorter:         new(importSorter),
+		BaseFixableVisitor: base,
+		fixMode:            r.fixMode,
+		sorter:             new(importSorter),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type importsSortedVisitor struct {
-	*visitor.BaseAddVisitor
-	protoLines []string
-
-	fixMode       bool
-	newline       string
-	protoFileName string
-	sorter        *importSorter
+	*visitor.BaseFixableVisitor
+	fixMode bool
+	sorter  *importSorter
 }
 
 func (v importsSortedVisitor) VisitImport(i *parser.Import) (next bool) {
@@ -84,22 +69,25 @@ func (v importsSortedVisitor) VisitImport(i *parser.Import) (next bool) {
 func (v importsSortedVisitor) Finally() error {
 	notSorted := v.sorter.notSortedImports()
 
-	var fixedLines []string
-	for i, line := range v.protoLines {
-		if invalid, ok := notSorted[i+1]; ok {
-			v.AddFailuref(
-				invalid.Meta.Pos,
-				`Imports are not sorted.`,
-			)
-			line = v.protoLines[invalid.sortedLine-1]
-		}
-		fixedLines = append(fixedLines, line)
-	}
+	v.Fixer.ReplaceAll(func(lines []string) []string {
+		var fixedLines []string
 
-	if 0 < len(notSorted) && v.fixMode {
-		return osutil.WriteLinesToExistingFile(v.protoFileName, fixedLines, v.newline)
+		for i, line := range lines {
+			if invalid, ok := notSorted[i+1]; ok {
+				v.AddFailuref(
+					invalid.Meta.Pos,
+					`Imports are not sorted.`,
+				)
+				line = lines[invalid.sortedLine-1]
+			}
+			fixedLines = append(fixedLines, line)
+		}
+		return fixedLines
+	})
+	if !v.fixMode {
+		return nil
 	}
-	return nil
+	return v.BaseFixableVisitor.Finally()
 }
 
 type notSortedImport struct {

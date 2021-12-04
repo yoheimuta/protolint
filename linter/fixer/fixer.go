@@ -13,6 +13,7 @@ import (
 type Fixer interface {
 	// NOTE: This method is insufficient to process unexpected multi-line contents.
 	ReplaceText(line int, old, new string)
+	ReplaceAll(proc func(lines []string) []string)
 }
 
 // Fixing adds the way to modify the proto file to Fixer.
@@ -65,6 +66,13 @@ func (f *BaseFixing) ReplaceText(line int, old, new string) {
 	f.content = []byte(strings.Join(lines, f.lineEnding))
 }
 
+// ReplaceAll replaces the lines.
+func (f *BaseFixing) ReplaceAll(proc func(lines []string) []string) {
+	lines := strings.Split(string(f.content), f.lineEnding)
+	lines = proc(lines)
+	f.content = []byte(strings.Join(lines, f.lineEnding))
+}
+
 // Finally writes the fixed content to the file.
 func (f *BaseFixing) Finally() error {
 	return osutil.WriteExistingFile(f.fileName, f.content)
@@ -75,6 +83,9 @@ type NopFixing struct{}
 
 // ReplaceText noop
 func (f NopFixing) ReplaceText(line int, old, new string) {}
+
+// ReplaceAll noop
+func (f NopFixing) ReplaceAll(proc func(lines []string) []string) {}
 
 // Finally noop
 func (f NopFixing) Finally() error { return nil }

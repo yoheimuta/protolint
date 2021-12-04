@@ -111,7 +111,6 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewImportsSortedRule(
-				"\n",
 				false,
 			)
 
@@ -179,7 +178,6 @@ func TestImportsSortedRule_Apply_fix(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewImportsSortedRule(
-				"\n",
 				true,
 			)
 

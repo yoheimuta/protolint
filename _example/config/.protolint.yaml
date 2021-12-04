@@ -90,11 +90,6 @@ lint:
       excludes:
         - ../proto/invalidFileName.proto
 
-    # IMPORTS_SORTED rule option.
-    imports_sorted:
-      # Available newlines are "\n", "\r", or "\r\n".
-      newline: "\n"
-
     # QUOTE_CONSISTENT rule option.
     quote_consistent:
       # Available quote are "double" or "single".
