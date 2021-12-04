@@ -34,7 +34,6 @@ func newAllInternalRules(
 	indent := option.Indent
 	maxLineLength := option.MaxLineLength
 	enumFieldNamesZeroValueEndWith := option.EnumFieldNamesZeroValueEndWith
-	importsSorted := option.ImportsSorted
 	serviceNamesEndWith := option.ServiceNamesEndWith
 	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositions
 	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
@@ -58,7 +57,6 @@ func newAllInternalRules(
 		rules.NewOrderRule(),
 		rules.NewIndentRule(
 			indent.Style,
-			indent.Newline,
 			indent.NotInsertNewline,
 			fixMode,
 		),
@@ -70,7 +68,6 @@ func newAllInternalRules(
 		rules.NewPackageNameLowerCaseRule(),
 
 		rules.NewImportsSortedRule(
-			importsSorted.Newline,
 			fixMode,
 		),
 

@@ -4,8 +4,6 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/yoheimuta/protolint/internal/osutil"
-
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
@@ -17,14 +15,11 @@ const (
 	// Use an indent of 2 spaces.
 	// See https://developers.google.com/protocol-buffers/docs/style#standard-file-formatting
 	defaultStyle = "  "
-
-	defaultNewline = "\n"
 )
 
 // IndentRule enforces a consistent indentation style.
 type IndentRule struct {
 	style            string
-	newline          string
 	notInsertNewline bool
 	fixMode          bool
 }
@@ -32,20 +27,15 @@ type IndentRule struct {
 // NewIndentRule creates a new IndentRule.
 func NewIndentRule(
 	style string,
-	newline string,
 	notInsertNewline bool,
 	fixMode bool,
 ) IndentRule {
 	if len(style) == 0 {
 		style = defaultStyle
 	}
-	if len(newline) == 0 {
-		newline = defaultNewline
-	}
 
 	return IndentRule{
 		style:            style,
-		newline:          newline,
 		notInsertNewline: notInsertNewline,
 		fixMode:          fixMode,
 	}
@@ -70,21 +60,17 @@ func (r IndentRule) IsOfficial() bool {
 func (r IndentRule) Apply(
 	proto *parser.Proto,
 ) ([]report.Failure, error) {
-	fileName := proto.Meta.Filename
-	lines, err := osutil.ReadAllLines(fileName, r.newline)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), true, proto)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &indentVisitor{
-		BaseAddVisitor:   visitor.NewBaseAddVisitor(r.ID()),
-		style:            r.style,
-		protoLines:       lines,
-		fixMode:          r.fixMode,
-		newline:          r.newline,
-		notInsertNewline: r.notInsertNewline,
-		protoFileName:    fileName,
-		indentFixes:      make(map[int][]indentFix),
+		BaseFixableVisitor: base,
+		style:              r.style,
+		fixMode:            r.fixMode,
+		notInsertNewline:   r.notInsertNewline,
+		indentFixes:        make(map[int][]indentFix),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
@@ -98,15 +84,12 @@ type indentFix struct {
 }
 
 type indentVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 	style        string
-	protoLines   []string
 	currentLevel int
 
 	fixMode          bool
-	newline          string
 	notInsertNewline bool
-	protoFileName    string
 	indentFixes      map[int][]indentFix
 }
 
@@ -254,7 +237,7 @@ func (v indentVisitor) VisitReserved(r *parser.Reserved) (next bool) {
 func (v indentVisitor) VisitRPC(r *parser.RPC) (next bool) {
 	v.validateIndentLeading(r.Meta.Pos)
 	defer func() {
-		line := v.protoLines[r.Meta.LastPos.Line-1]
+		line := v.Fixer.Lines()[r.Meta.LastPos.Line-1]
 		runes := []rune(line)
 		for i := r.Meta.LastPos.Column - 2; 0 < i; i-- {
 			r := runes[i]
@@ -318,7 +301,7 @@ func (v indentVisitor) validateIndent(
 	pos meta.Position,
 	isLast bool,
 ) {
-	line := v.protoLines[pos.Line-1]
+	line := v.Fixer.Lines()[pos.Line-1]
 	leading := ""
 	for _, r := range string([]rune(line)[:pos.Column-1]) {
 		if unicode.IsSpace(r) {
@@ -366,51 +349,54 @@ func (v *indentVisitor) nest() func() {
 func (v indentVisitor) fix() error {
 	var shouldFixed bool
 
-	var fixedLines []string
-	for i, line := range v.protoLines {
-		lines := []string{line}
-		if fixes, ok := v.indentFixes[i]; ok {
-			lines[0] = fixes[0].replacement + line[fixes[0].currentChars:]
-			shouldFixed = true
+	v.Fixer.ReplaceAll(func(lines []string) []string {
+		var fixedLines []string
+		for i, line := range lines {
+			lines := []string{line}
+			if fixes, ok := v.indentFixes[i]; ok {
+				lines[0] = fixes[0].replacement + line[fixes[0].currentChars:]
+				shouldFixed = true
 
-			if 1 < len(fixes) && !v.notInsertNewline {
-				// compose multiple lines in reverse order from right to left on one line.
-				var rlines []string
-				for j := len(fixes) - 1; 0 <= j; j-- {
-					indentation := strings.Repeat(v.style, fixes[j].level)
-					if fixes[j].isLast {
-						// deal with last position followed by ';'. See https://github.com/yoheimuta/protolint/issues/99
-						for line[fixes[j].pos.Column-1] == ';' {
-							fixes[j].pos.Column--
+				if 1 < len(fixes) && !v.notInsertNewline {
+					// compose multiple lines in reverse order from right to left on one line.
+					var rlines []string
+					for j := len(fixes) - 1; 0 <= j; j-- {
+						indentation := strings.Repeat(v.style, fixes[j].level)
+						if fixes[j].isLast {
+							// deal with last position followed by ';'. See https://github.com/yoheimuta/protolint/issues/99
+							for line[fixes[j].pos.Column-1] == ';' {
+								fixes[j].pos.Column--
+							}
 						}
+
+						endColumn := len(line)
+						if j < len(fixes)-1 {
+							endColumn = fixes[j+1].pos.Column - 1
+						}
+						text := line[fixes[j].pos.Column-1 : endColumn]
+						text = strings.TrimRightFunc(text, func(r rune) bool {
+							// removing right spaces is a possible side effect that users do not expect,
+							// but it's probably acceptable and usually recommended.
+							return unicode.IsSpace(r)
+						})
+
+						rlines = append(rlines, indentation+text)
 					}
 
-					endColumn := len(line)
-					if j < len(fixes)-1 {
-						endColumn = fixes[j+1].pos.Column - 1
+					// sort the multiple lines in order
+					lines = []string{}
+					for j := len(rlines) - 1; 0 <= j; j-- {
+						lines = append(lines, rlines[j])
 					}
-					text := line[fixes[j].pos.Column-1 : endColumn]
-					text = strings.TrimRightFunc(text, func(r rune) bool {
-						// removing right spaces is a possible side effect that users do not expect,
-						// but it's probably acceptable and usually recommended.
-						return unicode.IsSpace(r)
-					})
-
-					rlines = append(rlines, indentation+text)
-				}
-
-				// sort the multiple lines in order
-				lines = []string{}
-				for j := len(rlines) - 1; 0 <= j; j-- {
-					lines = append(lines, rlines[j])
 				}
 			}
+			fixedLines = append(fixedLines, lines...)
 		}
-		fixedLines = append(fixedLines, lines...)
-	}
+		return fixedLines
+	})
 
 	if !shouldFixed {
 		return nil
 	}
-	return osutil.WriteLinesToExistingFile(v.protoFileName, fixedLines, v.newline)
+	return v.BaseFixableVisitor.Finally()
 }

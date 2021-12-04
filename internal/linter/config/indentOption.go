@@ -7,7 +7,8 @@ import (
 
 // IndentOption represents the option for the INDENT rule.
 type IndentOption struct {
-	Style            string
+	Style string
+	// Deprecated: not used
 	Newline          string
 	NotInsertNewline bool
 }
