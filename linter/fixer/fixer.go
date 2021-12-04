@@ -14,6 +14,8 @@ type Fixer interface {
 	// NOTE: This method is insufficient to process unexpected multi-line contents.
 	ReplaceText(line int, old, new string)
 	ReplaceAll(proc func(lines []string) []string)
+
+	Lines() []string
 }
 
 // Fixing adds the way to modify the proto file to Fixer.
@@ -25,7 +27,7 @@ type Fixing interface {
 // NewFixing creates a fixing, depending on fixMode.
 func NewFixing(fixMode bool, proto *parser.Proto) (Fixing, error) {
 	if fixMode {
-		return newBaseFixing("", proto.Meta.Filename)
+		return newBaseFixing(proto.Meta.Filename)
 	}
 	return NopFixing{}, nil
 }
@@ -37,20 +39,17 @@ type BaseFixing struct {
 	fileName   string
 }
 
-func newBaseFixing(optionalNewline, protoFileName string) (*BaseFixing, error) {
+func newBaseFixing(protoFileName string) (*BaseFixing, error) {
 	content, err := ioutil.ReadFile(protoFileName)
 	if err != nil {
 		return nil, err
 	}
-	lineEnding := optionalNewline
+	lineEnding, err := osutil.DetectLineEnding(string(content))
+	if err != nil {
+		return nil, err
+	}
 	if len(lineEnding) == 0 {
-		lineEnding, err = osutil.DetectLineEnding(string(content))
-		if err != nil {
-			return nil, err
-		}
-		if len(lineEnding) == 0 {
-			lineEnding = "\n"
-		}
+		lineEnding = "\n"
 	}
 	return &BaseFixing{
 		content:    content,
@@ -73,6 +72,11 @@ func (f *BaseFixing) ReplaceAll(proc func(lines []string) []string) {
 	f.content = []byte(strings.Join(lines, f.lineEnding))
 }
 
+// Lines returns the line format of f.content.
+func (f *BaseFixing) Lines() []string {
+	return strings.Split(string(f.content), f.lineEnding)
+}
+
 // Finally writes the fixed content to the file.
 func (f *BaseFixing) Finally() error {
 	return osutil.WriteExistingFile(f.fileName, f.content)
@@ -86,6 +90,9 @@ func (f NopFixing) ReplaceText(line int, old, new string) {}
 
 // ReplaceAll noop
 func (f NopFixing) ReplaceAll(proc func(lines []string) []string) {}
+
+// Lines noop.
+func (f NopFixing) Lines() []string { return []string{} }
 
 // Finally noop
 func (f NopFixing) Finally() error { return nil }

@@ -57,7 +57,6 @@ func newAllInternalRules(
 		rules.NewOrderRule(),
 		rules.NewIndentRule(
 			indent.Style,
-			indent.Newline,
 			indent.NotInsertNewline,
 			fixMode,
 		),

@@ -79,8 +79,6 @@ lint:
     indent:
       # Available styles are 4(4-spaces), 2(2-spaces) or tab.
       style: 4
-      # Available newlines are "\n", "\r", or "\r\n".
-      newline: "\n"
       # Specifies if it should stop considering and inserting new lines at the appropriate positions
       # when the inner elements are on the same line. Default is false.
       not_insert_newline: true

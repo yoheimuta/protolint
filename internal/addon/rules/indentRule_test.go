@@ -224,7 +224,6 @@ Fix https://github.com/yoheimuta/protolint/issues/139`,
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewIndentRule(
 				test.inputStyle,
-				"\n",
 				!test.inputInsertNewline,
 				false,
 			)
@@ -439,7 +438,6 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewIndentRule(
 				space2,
-				"\n",
 				!test.inputInsertNewline,
 				true,
 			)
@@ -476,7 +474,6 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 			// check whether the modified content can pass the lint in the end.
 			ruleOnlyCheck := rules.NewIndentRule(
 				space2,
-				"\n",
 				!test.inputInsertNewline,
 				false,
 			)
