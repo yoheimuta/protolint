@@ -111,6 +111,36 @@ func ToUpperSnakeCaseFromCamelCase(s string) (string, error) {
 	), nil
 }
 
+// ToUpperCamelCase converts s to UpperCamelCase.
+func ToUpperCamelCase(s string) string {
+	if IsUpperSnakeCase(s) {
+		s = strings.ToLower(s)
+	}
+
+	var output string
+	for _, w := range SplitSnakeCaseWord(s) {
+		output += strings.Title(w)
+	}
+	return output
+}
+
+// ToLowerCamelCase converts s to LowerCamelCase.
+func ToLowerCamelCase(s string) string {
+	if IsUpperSnakeCase(s) {
+		s = strings.ToLower(s)
+	}
+
+	var output string
+	for i, w := range SplitSnakeCaseWord(s) {
+		if i == 0 {
+			output += w
+		} else {
+			output += strings.Title(w)
+		}
+	}
+	return output
+}
+
 // toSnake converts s to snake_case.
 func toSnake(s string) string {
 	output := ""
