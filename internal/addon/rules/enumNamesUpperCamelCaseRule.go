@@ -1,7 +1,9 @@
 package rules
 
 import (
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -10,11 +12,17 @@ import (
 
 // EnumNamesUpperCamelCaseRule verifies that all enum names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
-type EnumNamesUpperCamelCaseRule struct{}
+type EnumNamesUpperCamelCaseRule struct {
+	fixMode bool
+}
 
 // NewEnumNamesUpperCamelCaseRule creates a new EnumNamesUpperCamelCaseRule.
-func NewEnumNamesUpperCamelCaseRule() EnumNamesUpperCamelCaseRule {
-	return EnumNamesUpperCamelCaseRule{}
+func NewEnumNamesUpperCamelCaseRule(
+	fixMode bool,
+) EnumNamesUpperCamelCaseRule {
+	return EnumNamesUpperCamelCaseRule{
+		fixMode: fixMode,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -34,20 +42,40 @@ func (r EnumNamesUpperCamelCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r EnumNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &enumNamesUpperCamelCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseFixableVisitor: base,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type enumNamesUpperCamelCaseVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 }
 
 // VisitEnum checks the enum.
 func (v *enumNamesUpperCamelCaseVisitor) VisitEnum(enum *parser.Enum) bool {
-	if !strs.IsUpperCamelCase(enum.EnumName) {
-		v.AddFailuref(enum.Meta.Pos, "Enum name %q must be UpperCamelCase", enum.EnumName)
+	name := enum.EnumName
+	if !strs.IsUpperCamelCase(name) {
+		expected := strs.ToUpperCamelCase(name)
+		v.AddFailuref(enum.Meta.Pos, "Enum name %q must be UpperCamelCase like %q", name, expected)
+
+		err := v.Fixer.SearchAndReplace(enum.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.NextKeyword()
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }
