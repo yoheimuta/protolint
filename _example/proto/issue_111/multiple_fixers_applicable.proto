@@ -1,0 +1,14 @@
+syntax = "proto3";
+enum enumAllowingAlias {
+    UNKNOWN = 0;
+        option allow_alias = true;
+    STARTED = 1;
+        RUNNING = 2 [(custom_option) = "hello world"];
+}
+
+enum enumAllowingAlias2 {
+    UNKNOWN = 0;
+    option allow_alias = true;
+    STARTED = 1;
+    RUNNING = 2 [(custom_option) = "hello world"];
+}
