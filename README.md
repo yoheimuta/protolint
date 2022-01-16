@@ -157,6 +157,7 @@ Some rules support a feature that automatically fixed the problems.
 - QUOTE_CONSISTENT
 - ENUM_NAMES_UPPER_CAMEL_CASE
 - RPC_NAMES_UPPER_CAMEL_CASE
+- SERVICE_NAMES_UPPER_CAMEL_CASE
 
 | Official | ID                                | Purpose                                                                  |
 |----------|-----------------------------------|--------------------------------------------------------------------------|

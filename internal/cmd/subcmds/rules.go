@@ -117,7 +117,7 @@ func newAllInternalRules(
 			rpcsHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewServiceNamesUpperCamelCaseRule(),
+		rules.NewServiceNamesUpperCamelCaseRule(fixMode),
 		rules.NewServiceNamesEndWithRule(
 			serviceNamesEndWith.Text,
 		),

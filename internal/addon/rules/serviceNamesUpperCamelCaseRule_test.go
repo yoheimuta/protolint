@@ -75,7 +75,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"SERVICE_NAMES_UPPER_CAMEL_CASE",
-					`Service name "serviceName" must be UpperCamelCase`,
+					`Service name "serviceName" must be UpperCamelCase like "ServiceName"`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -85,7 +85,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"SERVICE_NAMES_UPPER_CAMEL_CASE",
-					`Service name "Service_name" must be UpperCamelCase`,
+					`Service name "Service_name" must be UpperCamelCase like "ServiceName"`,
 				),
 			},
 		},
@@ -94,7 +94,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewServiceNamesUpperCamelCaseRule()
+			rule := rules.NewServiceNamesUpperCamelCaseRule(false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -104,6 +104,33 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestServiceNamesUpperCamelCaseRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name          string
+		inputFilename string
+		wantFilename  string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "upperCamelCase.proto",
+			wantFilename:  "upperCamelCase.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "upperCamelCase.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewServiceNamesUpperCamelCaseRule(true)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }
