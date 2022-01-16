@@ -1,7 +1,9 @@
 package rules
 
 import (
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -10,11 +12,17 @@ import (
 
 // RPCNamesUpperCamelCaseRule verifies that all rpc names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#services.
-type RPCNamesUpperCamelCaseRule struct{}
+type RPCNamesUpperCamelCaseRule struct {
+	fixMode bool
+}
 
 // NewRPCNamesUpperCamelCaseRule creates a new RPCNamesUpperCamelCaseRule.
-func NewRPCNamesUpperCamelCaseRule() RPCNamesUpperCamelCaseRule {
-	return RPCNamesUpperCamelCaseRule{}
+func NewRPCNamesUpperCamelCaseRule(
+	fixMode bool,
+) RPCNamesUpperCamelCaseRule {
+	return RPCNamesUpperCamelCaseRule{
+		fixMode: fixMode,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -34,20 +42,40 @@ func (r RPCNamesUpperCamelCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r RPCNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &rpcNamesUpperCamelCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseFixableVisitor: base,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type rpcNamesUpperCamelCaseVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 }
 
 // VisitRPC checks the rpc.
 func (v *rpcNamesUpperCamelCaseVisitor) VisitRPC(rpc *parser.RPC) bool {
-	if !strs.IsUpperCamelCase(rpc.RPCName) {
-		v.AddFailuref(rpc.Meta.Pos, "RPC name %q must be UpperCamelCase", rpc.RPCName)
+	name := rpc.RPCName
+	if !strs.IsUpperCamelCase(name) {
+		expected := strs.ToUpperCamelCase(name)
+		v.AddFailuref(rpc.Meta.Pos, "RPC name %q must be UpperCamelCase like %q", name, expected)
+
+		err := v.Fixer.SearchAndReplace(rpc.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.NextKeyword()
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }
