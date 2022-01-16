@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+service SearchApi {
+    rpc Search (SearchRequest) returns (SearchResponse) {};
+};
+
+service SearchLocationApi {
+    rpc SearchLocationPrimary (SearchRequest2) returns (SearchResponse2) {};
+    rpc    SearchLocation    (SearchRequest3) returns (SearchResponse3) {};
+};

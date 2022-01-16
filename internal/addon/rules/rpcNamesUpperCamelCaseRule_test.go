@@ -69,7 +69,7 @@ func TestRPCNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"RPC_NAMES_UPPER_CAMEL_CASE",
-					`RPC name "rpcName" must be UpperCamelCase`,
+					`RPC name "rpcName" must be UpperCamelCase like "RpcName"`,
 				),
 			},
 		},
@@ -103,7 +103,7 @@ func TestRPCNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"RPC_NAMES_UPPER_CAMEL_CASE",
-					`RPC name "RPC_name" must be UpperCamelCase`,
+					`RPC name "RPC_name" must be UpperCamelCase like "RPCName"`,
 				),
 			},
 		},
@@ -112,7 +112,7 @@ func TestRPCNamesUpperCamelCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewRPCNamesUpperCamelCaseRule()
+			rule := rules.NewRPCNamesUpperCamelCaseRule(false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -122,6 +122,33 @@ func TestRPCNamesUpperCamelCaseRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestRPCNamesUpperCamelCaseRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name          string
+		inputFilename string
+		wantFilename  string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "upperCamelCase.proto",
+			wantFilename:  "upperCamelCase.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "upperCamelCase.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewRPCNamesUpperCamelCaseRule(true)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }
