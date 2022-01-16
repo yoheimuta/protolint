@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/yoheimuta/go-protoparser/v4/parser"
+
 	"github.com/yoheimuta/protolint/internal/linter/config"
 
 	"github.com/yoheimuta/protolint/internal/linter"
@@ -128,13 +130,14 @@ func (c *CmdLint) runOneFile(
 		return []report.Failure{}, nil
 	}
 
-	proto, err := f.Parse(c.config.verbose)
-	if err != nil {
-		if c.config.verbose {
-			return nil, ParseError{Message: err.Error()}
+	return c.l.Run(func() (*parser.Proto, error) {
+		proto, err := f.Parse(c.config.verbose)
+		if err != nil {
+			if c.config.verbose {
+				return nil, ParseError{Message: err.Error()}
+			}
+			return nil, ParseError{Message: fmt.Sprintf("%s. Use -v for more details", err)}
 		}
-		return nil, ParseError{Message: fmt.Sprintf("%s. Use -v for more details", err)}
-	}
-
-	return c.l.Run(proto, rs)
+		return proto, nil
+	}, rs)
 }
