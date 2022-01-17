@@ -53,7 +53,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						MessageName: "messageName",
 						MessageBody: []parser.Visitee{
 							&parser.Message{
-								MessageName: "Inner.MessageName",
+								MessageName: "Inner_MessageName",
 								Meta: meta.Meta{
 									Pos: meta.Position{
 										Filename: "example.proto",
@@ -95,7 +95,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
-					`Message name "messageName" must be UpperCamelCase`,
+					`Message name "messageName" must be UpperCamelCase like "MessageName"`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -105,7 +105,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
-					`Message name "Inner.MessageName" must be UpperCamelCase`,
+					`Message name "Inner_MessageName" must be UpperCamelCase like "InnerMessageName"`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -115,7 +115,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
-					`Message name "Message_name" must be UpperCamelCase`,
+					`Message name "Message_name" must be UpperCamelCase like "MessageName"`,
 				),
 			},
 		},
@@ -124,7 +124,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewMessageNamesUpperCamelCaseRule()
+			rule := rules.NewMessageNamesUpperCamelCaseRule(false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -134,6 +134,33 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestMessageNamesUpperCamelCaseRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name          string
+		inputFilename string
+		wantFilename  string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "upperCamelCase.proto",
+			wantFilename:  "upperCamelCase.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "upperCamelCase.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewMessageNamesUpperCamelCaseRule(true)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }

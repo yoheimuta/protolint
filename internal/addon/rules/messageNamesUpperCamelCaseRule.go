@@ -1,7 +1,9 @@
 package rules
 
 import (
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -10,11 +12,17 @@ import (
 
 // MessageNamesUpperCamelCaseRule verifies that all message names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#message-and-field-names.
-type MessageNamesUpperCamelCaseRule struct{}
+type MessageNamesUpperCamelCaseRule struct {
+	fixMode bool
+}
 
 // NewMessageNamesUpperCamelCaseRule creates a new MessageNamesUpperCamelCaseRule.
-func NewMessageNamesUpperCamelCaseRule() MessageNamesUpperCamelCaseRule {
-	return MessageNamesUpperCamelCaseRule{}
+func NewMessageNamesUpperCamelCaseRule(
+	fixMode bool,
+) MessageNamesUpperCamelCaseRule {
+	return MessageNamesUpperCamelCaseRule{
+		fixMode: fixMode,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -34,20 +42,40 @@ func (r MessageNamesUpperCamelCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r MessageNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &messageNamesUpperCamelCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseFixableVisitor: base,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type messageNamesUpperCamelCaseVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 }
 
 // VisitMessage checks the message.
 func (v *messageNamesUpperCamelCaseVisitor) VisitMessage(message *parser.Message) bool {
-	if !strs.IsUpperCamelCase(message.MessageName) {
-		v.AddFailuref(message.Meta.Pos, "Message name %q must be UpperCamelCase", message.MessageName)
+	name := message.MessageName
+	if !strs.IsUpperCamelCase(name) {
+		expected := strs.ToUpperCamelCase(name)
+		v.AddFailuref(message.Meta.Pos, "Message name %q must be UpperCamelCase like %q", name, expected)
+
+		err := v.Fixer.SearchAndReplace(message.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.NextKeyword()
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return true
 }

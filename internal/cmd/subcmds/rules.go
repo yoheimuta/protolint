@@ -102,7 +102,7 @@ func newAllInternalRules(
 			repeatedFieldNamesPluralized.IrregularRules,
 		),
 
-		rules.NewMessageNamesUpperCamelCaseRule(),
+		rules.NewMessageNamesUpperCamelCaseRule(fixMode),
 		rules.NewMessageNamesExcludePrepositionsRule(
 			messageNamesExcludePrepositions.Prepositions,
 			messageNamesExcludePrepositions.Excludes,
