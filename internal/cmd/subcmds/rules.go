@@ -85,7 +85,7 @@ func newAllInternalRules(
 			enumsHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewFieldNamesLowerSnakeCaseRule(),
+		rules.NewFieldNamesLowerSnakeCaseRule(fixMode),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Prepositions,
 			fieldNamesExcludePrepositions.Excludes,

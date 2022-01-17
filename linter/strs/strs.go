@@ -4,6 +4,7 @@ package strs
 import (
 	"fmt"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 )
 
@@ -111,6 +112,17 @@ func ToUpperSnakeCaseFromCamelCase(s string) (string, error) {
 	), nil
 }
 
+// ToLowerSnakeCase converts s to lower_snake_case.
+func ToLowerSnakeCase(s string) string {
+	ws := SplitCamelCaseWord(s)
+	if ws == nil {
+		ws = []string{s}
+	}
+	return strings.ToLower(
+		strings.Join(ws, "_"),
+	)
+}
+
 // ToUpperCamelCase converts s to UpperCamelCase.
 func ToUpperCamelCase(s string) string {
 	if IsUpperSnakeCase(s) {
@@ -124,18 +136,14 @@ func ToUpperCamelCase(s string) string {
 	return output
 }
 
-// ToLowerCamelCase converts s to LowerCamelCase.
+// ToLowerCamelCase converts s to lowerCamelCase.
 func ToLowerCamelCase(s string) string {
-	if IsUpperSnakeCase(s) {
-		s = strings.ToLower(s)
-	}
-
 	var output string
-	for i, w := range SplitSnakeCaseWord(s) {
+	for i, r := range ToUpperCamelCase(s) {
 		if i == 0 {
-			output += w
+			output += string(unicode.ToLower(r))
 		} else {
-			output += strings.Title(w)
+			output += string(r)
 		}
 	}
 	return output
