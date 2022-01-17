@@ -1,7 +1,9 @@
 package rules
 
 import (
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -10,11 +12,17 @@ import (
 
 // ServiceNamesUpperCamelCaseRule verifies that all service names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#services.
-type ServiceNamesUpperCamelCaseRule struct{}
+type ServiceNamesUpperCamelCaseRule struct {
+	fixMode bool
+}
 
 // NewServiceNamesUpperCamelCaseRule creates a new ServiceNamesUpperCamelCaseRule.
-func NewServiceNamesUpperCamelCaseRule() ServiceNamesUpperCamelCaseRule {
-	return ServiceNamesUpperCamelCaseRule{}
+func NewServiceNamesUpperCamelCaseRule(
+	fixMode bool,
+) ServiceNamesUpperCamelCaseRule {
+	return ServiceNamesUpperCamelCaseRule{
+		fixMode: fixMode,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -34,20 +42,40 @@ func (r ServiceNamesUpperCamelCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r ServiceNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &serviceNamesUpperCamelCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseFixableVisitor: base,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type serviceNamesUpperCamelCaseVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 }
 
 // VisitService checks the service.
 func (v *serviceNamesUpperCamelCaseVisitor) VisitService(service *parser.Service) bool {
-	if !strs.IsUpperCamelCase(service.ServiceName) {
-		v.AddFailuref(service.Meta.Pos, "Service name %q must be UpperCamelCase", service.ServiceName)
+	name := service.ServiceName
+	if !strs.IsUpperCamelCase(name) {
+		expected := strs.ToUpperCamelCase(name)
+		v.AddFailuref(service.Meta.Pos, "Service name %q must be UpperCamelCase like %q", name, expected)
+
+		err := v.Fixer.SearchAndReplace(service.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.NextKeyword()
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }

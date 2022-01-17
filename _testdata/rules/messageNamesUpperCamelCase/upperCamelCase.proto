@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message FirstOuter {
+    option (my_option).a = true;
+    // inner is an inner message.
+    message FirstInner {   // Level 2
+                      int64 ival = 1;
+    }
+    message AccountForAdmin {}
+    message SpecialEndOfSupport {}
+}
+
+message Second {
+    message AccountForAdmin {}
+}
