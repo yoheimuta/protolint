@@ -1,7 +1,11 @@
 package rules
 
 import (
+	"strings"
+
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -10,11 +14,17 @@ import (
 
 // PackageNameLowerCaseRule verifies that the package name doesn't contain any uppercase letters.
 // See https://developers.google.com/protocol-buffers/docs/style#packages.
-type PackageNameLowerCaseRule struct{}
+type PackageNameLowerCaseRule struct {
+	fixMode bool
+}
 
 // NewPackageNameLowerCaseRule creates a new PackageNameLowerCaseRule.
-func NewPackageNameLowerCaseRule() PackageNameLowerCaseRule {
-	return PackageNameLowerCaseRule{}
+func NewPackageNameLowerCaseRule(
+	fixMode bool,
+) PackageNameLowerCaseRule {
+	return PackageNameLowerCaseRule{
+		fixMode: fixMode,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -34,20 +44,40 @@ func (r PackageNameLowerCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r PackageNameLowerCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &packageNameLowerCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseFixableVisitor: base,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type packageNameLowerCaseVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 }
 
 // VisitPackage checks the package.
 func (v *packageNameLowerCaseVisitor) VisitPackage(p *parser.Package) bool {
-	if !isPackageLowerCase(p.Name) {
-		v.AddFailuref(p.Meta.Pos, "Package name %q must not contain any uppercase letter.", p.Name)
+	name := p.Name
+	if !isPackageLowerCase(name) {
+		expected := strings.ToLower(name)
+		v.AddFailuref(p.Meta.Pos, "Package name %q must not contain any uppercase letter. Consider to change like %q.", name, expected)
+
+		err := v.Fixer.SearchAndReplace(p.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.NextKeyword()
+			ident, startPos, _ := lex.ReadFullIdent()
+			return fixer.TextEdit{
+				Pos:     startPos.Offset,
+				End:     startPos.Offset + len(ident) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }

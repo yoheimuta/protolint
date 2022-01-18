@@ -107,9 +107,18 @@ func ToUpperSnakeCaseFromCamelCase(s string) (string, error) {
 	if ws == nil {
 		return "", fmt.Errorf("s `%s` should be camelCase", s)
 	}
+	return ToUpperSnakeCase(s), nil
+}
+
+// ToUpperSnakeCase converts s to UPPER_SNAKE_CASE.
+func ToUpperSnakeCase(s string) string {
+	ws := SplitCamelCaseWord(s)
+	if ws == nil {
+		ws = []string{s}
+	}
 	return strings.ToUpper(
 		strings.Join(ws, "_"),
-	), nil
+	)
 }
 
 // ToLowerSnakeCase converts s to lower_snake_case.

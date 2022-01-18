@@ -61,7 +61,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 								},
 							},
 							&parser.EnumField{
-								Ident: "SECOND.VALUE",
+								Ident: "secondValue",
 								Meta: meta.Meta{
 									Pos: meta.Position{
 										Filename: "example.proto",
@@ -84,7 +84,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
-					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
+					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES like "FIRST_VALUE"`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -94,7 +94,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
-					`EnumField name "SECOND.VALUE" must be CAPITALS_WITH_UNDERSCORES`,
+					`EnumField name "secondValue" must be CAPITALS_WITH_UNDERSCORES like "SECOND_VALUE"`,
 				),
 			},
 		},
@@ -103,7 +103,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewEnumFieldNamesUpperSnakeCaseRule()
+			rule := rules.NewEnumFieldNamesUpperSnakeCaseRule(false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -113,6 +113,33 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestEnumFieldNamesUpperSnakeCaseRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name          string
+		inputFilename string
+		wantFilename  string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "upperSnakeCase.proto",
+			wantFilename:  "upperSnakeCase.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "upperSnakeCase.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewEnumFieldNamesUpperSnakeCaseRule(true)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }

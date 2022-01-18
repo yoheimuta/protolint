@@ -66,14 +66,14 @@ func newAllInternalRules(
 			maxLineLength.TabChars,
 		),
 
-		rules.NewPackageNameLowerCaseRule(),
+		rules.NewPackageNameLowerCaseRule(fixMode),
 
 		rules.NewImportsSortedRule(
 			fixMode,
 		),
 
 		rules.NewEnumFieldNamesPrefixRule(),
-		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
+		rules.NewEnumFieldNamesUpperSnakeCaseRule(fixMode),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
 		),

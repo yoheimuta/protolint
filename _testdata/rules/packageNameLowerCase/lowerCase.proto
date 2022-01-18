@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package my.hogehoge.package;
+
+option java_package = "com.example.foo";
