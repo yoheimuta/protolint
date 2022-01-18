@@ -3,6 +3,9 @@ package rules
 import (
 	"strings"
 
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
+	"github.com/yoheimuta/protolint/linter/fixer"
+
 	"github.com/yoheimuta/protolint/linter/strs"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser"
@@ -13,11 +16,16 @@ import (
 // EnumFieldNamesPrefixRule verifies that enum field names are prefixed with its ENUM_NAME_UPPER_SNAKE_CASE.
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumFieldNamesPrefixRule struct {
+	fixMode bool
 }
 
 // NewEnumFieldNamesPrefixRule creates a new EnumFieldNamesPrefixRule.
-func NewEnumFieldNamesPrefixRule() EnumFieldNamesPrefixRule {
-	return EnumFieldNamesPrefixRule{}
+func NewEnumFieldNamesPrefixRule(
+	fixMode bool,
+) EnumFieldNamesPrefixRule {
+	return EnumFieldNamesPrefixRule{
+		fixMode: fixMode,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -37,14 +45,19 @@ func (r EnumFieldNamesPrefixRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r EnumFieldNamesPrefixRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &enumFieldNamesPrefixVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseFixableVisitor: base,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type enumFieldNamesPrefixVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 	enumName string
 }
 
@@ -56,12 +69,22 @@ func (v *enumFieldNamesPrefixVisitor) VisitEnum(enum *parser.Enum) bool {
 
 // VisitEnumField checks the enum field.
 func (v *enumFieldNamesPrefixVisitor) VisitEnumField(field *parser.EnumField) bool {
-	expectedPrefix, err := strs.ToUpperSnakeCaseFromCamelCase(v.enumName)
-	if err != nil {
-		expectedPrefix = strings.ToUpper(v.enumName)
-	}
+	expectedPrefix := strs.ToUpperSnakeCase(v.enumName)
 	if !strings.HasPrefix(field.Ident, expectedPrefix) {
 		v.AddFailuref(field.Meta.Pos, "EnumField name %q should have the prefix %q", field.Ident, expectedPrefix)
+
+		expected := expectedPrefix + "_" + field.Ident
+		err := v.Fixer.SearchAndReplace(field.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }

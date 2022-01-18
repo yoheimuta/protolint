@@ -72,10 +72,11 @@ func newAllInternalRules(
 			fixMode,
 		),
 
-		rules.NewEnumFieldNamesPrefixRule(),
+		rules.NewEnumFieldNamesPrefixRule(fixMode),
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(fixMode),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
+			fixMode,
 		),
 		rules.NewEnumFieldsHaveCommentRule(
 			enumFieldsHaveComment.ShouldFollowGolangStyle,

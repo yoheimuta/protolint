@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+enum enum {
+    option allow_alias = true;
+    UNKNOWN_UNSPECIFIED = 0;
+}
+
+enum enumAlias {
+    STARTED_LAP = 1;
+    RUNNINGLAP_UNTIL = 2 [(custom_option) = "hello world"];
+}

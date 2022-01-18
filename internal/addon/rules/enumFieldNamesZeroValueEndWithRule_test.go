@@ -86,7 +86,7 @@ func TestEnumFieldNamesZeroValueEndWithRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewEnumFieldNamesZeroValueEndWithRule(test.inputSuffix)
+			rule := rules.NewEnumFieldNamesZeroValueEndWithRule(test.inputSuffix, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -96,6 +96,33 @@ func TestEnumFieldNamesZeroValueEndWithRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestEnumFieldNamesZeroValueEndWithRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name          string
+		inputFilename string
+		wantFilename  string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "suffix.proto",
+			wantFilename:  "suffix.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "suffix.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewEnumFieldNamesZeroValueEndWithRule("", true)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }
