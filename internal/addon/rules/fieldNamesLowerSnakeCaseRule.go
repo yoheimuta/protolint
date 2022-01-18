@@ -1,7 +1,10 @@
 package rules
 
 import (
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
+	"github.com/yoheimuta/go-protoparser/v4/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -10,11 +13,17 @@ import (
 
 // FieldNamesLowerSnakeCaseRule verifies that all field names are underscore_separated_names.
 // See https://developers.google.com/protocol-buffers/docs/style#message-and-field-names.
-type FieldNamesLowerSnakeCaseRule struct{}
+type FieldNamesLowerSnakeCaseRule struct {
+	fixMode bool
+}
 
 // NewFieldNamesLowerSnakeCaseRule creates a new FieldNamesLowerSnakeCaseRule.
-func NewFieldNamesLowerSnakeCaseRule() FieldNamesLowerSnakeCaseRule {
-	return FieldNamesLowerSnakeCaseRule{}
+func NewFieldNamesLowerSnakeCaseRule(
+	fixMode bool,
+) FieldNamesLowerSnakeCaseRule {
+	return FieldNamesLowerSnakeCaseRule{
+		fixMode: fixMode,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -34,36 +43,129 @@ func (r FieldNamesLowerSnakeCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r FieldNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &fieldNamesLowerSnakeCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseFixableVisitor: base,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type fieldNamesLowerSnakeCaseVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 }
 
 // VisitField checks the field.
 func (v *fieldNamesLowerSnakeCaseVisitor) VisitField(field *parser.Field) bool {
-	if !strs.IsLowerSnakeCase(field.FieldName) {
-		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names", field.FieldName)
+	name := field.FieldName
+	if !strs.IsLowerSnakeCase(name) {
+		expected := strs.ToLowerSnakeCase(name)
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names like %q", name, expected)
+
+		err := v.Fixer.SearchAndReplace(field.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.NextKeyword()
+			switch lex.Token {
+			case scanner.TREPEATED, scanner.TREQUIRED, scanner.TOPTIONAL:
+			default:
+				lex.UnNext()
+			}
+			parseType(lex)
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }
 
 // VisitMapField checks the map field.
 func (v *fieldNamesLowerSnakeCaseVisitor) VisitMapField(field *parser.MapField) bool {
-	if !strs.IsLowerSnakeCase(field.MapName) {
-		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names", field.MapName)
+	name := field.MapName
+	if !strs.IsLowerSnakeCase(name) {
+		expected := strs.ToLowerSnakeCase(name)
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names like %q", name, expected)
+
+		err := v.Fixer.SearchAndReplace(field.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.NextKeyword()
+			lex.Next()
+			lex.Next()
+			lex.Next()
+			parseType(lex)
+			lex.Next()
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }
 
 // VisitOneofField checks the oneof field.
 func (v *fieldNamesLowerSnakeCaseVisitor) VisitOneofField(field *parser.OneofField) bool {
-	if !strs.IsLowerSnakeCase(field.FieldName) {
-		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names", field.FieldName)
+	name := field.FieldName
+	if !strs.IsLowerSnakeCase(name) {
+		expected := strs.ToLowerSnakeCase(name)
+		v.AddFailuref(field.Meta.Pos, "Field name %q must be underscore_separated_names like %q", name, expected)
+
+		err := v.Fixer.SearchAndReplace(field.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			parseType(lex)
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
+}
+
+// Below codes are copied from go-protoparser.
+var typeConstants = map[string]struct{}{
+	"double":   {},
+	"float":    {},
+	"int32":    {},
+	"int64":    {},
+	"uint32":   {},
+	"uint64":   {},
+	"sint32":   {},
+	"sint64":   {},
+	"fixed32":  {},
+	"fixed64":  {},
+	"sfixed32": {},
+	"sfixed64": {},
+	"bool":     {},
+	"string":   {},
+	"bytes":    {},
+}
+
+func parseType(lex *lexer.Lexer) {
+	lex.Next()
+	if _, ok := typeConstants[lex.Text]; ok {
+		return
+	}
+	lex.UnNext()
+
+	_, _, err := lex.ReadMessageType()
+	if err != nil {
+		panic(err)
+	}
 }

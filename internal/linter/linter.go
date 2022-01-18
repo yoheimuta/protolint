@@ -17,12 +17,15 @@ func NewLinter() *Linter {
 
 // Run lints the protocol buffer.
 func (l *Linter) Run(
-	genProto func() (*parser.Proto, error),
+	genProto func(*parser.Proto) (*parser.Proto, error),
 	hasApplies []rule.HasApply,
 ) ([]report.Failure, error) {
 	var fs []report.Failure
+	var p *parser.Proto
+	var err error
+
 	for _, hasApply := range hasApplies {
-		p, err := genProto()
+		p, err = genProto(p)
 		if err != nil {
 			return nil, err
 		}

@@ -280,6 +280,41 @@ func TestToUpperSnakeCaseFromCamelCase(t *testing.T) {
 	}
 }
 
+func TestToLowerSnakeCase(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{
+			name:  "input consists of one word",
+			input: "Account",
+			want:  "account",
+		},
+		{
+			name:  "input consists of words with an initial capital",
+			input: "AccountStatus",
+			want:  "account_status",
+		},
+		{
+			name:  "input consists of words without an initial capital",
+			input: "accountStatus",
+			want:  "account_status",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			got := strs.ToLowerSnakeCase(test.input)
+
+			if !reflect.DeepEqual(got, test.want) {
+				t.Errorf("got %v, but want %v", got, test.want)
+			}
+		})
+	}
+}
+
 func TestToUpperCamelCase(t *testing.T) {
 	tests := []struct {
 		name  string
@@ -322,6 +357,56 @@ func TestToUpperCamelCase(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			got := strs.ToUpperCamelCase(test.input)
+
+			if !reflect.DeepEqual(got, test.want) {
+				t.Errorf("got %v, but want %v", got, test.want)
+			}
+		})
+	}
+}
+
+func TestToLowerCamelCase(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{
+			name:  "input consists of one word",
+			input: "account",
+			want:  "account",
+		},
+		{
+			name:  "input consists of words with an initial capital",
+			input: "AccountStatus",
+			want:  "accountStatus",
+		},
+		{
+			name:  "input consists of words without an initial capital",
+			input: "accountStatus",
+			want:  "accountStatus",
+		},
+		{
+			name:  "input consists of words without capital letters",
+			input: "accountstatus",
+			want:  "accountstatus",
+		},
+		{
+			name:  "input lower_snake_case",
+			input: "account_status",
+			want:  "accountStatus",
+		},
+		{
+			name:  "input UPPER_SNAKE_CASE",
+			input: "ACCOUNT_STATUS",
+			want:  "accountStatus",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			got := strs.ToLowerCamelCase(test.input)
 
 			if !reflect.DeepEqual(got, test.want) {
 				t.Errorf("got %v, but want %v", got, test.want)

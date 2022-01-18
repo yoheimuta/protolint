@@ -52,6 +52,7 @@ func newAllInternalRules(
 		),
 		rules.NewFileNamesLowerSnakeCaseRule(
 			fileNamesLowerSnakeCase.Excludes,
+			fixMode,
 		),
 		rules.NewQuoteConsistentRule(option.QuoteConsistentOption.Quote, fixMode),
 		rules.NewOrderRule(),
@@ -85,7 +86,7 @@ func newAllInternalRules(
 			enumsHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewFieldNamesLowerSnakeCaseRule(),
+		rules.NewFieldNamesLowerSnakeCaseRule(fixMode),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Prepositions,
 			fieldNamesExcludePrepositions.Excludes,

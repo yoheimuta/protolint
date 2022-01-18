@@ -1,6 +1,7 @@
 package rules
 
 import (
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -17,14 +18,17 @@ import (
 // See https://developers.google.com/protocol-buffers/docs/style#file-structure.
 type FileNamesLowerSnakeCaseRule struct {
 	excluded []string
+	fixMode  bool
 }
 
 // NewFileNamesLowerSnakeCaseRule creates a new FileNamesLowerSnakeCaseRule.
 func NewFileNamesLowerSnakeCaseRule(
 	excluded []string,
+	fixMode bool,
 ) FileNamesLowerSnakeCaseRule {
 	return FileNamesLowerSnakeCaseRule{
 		excluded: excluded,
+		fixMode:  fixMode,
 	}
 }
 
@@ -48,6 +52,7 @@ func (r FileNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failur
 	v := &fileNamesLowerSnakeCaseVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 		excluded:       r.excluded,
+		fixMode:        r.fixMode,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
@@ -55,6 +60,7 @@ func (r FileNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failur
 type fileNamesLowerSnakeCaseVisitor struct {
 	*visitor.BaseAddVisitor
 	excluded []string
+	fixMode  bool
 }
 
 // OnStart checks the file.
@@ -66,8 +72,26 @@ func (v *fileNamesLowerSnakeCaseVisitor) OnStart(proto *parser.Proto) error {
 
 	filename := filepath.Base(path)
 	ext := filepath.Ext(filename)
-	if ext != ".proto" || !strs.IsLowerSnakeCase(strings.TrimSuffix(filename, ext)) {
-		v.AddFailurefWithProtoMeta(proto.Meta, "File name should be lower_snake_case.proto.")
+	base := strings.TrimSuffix(filename, ext)
+	if ext != ".proto" || !strs.IsLowerSnakeCase(base) {
+		expected := strs.ToLowerSnakeCase(base) + ext
+		v.AddFailurefWithProtoMeta(proto.Meta, "File name %q should be lower_snake_case.proto like %q.", filename, expected)
+
+		if v.fixMode {
+			dir := filepath.Dir(path)
+			newPath := filepath.Join(dir, expected)
+			if _, err := os.Stat(newPath); !os.IsNotExist(err) {
+				v.AddFailurefWithProtoMeta(proto.Meta, "Failed to rename %q because %q already exists.", filename, expected)
+				return nil
+			}
+			err := os.Rename(path, newPath)
+			if err != nil {
+				return err
+			}
+
+			// Notify the upstream this new filename by updating the proto.
+			proto.Meta.Filename = newPath
+		}
 	}
 	return nil
 }
