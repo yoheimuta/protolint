@@ -76,6 +76,7 @@ func newAllInternalRules(
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(fixMode),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
+			fixMode,
 		),
 		rules.NewEnumFieldsHaveCommentRule(
 			enumFieldsHaveComment.ShouldFollowGolangStyle,

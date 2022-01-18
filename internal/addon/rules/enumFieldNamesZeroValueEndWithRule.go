@@ -3,6 +3,9 @@ package rules
 import (
 	"strings"
 
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
+	"github.com/yoheimuta/protolint/linter/fixer"
+
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
@@ -16,18 +19,21 @@ const (
 // EnumFieldNamesZeroValueEndWithRule verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID").
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumFieldNamesZeroValueEndWithRule struct {
-	suffix string
+	suffix  string
+	fixMode bool
 }
 
 // NewEnumFieldNamesZeroValueEndWithRule creates a new EnumFieldNamesZeroValueEndWithRule.
 func NewEnumFieldNamesZeroValueEndWithRule(
 	suffix string,
+	fixMode bool,
 ) EnumFieldNamesZeroValueEndWithRule {
 	if len(suffix) == 0 {
 		suffix = defaultSuffix
 	}
 	return EnumFieldNamesZeroValueEndWithRule{
-		suffix: suffix,
+		suffix:  suffix,
+		fixMode: fixMode,
 	}
 }
 
@@ -48,15 +54,20 @@ func (r EnumFieldNamesZeroValueEndWithRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r EnumFieldNamesZeroValueEndWithRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &enumFieldNamesZeroValueEndWithVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
-		suffix:         r.suffix,
+		BaseFixableVisitor: base,
+		suffix:             r.suffix,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type enumFieldNamesZeroValueEndWithVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 	suffix string
 }
 
@@ -64,6 +75,19 @@ type enumFieldNamesZeroValueEndWithVisitor struct {
 func (v *enumFieldNamesZeroValueEndWithVisitor) VisitEnumField(field *parser.EnumField) bool {
 	if field.Number == "0" && !strings.HasSuffix(field.Ident, v.suffix) {
 		v.AddFailuref(field.Meta.Pos, "EnumField name %q with zero value should have the suffix %q", field.Ident, v.suffix)
+
+		expected := field.Ident + "_" + v.suffix
+		err := v.Fixer.SearchAndReplace(field.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }
