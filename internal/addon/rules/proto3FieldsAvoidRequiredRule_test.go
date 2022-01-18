@@ -148,7 +148,7 @@ func TestProto3FieldsAvoidRequiredRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewProto3FieldsAvoidRequiredRule()
+			rule := rules.NewProto3FieldsAvoidRequiredRule(false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -158,6 +158,33 @@ func TestProto3FieldsAvoidRequiredRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestProto3FieldsAvoidRequiredRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name          string
+		inputFilename string
+		wantFilename  string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "avoid_required.proto",
+			wantFilename:  "avoid_required.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "avoid_required.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewProto3FieldsAvoidRequiredRule(true)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }
