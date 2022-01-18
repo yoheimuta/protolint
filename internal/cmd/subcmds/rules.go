@@ -66,7 +66,7 @@ func newAllInternalRules(
 			maxLineLength.TabChars,
 		),
 
-		rules.NewPackageNameLowerCaseRule(),
+		rules.NewPackageNameLowerCaseRule(fixMode),
 
 		rules.NewImportsSortedRule(
 			fixMode,
