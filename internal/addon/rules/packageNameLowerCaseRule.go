@@ -1,10 +1,11 @@
 package rules
 
 import (
+	"strings"
+
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/fixer"
-	"strings"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"

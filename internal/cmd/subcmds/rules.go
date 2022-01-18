@@ -73,7 +73,7 @@ func newAllInternalRules(
 		),
 
 		rules.NewEnumFieldNamesPrefixRule(),
-		rules.NewEnumFieldNamesUpperSnakeCaseRule(),
+		rules.NewEnumFieldNamesUpperSnakeCaseRule(fixMode),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
 		),

@@ -1,8 +1,9 @@
 package rules
 
 import (
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
-
+	"github.com/yoheimuta/protolint/linter/fixer"
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
@@ -10,11 +11,17 @@ import (
 
 // EnumFieldNamesUpperSnakeCaseRule verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
-type EnumFieldNamesUpperSnakeCaseRule struct{}
+type EnumFieldNamesUpperSnakeCaseRule struct {
+	fixMode bool
+}
 
 // NewEnumFieldNamesUpperSnakeCaseRule creates a new EnumFieldNamesUpperSnakeCaseRule.
-func NewEnumFieldNamesUpperSnakeCaseRule() EnumFieldNamesUpperSnakeCaseRule {
-	return EnumFieldNamesUpperSnakeCaseRule{}
+func NewEnumFieldNamesUpperSnakeCaseRule(
+	fixMode bool,
+) EnumFieldNamesUpperSnakeCaseRule {
+	return EnumFieldNamesUpperSnakeCaseRule{
+		fixMode: fixMode,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -34,20 +41,39 @@ func (r EnumFieldNamesUpperSnakeCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r EnumFieldNamesUpperSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	if err != nil {
+		return nil, err
+	}
+
 	v := &enumFieldNamesUpperSnakeCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseFixableVisitor: base,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }
 
 type enumFieldNamesUpperSnakeCaseVisitor struct {
-	*visitor.BaseAddVisitor
+	*visitor.BaseFixableVisitor
 }
 
 // VisitEnumField checks the enum field.
 func (v *enumFieldNamesUpperSnakeCaseVisitor) VisitEnumField(field *parser.EnumField) bool {
-	if !strs.IsUpperSnakeCase(field.Ident) {
-		v.AddFailuref(field.Meta.Pos, "EnumField name %q must be CAPITALS_WITH_UNDERSCORES", field.Ident)
+	name := field.Ident
+	if !strs.IsUpperSnakeCase(name) {
+		expected := strs.ToUpperSnakeCase(name)
+		v.AddFailuref(field.Meta.Pos, "EnumField name %q must be CAPITALS_WITH_UNDERSCORES like %q", name, expected)
+
+		err := v.Fixer.SearchAndReplace(field.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
+			lex.Next()
+			return fixer.TextEdit{
+				Pos:     lex.Pos.Offset,
+				End:     lex.Pos.Offset + len(lex.Text) - 1,
+				NewText: []byte(expected),
+			}
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 	return false
 }
