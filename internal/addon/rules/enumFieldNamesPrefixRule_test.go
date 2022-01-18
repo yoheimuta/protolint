@@ -110,7 +110,7 @@ func TestEnumFieldNamesPrefixRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewEnumFieldNamesPrefixRule()
+			rule := rules.NewEnumFieldNamesPrefixRule(false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -120,6 +120,33 @@ func TestEnumFieldNamesPrefixRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestEnumFieldNamesPrefixRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name          string
+		inputFilename string
+		wantFilename  string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "prefix.proto",
+			wantFilename:  "prefix.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "prefix.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewEnumFieldNamesPrefixRule(true)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }

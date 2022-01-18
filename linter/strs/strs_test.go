@@ -225,21 +225,16 @@ func TestSplitCamelCaseWord(t *testing.T) {
 	}
 }
 
-func TestToUpperSnakeCaseFromCamelCase(t *testing.T) {
+func TestToUpperSnakeCase(t *testing.T) {
 	tests := []struct {
-		name         string
-		input        string
-		want         string
-		wantExistErr bool
+		name  string
+		input string
+		want  string
 	}{
 		{
-			name:         "if s is empty, returns an error",
-			wantExistErr: true,
-		},
-		{
-			name:         "if s is not camel_case, returns an error",
-			input:        "not_camel",
-			wantExistErr: true,
+			name:  "s is not camel_case",
+			input: "not_camel",
+			want:  "NOT_CAMEL",
 		},
 		{
 			name:  "input consists of one word",
@@ -261,18 +256,7 @@ func TestToUpperSnakeCaseFromCamelCase(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			got, err := strs.ToUpperSnakeCaseFromCamelCase(test.input)
-			if test.wantExistErr {
-				if err == nil {
-					t.Errorf("got err nil, but want err")
-				}
-				return
-			}
-			if err != nil {
-				t.Errorf("got err %v, but want nil", err)
-				return
-			}
-
+			got := strs.ToUpperSnakeCase(test.input)
 			if !reflect.DeepEqual(got, test.want) {
 				t.Errorf("got %v, but want %v", got, test.want)
 			}
