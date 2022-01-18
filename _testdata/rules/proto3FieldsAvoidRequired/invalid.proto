@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message first_outer {
+    // inner is an inner message.
+    message first_inner {   // Level 2
+                            repeated inner innerMessage = 2;
+                            required inner innerRequired = 5;
+    }
+}
+
+message second_outer {
+    required int64 hoge = 4;
+    string fuga = 3;
+}
+

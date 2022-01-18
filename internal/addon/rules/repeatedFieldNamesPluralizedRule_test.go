@@ -186,6 +186,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 				test.singularRules,
 				test.uncountableRules,
 				test.irregularRules,
+				false,
 			)
 
 			got, err := rule.Apply(test.inputProto)
@@ -196,6 +197,43 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestRepeatedFieldNamesPluralizedRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name             string
+		pluralRules      map[string]string
+		singularRules    map[string]string
+		uncountableRules []string
+		irregularRules   map[string]string
+		inputFilename    string
+		wantFilename     string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "pluralized.proto",
+			wantFilename:  "pluralized.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "pluralized.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewRepeatedFieldNamesPluralizedRule(
+				test.pluralRules,
+				test.singularRules,
+				test.uncountableRules,
+				test.irregularRules,
+				true,
+			)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }

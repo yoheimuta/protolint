@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+message first_outer {
+    // inner is an inner message.
+    message first_inner {   // Level 2
+                            repeated inner innerMessages = 2;
+    }
+    repeated string My_maps = 4;
+    group Result = 8 {
+        repeated string urls = 9;
+        int64 amount = 10;
+    }
+}
+
+message second_outer {
+    repeated google.protobuf.Empty OneofEmpties = 20;
+    string oneof_String = 21;
+}

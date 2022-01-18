@@ -95,13 +95,14 @@ func newAllInternalRules(
 		rules.NewFieldsHaveCommentRule(
 			fieldsHaveComment.ShouldFollowGolangStyle,
 		),
-		rules.NewProto3FieldsAvoidRequiredRule(),
+		rules.NewProto3FieldsAvoidRequiredRule(fixMode),
 		rules.NewProto3GroupsAvoidRule(),
 		rules.NewRepeatedFieldNamesPluralizedRule(
 			repeatedFieldNamesPluralized.PluralRules,
 			repeatedFieldNamesPluralized.SingularRules,
 			repeatedFieldNamesPluralized.UncountableRules,
 			repeatedFieldNamesPluralized.IrregularRules,
+			fixMode,
 		),
 
 		rules.NewMessageNamesUpperCamelCaseRule(fixMode),
