@@ -52,6 +52,7 @@ func newAllInternalRules(
 		),
 		rules.NewFileNamesLowerSnakeCaseRule(
 			fileNamesLowerSnakeCase.Excludes,
+			fixMode,
 		),
 		rules.NewQuoteConsistentRule(option.QuoteConsistentOption.Quote, fixMode),
 		rules.NewOrderRule(),

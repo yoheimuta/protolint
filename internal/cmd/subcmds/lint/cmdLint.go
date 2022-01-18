@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
@@ -130,7 +131,14 @@ func (c *CmdLint) runOneFile(
 		return []report.Failure{}, nil
 	}
 
-	return c.l.Run(func() (*parser.Proto, error) {
+	return c.l.Run(func(p *parser.Proto) (*parser.Proto, error) {
+		// Recreate a protoFile if the previous rule changed the filename.
+		if p != nil && p.Meta.Filename != f.DisplayPath() {
+			newFilename := p.Meta.Filename
+			newBase := filepath.Base(newFilename)
+			f = file.NewProtoFile(filepath.Join(filepath.Dir(f.Path()), newBase), newFilename)
+		}
+
 		proto, err := f.Parse(c.config.verbose)
 		if err != nil {
 			if c.config.verbose {
