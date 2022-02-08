@@ -55,7 +55,7 @@ func newAllInternalRules(
 			fixMode,
 		),
 		rules.NewQuoteConsistentRule(option.QuoteConsistentOption.Quote, fixMode),
-		rules.NewOrderRule(),
+		rules.NewOrderRule(fixMode),
 		rules.NewIndentRule(
 			indent.Style,
 			indent.NotInsertNewline,

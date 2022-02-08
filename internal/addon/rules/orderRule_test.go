@@ -334,7 +334,7 @@ func TestOrderRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewOrderRule()
+			rule := rules.NewOrderRule(false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -344,6 +344,43 @@ func TestOrderRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestOrderRule_Apply_fix(t *testing.T) {
+	tests := []struct {
+		name          string
+		inputFilename string
+		wantFilename  string
+	}{
+		{
+			name:          "no fix for a correct proto",
+			inputFilename: "order.proto",
+			wantFilename:  "order.proto",
+		},
+		{
+			name:          "fix for an incorrect proto",
+			inputFilename: "invalid.proto",
+			wantFilename:  "order.proto",
+		},
+		{
+			name:          "fix for an incorrect proto while keeping contiguous misc elements",
+			inputFilename: "invalidContiguousMisc.proto",
+			wantFilename:  "orderContiguousMisc.proto",
+		},
+		{
+			name:          "fix for an incorrect proto filled with many elements",
+			inputFilename: "invalidMany.proto",
+			wantFilename:  "orderMany.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewOrderRule(true)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }
