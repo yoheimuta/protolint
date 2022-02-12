@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package my.package;
+
+message Outer {
+  option (my_option).a = true;
+  // inner is an inner message.
+  message Inner {   // Level 2
+    int64 ival = 1;
+  }
+  repeated Inner inner_messages = 2;
+}
+
+message SecondOuter {
+  option (my_option).a = true;
+}
+message ContiguousOuter {
+  option (my_option).a = true;
+}

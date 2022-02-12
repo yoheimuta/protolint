@@ -27,6 +27,7 @@ type Fixer interface {
 	ReplaceAll(proc func(lines []string) []string)
 
 	SearchAndReplace(startPos meta.Position, lex func(lex *lexer.Lexer) TextEdit) error
+	ReplaceContent(proc func(content []byte) []byte)
 
 	Lines() []string
 }
@@ -86,7 +87,7 @@ func (f *BaseFixing) ReplaceAll(proc func(lines []string) []string) {
 	f.content = []byte(strings.Join(lines, f.lineEnding))
 }
 
-// SearchAndReplace specifies test edits and replaces with them.
+// SearchAndReplace locates text edits and replaces with them.
 func (f *BaseFixing) SearchAndReplace(startPos meta.Position, lex func(lex *lexer.Lexer) TextEdit) error {
 	r := bytes.NewReader(f.content)
 	_, err := r.Seek(int64(startPos.Offset), 0)
@@ -100,6 +101,11 @@ func (f *BaseFixing) SearchAndReplace(startPos meta.Position, lex func(lex *lexe
 	t.End += startPos.Offset
 	f.textEdits = append(f.textEdits, t)
 	return nil
+}
+
+// ReplaceContent replaces entire content.
+func (f *BaseFixing) ReplaceContent(proc func(content []byte) []byte) {
+	f.content = proc(f.content)
 }
 
 // Lines returns the line format of f.content.
@@ -132,6 +138,9 @@ func (f NopFixing) ReplaceAll(proc func(lines []string) []string) {}
 func (f NopFixing) SearchAndReplace(startPos meta.Position, lex func(lexer *lexer.Lexer) TextEdit) error {
 	return nil
 }
+
+// ReplaceContent noop.
+func (f NopFixing) ReplaceContent(proc func(content []byte) []byte) {}
 
 // Lines noop.
 func (f NopFixing) Lines() []string { return []string{} }
