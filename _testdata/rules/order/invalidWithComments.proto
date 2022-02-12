@@ -1,0 +1,31 @@
+// Syntax here
+syntax = "proto3"; // Inline syntax comment
+
+/*
+License information
+*/
+
+// Before outer message
+message Outer { /*
+ Inside outer message */
+    // Option
+    option (my_option).a = true; // Inline option
+    // inner is an inner message.
+    message Inner {   // Level 2
+                      // field 1
+                      int64 ival = 1; // Inline field 1
+                      // after field 1
+    } // Inline Innter Message
+    repeated Inner inner_messages = 2; // Inline field 2
+} // Trailing outer message
+
+/* Package comment
+Line 2
+Line 3
+*/
+package my.package; // Inline package comment /* comment */
+
+// Last comments
+/*
+License information
+*/

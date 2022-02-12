@@ -150,6 +150,10 @@ func (v *orderVisitor) VisitExtend(e *parser.Extend) bool {
 	return false
 }
 
+func (v *orderVisitor) VisitComment(c *parser.Comment) {
+	v.formatter.addComment(c)
+}
+
 // State Checker
 type orderState int
 
@@ -264,11 +268,12 @@ func (i indexedVisitee) isContiguous(a indexedVisitee) bool {
 }
 
 type formatter struct {
-	syntax  *parser.Syntax
-	pkg     *parser.Package
-	imports []indexedVisitee
-	options []indexedVisitee
-	misc    []indexedVisitee
+	syntax   *parser.Syntax
+	pkg      *parser.Package
+	imports  []indexedVisitee
+	options  []indexedVisitee
+	misc     []indexedVisitee
+	comments []indexedVisitee
 }
 
 func (f formatter) index() int {
@@ -292,6 +297,10 @@ func (f *formatter) addOptions(t *parser.Option) {
 
 func (f *formatter) addMisc(t parser.Visitee) {
 	f.misc = append(f.misc, indexedVisitee{f.index(), t})
+}
+
+func (f *formatter) addComment(t parser.Visitee) {
+	f.comments = append(f.comments, indexedVisitee{f.index(), t})
 }
 
 type line struct {
@@ -330,6 +339,8 @@ func newVisiteeLine(elm parser.Visitee) line {
 		return newLine(e.Meta, e.Comments, e.InlineComment)
 	case *parser.Service:
 		return newLine(e.Meta, e.Comments, e.InlineComment)
+	case *parser.Comment:
+		return newLine(e.Meta, []*parser.Comment{}, nil)
 	}
 	return line{}
 }
@@ -378,7 +389,7 @@ func (f formatter) format(content []byte) []byte {
 		w.writeNN(pl)
 	}
 
-	visitees := [][]indexedVisitee{f.imports, f.options, f.misc}
+	visitees := [][]indexedVisitee{f.imports, f.options, f.misc, f.comments}
 	for i, vs := range visitees {
 		var ls []line
 		for _, elm := range vs {

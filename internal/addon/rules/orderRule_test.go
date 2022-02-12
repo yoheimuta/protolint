@@ -374,6 +374,11 @@ func TestOrderRule_Apply_fix(t *testing.T) {
 			inputFilename: "invalidMany.proto",
 			wantFilename:  "orderMany.proto",
 		},
+		{
+			name:          "fix for an incorrect proto filled with many comments",
+			inputFilename: "invalidWithComments.proto",
+			wantFilename:  "orderWithComments.proto",
+		},
 	}
 
 	for _, test := range tests {
