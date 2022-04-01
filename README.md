@@ -61,7 +61,7 @@ The binary can be installed from source if Go is available.
 However, I recommend using one of the pre-built binaries instead because it doesn't include the version info.
 
 ```sh
-go get -u -v github.com/yoheimuta/protolint/cmd/protolint
+go install github.com/yoheimuta/protolint/cmd/protolint@latest
 ```
 
 ## Usage
