@@ -23,7 +23,7 @@ protolint is the pluggable linting utility for Protocol Buffer files (proto2+pro
 
 For example, vim-protolint works like the following.
 
-<img src="_doc/demo.gif" alt="demo" width="600"/>
+<img src="_doc/demo-v2.gif" alt="demo" width="600"/>
 
 ## Installation
 
