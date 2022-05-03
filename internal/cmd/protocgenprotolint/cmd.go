@@ -3,11 +3,12 @@ package protocgenprotolint
 import (
 	"bytes"
 	"fmt"
-	"google.golang.org/protobuf/types/pluginpb"
 	"io"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"google.golang.org/protobuf/types/pluginpb"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 
