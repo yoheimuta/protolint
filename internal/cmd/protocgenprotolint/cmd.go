@@ -1,10 +1,14 @@
 package protocgenprotolint
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 	"strings"
+
+	"google.golang.org/protobuf/types/pluginpb"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 
@@ -36,12 +40,36 @@ func Do(
 		return doVersion(stdout)
 	}
 
+	err := signalSupportProto3Optional()
+	if err != nil {
+		_, _ = fmt.Fprintln(stderr, err)
+		return osutil.ExitInternalFailure
+	}
+
 	subCmd, err := newSubCmd(stdin, stdout, stderr)
 	if err != nil {
 		_, _ = fmt.Fprintln(stderr, err)
 		return osutil.ExitInternalFailure
 	}
 	return subCmd.Run()
+}
+
+func signalSupportProto3Optional() error {
+	// supports proto3 field presence
+	// See https://github.com/protocolbuffers/protobuf/blob/cdc11c2d2d314ce0382fe0eaa715e5e0e1270438/docs/implementing_proto3_presence.md#signaling-that-your-code-generator-supports-proto3-optional
+	var supportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
+	data, err := proto.Marshal(&protogen.CodeGeneratorResponse{
+		SupportedFeatures: &supportedFeatures,
+	})
+	if err != nil {
+		return err
+	}
+
+	_, err = io.Copy(os.Stdout, bytes.NewReader(data))
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func newSubCmd(
