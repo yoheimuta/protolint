@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/hashicorp/go-plugin"
+
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/internal/linter/config"
@@ -77,6 +79,8 @@ func NewCmdLint(
 
 // Run lints to proto files.
 func (c *CmdLint) Run() osutil.ExitCode {
+	defer plugin.CleanupClients()
+
 	failures, err := c.run()
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
