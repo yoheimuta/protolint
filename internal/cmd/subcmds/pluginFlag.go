@@ -49,6 +49,8 @@ func (f *PluginFlag) BuildPlugins(verbose bool) ([]shared.RuleSet, error) {
 				Level:  level,
 				Name:   "plugin",
 			}),
+			// To cleanup. See. https://github.com/yoheimuta/protolint/issues/237
+			Managed: true,
 		})
 
 		rpcClient, err := client.Client()
