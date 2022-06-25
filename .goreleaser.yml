@@ -13,6 +13,20 @@ builds:
       - windows
       - darwin
       - linux
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+    ignore:
+      - goos: windows
+        goarch: arm
+        goarm: 6
+      - goos: windows
+        goarch: arm
+        goarm: 7
     ldflags:
       - -s -w -X github.com/yoheimuta/protolint/internal/cmd.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd.revision={{.ShortCommit}}  # yamllint disable-line rule:line-length
   -
@@ -25,6 +39,20 @@ builds:
       - windows
       - darwin
       - linux
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+    ignore:
+      - goos: windows
+        goarch: arm
+        goarm: 6
+      - goos: windows
+        goarch: arm
+        goarm: 7
     ldflags:
       - -s -w -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.revision={{.ShortCommit}}  # yamllint disable-line rule:line-length
 archives:
@@ -64,7 +92,69 @@ brews:
       bin.install "protolint"
       bin.install "protoc-gen-protolint"
       prefix.install "LICENSE"
+docker_manifests:
+  # https://goreleaser.com/customization/docker_manifest/
+  - name_template: yoheimuta/{{ .ProjectName }}:{{ .Version }}
+    image_templates:
+      - yoheimuta/{{ .ProjectName }}:{{ .Tag }}-amd64
+      - yoheimuta/{{ .ProjectName }}:{{ .Tag }}-arm64v8
+      - yoheimuta/{{ .ProjectName }}:{{ .Tag }}-armv6
+      - yoheimuta/{{ .ProjectName }}:{{ .Tag }}-armv7
+  - name_template: yoheimuta/{{ .ProjectName }}:latest
+    image_templates:
+      - yoheimuta/{{ .ProjectName }}:latest-amd64
+      - yoheimuta/{{ .ProjectName }}:latest-arm64v8
+      - yoheimuta/{{ .ProjectName }}:latest-armv6
+      - yoheimuta/{{ .ProjectName }}:latest-armv7
 dockers:
-  - image_templates:
-      - yoheimuta/protolint:{{ .Tag }}
-      - yoheimuta/protolint:latest
+  # https://goreleaser.com/customization/docker/
+  - use: buildx
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - "yoheimuta/{{ .ProjectName }}:{{ .Tag }}-amd64"
+      - "yoheimuta/{{ .ProjectName }}:latest-amd64"
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+  - use: buildx
+    goos: linux
+    goarch: arm64
+    image_templates:
+      - "yoheimuta/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
+      - "yoheimuta/{{ .ProjectName }}:latest-arm64v8"
+    build_flag_templates:
+      - "--platform=linux/arm64/v8"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+  - use: buildx
+    goos: linux
+    goarch: arm
+    goarm: 6
+    image_templates:
+      - "yoheimuta/{{ .ProjectName }}:{{ .Tag }}-armv6"
+      - "yoheimuta/{{ .ProjectName }}:latest-armv6"
+    build_flag_templates:
+      - "--platform=linux/arm/v6"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+  - use: buildx
+    goos: linux
+    goarch: arm
+    goarm: 7
+    image_templates:
+      - "yoheimuta/{{ .ProjectName }}:{{ .Tag }}-armv7"
+      - "yoheimuta/{{ .ProjectName }}:latest-armv7"
+    build_flag_templates:
+      - "--platform=linux/arm/v7"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
