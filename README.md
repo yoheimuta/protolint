@@ -125,8 +125,9 @@ Vim([Syntastic](https://github.com/vim-syntastic/syntastic))
 
 A [GitHub Action](https://github.com/features/actions) to run protolint in your workflows
 
-- [super-linter](https://github.com/github/super-linter)
-- [protolint-action](https://github.com/plexsystems/protolint-action)
+- [github/super-linter](https://github.com/github/super-linter)
+- [plexsystems/protolint-action](https://github.com/plexsystems/protolint-action)
+- [yoheimuta/action-protolint](https://github.com/yoheimuta/action-protolint) - Integrated with [reviewdog](https://github.com/reviewdog/reviewdog)
 
 ## CI Integration
 
