@@ -63,7 +63,7 @@ func doSub(
 	case subCmdLint:
 		return doLint(args[1:], stdout, stderr)
 	case subCmdList:
-		return doList(stdout, stderr)
+		return doList(args[1:], stdout, stderr)
 	case subCmdVersion:
 		return doVersion(stdout)
 	default:
@@ -111,10 +111,17 @@ func doLint(
 }
 
 func doList(
+	args []string,
 	stdout io.Writer,
 	stderr io.Writer,
 ) osutil.ExitCode {
+	flags, err := list.NewFlags(args)
+	if err != nil {
+		_, _ = fmt.Fprint(stderr, err)
+		return osutil.ExitInternalFailure
+	}
 	subCmd := list.NewCmdList(
+		flags,
 		stdout,
 		stderr,
 	)
