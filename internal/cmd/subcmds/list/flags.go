@@ -6,18 +6,13 @@ import (
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 
 	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
-
-	"github.com/yoheimuta/protolint/internal/linter/report/reporters"
-
-	"github.com/yoheimuta/protolint/internal/linter/report"
 )
 
 // Flags represents a set of lint flag parameters.
 type Flags struct {
 	*flag.FlagSet
 
-	Reporter report.Reporter
-	Plugins  []shared.RuleSet
+	Plugins []shared.RuleSet
 }
 
 // NewFlags creates a new Flags.
@@ -25,8 +20,7 @@ func NewFlags(
 	args []string,
 ) (Flags, error) {
 	f := Flags{
-		FlagSet:  flag.NewFlagSet("lint", flag.ExitOnError),
-		Reporter: reporters.PlainReporter{},
+		FlagSet: flag.NewFlagSet("list", flag.ExitOnError),
 	}
 	var pf subcmds.PluginFlag
 
