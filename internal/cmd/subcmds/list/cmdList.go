@@ -2,8 +2,9 @@ package list
 
 import (
 	"fmt"
-	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
 	"io"
+
+	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
 
 	"github.com/yoheimuta/protolint/internal/linter/config"
 

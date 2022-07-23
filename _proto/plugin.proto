@@ -1,8 +1,5 @@
 syntax = "proto3";
 package proto;
-enum foo {
-	TestEnum = 1;
-}
 
 service RuleSetService {
   rpc ListRules(ListRulesRequest) returns (ListRulesResponse);
