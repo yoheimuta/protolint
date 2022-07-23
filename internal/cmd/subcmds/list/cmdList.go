@@ -2,6 +2,7 @@ package list
 
 import (
 	"fmt"
+	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
 	"io"
 
 	"github.com/yoheimuta/protolint/internal/linter/config"
@@ -15,14 +16,17 @@ import (
 type CmdList struct {
 	stdout io.Writer
 	stderr io.Writer
+	flags  Flags
 }
 
 // NewCmdList creates a new CmdList.
 func NewCmdList(
+	flags Flags,
 	stdout io.Writer,
 	stderr io.Writer,
 ) *CmdList {
 	return &CmdList{
+		flags:  flags,
 		stdout: stdout,
 		stderr: stderr,
 	}
@@ -38,7 +42,7 @@ func (c *CmdList) Run() osutil.ExitCode {
 }
 
 func (c *CmdList) run() error {
-	rules, err := hasIDAndPurposes()
+	rules, err := hasIDAndPurposes(c.flags.Plugins)
 	if err != nil {
 		return err
 	}
@@ -62,8 +66,8 @@ type hasIDAndPurpose interface {
 	rule.HasPurpose
 }
 
-func hasIDAndPurposes() ([]hasIDAndPurpose, error) {
-	rs, err := subcmds.NewAllRules(config.RulesOption{}, false, false, nil)
+func hasIDAndPurposes(plugins []shared.RuleSet) ([]hasIDAndPurpose, error) {
+	rs, err := subcmds.NewAllRules(config.RulesOption{}, false, false, plugins)
 	if err != nil {
 		return nil, err
 	}
