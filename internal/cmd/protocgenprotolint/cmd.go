@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"google.golang.org/protobuf/types/pluginpb"
@@ -155,6 +156,13 @@ func newFlags(
 			}
 		case "v":
 			flags.Verbose = true
+		case "proto_root":
+			if len(params) != 2 {
+				return nil, fmt.Errorf("proto_root should be specified")
+			}
+			for i, f := range flags.FilePaths {
+				flags.FilePaths[i] = filepath.Join(params[1], f)
+			}
 		default:
 			return nil, fmt.Errorf("unmatched parameter: %s", p)
 		}
