@@ -47,7 +47,35 @@ All flags, which is supported by protolint are passed as an option to the plugin
 
 ```
 protoc \
-    --protolint_out=v,fix,config_dir_path=_example/config,reporter=junit,plugin=./plugin_example \
+    --protolint_out=. \
+    --protolint_opt=v,fix,config_dir_path=_example/config,reporter=junit,plugin=./plugin_example \
     *.proto
 ```
 
+### With [Grpc.Tools package (.NET Build)](https://chromium.googlesource.com/external/github.com/grpc/grpc/+/HEAD/src/csharp/BUILD-INTEGRATION.md)
+
+When you specify `ProtoRoot`, make sure to add `--proto_root` option like the below.
+
+```
+<ItemGroup>
+  <Protobuf Include="protos\**\*.proto" AdditionalProtocArguments="--protolint_out=.;--protolint_opt=proto_root=protos" ProtoRoot="protos" />
+</ItemGroup>
+```
+
+## Option
+
+### proto_root
+
+If you add [protoc's --proto_path](https://developers.google.com/protocol-buffers/docs/proto3#generating) to read your proto files in the specified directory,
+protolint could fail to locate the proto files. You should tell protolint the root directory like the below.
+
+```
+❯ ls protos
+helloworld.proto
+
+❯ protoc \
+    --proto_path=protos
+    --protolint_out=. \
+    --protolint_opt=proto_root=protos \
+    helloworld.proto
+```
