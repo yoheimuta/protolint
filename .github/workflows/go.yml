@@ -35,6 +35,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: docker.io/yoheimuta/protolint:${{ github.sha }}
+          exit-code: '1'
           format: sarif
           ignore-unfixed: true
           output: trivy-results.sarif
