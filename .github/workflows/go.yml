@@ -43,7 +43,17 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: trivy-results.sarif
+          wait-for-processing: true
 
       - uses: hadolint/hadolint-action@v2.1.0
         with:
           dockerfile: Dockerfile
+          failure-threshold: style
+          format: sarif
+          output-file: hadolint-results.sarif
+
+      - name: Upload Hadolint scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: hadolint-results.sarif
+          wait-for-processing: true
