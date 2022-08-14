@@ -34,15 +34,15 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/yoheimuta/protolint:${{ github.sha }}'
-          format: 'sarif'
+          image-ref: docker.io/yoheimuta/protolint:${{ github.sha }}
+          format: sarif
           ignore-unfixed: true
-          output: 'trivy-results.sarif'
+          output: trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: trivy-results.sarif
 
       - uses: hadolint/hadolint-action@v2.1.0
         with:
