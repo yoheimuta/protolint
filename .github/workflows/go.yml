@@ -31,14 +31,32 @@ jobs:
       - name: Build Docker image
         run: docker build -t docker.io/yoheimuta/protolint:${{ github.sha }} .
 
-      # Skip this fail step for now. See https://github.com/yoheimuta/protolint/issues/259
-      #- name: Container image scan
-      #  uses: Azure/container-scan@v0.1
-      #  with:
-          # Docker image to scan
-      #    image-name: docker.io/yoheimuta/protolint:${{ github.sha }}
-      #    severity-threshold: LOW  # optional, default is HIGH
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.6.2
+        with:
+          image-ref: docker.io/yoheimuta/protolint:${{ github.sha }}
+          exit-code: '1'
+          format: sarif
+          ignore-unfixed: true
+          output: trivy-results.sarif
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
+          wait-for-processing: true
 
       - uses: hadolint/hadolint-action@v2.1.0
         with:
           dockerfile: Dockerfile
+          failure-threshold: style
+          format: sarif
+          output-file: hadolint-results.sarif
+
+      - name: Upload Hadolint scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: hadolint-results.sarif
+          wait-for-processing: true
