@@ -32,7 +32,7 @@ jobs:
         run: docker build -t docker.io/yoheimuta/protolint:${{ github.sha }} .
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.6.2
+        uses: aquasecurity/trivy-action@0.7.1
         with:
           image-ref: docker.io/yoheimuta/protolint:${{ github.sha }}
           exit-code: '1'
