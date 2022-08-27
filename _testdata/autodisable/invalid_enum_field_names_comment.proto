@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+enum Enum {
+  // protolint:disable:next ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH
+  ENUM_unknown = 0;
+  ENUM_ALIAS_started_lap = 1;
+}

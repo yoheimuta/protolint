@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+enum Enum {
+  ENUM_unknown_UNSPECIFIED = 0;
+}

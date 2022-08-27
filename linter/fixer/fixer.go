@@ -16,7 +16,7 @@ import (
 // TextEdit represents the replacement of the code between Pos and End with the new text.
 type TextEdit struct {
 	Pos     int
-	End     int
+	End     int // Inclusive. If the target is abc, pos and end are 1 and 3, respectively.
 	NewText []byte
 }
 
@@ -41,7 +41,7 @@ type Fixing interface {
 // NewFixing creates a fixing, depending on fixMode.
 func NewFixing(fixMode bool, proto *parser.Proto) (Fixing, error) {
 	if fixMode {
-		return newBaseFixing(proto.Meta.Filename)
+		return NewBaseFixing(proto.Meta.Filename)
 	}
 	return NopFixing{}, nil
 }
@@ -54,7 +54,8 @@ type BaseFixing struct {
 	textEdits  []TextEdit
 }
 
-func newBaseFixing(protoFileName string) (*BaseFixing, error) {
+// NewBaseFixing creates a BaseFixing.
+func NewBaseFixing(protoFileName string) (*BaseFixing, error) {
 	content, err := ioutil.ReadFile(protoFileName)
 	if err != nil {
 		return nil, err
@@ -123,6 +124,21 @@ func (f *BaseFixing) Finally() error {
 		diff += len(t.NewText) - (t.End - t.Pos + 1)
 	}
 	return osutil.WriteExistingFile(f.fileName, f.content)
+}
+
+// Replace records a textedit to replace the old with the next later.
+func (f *BaseFixing) Replace(t TextEdit) {
+	f.textEdits = append(f.textEdits, t)
+}
+
+// Content returns f.content.
+func (f *BaseFixing) Content() []byte {
+	return f.content
+}
+
+// LineEnding is a detected line ending.
+func (f *BaseFixing) LineEnding() string {
+	return f.lineEnding
 }
 
 // NopFixing does nothing.
