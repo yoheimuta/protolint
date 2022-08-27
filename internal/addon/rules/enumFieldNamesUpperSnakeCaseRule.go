@@ -3,6 +3,7 @@ package rules
 import (
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -12,15 +13,21 @@ import (
 // EnumFieldNamesUpperSnakeCaseRule verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumFieldNamesUpperSnakeCaseRule struct {
-	fixMode bool
+	fixMode         bool
+	autoDisableType autodisable.PlacementType
 }
 
 // NewEnumFieldNamesUpperSnakeCaseRule creates a new EnumFieldNamesUpperSnakeCaseRule.
 func NewEnumFieldNamesUpperSnakeCaseRule(
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) EnumFieldNamesUpperSnakeCaseRule {
+	if autoDisableType != autodisable.Noop {
+		fixMode = false
+	}
 	return EnumFieldNamesUpperSnakeCaseRule{
-		fixMode: fixMode,
+		fixMode:         fixMode,
+		autoDisableType: autoDisableType,
 	}
 }
 
@@ -49,7 +56,7 @@ func (r EnumFieldNamesUpperSnakeCaseRule) Apply(proto *parser.Proto) ([]report.F
 	v := &enumFieldNamesUpperSnakeCaseVisitor{
 		BaseFixableVisitor: base,
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type enumFieldNamesUpperSnakeCaseVisitor struct {

@@ -76,7 +76,7 @@ func newAllInternalRules(
 		),
 
 		rules.NewEnumFieldNamesPrefixRule(fixMode),
-		rules.NewEnumFieldNamesUpperSnakeCaseRule(fixMode),
+		rules.NewEnumFieldNamesUpperSnakeCaseRule(fixMode, autoDisableType),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
 			fixMode,
