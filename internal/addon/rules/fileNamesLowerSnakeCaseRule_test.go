@@ -8,6 +8,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/linter/file"
 	"github.com/yoheimuta/protolint/internal/setting_test"
+	"github.com/yoheimuta/protolint/internal/util_test"
 	"github.com/yoheimuta/protolint/linter/strs"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
@@ -142,12 +143,12 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 			r := rules.NewFileNamesLowerSnakeCaseRule(test.inputExcluded, true)
 
 			dataDir := strs.ToLowerCamelCase(r.ID())
-			input, err := newTestData(setting_test.TestDataPath("rules", dataDir, test.inputFilename))
+			input, err := util_test.NewTestData(setting_test.TestDataPath("rules", dataDir, test.inputFilename))
 			if err != nil {
 				t.Errorf("got err %v", err)
 				return
 			}
-			proto, err := file.NewProtoFile(input.filePath, input.filePath).Parse(false)
+			proto, err := file.NewProtoFile(input.FilePath, input.FilePath).Parse(false)
 			if err != nil {
 				t.Errorf(err.Error())
 				return
@@ -158,8 +159,8 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 				return
 			}
 			if test.wantAbort {
-				if _, err := os.Stat(input.filePath); os.IsNotExist(err) {
-					t.Errorf("not found %q, but want to locate it", input.filePath)
+				if _, err := os.Stat(input.FilePath); os.IsNotExist(err) {
+					t.Errorf("not found %q, but want to locate it", input.FilePath)
 					return
 				}
 				for _, f := range fs {
@@ -177,7 +178,7 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 				return
 			}
 
-			err = os.Rename(wantPath, input.filePath)
+			err = os.Rename(wantPath, input.FilePath)
 			if err != nil {
 				t.Errorf("got err %v", err)
 			}

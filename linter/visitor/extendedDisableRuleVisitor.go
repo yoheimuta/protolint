@@ -9,12 +9,12 @@ import (
 
 // TODO: To work `enable comments` more precisely, this implementation has to be modified.
 type extendedDisableRuleVisitor struct {
-	inner       hasExtendedVisitor
+	inner       HasExtendedVisitor
 	interpreter *disablerule.Interpreter
 }
 
 func newExtendedDisableRuleVisitor(
-	inner hasExtendedVisitor,
+	inner HasExtendedVisitor,
 	ruleID string,
 ) extendedDisableRuleVisitor {
 	interpreter := disablerule.NewInterpreter(ruleID)

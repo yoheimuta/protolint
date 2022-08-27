@@ -15,11 +15,20 @@ const (
 	commandDisableThis
 )
 
+// comment prefix
+const (
+	PrefixDisable     = `protolint:disable`
+	PrefixEnable      = `protolint:enable`
+	PrefixDisableNext = `protolint:disable:next`
+	PrefixDisableThis = `protolint:disable:this`
+)
+
+// comment prefix regexp
 var (
-	reDisable     = regexp.MustCompile(`protolint:disable (.*)`)
-	reEnable      = regexp.MustCompile(`protolint:enable (.*)`)
-	reDisableNext = regexp.MustCompile(`protolint:disable:next (.*)`)
-	reDisableThis = regexp.MustCompile(`protolint:disable:this (.*)`)
+	ReDisable     = regexp.MustCompile(PrefixDisable + ` (.*)`)
+	ReEnable      = regexp.MustCompile(PrefixEnable + ` (.*)`)
+	ReDisableNext = regexp.MustCompile(PrefixDisableNext + ` (.*)`)
+	ReDisableThis = regexp.MustCompile(PrefixDisableThis + ` (.*)`)
 )
 
 type command struct {
@@ -30,7 +39,7 @@ type command struct {
 func newCommand(
 	comment string,
 ) (command, error) {
-	subs := reDisable.FindStringSubmatch(comment)
+	subs := ReDisable.FindStringSubmatch(comment)
 	if len(subs) == 2 {
 		ruleIDs := strings.Fields(strings.TrimSpace(subs[1]))
 		return command{
@@ -39,7 +48,7 @@ func newCommand(
 		}, nil
 	}
 
-	subs = reEnable.FindStringSubmatch(comment)
+	subs = ReEnable.FindStringSubmatch(comment)
 	if len(subs) == 2 {
 		ruleIDs := strings.Fields(strings.TrimSpace(subs[1]))
 		return command{
@@ -48,7 +57,7 @@ func newCommand(
 		}, nil
 	}
 
-	subs = reDisableNext.FindStringSubmatch(comment)
+	subs = ReDisableNext.FindStringSubmatch(comment)
 	if len(subs) == 2 {
 		ruleIDs := strings.Fields(strings.TrimSpace(subs[1]))
 		return command{
@@ -57,7 +66,7 @@ func newCommand(
 		}, nil
 	}
 
-	subs = reDisableThis.FindStringSubmatch(comment)
+	subs = ReDisableThis.FindStringSubmatch(comment)
 	if len(subs) == 2 {
 		ruleIDs := strings.Fields(strings.TrimSpace(subs[1]))
 		return command{

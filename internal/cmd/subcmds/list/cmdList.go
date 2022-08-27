@@ -10,6 +10,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 	"github.com/yoheimuta/protolint/internal/osutil"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/rule"
 )
 
@@ -68,7 +69,7 @@ type hasIDAndPurpose interface {
 }
 
 func hasIDAndPurposes(plugins []shared.RuleSet) ([]hasIDAndPurpose, error) {
-	rs, err := subcmds.NewAllRules(config.RulesOption{}, false, false, plugins)
+	rs, err := subcmds.NewAllRules(config.RulesOption{}, false, autodisable.Noop, false, plugins)
 	if err != nil {
 		return nil, err
 	}

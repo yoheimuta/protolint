@@ -4,6 +4,7 @@ import (
 	"flag"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 
 	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
 
@@ -21,6 +22,7 @@ type Flags struct {
 	ConfigDirPath             string
 	FixMode                   bool
 	Reporter                  report.Reporter
+	AutoDisableType           autodisable.PlacementType
 	OutputFilePath            string
 	Verbose                   bool
 	NoErrorOnUnmatchedPattern bool
@@ -32,10 +34,12 @@ func NewFlags(
 	args []string,
 ) (Flags, error) {
 	f := Flags{
-		FlagSet:  flag.NewFlagSet("lint", flag.ExitOnError),
-		Reporter: reporters.PlainReporter{},
+		FlagSet:         flag.NewFlagSet("lint", flag.ExitOnError),
+		Reporter:        reporters.PlainReporter{},
+		AutoDisableType: autodisable.Noop,
 	}
 	var rf reporterFlag
+	var af autoDisableFlag
 	var pf subcmds.PluginFlag
 
 	f.StringVar(
@@ -54,12 +58,17 @@ func NewFlags(
 		&f.FixMode,
 		"fix",
 		false,
-		"mode that the command line can automatically fix some of the problems",
+		"mode that the command line automatically fix some of the problems",
 	)
 	f.Var(
 		&rf,
 		"reporter",
 		`formatter to output results in the specific format. Available reporters are "plain"(default), "junit", "json", and "unix".`,
+	)
+	f.Var(
+		&af,
+		"auto_disable",
+		`mode that the command line automatically disable some of the problems. Available auto_disable are "next" and "this".`,
 	)
 	f.StringVar(
 		&f.OutputFilePath,
@@ -88,6 +97,9 @@ func NewFlags(
 	_ = f.Parse(args)
 	if rf.reporter != nil {
 		f.Reporter = rf.reporter
+	}
+	if af.autoDisableType != 0 {
+		f.AutoDisableType = af.autoDisableType
 	}
 
 	plugins, err := pf.BuildPlugins(f.Verbose)

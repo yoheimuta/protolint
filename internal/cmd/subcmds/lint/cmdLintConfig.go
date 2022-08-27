@@ -6,16 +6,18 @@ import (
 	"github.com/yoheimuta/protolint/internal/linter/config"
 	"github.com/yoheimuta/protolint/internal/linter/file"
 	"github.com/yoheimuta/protolint/internal/linter/report"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // CmdLintConfig is a config for lint command.
 type CmdLintConfig struct {
-	external config.ExternalConfig
-	fixMode  bool
-	verbose  bool
-	reporter report.Reporter
-	plugins  []shared.RuleSet
+	external        config.ExternalConfig
+	fixMode         bool
+	autoDisableType autodisable.PlacementType
+	verbose         bool
+	reporter        report.Reporter
+	plugins         []shared.RuleSet
 }
 
 // NewCmdLintConfig creates a new CmdLintConfig.
@@ -24,11 +26,12 @@ func NewCmdLintConfig(
 	flags Flags,
 ) CmdLintConfig {
 	return CmdLintConfig{
-		external: externalConfig,
-		fixMode:  flags.FixMode,
-		verbose:  flags.Verbose,
-		reporter: flags.Reporter,
-		plugins:  flags.Plugins,
+		external:        externalConfig,
+		fixMode:         flags.FixMode,
+		autoDisableType: flags.AutoDisableType,
+		verbose:         flags.Verbose,
+		reporter:        flags.Reporter,
+		plugins:         flags.Plugins,
 	}
 }
 
@@ -36,7 +39,7 @@ func NewCmdLintConfig(
 func (c CmdLintConfig) GenRules(
 	f file.ProtoFile,
 ) ([]rule.HasApply, error) {
-	allRules, err := subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode, c.verbose, c.plugins)
+	allRules, err := subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode, c.autoDisableType, c.verbose, c.plugins)
 	if err != nil {
 		return nil, err
 	}

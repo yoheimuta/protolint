@@ -1,12 +1,11 @@
 package rules_test
 
 import (
-	"io/ioutil"
 	"reflect"
 	"strings"
 	"testing"
 
-	"github.com/yoheimuta/protolint/internal/osutil"
+	"github.com/yoheimuta/protolint/internal/util_test"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
@@ -271,38 +270,10 @@ Fix https://github.com/yoheimuta/protolint/issues/139`,
 	}
 }
 
-type testData struct {
-	filePath   string
-	originData []byte
-}
-
 func newTestIndentData(
 	fileName string,
-) (testData, error) {
-	return newTestData(setting_test.TestDataPath("rules", "indentrule", fileName))
-}
-
-func newTestData(
-	filePath string,
-) (testData, error) {
-	data, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return testData{}, nil
-	}
-	return testData{
-		filePath:   filePath,
-		originData: data,
-	}, nil
-}
-
-func (d testData) data() ([]byte, error) {
-	return ioutil.ReadFile(d.filePath)
-}
-
-func (d testData) restore() error {
-	newlineChar := "\n"
-	lines := strings.Split(string(d.originData), newlineChar)
-	return osutil.WriteLinesToExistingFile(d.filePath, lines, newlineChar)
+) (util_test.TestData, error) {
+	return util_test.NewTestData(setting_test.TestDataPath("rules", "indentrule", fileName))
 }
 
 func TestIndentRule_Apply_fix(t *testing.T) {
@@ -376,9 +347,9 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 
 	tests := []struct {
 		name               string
-		inputTestData      testData
+		inputTestData      util_test.TestData
 		inputInsertNewline bool
-		wantCorrectData    testData
+		wantCorrectData    util_test.TestData
 	}{
 		{
 			name:            "correct syntax",
@@ -442,7 +413,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 				true,
 			)
 
-			proto, err := file.NewProtoFile(test.inputTestData.filePath, test.inputTestData.filePath).Parse(false)
+			proto, err := file.NewProtoFile(test.inputTestData.FilePath, test.inputTestData.FilePath).Parse(false)
 			if err != nil {
 				t.Errorf(err.Error())
 				return
@@ -454,18 +425,18 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 				return
 			}
 
-			got, err := test.inputTestData.data()
-			if !reflect.DeepEqual(got, test.wantCorrectData.originData) {
+			got, err := test.inputTestData.Data()
+			if !reflect.DeepEqual(got, test.wantCorrectData.OriginData) {
 				t.Errorf(
 					"got %s(%v), but want %s(%v)",
 					string(got), got,
-					string(test.wantCorrectData.originData), test.wantCorrectData.originData,
+					string(test.wantCorrectData.OriginData), test.wantCorrectData.OriginData,
 				)
 			}
 
 			// restore the file
 			defer func() {
-				err = test.inputTestData.restore()
+				err = test.inputTestData.Restore()
 				if err != nil {
 					t.Errorf("got err %v", err)
 				}
@@ -477,7 +448,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 				!test.inputInsertNewline,
 				false,
 			)
-			proto, err = file.NewProtoFile(test.inputTestData.filePath, test.inputTestData.filePath).Parse(false)
+			proto, err = file.NewProtoFile(test.inputTestData.FilePath, test.inputTestData.FilePath).Parse(false)
 			if err != nil {
 				t.Errorf(err.Error())
 				return

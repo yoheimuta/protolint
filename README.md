@@ -5,12 +5,14 @@
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
 [![Docker](https://img.shields.io/docker/pulls/yoheimuta/protolint)](https://hub.docker.com/r/yoheimuta/protolint)
 
-protolint is the pluggable linting utility for Protocol Buffer files (proto2+proto3):
+protolint is the pluggable linting/fixing utility for Protocol Buffer files (proto2+proto3):
 
 - Runs fast because this works without compiler.
 - Easy to follow the official style guide. The rules and the style guide correspond to each other exactly.
+  - Fixer automatically fixes all the possible official style guide violations.
 - Allows to disable rules with a comment in a Protocol Buffer file.
   - It is useful for projects which must keep API compatibility while enforce the style guide as much as possible.
+  - Some rules can be automatically disabled by inserting comments to the spotted violations.
 - Loads plugins to contain your custom lint rules.
 - Undergone testing for all rules.
 - Many integration supports.
@@ -73,6 +75,8 @@ protolint .                                 # same as "protolint lint ."
 protolint lint -config_path=path/to/your_protolint.yaml . # use path/to/your_protolint.yaml
 protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
+protolint lint -fix -auto_disable=next .    # automatically fix some problems and insert disable comments to the other problems. The available values are next and this.
+protolint lint -auto_disable=next .         # automatically insert disable comments to the other problems. 
 protolint lint -v .                         # with verbose output to investigate the parsing error
 protolint lint -no-error-on-unmatched-pattern . # exits with success code even if no file is found (file & directory mode)
 protolint lint -reporter junit .            # output results in JUnit XML format
@@ -151,41 +155,45 @@ The rule set follows:
 - [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style). This is enabled by default. Basically, these rules can fix the violations by appending `-fix` option.
 - Unofficial Style Guide. This is disabled by default. You can enable each rule with `.protolint.yaml`.
 
-The `-fix` option on the command line can automatically fix some of the problems reported by fixable rules.
+The `-fix` option on the command line can automatically fix all the problems reported by fixable rules.
 See Fixable columns below.
 
-| Official | Fixable | ID                                | Purpose                                                                  |
-|----------|---------|-----------------------------------|--------------------------------------------------------------------------|
-| Yes | ✅ | ENUM_FIELD_NAMES_PREFIX | Verifies that enum field names are prefixed with its ENUM_NAME_UPPER_SNAKE_CASE.        |
-| Yes | ✅ | ENUM_FIELD_NAMES_UPPER_SNAKE_CASE | Verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.        |
-| Yes | ✅ | ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH | Verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID"). The default is "UNSPECIFIED". You can configure the specific suffix with `.protolint.yaml`. |
-| Yes | ✅ | ENUM_NAMES_UPPER_CAMEL_CASE       | Verifies that all enum names are CamelCase (with an initial capital).    |
-| Yes | ✅ | FILE_NAMES_LOWER_SNAKE_CASE       | Verifies that all file names are lower_snake_case.proto. You can configure the excluded files with `.protolint.yaml`. |
-| Yes | ✅ | FIELD_NAMES_LOWER_SNAKE_CASE      | Verifies that all field names are underscore_separated_names.            |
-| Yes | ✅ | IMPORTS_SORTED                    | Verifies that all imports are sorted. |
-| Yes | ✅ | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
-| Yes | ✅ | ORDER                             | Verifies that all files should be ordered in the specific manner. |
-| Yes | ✅ | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name should not contain any lowercase letters. |
-| Yes | ✅ | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
-| Yes | ✅ | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
-| Yes | ✅ | REPEATED_FIELD_NAMES_PLURALIZED   | Verifies that repeated field names are pluralized names.            |
-| Yes | ✅ | QUOTE_CONSISTENT   | Verifies that the use of quote for strings is consistent. The default is double quoted. You can configure the specific quote with `.protolint.yaml`.          |
-| Yes | ✅ | INDENT    | Enforces a consistent indentation style. The default style is 2 spaces. Inserting appropriate new lines is also forced by default. You can configure the detail with `.protolint.yaml`. |
-| Yes | ✅ | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
-| Yes | _  | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
-| Yes | _  | MAX_LINE_LENGTH    | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |
-| No | _  | SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. You can configure the specific suffix with `.protolint.yaml`. |
-| No | _  | FIELD_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
-| No | _  | MESSAGE_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all message names don't include prepositions (e.g. "With", "For"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
-| No | _  | RPC_NAMES_CASE        | Verifies that all rpc names conform to the specified convention. You need to configure the specific convention with `.protolint.yaml`.     |
-| No | _  | MESSAGES_HAVE_COMMENT | Verifies that all messages have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | SERVICES_HAVE_COMMENT | Verifies that all services have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | RPCS_HAVE_COMMENT | Verifies that all rps have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | FIELDS_HAVE_COMMENT | Verifies that all fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | ENUMS_HAVE_COMMENT | Verifies that all enums have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | ENUM_FIELDS_HAVE_COMMENT | Verifies that all enum fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | FILE_HAS_COMMENT | Verifies that a file starts with a doc comment. |
-| No | _  | SYNTAX_CONSISTENT | Verifies that syntax is a specified version. The default is proto3. You can configure the version with `.protolint.yaml`. |
+The `-auto_disable` option on the command line can automatically disable all the problems reported by auto-disable rules.
+This feature is helpful when fixing the existing violations breaks the compatibility.
+See AutoDisable columns below.
+
+| Official | Fixable | AutoDisable | ID                                | Purpose                                                                  |
+|----------|---------|---------|-----------------------------------|--------------------------------------------------------------------------|
+| Yes | ✅ | - | ENUM_FIELD_NAMES_PREFIX | Verifies that enum field names are prefixed with its ENUM_NAME_UPPER_SNAKE_CASE.        |
+| Yes | ✅ | ✅ | ENUM_FIELD_NAMES_UPPER_SNAKE_CASE | Verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.        |
+| Yes | ✅ | - | ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH | Verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID"). The default is "UNSPECIFIED". You can configure the specific suffix with `.protolint.yaml`. |
+| Yes | ✅ | - | ENUM_NAMES_UPPER_CAMEL_CASE       | Verifies that all enum names are CamelCase (with an initial capital).    |
+| Yes | ✅ | - | FILE_NAMES_LOWER_SNAKE_CASE       | Verifies that all file names are lower_snake_case.proto. You can configure the excluded files with `.protolint.yaml`. |
+| Yes | ✅ | - | FIELD_NAMES_LOWER_SNAKE_CASE      | Verifies that all field names are underscore_separated_names.            |
+| Yes | ✅ | - | IMPORTS_SORTED                    | Verifies that all imports are sorted. |
+| Yes | ✅ | - | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
+| Yes | ✅ | - | ORDER                             | Verifies that all files should be ordered in the specific manner. |
+| Yes | ✅ | - | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name should not contain any lowercase letters. |
+| Yes | ✅ | - | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
+| Yes | ✅ | - | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
+| Yes | ✅ | - | REPEATED_FIELD_NAMES_PLURALIZED   | Verifies that repeated field names are pluralized names.            |
+| Yes | ✅ | - | QUOTE_CONSISTENT   | Verifies that the use of quote for strings is consistent. The default is double quoted. You can configure the specific quote with `.protolint.yaml`.          |
+| Yes | ✅ | - | INDENT    | Enforces a consistent indentation style. The default style is 2 spaces. Inserting appropriate new lines is also forced by default. You can configure the detail with `.protolint.yaml`. |
+| Yes | ✅ | - | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
+| Yes | _  | - | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
+| Yes | _  | - | MAX_LINE_LENGTH    | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |
+| No | _  | - | SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. You can configure the specific suffix with `.protolint.yaml`. |
+| No | _  | - | FIELD_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
+| No | _  | - | MESSAGE_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all message names don't include prepositions (e.g. "With", "For"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
+| No | _  | - | RPC_NAMES_CASE        | Verifies that all rpc names conform to the specified convention. You need to configure the specific convention with `.protolint.yaml`.     |
+| No | _  | - | MESSAGES_HAVE_COMMENT | Verifies that all messages have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
+| No | _  | - | SERVICES_HAVE_COMMENT | Verifies that all services have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
+| No | _  | - | RPCS_HAVE_COMMENT | Verifies that all rps have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
+| No | _  | - | FIELDS_HAVE_COMMENT | Verifies that all fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
+| No | _  | - | ENUMS_HAVE_COMMENT | Verifies that all enums have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
+| No | _  | - | ENUM_FIELDS_HAVE_COMMENT | Verifies that all enum fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
+| No | _  | - | FILE_HAS_COMMENT | Verifies that a file starts with a doc comment. |
+| No | _  | - | SYNTAX_CONSISTENT | Verifies that syntax is a specified version. The default is proto3. You can configure the version with `.protolint.yaml`. |
 
 I recommend that you add `all_default: true` in `.protolint.yaml`, because all linters above are automatically enabled so that you can always enjoy maximum benefits whenever protolint is updated.
 
@@ -383,6 +391,10 @@ enum Foo {
   THIRD_VALUE = 2;   // spits out an error
 }
 ```
+
+Setting the command-line option `-auto_disable` to `next` or `this` inserts disable commands whenever spotting problems. 
+
+You can specify `-fix` option together. The rules supporting auto_disable suppress the violations instead of fixing them that cause a schema incompatibility.
 
 __Config file__
 

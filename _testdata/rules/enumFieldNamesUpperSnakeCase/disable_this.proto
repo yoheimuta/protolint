@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+enum enum {
+    option allow_alias = true;
+    unknown = 0; // protolint:disable:this ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
+}
+
+enum enumAlias {
+    started_lap = 1; // protolint:disable:this ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
+    RUNNINGlapUntil = 2 [(custom_option) = "hello world"]; // protolint:disable:this ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
+}
