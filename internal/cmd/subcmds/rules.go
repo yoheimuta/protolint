@@ -6,16 +6,18 @@ import (
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/internal/linter/config"
 	internalrule "github.com/yoheimuta/protolint/internal/linter/rule"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 )
 
 // NewAllRules creates new all rules.
 func NewAllRules(
 	option config.RulesOption,
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 	verbose bool,
 	plugins []shared.RuleSet,
 ) (internalrule.Rules, error) {
-	rs := newAllInternalRules(option, fixMode)
+	rs := newAllInternalRules(option, fixMode, autoDisableType)
 
 	es, err := plugin.GetExternalRules(plugins, fixMode, verbose)
 	if err != nil {
@@ -28,6 +30,7 @@ func NewAllRules(
 func newAllInternalRules(
 	option config.RulesOption,
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) internalrule.Rules {
 	syntaxConsistent := option.SyntaxConsistent
 	fileNamesLowerSnakeCase := option.FileNamesLowerSnakeCase

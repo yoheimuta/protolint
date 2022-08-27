@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/protolint/internal/filepathutil"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
 	"github.com/yoheimuta/protolint/internal/linter/config"
@@ -97,7 +98,7 @@ func TestExternalConfig_ShouldSkipRule(t *testing.T) {
 		},
 	}
 
-	allRules, err := subcmds.NewAllRules(config.RulesOption{}, false, false, nil)
+	allRules, err := subcmds.NewAllRules(config.RulesOption{}, false, autodisable.Noop, false, nil)
 	if err != nil {
 		t.Error(err)
 		return
