@@ -7,6 +7,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
 	"github.com/yoheimuta/protolint/internal/setting_test"
+	"github.com/yoheimuta/protolint/internal/util_test"
 
 	"github.com/yoheimuta/protolint/internal/linter/file"
 
@@ -142,8 +143,8 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 
 func newTestImportsSortedData(
 	fileName string,
-) (testData, error) {
-	return newTestData(testImportSortedProtoPath(fileName))
+) (util_test.TestData, error) {
+	return util_test.NewTestData(testImportSortedProtoPath(fileName))
 }
 
 func TestImportsSortedRule_Apply_fix(t *testing.T) {
@@ -193,7 +194,7 @@ func TestImportsSortedRule_Apply_fix(t *testing.T) {
 				return
 			}
 
-			proto, err := file.NewProtoFile(input.filePath, input.filePath).Parse(false)
+			proto, err := file.NewProtoFile(input.FilePath, input.FilePath).Parse(false)
 			if err != nil {
 				t.Errorf(err.Error())
 				return
@@ -205,16 +206,16 @@ func TestImportsSortedRule_Apply_fix(t *testing.T) {
 				return
 			}
 
-			got, err := input.data()
-			if !reflect.DeepEqual(got, want.originData) {
+			got, err := input.Data()
+			if !reflect.DeepEqual(got, want.OriginData) {
 				t.Errorf(
 					"got %s(%v), but want %s(%v)",
 					string(got), got,
-					string(want.originData), want.originData,
+					string(want.OriginData), want.OriginData,
 				)
 			}
 
-			err = input.restore()
+			err = input.Restore()
 			if err != nil {
 				t.Errorf("got err %v", err)
 			}
