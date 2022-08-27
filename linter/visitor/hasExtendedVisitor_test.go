@@ -6,6 +6,10 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
+	"github.com/yoheimuta/protolint/internal/linter/file"
+	"github.com/yoheimuta/protolint/internal/setting_test"
+	"github.com/yoheimuta/protolint/internal/util_test"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/visitor"
 
 	"github.com/yoheimuta/protolint/linter/report"
@@ -23,6 +27,16 @@ func (v *testVisitor) VisitMessage(message *parser.Message) bool {
 	return v.next
 }
 
+type testVisitorInvalidEnumField struct {
+	*visitor.BaseAddVisitor
+	next bool
+}
+
+func (v *testVisitorInvalidEnumField) VisitEnumField(field *parser.EnumField) bool {
+	v.AddFailuref(field.Meta.Pos, "Failed field")
+	return v.next
+}
+
 func TestRunVisitor(t *testing.T) {
 	tests := []struct {
 		name         string
@@ -37,7 +51,9 @@ func TestRunVisitor(t *testing.T) {
 			inputVisitor: &testVisitor{
 				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
-			inputProto: &parser.Proto{},
+			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{Filename: ""},
+			},
 		},
 		{
 			name: "visit a message",
@@ -45,6 +61,7 @@ func TestRunVisitor(t *testing.T) {
 				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{Filename: ""},
 				ProtoBody: []parser.Visitee{
 					&parser.Message{
 						Meta: meta.Meta{
@@ -77,6 +94,7 @@ func TestRunVisitor(t *testing.T) {
 				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{Filename: ""},
 				ProtoBody: []parser.Visitee{
 					&parser.Message{
 						Meta: meta.Meta{
@@ -130,6 +148,7 @@ func TestRunVisitor(t *testing.T) {
 				next:           true,
 			},
 			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{Filename: ""},
 				ProtoBody: []parser.Visitee{
 					&parser.Message{
 						MessageBody: []parser.Visitee{
@@ -184,6 +203,7 @@ func TestRunVisitor(t *testing.T) {
 				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{Filename: ""},
 				ProtoBody: []parser.Visitee{
 					&parser.Message{
 						Meta: meta.Meta{
@@ -232,6 +252,7 @@ func TestRunVisitor(t *testing.T) {
 				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{Filename: ""},
 				ProtoBody: []parser.Visitee{
 					&parser.Message{
 						Meta: meta.Meta{
@@ -278,6 +299,7 @@ func TestRunVisitor(t *testing.T) {
 				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{Filename: ""},
 				ProtoBody: []parser.Visitee{
 					&parser.Message{
 						Meta: meta.Meta{
@@ -341,6 +363,7 @@ func TestRunVisitor(t *testing.T) {
 				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
 			},
 			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{Filename: ""},
 				ProtoBody: []parser.Visitee{
 					&parser.Message{
 						Meta: meta.Meta{
@@ -421,6 +444,111 @@ func TestRunVisitor(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestRunVisitorAutoDisable(t *testing.T) {
+	tests := []struct {
+		name               string
+		inputVisitor       visitor.HasExtendedVisitor
+		inputFilename      string
+		inputRuleID        string
+		inputPlacementType autodisable.PlacementType
+		wantExistErr       bool
+		wantFailureCount   int
+		wantFilename       string
+	}{
+		{
+			name: "Do nothing in case of no failures",
+			inputVisitor: &testVisitor{
+				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE"),
+			},
+			inputFilename:      "invalid.proto",
+			inputRuleID:        "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			inputPlacementType: autodisable.Next,
+			wantFilename:       "invalid.proto",
+		},
+		{
+			name: "Insert a disable:next comment",
+			inputVisitor: &testVisitorInvalidEnumField{
+				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE"),
+			},
+			inputFilename:      "invalid.proto",
+			inputRuleID:        "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			inputPlacementType: autodisable.Next,
+			wantFailureCount:   1,
+			wantFilename:       "disable_next.proto",
+		},
+		{
+			name: "Insert a disable:this comment",
+			inputVisitor: &testVisitorInvalidEnumField{
+				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE"),
+			},
+			inputFilename:      "invalid.proto",
+			inputRuleID:        "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+			inputPlacementType: autodisable.ThisThenNext,
+			wantFailureCount:   1,
+			wantFilename:       "disable_this.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			input, err := util_test.NewTestData(setting_test.TestDataPath("visitor", test.inputFilename))
+			if err != nil {
+				t.Errorf("got err %v", err)
+				return
+			}
+
+			want, err := util_test.NewTestData(setting_test.TestDataPath("visitor", test.wantFilename))
+			if err != nil {
+				t.Errorf("got err %v", err)
+				return
+			}
+
+			proto, err := file.NewProtoFile(input.FilePath, input.FilePath).Parse(false)
+			if err != nil {
+				t.Errorf(err.Error())
+				return
+			}
+
+			got, err := visitor.RunVisitorAutoDisable(
+				test.inputVisitor,
+				proto,
+				test.inputRuleID,
+				test.inputPlacementType,
+			)
+
+			if test.wantExistErr {
+				if err == nil {
+					t.Errorf("got err nil, but want err")
+				}
+				return
+			} else if err != nil {
+				t.Errorf("got err %v, but want nil", err)
+				return
+			}
+
+			if len(got) != test.wantFailureCount {
+				t.Errorf("len(got) %v, but want %v", len(got), test.wantFailureCount)
+			}
+
+			got2, _ := input.Data()
+			if !reflect.DeepEqual(got2, want.OriginData) {
+				t.Errorf(
+					"got %s(%v), but want %s(%v)",
+					string(got2), got,
+					string(want.OriginData), want.OriginData,
+				)
+			}
+
+			err = input.Restore()
+			if err != nil {
+				t.Errorf("got err %v", err)
+			}
+
 		})
 	}
 }

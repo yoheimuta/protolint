@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+enum Enum {
+  ENUM_unknown_UNSPECIFIED = 0; // protolint:disable:this ENUM_FIELD_NAMES_UPPER_SNAKE_CASE
+}
