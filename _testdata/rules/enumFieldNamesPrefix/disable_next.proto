@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+enum enum {
+    option allow_alias = true;
+    // protolint:disable:next ENUM_FIELD_NAMES_PREFIX
+    UNKNOWN = 0;
+}
+
+enum enumAlias {
+    // protolint:disable:next ENUM_FIELD_NAMES_PREFIX
+    STARTED_LAP = 1;
+    // protolint:disable:next ENUM_FIELD_NAMES_PREFIX
+    RUNNINGLAP_UNTIL = 2 [(custom_option) = "hello world"];
+}
