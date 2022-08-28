@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -16,15 +17,21 @@ import (
 // EnumFieldNamesPrefixRule verifies that enum field names are prefixed with its ENUM_NAME_UPPER_SNAKE_CASE.
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumFieldNamesPrefixRule struct {
-	fixMode bool
+	fixMode         bool
+	autoDisableType autodisable.PlacementType
 }
 
 // NewEnumFieldNamesPrefixRule creates a new EnumFieldNamesPrefixRule.
 func NewEnumFieldNamesPrefixRule(
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) EnumFieldNamesPrefixRule {
+	if autoDisableType != autodisable.Noop {
+		fixMode = false
+	}
 	return EnumFieldNamesPrefixRule{
-		fixMode: fixMode,
+		fixMode:         fixMode,
+		autoDisableType: autoDisableType,
 	}
 }
 
@@ -53,7 +60,7 @@ func (r EnumFieldNamesPrefixRule) Apply(proto *parser.Proto) ([]report.Failure, 
 	v := &enumFieldNamesPrefixVisitor{
 		BaseFixableVisitor: base,
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type enumFieldNamesPrefixVisitor struct {
