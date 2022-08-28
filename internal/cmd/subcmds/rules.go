@@ -80,6 +80,7 @@ func newAllInternalRules(
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
 			enumFieldNamesZeroValueEndWith.Suffix,
 			fixMode,
+			autoDisableType,
 		),
 		rules.NewEnumFieldsHaveCommentRule(
 			enumFieldsHaveComment.ShouldFollowGolangStyle,

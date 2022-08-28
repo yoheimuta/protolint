@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser"
@@ -19,21 +20,27 @@ const (
 // EnumFieldNamesZeroValueEndWithRule verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID").
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumFieldNamesZeroValueEndWithRule struct {
-	suffix  string
-	fixMode bool
+	suffix          string
+	fixMode         bool
+	autoDisableType autodisable.PlacementType
 }
 
 // NewEnumFieldNamesZeroValueEndWithRule creates a new EnumFieldNamesZeroValueEndWithRule.
 func NewEnumFieldNamesZeroValueEndWithRule(
 	suffix string,
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) EnumFieldNamesZeroValueEndWithRule {
 	if len(suffix) == 0 {
 		suffix = defaultSuffix
 	}
+	if autoDisableType != autodisable.Noop {
+		fixMode = false
+	}
 	return EnumFieldNamesZeroValueEndWithRule{
-		suffix:  suffix,
-		fixMode: fixMode,
+		suffix:          suffix,
+		fixMode:         fixMode,
+		autoDisableType: autoDisableType,
 	}
 }
 
@@ -63,7 +70,7 @@ func (r EnumFieldNamesZeroValueEndWithRule) Apply(proto *parser.Proto) ([]report
 		BaseFixableVisitor: base,
 		suffix:             r.suffix,
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type enumFieldNamesZeroValueEndWithVisitor struct {
