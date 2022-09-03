@@ -50,7 +50,7 @@ func (v *extendedAutoDisableVisitor) VisitEnum(e *parser.Enum) (next bool) {
 	return v.doIfFailure(func() bool {
 		return v.inner.VisitEnum(e)
 	}, func(offset int) {
-		v.automator.Disable(offset, e.Comments, e.InlineComment)
+		v.automator.Disable(offset, e.Comments, e.InlineCommentBehindLeftCurly)
 	})
 }
 
@@ -95,7 +95,11 @@ func (v *extendedAutoDisableVisitor) VisitMapField(m *parser.MapField) (next boo
 }
 
 func (v *extendedAutoDisableVisitor) VisitMessage(m *parser.Message) (next bool) {
-	return v.inner.VisitMessage(m)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitMessage(m)
+	}, func(offset int) {
+		v.automator.Disable(offset, m.Comments, m.InlineCommentBehindLeftCurly)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitOneof(o *parser.Oneof) (next bool) {

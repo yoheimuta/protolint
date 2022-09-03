@@ -109,7 +109,7 @@ func newAllInternalRules(
 			fixMode,
 		),
 
-		rules.NewMessageNamesUpperCamelCaseRule(fixMode),
+		rules.NewMessageNamesUpperCamelCaseRule(fixMode, autoDisableType),
 		rules.NewMessageNamesExcludePrepositionsRule(
 			messageNamesExcludePrepositions.Prepositions,
 			messageNamesExcludePrepositions.Excludes,
