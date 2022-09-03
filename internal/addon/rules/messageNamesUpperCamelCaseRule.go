@@ -3,6 +3,7 @@ package rules
 import (
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
@@ -13,15 +14,21 @@ import (
 // MessageNamesUpperCamelCaseRule verifies that all message names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#message-and-field-names.
 type MessageNamesUpperCamelCaseRule struct {
-	fixMode bool
+	fixMode         bool
+	autoDisableType autodisable.PlacementType
 }
 
 // NewMessageNamesUpperCamelCaseRule creates a new MessageNamesUpperCamelCaseRule.
 func NewMessageNamesUpperCamelCaseRule(
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) MessageNamesUpperCamelCaseRule {
+	if autoDisableType != autodisable.Noop {
+		fixMode = false
+	}
 	return MessageNamesUpperCamelCaseRule{
-		fixMode: fixMode,
+		fixMode:         fixMode,
+		autoDisableType: autoDisableType,
 	}
 }
 
@@ -50,7 +57,7 @@ func (r MessageNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Fai
 	v := &messageNamesUpperCamelCaseVisitor{
 		BaseFixableVisitor: base,
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type messageNamesUpperCamelCaseVisitor struct {

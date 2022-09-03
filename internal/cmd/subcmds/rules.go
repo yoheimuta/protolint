@@ -86,12 +86,12 @@ func newAllInternalRules(
 			enumFieldsHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewEnumNamesUpperCamelCaseRule(fixMode),
+		rules.NewEnumNamesUpperCamelCaseRule(fixMode, autoDisableType),
 		rules.NewEnumsHaveCommentRule(
 			enumsHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewFieldNamesLowerSnakeCaseRule(fixMode),
+		rules.NewFieldNamesLowerSnakeCaseRule(fixMode, autoDisableType),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Prepositions,
 			fieldNamesExcludePrepositions.Excludes,
@@ -109,7 +109,7 @@ func newAllInternalRules(
 			fixMode,
 		),
 
-		rules.NewMessageNamesUpperCamelCaseRule(fixMode),
+		rules.NewMessageNamesUpperCamelCaseRule(fixMode, autoDisableType),
 		rules.NewMessageNamesExcludePrepositionsRule(
 			messageNamesExcludePrepositions.Prepositions,
 			messageNamesExcludePrepositions.Excludes,

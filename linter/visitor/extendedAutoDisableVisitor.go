@@ -47,7 +47,11 @@ func (v *extendedAutoDisableVisitor) VisitComment(c *parser.Comment) {
 }
 
 func (v *extendedAutoDisableVisitor) VisitEnum(e *parser.Enum) (next bool) {
-	return v.inner.VisitEnum(e)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitEnum(e)
+	}, func(offset int) {
+		v.automator.Disable(offset, e.Comments, e.InlineCommentBehindLeftCurly)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitEnumField(e *parser.EnumField) (next bool) {
@@ -67,7 +71,11 @@ func (v *extendedAutoDisableVisitor) VisitExtensions(m *parser.Extensions) (next
 }
 
 func (v *extendedAutoDisableVisitor) VisitField(f *parser.Field) (next bool) {
-	return v.inner.VisitField(f)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitField(f)
+	}, func(offset int) {
+		v.automator.Disable(offset, f.Comments, f.InlineComment)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitGroupField(m *parser.GroupField) (next bool) {
@@ -79,11 +87,19 @@ func (v *extendedAutoDisableVisitor) VisitImport(i *parser.Import) (next bool) {
 }
 
 func (v *extendedAutoDisableVisitor) VisitMapField(m *parser.MapField) (next bool) {
-	return v.inner.VisitMapField(m)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitMapField(m)
+	}, func(offset int) {
+		v.automator.Disable(offset, m.Comments, m.InlineComment)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitMessage(m *parser.Message) (next bool) {
-	return v.inner.VisitMessage(m)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitMessage(m)
+	}, func(offset int) {
+		v.automator.Disable(offset, m.Comments, m.InlineCommentBehindLeftCurly)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitOneof(o *parser.Oneof) (next bool) {
@@ -91,7 +107,11 @@ func (v *extendedAutoDisableVisitor) VisitOneof(o *parser.Oneof) (next bool) {
 }
 
 func (v *extendedAutoDisableVisitor) VisitOneofField(o *parser.OneofField) (next bool) {
-	return v.inner.VisitOneofField(o)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitOneofField(o)
+	}, func(offset int) {
+		v.automator.Disable(offset, o.Comments, o.InlineComment)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitOption(o *parser.Option) (next bool) {

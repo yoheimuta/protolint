@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// protolint:disable:next MESSAGE_NAMES_UPPER_CAMEL_CASE
+message first_outer {
+    option (my_option).a = true;
+    // inner is an inner message.
+    // protolint:disable:next MESSAGE_NAMES_UPPER_CAMEL_CASE
+    message first_inner {   // Level 2
+                      int64 ival = 1;
+    }
+    // protolint:disable:next MESSAGE_NAMES_UPPER_CAMEL_CASE
+    message accountForAdmin {}
+    // protolint:disable:next MESSAGE_NAMES_UPPER_CAMEL_CASE
+    message Special_EndOfSupport {}
+}
+
+// protolint:disable:next MESSAGE_NAMES_UPPER_CAMEL_CASE
+message second {
+    // protolint:disable:next MESSAGE_NAMES_UPPER_CAMEL_CASE
+    message account_for_admin {}
+}

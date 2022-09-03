@@ -3,6 +3,7 @@ package rules
 import (
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
@@ -13,15 +14,21 @@ import (
 // EnumNamesUpperCamelCaseRule verifies that all enum names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumNamesUpperCamelCaseRule struct {
-	fixMode bool
+	fixMode         bool
+	autoDisableType autodisable.PlacementType
 }
 
 // NewEnumNamesUpperCamelCaseRule creates a new EnumNamesUpperCamelCaseRule.
 func NewEnumNamesUpperCamelCaseRule(
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) EnumNamesUpperCamelCaseRule {
+	if autoDisableType != autodisable.Noop {
+		fixMode = false
+	}
 	return EnumNamesUpperCamelCaseRule{
-		fixMode: fixMode,
+		fixMode:         fixMode,
+		autoDisableType: autoDisableType,
 	}
 }
 
@@ -50,7 +57,7 @@ func (r EnumNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failur
 	v := &enumNamesUpperCamelCaseVisitor{
 		BaseFixableVisitor: base,
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type enumNamesUpperCamelCaseVisitor struct {

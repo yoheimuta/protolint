@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+message first_outer {
+    // inner is an inner message.
+    message first_inner {   // Level 2
+        // protolint:disable:next FIELD_NAMES_LOWER_SNAKE_CASE
+        repeated inner innerMessage = 2;
+    }
+    // protolint:disable:next FIELD_NAMES_LOWER_SNAKE_CASE
+    map<int32, string> My_map = 4;
+}
+
+message second_outer {
+    oneof oneof {
+        // protolint:disable:next FIELD_NAMES_LOWER_SNAKE_CASE
+        google.protobuf.Empty OneofEmpty = 20;
+        // protolint:disable:next FIELD_NAMES_LOWER_SNAKE_CASE
+        string oneof_String = 21;
+    }
+}

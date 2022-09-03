@@ -162,24 +162,26 @@ The `-auto_disable` option on the command line can automatically disable all the
 This feature is helpful when fixing the existing violations breaks the compatibility.
 See AutoDisable columns below.
 
+- *1: These rules are not supposed to support AutoDisable because the fixes don't break their compatibilities. You should run the protolint with `-fix`.
+
 | Official | Fixable | AutoDisable | ID                                | Purpose                                                                  |
 |----------|---------|---------|-----------------------------------|--------------------------------------------------------------------------|
 | Yes | ✅ | ✅ | ENUM_FIELD_NAMES_PREFIX | Verifies that enum field names are prefixed with its ENUM_NAME_UPPER_SNAKE_CASE.        |
 | Yes | ✅ | ✅ | ENUM_FIELD_NAMES_UPPER_SNAKE_CASE | Verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.        |
 | Yes | ✅ | ✅ | ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH | Verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID"). The default is "UNSPECIFIED". You can configure the specific suffix with `.protolint.yaml`. |
-| Yes | ✅ | - | ENUM_NAMES_UPPER_CAMEL_CASE       | Verifies that all enum names are CamelCase (with an initial capital).    |
-| Yes | ✅ | - | FILE_NAMES_LOWER_SNAKE_CASE       | Verifies that all file names are lower_snake_case.proto. You can configure the excluded files with `.protolint.yaml`. |
-| Yes | ✅ | - | FIELD_NAMES_LOWER_SNAKE_CASE      | Verifies that all field names are underscore_separated_names.            |
-| Yes | ✅ | - | IMPORTS_SORTED                    | Verifies that all imports are sorted. |
-| Yes | ✅ | - | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
-| Yes | ✅ | - | ORDER                             | Verifies that all files should be ordered in the specific manner. |
-| Yes | ✅ | - | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name should not contain any lowercase letters. |
+| Yes | ✅ | ✅ | ENUM_NAMES_UPPER_CAMEL_CASE       | Verifies that all enum names are CamelCase (with an initial capital).    |
+| Yes | ✅ | *1 | FILE_NAMES_LOWER_SNAKE_CASE       | Verifies that all file names are lower_snake_case.proto. You can configure the excluded files with `.protolint.yaml`. |
+| Yes | ✅ | ✅ | FIELD_NAMES_LOWER_SNAKE_CASE      | Verifies that all field names are underscore_separated_names.            |
+| Yes | ✅ | *1 | IMPORTS_SORTED                    | Verifies that all imports are sorted. |
+| Yes | ✅ | ✅ | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
+| Yes | ✅ | *1 | ORDER                             | Verifies that all files should be ordered in the specific manner. |
+| Yes | ✅ | *1 | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name should not contain any lowercase letters. |
 | Yes | ✅ | - | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | Yes | ✅ | - | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
 | Yes | ✅ | - | REPEATED_FIELD_NAMES_PLURALIZED   | Verifies that repeated field names are pluralized names.            |
-| Yes | ✅ | - | QUOTE_CONSISTENT   | Verifies that the use of quote for strings is consistent. The default is double quoted. You can configure the specific quote with `.protolint.yaml`.          |
-| Yes | ✅ | - | INDENT    | Enforces a consistent indentation style. The default style is 2 spaces. Inserting appropriate new lines is also forced by default. You can configure the detail with `.protolint.yaml`. |
-| Yes | ✅ | - | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
+| Yes | ✅ | *1 | QUOTE_CONSISTENT   | Verifies that the use of quote for strings is consistent. The default is double quoted. You can configure the specific quote with `.protolint.yaml`.          |
+| Yes | ✅ | *1 | INDENT    | Enforces a consistent indentation style. The default style is 2 spaces. Inserting appropriate new lines is also forced by default. You can configure the detail with `.protolint.yaml`. |
+| Yes | ✅ | *1 | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
 | Yes | _  | - | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
 | Yes | _  | - | MAX_LINE_LENGTH    | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |
 | No | _  | - | SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. You can configure the specific suffix with `.protolint.yaml`. |
