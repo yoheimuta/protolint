@@ -8,6 +8,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/report"
 )
 
@@ -96,7 +97,7 @@ func TestEnumNamesUpperCamelCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewEnumNamesUpperCamelCaseRule(false)
+			rule := rules.NewEnumNamesUpperCamelCaseRule(false, autodisable.Noop)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -131,7 +132,42 @@ func TestEnumNamesUpperCamelCaseRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewEnumNamesUpperCamelCaseRule(true)
+			r := rules.NewEnumNamesUpperCamelCaseRule(true, autodisable.Noop)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
+		})
+	}
+}
+
+func TestEnumNamesUpperCamelCaseRule_Apply_disable(t *testing.T) {
+	tests := []struct {
+		name               string
+		inputFilename      string
+		inputPlacementType autodisable.PlacementType
+		wantFilename       string
+	}{
+		{
+			name:          "do nothing in case of no violations",
+			inputFilename: "upperCamelCase.proto",
+			wantFilename:  "upperCamelCase.proto",
+		},
+		{
+			name:               "insert disable:next comments",
+			inputFilename:      "invalid.proto",
+			inputPlacementType: autodisable.Next,
+			wantFilename:       "disable_next.proto",
+		},
+		{
+			name:               "insert disable:this comments",
+			inputFilename:      "invalid.proto",
+			inputPlacementType: autodisable.ThisThenNext,
+			wantFilename:       "disable_this.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewEnumNamesUpperCamelCaseRule(true, test.inputPlacementType)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

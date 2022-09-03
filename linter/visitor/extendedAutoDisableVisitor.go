@@ -47,7 +47,11 @@ func (v *extendedAutoDisableVisitor) VisitComment(c *parser.Comment) {
 }
 
 func (v *extendedAutoDisableVisitor) VisitEnum(e *parser.Enum) (next bool) {
-	return v.inner.VisitEnum(e)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitEnum(e)
+	}, func(offset int) {
+		v.automator.Disable(offset, e.Comments, e.InlineComment)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitEnumField(e *parser.EnumField) (next bool) {

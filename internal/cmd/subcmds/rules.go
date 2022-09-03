@@ -86,7 +86,7 @@ func newAllInternalRules(
 			enumFieldsHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewEnumNamesUpperCamelCaseRule(fixMode),
+		rules.NewEnumNamesUpperCamelCaseRule(fixMode, autoDisableType),
 		rules.NewEnumsHaveCommentRule(
 			enumsHaveComment.ShouldFollowGolangStyle,
 		),

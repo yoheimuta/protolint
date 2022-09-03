@@ -1,20 +1,23 @@
 syntax = "proto3";
 
-enum Enum {
+// protolint:disable:next ENUM_NAMES_UPPER_CAMEL_CASE
+enum enum {
     option allow_alias = true;
     UNKNOWN = 0;
     STARTED = 1;
     RUNNING = 2 [(custom_option) = "hello world"];
 }
 
-enum EnumAllowingAlias {
+// protolint:disable:next ENUM_NAMES_UPPER_CAMEL_CASE
+enum Enum_allowing_alias {
     option allow_alias = true;
     UNKNOWN = 0;
     STARTED = 1;
     RUNNING = 2 [(custom_option) = "hello world"];
 }
 
-enum EnumAllowing {
+// protolint:disable:next ENUM_NAMES_UPPER_CAMEL_CASE
+enum enumAllowing {
     option allow_alias = true;
     UNKNOWN = 0;
     STARTED = 1;
