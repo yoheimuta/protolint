@@ -79,7 +79,11 @@ func (v *extendedAutoDisableVisitor) VisitField(f *parser.Field) (next bool) {
 }
 
 func (v *extendedAutoDisableVisitor) VisitGroupField(m *parser.GroupField) (next bool) {
-	return v.inner.VisitGroupField(m)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitGroupField(m)
+	}, func(offset int) {
+		v.automator.Disable(offset, m.Comments, m.InlineComment)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitImport(i *parser.Import) (next bool) {

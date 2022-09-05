@@ -107,6 +107,7 @@ func newAllInternalRules(
 			repeatedFieldNamesPluralized.UncountableRules,
 			repeatedFieldNamesPluralized.IrregularRules,
 			fixMode,
+			autoDisableType,
 		),
 
 		rules.NewMessageNamesUpperCamelCaseRule(fixMode, autoDisableType),

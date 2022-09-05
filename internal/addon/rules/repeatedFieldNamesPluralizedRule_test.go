@@ -7,6 +7,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 	"github.com/yoheimuta/protolint/internal/addon/rules"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/report"
 )
 
@@ -187,6 +188,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 				test.uncountableRules,
 				test.irregularRules,
 				false,
+				autodisable.Noop,
 			)
 
 			got, err := rule.Apply(test.inputProto)
@@ -232,6 +234,53 @@ func TestRepeatedFieldNamesPluralizedRule_Apply_fix(t *testing.T) {
 				test.uncountableRules,
 				test.irregularRules,
 				true,
+				autodisable.Noop,
+			)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
+		})
+	}
+}
+
+func TestRepeatedFieldNamesPluralizedRule_Apply_disable(t *testing.T) {
+	tests := []struct {
+		name               string
+		pluralRules        map[string]string
+		singularRules      map[string]string
+		uncountableRules   []string
+		irregularRules     map[string]string
+		inputFilename      string
+		inputPlacementType autodisable.PlacementType
+		wantFilename       string
+	}{
+		{
+			name:          "do nothing in case of no violations",
+			inputFilename: "pluralized.proto",
+			wantFilename:  "pluralized.proto",
+		},
+		{
+			name:               "insert disable:next comments",
+			inputFilename:      "invalid.proto",
+			inputPlacementType: autodisable.Next,
+			wantFilename:       "disable_next.proto",
+		},
+		{
+			name:               "insert disable:this comments",
+			inputFilename:      "invalid.proto",
+			inputPlacementType: autodisable.ThisThenNext,
+			wantFilename:       "disable_this.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewRepeatedFieldNamesPluralizedRule(
+				test.pluralRules,
+				test.singularRules,
+				test.uncountableRules,
+				test.irregularRules,
+				true,
+				test.inputPlacementType,
 			)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
