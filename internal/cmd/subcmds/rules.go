@@ -118,7 +118,7 @@ func newAllInternalRules(
 			messagesHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewRPCNamesUpperCamelCaseRule(fixMode),
+		rules.NewRPCNamesUpperCamelCaseRule(fixMode, autoDisableType),
 		rules.NewRPCNamesCaseRule(option.RPCNamesCaseOption.Convention),
 		rules.NewRPCsHaveCommentRule(
 			rpcsHaveComment.ShouldFollowGolangStyle,
