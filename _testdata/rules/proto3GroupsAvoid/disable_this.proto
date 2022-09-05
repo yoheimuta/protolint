@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+message SearchResponse {
+  repeated group Results = 1 { // protolint:disable:this PROTO3_GROUPS_AVOID
+    string url = 2;
+    optional string title = 3;
+    repeated string snippets = 4;
+  }
+}

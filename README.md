@@ -182,7 +182,7 @@ See AutoDisable columns below.
 | Yes | ✅ | *1 | QUOTE_CONSISTENT   | Verifies that the use of quote for strings is consistent. The default is double quoted. You can configure the specific quote with `.protolint.yaml`.          |
 | Yes | ✅ | *1 | INDENT    | Enforces a consistent indentation style. The default style is 2 spaces. Inserting appropriate new lines is also forced by default. You can configure the detail with `.protolint.yaml`. |
 | Yes | ✅ | *1 | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
-| Yes | _  | - | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
+| Yes | _  | ✅ | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
 | Yes | _  | *1 | MAX_LINE_LENGTH    | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |
 | No | _  | - | SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. You can configure the specific suffix with `.protolint.yaml`. |
 | No | _  | - | FIELD_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |

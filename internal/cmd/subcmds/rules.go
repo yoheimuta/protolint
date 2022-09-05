@@ -100,7 +100,7 @@ func newAllInternalRules(
 			fieldsHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewProto3FieldsAvoidRequiredRule(fixMode),
-		rules.NewProto3GroupsAvoidRule(),
+		rules.NewProto3GroupsAvoidRule(autoDisableType),
 		rules.NewRepeatedFieldNamesPluralizedRule(
 			repeatedFieldNamesPluralized.PluralRules,
 			repeatedFieldNamesPluralized.SingularRules,

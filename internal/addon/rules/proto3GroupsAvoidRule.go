@@ -2,6 +2,7 @@ package rules
 
 import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
@@ -9,11 +10,12 @@ import (
 // Proto3GroupsAvoidRule verifies that all groups should be avoided for proto3.
 // See https://developers.google.com/protocol-buffers/docs/style#things-to-avoid
 type Proto3GroupsAvoidRule struct {
+	autoDisableType autodisable.PlacementType
 }
 
 // NewProto3GroupsAvoidRule creates a new Proto3GroupsAvoidRule.
-func NewProto3GroupsAvoidRule() Proto3GroupsAvoidRule {
-	return Proto3GroupsAvoidRule{}
+func NewProto3GroupsAvoidRule(autoDisableType autodisable.PlacementType) Proto3GroupsAvoidRule {
+	return Proto3GroupsAvoidRule{autoDisableType: autoDisableType}
 }
 
 // ID returns the ID of this rule.
@@ -36,7 +38,7 @@ func (r Proto3GroupsAvoidRule) Apply(proto *parser.Proto) ([]report.Failure, err
 	v := &proto3GroupsAvoidVisitor{
 		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type proto3GroupsAvoidVisitor struct {
