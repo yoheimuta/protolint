@@ -12,4 +12,3 @@ service Search_location_api {
     service     searchApi {
     rpc search (SearchRequest) returns (SearchResponse) {};
 };
-

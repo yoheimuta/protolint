@@ -135,7 +135,11 @@ func (v *extendedAutoDisableVisitor) VisitRPC(r *parser.RPC) (next bool) {
 }
 
 func (v *extendedAutoDisableVisitor) VisitService(s *parser.Service) (next bool) {
-	return v.inner.VisitService(s)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitService(s)
+	}, func(offset int) {
+		v.automator.Disable(offset, s.Comments, s.InlineCommentBehindLeftCurly)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitSyntax(s *parser.Syntax) (next bool) {
