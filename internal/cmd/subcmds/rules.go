@@ -100,13 +100,14 @@ func newAllInternalRules(
 			fieldsHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewProto3FieldsAvoidRequiredRule(fixMode),
-		rules.NewProto3GroupsAvoidRule(),
+		rules.NewProto3GroupsAvoidRule(autoDisableType),
 		rules.NewRepeatedFieldNamesPluralizedRule(
 			repeatedFieldNamesPluralized.PluralRules,
 			repeatedFieldNamesPluralized.SingularRules,
 			repeatedFieldNamesPluralized.UncountableRules,
 			repeatedFieldNamesPluralized.IrregularRules,
 			fixMode,
+			autoDisableType,
 		),
 
 		rules.NewMessageNamesUpperCamelCaseRule(fixMode, autoDisableType),
@@ -118,13 +119,13 @@ func newAllInternalRules(
 			messagesHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewRPCNamesUpperCamelCaseRule(fixMode),
+		rules.NewRPCNamesUpperCamelCaseRule(fixMode, autoDisableType),
 		rules.NewRPCNamesCaseRule(option.RPCNamesCaseOption.Convention),
 		rules.NewRPCsHaveCommentRule(
 			rpcsHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewServiceNamesUpperCamelCaseRule(fixMode),
+		rules.NewServiceNamesUpperCamelCaseRule(fixMode, autoDisableType),
 		rules.NewServiceNamesEndWithRule(
 			serviceNamesEndWith.Text,
 		),

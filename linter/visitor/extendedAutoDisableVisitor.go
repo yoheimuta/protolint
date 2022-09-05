@@ -79,7 +79,11 @@ func (v *extendedAutoDisableVisitor) VisitField(f *parser.Field) (next bool) {
 }
 
 func (v *extendedAutoDisableVisitor) VisitGroupField(m *parser.GroupField) (next bool) {
-	return v.inner.VisitGroupField(m)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitGroupField(m)
+	}, func(offset int) {
+		v.automator.Disable(offset, m.Comments, m.InlineComment)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitImport(i *parser.Import) (next bool) {
@@ -127,11 +131,19 @@ func (v *extendedAutoDisableVisitor) VisitReserved(r *parser.Reserved) (next boo
 }
 
 func (v *extendedAutoDisableVisitor) VisitRPC(r *parser.RPC) (next bool) {
-	return v.inner.VisitRPC(r)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitRPC(r)
+	}, func(offset int) {
+		v.automator.Disable(offset, r.Comments, r.InlineComment)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitService(s *parser.Service) (next bool) {
-	return v.inner.VisitService(s)
+	return v.doIfFailure(func() bool {
+		return v.inner.VisitService(s)
+	}, func(offset int) {
+		v.automator.Disable(offset, s.Comments, s.InlineCommentBehindLeftCurly)
+	})
 }
 
 func (v *extendedAutoDisableVisitor) VisitSyntax(s *parser.Syntax) (next bool) {

@@ -1,14 +1,17 @@
 syntax = "proto3";
 
-service Searchapi {
+// protolint:disable:next SERVICE_NAMES_UPPER_CAMEL_CASE
+service searchapi {
     rpc search (SearchRequest) returns (SearchResponse) {};
 };
 
-service SearchLocationApi {
+// protolint:disable:next SERVICE_NAMES_UPPER_CAMEL_CASE
+service Search_location_api {
     rpc Search_location_primary (SearchRequest2) returns (SearchResponse2) {};
     rpc    searchLocation    (SearchRequest3) returns (SearchResponse3) {};
 };
 
-    service     SearchApi {
+    // protolint:disable:next SERVICE_NAMES_UPPER_CAMEL_CASE
+    service     searchApi {
     rpc search (SearchRequest) returns (SearchResponse) {};
 };

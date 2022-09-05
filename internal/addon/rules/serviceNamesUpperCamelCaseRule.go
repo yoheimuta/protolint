@@ -3,6 +3,7 @@ package rules
 import (
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
@@ -13,15 +14,21 @@ import (
 // ServiceNamesUpperCamelCaseRule verifies that all service names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#services.
 type ServiceNamesUpperCamelCaseRule struct {
-	fixMode bool
+	fixMode         bool
+	autoDisableType autodisable.PlacementType
 }
 
 // NewServiceNamesUpperCamelCaseRule creates a new ServiceNamesUpperCamelCaseRule.
 func NewServiceNamesUpperCamelCaseRule(
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) ServiceNamesUpperCamelCaseRule {
+	if autoDisableType != autodisable.Noop {
+		fixMode = false
+	}
 	return ServiceNamesUpperCamelCaseRule{
-		fixMode: fixMode,
+		fixMode:         fixMode,
+		autoDisableType: autoDisableType,
 	}
 }
 
@@ -50,7 +57,7 @@ func (r ServiceNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Fai
 	v := &serviceNamesUpperCamelCaseVisitor{
 		BaseFixableVisitor: base,
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type serviceNamesUpperCamelCaseVisitor struct {

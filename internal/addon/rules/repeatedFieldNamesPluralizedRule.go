@@ -4,6 +4,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -18,6 +19,7 @@ type RepeatedFieldNamesPluralizedRule struct {
 	uncountableRules []string
 	irregularRules   map[string]string
 	fixMode          bool
+	autoDisableType  autodisable.PlacementType
 }
 
 // NewRepeatedFieldNamesPluralizedRule creates a new RepeatedFieldNamesPluralizedRule.
@@ -27,13 +29,18 @@ func NewRepeatedFieldNamesPluralizedRule(
 	uncountableRules []string,
 	irregularRules map[string]string,
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) RepeatedFieldNamesPluralizedRule {
+	if autoDisableType != autodisable.Noop {
+		fixMode = false
+	}
 	return RepeatedFieldNamesPluralizedRule{
 		pluralRules:      pluralRules,
 		singularRules:    singularRules,
 		uncountableRules: uncountableRules,
 		irregularRules:   irregularRules,
 		fixMode:          fixMode,
+		autoDisableType:  autoDisableType,
 	}
 }
 
@@ -77,7 +84,7 @@ func (r RepeatedFieldNamesPluralizedRule) Apply(proto *parser.Proto) ([]report.F
 		BaseFixableVisitor: base,
 		pluralizeClient:    c,
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type repeatedFieldNamesPluralizedVisitor struct {

@@ -7,6 +7,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 	"github.com/yoheimuta/protolint/internal/addon/rules"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/report"
 )
 
@@ -108,7 +109,7 @@ func TestProto3GroupsAvoidRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewProto3GroupsAvoidRule()
+			rule := rules.NewProto3GroupsAvoidRule(autodisable.Noop)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -118,6 +119,41 @@ func TestProto3GroupsAvoidRule_Apply(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantFailures) {
 				t.Errorf("got %v, but want %v", got, test.wantFailures)
 			}
+		})
+	}
+}
+
+func TestProto3GroupsAvoidRule_Apply_disable(t *testing.T) {
+	tests := []struct {
+		name               string
+		inputFilename      string
+		inputPlacementType autodisable.PlacementType
+		wantFilename       string
+	}{
+		{
+			name:          "do nothing in case of no violations",
+			inputFilename: "valid.proto",
+			wantFilename:  "valid.proto",
+		},
+		{
+			name:               "insert disable:next comments",
+			inputFilename:      "invalid.proto",
+			inputPlacementType: autodisable.Next,
+			wantFilename:       "disable_next.proto",
+		},
+		{
+			name:               "insert disable:this comments",
+			inputFilename:      "invalid.proto",
+			inputPlacementType: autodisable.ThisThenNext,
+			wantFilename:       "disable_this.proto",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := rules.NewProto3GroupsAvoidRule(test.inputPlacementType)
+			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
 }

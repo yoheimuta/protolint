@@ -3,6 +3,7 @@ package rules
 import (
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 
 	"github.com/yoheimuta/protolint/linter/report"
@@ -13,15 +14,21 @@ import (
 // RPCNamesUpperCamelCaseRule verifies that all rpc names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#services.
 type RPCNamesUpperCamelCaseRule struct {
-	fixMode bool
+	fixMode         bool
+	autoDisableType autodisable.PlacementType
 }
 
 // NewRPCNamesUpperCamelCaseRule creates a new RPCNamesUpperCamelCaseRule.
 func NewRPCNamesUpperCamelCaseRule(
 	fixMode bool,
+	autoDisableType autodisable.PlacementType,
 ) RPCNamesUpperCamelCaseRule {
+	if autoDisableType != autodisable.Noop {
+		fixMode = false
+	}
 	return RPCNamesUpperCamelCaseRule{
-		fixMode: fixMode,
+		fixMode:         fixMode,
+		autoDisableType: autoDisableType,
 	}
 }
 
@@ -50,7 +57,7 @@ func (r RPCNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure
 	v := &rpcNamesUpperCamelCaseVisitor{
 		BaseFixableVisitor: base,
 	}
-	return visitor.RunVisitor(v, proto, r.ID())
+	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }
 
 type rpcNamesUpperCamelCaseVisitor struct {

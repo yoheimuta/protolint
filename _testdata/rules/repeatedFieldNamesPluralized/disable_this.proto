@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+message first_outer {
+    // inner is an inner message.
+    message first_inner {   // Level 2
+                            repeated inner innerMessage = 2; // protolint:disable:this REPEATED_FIELD_NAMES_PLURALIZED
+    }
+    repeated string My_map = 4; // protolint:disable:this REPEATED_FIELD_NAMES_PLURALIZED
+    group Result = 8 {
+        repeated string url = 9; // protolint:disable:this REPEATED_FIELD_NAMES_PLURALIZED
+        int64 amount = 10;
+    }
+}
+
+message second_outer {
+    repeated google.protobuf.Empty OneofEmpty = 20; // protolint:disable:this REPEATED_FIELD_NAMES_PLURALIZED
+    string oneof_String = 21;
+}
