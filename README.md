@@ -75,7 +75,7 @@ protolint .                                 # same as "protolint lint ."
 protolint lint -config_path=path/to/your_protolint.yaml . # use path/to/your_protolint.yaml
 protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
-protolint lint -fix -auto_disable=next .    # automatically fix some problems and insert disable comments to the other problems. The available values are next and this.
+protolint lint -fix -auto_disable=next .    # this is preferable when you want to fix problems while maintaining the compatibility. Automatically fix some problems and insert disable comments to the other problems. The available values are next and this.
 protolint lint -auto_disable=next .         # automatically insert disable comments to the other problems. 
 protolint lint -v .                         # with verbose output to investigate the parsing error
 protolint lint -no-error-on-unmatched-pattern . # exits with success code even if no file is found (file & directory mode)
