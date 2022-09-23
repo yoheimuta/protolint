@@ -60,13 +60,14 @@ func NewBaseFixing(protoFileName string) (*BaseFixing, error) {
 	if err != nil {
 		return nil, err
 	}
-	lineEnding, err := osutil.DetectLineEnding(string(content))
-	if err != nil {
-		return nil, err
-	}
-	if len(lineEnding) == 0 {
-		lineEnding = "\n"
-	}
+
+	// Regardless of the actual dominant line ending, the fixer will go with LF
+	// because the parser recognizes only LF as a line ending.
+	//
+	// It will work for most cases like used LF, CRLF, and a mix of LF and CRLF.
+	// See also https://github.com/yoheimuta/protolint/issues/280.
+	lineEnding := "\n"
+
 	return &BaseFixing{
 		content:    content,
 		lineEnding: lineEnding,
