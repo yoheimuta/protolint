@@ -216,6 +216,25 @@ Fix https://github.com/yoheimuta/protolint/issues/139`,
 				),
 			},
 		},
+		{
+			name: `handle the case that the proto has a mixture of line ending formats like LF and CRLF.
+Fix https://github.com/yoheimuta/protolint/issues/280`,
+			inputProtoPath: setting_test.TestDataPath("rules", "indentrule", "issue_280_mix_lineending.proto"),
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{
+						Filename: setting_test.TestDataPath("rules", "indentrule", "issue_280_mix_lineending.proto"),
+						Offset:   580,
+						Line:     27,
+						Column:   5,
+					},
+					"INDENT",
+					`Found an incorrect indentation style "%s". "%s" is correct.`,
+					"    ",
+					"  ",
+				),
+			},
+		},
 	}
 
 	for _, test := range tests {
