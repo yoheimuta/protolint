@@ -24,7 +24,7 @@ message BookingStatusID {
  * Represents the status of a vehicle booking.
  */
 message BookingStatus {
-  int32 id           = 1; /// Unique booking status ID.
+    int32 id           = 1; /// Unique booking status ID.
   string description = 2 [(validator.field) = {string_not_empty: true, length_lt: 255}]; /// Booking status description. E.g. "Active".
 }
 

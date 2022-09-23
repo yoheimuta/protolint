@@ -224,7 +224,7 @@ Fix https://github.com/yoheimuta/protolint/issues/280`,
 				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "indentrule", "issue_280_mix_lineending.proto"),
-						Offset:   589,
+						Offset:   580,
 						Line:     27,
 						Column:   5,
 					},

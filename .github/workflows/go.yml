@@ -39,12 +39,13 @@ jobs:
           ignore-unfixed: true
           output: trivy-results.sarif
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: trivy-results.sarif
-          wait-for-processing: true
+      # Comment out due to some random failures. See https://github.com/yoheimuta/protolint/actions/runs/3110395412/jobs/5041533203
+      #- name: Upload Trivy scan results to GitHub Security tab
+      #  uses: github/codeql-action/upload-sarif@v2
+      #  if: always()
+      #  with:
+      #    sarif_file: trivy-results.sarif
+      #    wait-for-processing: true
 
       - uses: hadolint/hadolint-action@v2.1.0
         with:
@@ -53,9 +54,10 @@ jobs:
           format: sarif
           output-file: hadolint-results.sarif
 
-      - name: Upload Hadolint scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: hadolint-results.sarif
-          wait-for-processing: true
+      # Comment out due to some random failures. See https://github.com/yoheimuta/protolint/actions/runs/3110395412/jobs/5041533203
+      #- name: Upload Hadolint scan results to GitHub Security tab
+      #  uses: github/codeql-action/upload-sarif@v2
+      #  if: always()
+      #  with:
+      #    sarif_file: hadolint-results.sarif
+      #    wait-for-processing: true
