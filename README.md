@@ -175,7 +175,7 @@ See AutoDisable columns below.
 | Yes | ✅ | *1 | IMPORTS_SORTED                    | Verifies that all imports are sorted. |
 | Yes | ✅ | ✅ | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
 | Yes | ✅ | *1 | ORDER                             | Verifies that all files should be ordered in the specific manner. |
-| Yes | ✅ | *1 | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name should not contain any lowercase letters. |
+| Yes | ✅ | *1 | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name should only contain lowercase letters. |
 | Yes | ✅ | ✅ | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
 | Yes | ✅ | ✅ | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
 | Yes | ✅ | ✅ | REPEATED_FIELD_NAMES_PLURALIZED   | Verifies that repeated field names are pluralized names.            |
