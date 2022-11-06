@@ -48,6 +48,18 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 							},
 						},
 					},
+					&parser.Message{
+						MessageName: "MessageName3",
+						InlineComment: &parser.Comment{
+							Raw: "// a message name.",
+						},
+					},
+					&parser.Message{
+						MessageName: "MessageName4",
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// a message name.",
+						},
+					},
 				},
 			},
 		},
@@ -185,6 +197,41 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Line:     10,
 						Column:   20,
 					},
+					"MESSAGES_HAVE_COMMENT",
+					`Message "MessageName2" should have a comment of the form "// MessageName2 ..."`,
+				),
+			},
+		},
+		{
+			name: "failures for proto with messages without Golang style comments due to the inline comment",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Message{
+						MessageName: "MessageName",
+						MessageBody: []parser.Visitee{
+							&parser.Message{
+								MessageName: "MessageName2",
+								InlineCommentBehindLeftCurly: &parser.Comment{
+									Raw: "// MessageName2 is special.",
+								},
+							},
+						},
+						InlineComment: &parser.Comment{
+							Raw: "// MessageName is special.",
+						},
+					},
+				},
+			},
+			inputShouldFollowGolangStyle: true,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"MESSAGES_HAVE_COMMENT",
+					`Message "MessageName" should have a comment of the form "// MessageName ..."`,
+				),
+				report.Failuref(
+					meta.Position{},
 					"MESSAGES_HAVE_COMMENT",
 					`Message "MessageName2" should have a comment of the form "// MessageName2 ..."`,
 				),

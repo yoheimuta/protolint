@@ -57,7 +57,7 @@ func (v *enumFieldsHaveCommentVisitor) VisitEnumField(enumField *parser.EnumFiel
 	n := enumField.Ident
 	if v.shouldFollowGolangStyle && !hasGolangStyleComment(enumField.Comments, n) {
 		v.AddFailuref(enumField.Meta.Pos, `EnumField %q should have a comment of the form "// %s ..."`, n, n)
-	} else if !hasComment(enumField.Comments) {
+	} else if !hasComments(enumField.Comments, enumField.InlineComment) {
 		v.AddFailuref(enumField.Meta.Pos, `EnumField %q should have a comment`, n)
 	}
 	return false

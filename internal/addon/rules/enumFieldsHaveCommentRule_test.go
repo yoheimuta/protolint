@@ -39,6 +39,12 @@ func TestEnumFieldsHaveCommentRule_Apply(t *testing.T) {
 									},
 								},
 							},
+							&parser.EnumField{
+								Ident: "EnumFieldName2",
+								InlineComment: &parser.Comment{
+									Raw: "// a field name.",
+								},
+							},
 						},
 					},
 				},
@@ -133,6 +139,31 @@ func TestEnumFieldsHaveCommentRule_Apply(t *testing.T) {
 						Line:     7,
 						Column:   15,
 					},
+					"ENUM_FIELDS_HAVE_COMMENT",
+					`EnumField "EnumFieldName" should have a comment of the form "// EnumFieldName ..."`,
+				),
+			},
+		},
+		{
+			name: "failures for proto with invalid fields without Golang style comments due to inline",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Enum{
+						EnumBody: []parser.Visitee{
+							&parser.EnumField{
+								Ident: "EnumFieldName",
+								InlineComment: &parser.Comment{
+									Raw: "// EnumFieldName is special.",
+								},
+							},
+						},
+					},
+				},
+			},
+			inputShouldFollowGolangStyle: true,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
 					"ENUM_FIELDS_HAVE_COMMENT",
 					`EnumField "EnumFieldName" should have a comment of the form "// EnumFieldName ..."`,
 				),

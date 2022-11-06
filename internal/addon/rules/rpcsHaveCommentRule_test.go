@@ -39,6 +39,12 @@ func TestRPCsHaveCommentRule_Apply(t *testing.T) {
 									},
 								},
 							},
+							&parser.RPC{
+								RPCName: "RPCName2",
+								InlineComment: &parser.Comment{
+									Raw: "// a rpc name.",
+								},
+							},
 						},
 					},
 				},
@@ -133,6 +139,31 @@ func TestRPCsHaveCommentRule_Apply(t *testing.T) {
 						Line:     7,
 						Column:   15,
 					},
+					"RPCS_HAVE_COMMENT",
+					`RPC "RPCName" should have a comment of the form "// RPCName ..."`,
+				),
+			},
+		},
+		{
+			name: "failures for proto with invalid rpcs without Golang style comments due to inline",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{
+						ServiceBody: []parser.Visitee{
+							&parser.RPC{
+								RPCName: "RPCName",
+								InlineComment: &parser.Comment{
+									Raw: "// RPCName is special.",
+								},
+							},
+						},
+					},
+				},
+			},
+			inputShouldFollowGolangStyle: true,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
 					"RPCS_HAVE_COMMENT",
 					`RPC "RPCName" should have a comment of the form "// RPCName ..."`,
 				),

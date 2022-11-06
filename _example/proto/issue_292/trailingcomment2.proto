@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+enum enumAllowingAlias { // enum comment
+    option allow_alias = true; // option comment
+    UNKNOWN = 0; // UNKNOWN is an enumField comment
+}
+
+message outer {
+    option (my_option).a = true; // option comment
+    message inner {   // inner is Level 2
+      int64 ival = 1; // ival is a field comment
+    }
+    repeated inner inner_message = 2; // inner_message is a field comment
+}  // outer is a message comment
+
+service SearchApi { // SearchApi is a service comment
+    rpc search (SearchRequest) returns (SearchResponse) {}; // search is rpc comment
+};

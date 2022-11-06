@@ -57,7 +57,7 @@ func (v *enumsHaveCommentVisitor) VisitEnum(enum *parser.Enum) bool {
 	n := enum.EnumName
 	if v.shouldFollowGolangStyle && !hasGolangStyleComment(enum.Comments, n) {
 		v.AddFailuref(enum.Meta.Pos, `Enum %q should have a comment of the form "// %s ..."`, n, n)
-	} else if !hasComment(enum.Comments) {
+	} else if !hasComments(enum.Comments, enum.InlineComment, enum.InlineCommentBehindLeftCurly) {
 		v.AddFailuref(enum.Meta.Pos, `Enum %q should have a comment`, n)
 	}
 	return true
