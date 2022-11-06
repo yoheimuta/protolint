@@ -59,6 +59,28 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 									},
 								},
 							},
+							&parser.Field{
+								FieldName: "FieldName",
+								InlineComment: &parser.Comment{
+									Raw: "// a field name.",
+								},
+							},
+							&parser.MapField{
+								MapName: "MapFieldName",
+								InlineComment: &parser.Comment{
+									Raw: "// a map field name.",
+								},
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "OneofFieldName",
+										InlineComment: &parser.Comment{
+											Raw: "// a oneof field name.",
+										},
+									},
+								},
+							},
 						},
 					},
 				},
@@ -277,6 +299,57 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 					},
 					"FIELDS_HAVE_COMMENT",
 					`Field "OneofFieldName" should have a comment of the form "// OneofFieldName ..."`,
+				),
+			},
+		},
+		{
+			name: "failures for proto with fields without Golang style comments due to the inline comment",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Message{
+						MessageBody: []parser.Visitee{
+							&parser.Field{
+								FieldName: "FieldName2",
+								InlineComment: &parser.Comment{
+									Raw: "// FieldName2 is a field name.",
+								},
+							},
+							&parser.MapField{
+								MapName: "MapFieldName2",
+								InlineComment: &parser.Comment{
+									Raw: "// MapFieldName2 is a map field name.",
+								},
+							},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{
+										FieldName: "OneofFieldName2",
+										InlineComment: &parser.Comment{
+											Raw: "// OneofFieldName2 is a oneof field name.",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			inputShouldFollowGolangStyle: true,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"FIELDS_HAVE_COMMENT",
+					`Field "FieldName2" should have a comment of the form "// FieldName2 ..."`,
+				),
+				report.Failuref(
+					meta.Position{},
+					"FIELDS_HAVE_COMMENT",
+					`Field "MapFieldName2" should have a comment of the form "// MapFieldName2 ..."`,
+				),
+				report.Failuref(
+					meta.Position{},
+					"FIELDS_HAVE_COMMENT",
+					`Field "OneofFieldName2" should have a comment of the form "// OneofFieldName2 ..."`,
 				),
 			},
 		},

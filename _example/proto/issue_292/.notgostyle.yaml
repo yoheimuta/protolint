@@ -1,0 +1,21 @@
+---
+# Lint directives.
+lint:
+  # Linter rules.
+  # Run `protolint list` to see all available rules.
+  rules:
+    # Determines whether or not to include the default set of linters.
+    no_default: true
+
+    # Set the default to all linters. This option works the other way around as no_default does.
+    # If you want to enable this option, delete the comment out below and no_default.
+    # all_default: true
+
+    # The specific linters to add.
+    add:
+      - MESSAGES_HAVE_COMMENT
+      - SERVICES_HAVE_COMMENT
+      - RPCS_HAVE_COMMENT
+      - FIELDS_HAVE_COMMENT
+      - ENUMS_HAVE_COMMENT
+      - ENUM_FIELDS_HAVE_COMMENT

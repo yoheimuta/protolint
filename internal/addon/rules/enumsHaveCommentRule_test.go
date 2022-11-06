@@ -37,6 +37,18 @@ func TestEnumsHaveCommentRule_Apply(t *testing.T) {
 							},
 						},
 					},
+					&parser.Enum{
+						EnumName: "EnumName2",
+						InlineComment: &parser.Comment{
+							Raw: "// a enum name.",
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumName3",
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// a enum name.",
+						},
+					},
 				},
 			},
 		},
@@ -119,6 +131,38 @@ func TestEnumsHaveCommentRule_Apply(t *testing.T) {
 					},
 					"ENUMS_HAVE_COMMENT",
 					`Enum "EnumName" should have a comment of the form "// EnumName ..."`,
+				),
+			},
+		},
+		{
+			name: "failures for proto with invalid enums without Golang style comments due to inline",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Enum{
+						EnumName: "EnumName",
+						InlineComment: &parser.Comment{
+							Raw: "// EnumName is special.",
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumName2",
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// EnumName2 is special.",
+						},
+					},
+				},
+			},
+			inputShouldFollowGolangStyle: true,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"ENUMS_HAVE_COMMENT",
+					`Enum "EnumName" should have a comment of the form "// EnumName ..."`,
+				),
+				report.Failuref(
+					meta.Position{},
+					"ENUMS_HAVE_COMMENT",
+					`Enum "EnumName2" should have a comment of the form "// EnumName2 ..."`,
 				),
 			},
 		},

@@ -1,0 +1,53 @@
+---
+# Lint directives.
+lint:
+  # Linter rules.
+  # Run `protolint list` to see all available rules.
+  rules:
+    # Determines whether or not to include the default set of linters.
+    no_default: true
+
+    # Set the default to all linters. This option works the other way around as no_default does.
+    # If you want to enable this option, delete the comment out below and no_default.
+    # all_default: true
+
+    # The specific linters to add.
+    add:
+      - MESSAGES_HAVE_COMMENT
+      - SERVICES_HAVE_COMMENT
+      - RPCS_HAVE_COMMENT
+      - FIELDS_HAVE_COMMENT
+      - ENUMS_HAVE_COMMENT
+      - ENUM_FIELDS_HAVE_COMMENT
+
+  # Linter rules option.
+  rules_option:
+    # MESSAGES_HAVE_COMMENT rule option.
+    messages_have_comment:
+      # Comments need to begin with the name of the thing being described. default is false.
+      should_follow_golang_style: true
+
+    # SERVICES_HAVE_COMMENT rule option.
+    services_have_comment:
+      # Comments need to begin with the name of the thing being described. default is false.
+      should_follow_golang_style: true
+
+    # RPCS_HAVE_COMMENT rule option.
+    rpcs_have_comment:
+      # Comments need to begin with the name of the thing being described. default is false.
+      should_follow_golang_style: true
+
+    # FIELDS_HAVE_COMMENT rule option.
+    fields_have_comment:
+      # Comments need to begin with the name of the thing being described. default is false.
+      should_follow_golang_style: true
+
+    # ENUMS_HAVE_COMMENT rule option.
+    enums_have_comment:
+      # Comments need to begin with the name of the thing being described. default is false.
+      should_follow_golang_style: true
+
+    # ENUM_FIELDS_HAVE_COMMENT rule option.
+    enum_fields_have_comment:
+      # Comments need to begin with the name of the thing being described. default is false.
+      should_follow_golang_style: true

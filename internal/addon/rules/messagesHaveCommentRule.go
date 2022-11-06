@@ -60,7 +60,7 @@ func (v *messagesHaveCommentVisitor) VisitMessage(message *parser.Message) bool 
 	n := message.MessageName
 	if v.shouldFollowGolangStyle && !hasGolangStyleComment(message.Comments, n) {
 		v.AddFailuref(message.Meta.Pos, `Message %q should have a comment of the form "// %s ..."`, n, n)
-	} else if !hasComment(message.Comments) {
+	} else if !hasComments(message.Comments, message.InlineComment, message.InlineCommentBehindLeftCurly) {
 		v.AddFailuref(message.Meta.Pos, `Message %q should have a comment`, n)
 	}
 	return true
@@ -76,4 +76,16 @@ func hasGolangStyleComment(
 
 func hasComment(comments []*parser.Comment) bool {
 	return 0 < len(comments)
+}
+
+func hasComments(comments []*parser.Comment, inlines ...*parser.Comment) bool {
+	if 0 < len(comments) {
+		return true
+	}
+	for _, inline := range inlines {
+		if inline != nil {
+			return true
+		}
+	}
+	return false
 }

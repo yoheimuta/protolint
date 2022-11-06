@@ -57,7 +57,7 @@ func (v *servicesHaveCommentVisitor) VisitService(service *parser.Service) bool 
 	n := service.ServiceName
 	if v.shouldFollowGolangStyle && !hasGolangStyleComment(service.Comments, n) {
 		v.AddFailuref(service.Meta.Pos, `Service %q should have a comment of the form "// %s ..."`, n, n)
-	} else if !hasComment(service.Comments) {
+	} else if !hasComments(service.Comments, service.InlineComment, service.InlineCommentBehindLeftCurly) {
 		v.AddFailuref(service.Meta.Pos, `Service %q should have a comment`, n)
 	}
 	return false

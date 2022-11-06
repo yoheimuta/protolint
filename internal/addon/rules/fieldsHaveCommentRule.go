@@ -57,7 +57,7 @@ func (v *fieldsHaveCommentVisitor) VisitField(field *parser.Field) bool {
 	n := field.FieldName
 	if v.shouldFollowGolangStyle && !hasGolangStyleComment(field.Comments, n) {
 		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment of the form "// %s ..."`, n, n)
-	} else if !hasComment(field.Comments) {
+	} else if !hasComments(field.Comments, field.InlineComment) {
 		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment`, n)
 	}
 	return false
@@ -68,7 +68,7 @@ func (v *fieldsHaveCommentVisitor) VisitMapField(field *parser.MapField) bool {
 	n := field.MapName
 	if v.shouldFollowGolangStyle && !hasGolangStyleComment(field.Comments, n) {
 		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment of the form "// %s ..."`, n, n)
-	} else if !hasComment(field.Comments) {
+	} else if !hasComments(field.Comments, field.InlineComment) {
 		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment`, n)
 	}
 	return false
@@ -79,7 +79,7 @@ func (v *fieldsHaveCommentVisitor) VisitOneofField(field *parser.OneofField) boo
 	n := field.FieldName
 	if v.shouldFollowGolangStyle && !hasGolangStyleComment(field.Comments, n) {
 		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment of the form "// %s ..."`, n, n)
-	} else if !hasComment(field.Comments) {
+	} else if !hasComments(field.Comments, field.InlineComment) {
 		v.AddFailuref(field.Meta.Pos, `Field %q should have a comment`, n)
 	}
 	return false

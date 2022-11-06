@@ -37,6 +37,18 @@ func TestServicesHaveCommentRule_Apply(t *testing.T) {
 							},
 						},
 					},
+					&parser.Service{
+						ServiceName: "ServiceName2",
+						InlineComment: &parser.Comment{
+							Raw: "// a service name.",
+						},
+					},
+					&parser.Service{
+						ServiceName: "ServiceName3",
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// a service name.",
+						},
+					},
 				},
 			},
 		},
@@ -119,6 +131,38 @@ func TestServicesHaveCommentRule_Apply(t *testing.T) {
 					},
 					"SERVICES_HAVE_COMMENT",
 					`Service "ServiceName" should have a comment of the form "// ServiceName ..."`,
+				),
+			},
+		},
+		{
+			name: "failures for proto with invalid services without Golang style comments due to the inline",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{
+						ServiceName: "ServiceName",
+						InlineComment: &parser.Comment{
+							Raw: "// ServiceName is special",
+						},
+					},
+					&parser.Service{
+						ServiceName: "ServiceName2",
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// ServiceName2 is special",
+						},
+					},
+				},
+			},
+			inputShouldFollowGolangStyle: true,
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"SERVICES_HAVE_COMMENT",
+					`Service "ServiceName" should have a comment of the form "// ServiceName ..."`,
+				),
+				report.Failuref(
+					meta.Position{},
+					"SERVICES_HAVE_COMMENT",
+					`Service "ServiceName2" should have a comment of the form "// ServiceName2 ..."`,
 				),
 			},
 		},

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+message xyz {
+string a = 1; // first arg
+
+  // next arg
+   bool  b = 2;
+}
