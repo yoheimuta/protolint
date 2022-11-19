@@ -59,6 +59,26 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 			},
 		},
 		{
+			name: "no failures for proto with valid field names considering the rule is case insensitive",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Message{
+						MessageBody: []parser.Visitee{
+							&parser.Field{
+								IsRepeated: true,
+								FieldName:  "RunningOnDeviceIDS",
+							},
+							&parser.GroupField{
+								IsRepeated: true,
+								GroupName:  "RunningOnDeviceIDs",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "no failures for proto with field names by applying some customization",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
