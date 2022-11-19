@@ -57,7 +57,7 @@ func (v *rpcsHaveCommentVisitor) VisitRPC(rpc *parser.RPC) bool {
 	n := rpc.RPCName
 	if v.shouldFollowGolangStyle && !hasGolangStyleComment(rpc.Comments, n) {
 		v.AddFailuref(rpc.Meta.Pos, `RPC %q should have a comment of the form "// %s ..."`, n, n)
-	} else if !hasComments(rpc.Comments, rpc.InlineComment) {
+	} else if !hasComments(rpc.Comments, rpc.InlineComment, rpc.InlineCommentBehindLeftCurly) {
 		v.AddFailuref(rpc.Meta.Pos, `RPC %q should have a comment`, n)
 	}
 	return false
