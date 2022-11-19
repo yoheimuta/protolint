@@ -1,6 +1,8 @@
 package rules
 
 import (
+	"strings"
+
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
@@ -96,7 +98,7 @@ type repeatedFieldNamesPluralizedVisitor struct {
 func (v *repeatedFieldNamesPluralizedVisitor) VisitField(field *parser.Field) bool {
 	got := field.FieldName
 	want := v.pluralizeClient.ToPlural(got)
-	if field.IsRepeated && got != want {
+	if field.IsRepeated && strings.ToLower(got) != strings.ToLower(want) {
 		v.AddFailuref(field.Meta.Pos, "Repeated field name %q must be pluralized name %q", got, want)
 
 		err := v.Fixer.SearchAndReplace(field.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
@@ -125,7 +127,7 @@ func (v *repeatedFieldNamesPluralizedVisitor) VisitField(field *parser.Field) bo
 func (v *repeatedFieldNamesPluralizedVisitor) VisitGroupField(field *parser.GroupField) bool {
 	got := field.GroupName
 	want := v.pluralizeClient.ToPlural(got)
-	if field.IsRepeated && got != want {
+	if field.IsRepeated && strings.ToLower(got) != strings.ToLower(want) {
 		v.AddFailuref(field.Meta.Pos, "Repeated group name %q must be pluralized name %q", got, want)
 
 		err := v.Fixer.SearchAndReplace(field.Meta.Pos, func(lex *lexer.Lexer) fixer.TextEdit {
