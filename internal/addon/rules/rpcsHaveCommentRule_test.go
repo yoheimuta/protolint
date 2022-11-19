@@ -45,6 +45,12 @@ func TestRPCsHaveCommentRule_Apply(t *testing.T) {
 									Raw: "// a rpc name.",
 								},
 							},
+							&parser.RPC{
+								RPCName: "RPCName3",
+								InlineCommentBehindLeftCurly: &parser.Comment{
+									Raw: "// a rpc name.",
+								},
+							},
 						},
 					},
 				},

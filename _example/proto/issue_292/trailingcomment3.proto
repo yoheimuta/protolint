@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+service SearchService { // service comment
+  rpc GetAll(GetRequest) returns(GetReply) { // get the global address table
+    option(requestreply.Nats).Subject = "get.addrs";
+  }
+}
