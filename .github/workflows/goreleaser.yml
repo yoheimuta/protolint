@@ -39,4 +39,6 @@ jobs:
           version: latest
           args: release --rm-dist
         env:
+          # You can't set the default GITHUB_TOKEN because of 403 Resource not accessible to the relevant homebrew repository
+          ## See https://github.com/yoheimuta/protolint/actions/runs/3406771906/jobs/5665753996
           GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
