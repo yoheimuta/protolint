@@ -4,7 +4,7 @@ require (
 	github.com/gertd/go-pluralize v0.2.0
 	github.com/golang/protobuf v1.5.2
 	github.com/hashicorp/go-hclog v1.2.0
-	github.com/hashicorp/go-plugin v1.4.3
+	github.com/hashicorp/go-plugin v1.4.7
 	github.com/yoheimuta/go-protoparser/v4 v4.7.0
 	google.golang.org/grpc v1.46.0
 	google.golang.org/protobuf v1.27.1
