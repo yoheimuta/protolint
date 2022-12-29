@@ -38,6 +38,9 @@ brew tap yoheimuta/protolint
 brew install protolint
 ```
 
+Since [homebrew-core](https://github.com/Homebrew/homebrew-core/pkgs/container/core%2Fprotolint) includes `protolint,` you can also install it by just `brew install protolint.` This is the default tap that is installed by default. It's easier, but not maintained by the same author. To keep it updated, I recommend you run `brew tap yoheimuta/protolint` first.
+
+
 ### Via GitHub Releases
 
 You can also download a pre-built binary from this release page:
