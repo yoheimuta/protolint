@@ -155,7 +155,7 @@ See `internal/addon/rules` in detail.
 
 The rule set follows:
 
-- [Official Style Guide](https://developers.google.com/protocol-buffers/docs/style). This is enabled by default. Basically, these rules can fix the violations by appending `-fix` option.
+- [Official Style Guide](https://protobuf.dev/programming-guides/style/). This is enabled by default. Basically, these rules can fix the violations by appending `-fix` option.
 - Unofficial Style Guide. This is disabled by default. You can enable each rule with `.protolint.yaml`.
 
 The `-fix` option on the command line can automatically fix all the problems reported by fixable rules.
