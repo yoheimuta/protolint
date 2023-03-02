@@ -9,7 +9,9 @@ import (
 )
 
 var (
-	ErrLintFailure     = errors.New("lint error")
+	// ErrLintFailure error is returned when there is a linting error
+	ErrLintFailure = errors.New("lint error")
+	// ErrInternalFailure error is returned when there is a parsing, internal, or runtime error.
 	ErrInternalFailure = errors.New("parsing, internal or runtime errors")
 )
 
