@@ -1,0 +1,9 @@
+---
+# Lint directives.
+lint:
+  # Linter rules.
+  # Run `protolint list` to see all available rules.
+  rules:
+    # The specific linters to remove.
+    remove:
+      - INDENT
