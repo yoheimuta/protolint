@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+enum Enum {
+  ENUM_UNSPECIFIED = 0;
+}
+
+enum EnumAlias {
+  ENUM_ALIAS_UNSPECIFIED = 0;
+  ENUM_ALIAS_STARTED_LAP = 1;
+  ENUM_ALIAS_RUNNINGLAP_UNTIL = 2;
+}

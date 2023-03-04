@@ -149,6 +149,19 @@ See [cmd/protoc-gen-protolint/README.md](https://github.com/yoheimuta/protolint/
 
 This is useful in situations where you already have a protoc plugin workflow.
 
+## Call from Go code
+
+You can also use protolint from Go code.
+See [lib/lint_test.go](https://github.com/yoheimuta/protolint/blob/master/lib/lint_test.go) in detail.
+
+```go
+args := []string{"-config_path", "path/to/your_protolint.yaml", "."}
+var stdout bytes.Buffer
+var stderr bytes.Buffer
+
+err := lib.Lint(test.inputArgs, &stdout, &stderr)
+```
+
 ## Rules
 
 See `internal/addon/rules` in detail.
