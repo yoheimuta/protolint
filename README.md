@@ -152,7 +152,7 @@ This is useful in situations where you already have a protoc plugin workflow.
 ## Call from Go code
 
 You can also use protolint from Go code.
-See [lib/lint_test.go](https://github.com/yoheimuta/protolint/blob/master/lib/lint_test.go) in detail.
+See [Go Documentation](https://pkg.go.dev/github.com/yoheimuta/protolint/lib) and [lib/lint_test.go](https://github.com/yoheimuta/protolint/blob/master/lib/lint_test.go) in detail.
 
 ```go
 args := []string{"-config_path", "path/to/your_protolint.yaml", "."}
