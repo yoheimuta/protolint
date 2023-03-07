@@ -11,9 +11,12 @@ type PluralizeClient struct {
 
 // NewPluralizeClient creates a new client.
 func NewPluralizeClient() *PluralizeClient {
-	return &PluralizeClient{
+	c := &PluralizeClient{
 		client: pluralize.NewClient(),
 	}
+	c.AddPluralRule("(?i)uri$", "uris")
+	c.AddSingularRule("(?i)uris$", "uri")
+	return c
 }
 
 // ToPlural converts the given string to its plural name.

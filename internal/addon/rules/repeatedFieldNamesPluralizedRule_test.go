@@ -79,6 +79,26 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 			},
 		},
 		{
+			name: "no failures for proto with field names including 'uri' by applying some customization internally",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Message{
+						MessageBody: []parser.Visitee{
+							&parser.Field{
+								IsRepeated: true,
+								FieldName:  "uris",
+							},
+							&parser.Field{
+								IsRepeated: true,
+								FieldName:  "module_uris",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "no failures for proto with field names by applying some customization",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{

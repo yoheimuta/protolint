@@ -21,6 +21,10 @@ func TestPluralizeClient_ToPlural(t *testing.T) {
 		{"PluralizeNonstandardPluralLatinWord", "cactuses", "cacti"},
 		{"PluralizePluralCamelCaseWord", "office_chairs", "office_chairs"},
 		{"PluralizeSingularCamelCaseWord", "office_chair", "office_chairs"},
+		{"special case #312: appends s to uri", "uri", "uris"},
+		{"special case #312: appends s to module_uri", "module_uri", "module_uris"},
+		{"special case #312: not change uris", "uris", "uris"},
+		{"special case #312: not change module_uris", "module_uris", "module_uris"},
 	}
 	for _, test := range tests {
 		test := test
