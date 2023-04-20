@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.8.18'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.19.4"
+    }
+    plugins {
+        protolint {
+            artifact = "io.github.yoheimuta:protoc-gen-protolint:0.43.1"
+        }
+    }
+
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                protolint {
+                    option 'proto_root=src/main/proto'
+                    option 'output_file=build/generated/source/proto/main/protolint/results.txt'
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}

@@ -22,6 +22,11 @@ You can also download a pre-built binary from this release page:
 
 In the downloads section of each release, you can find pre-built binaries in .tar.gz packages.
 
+### Via Maven Central
+
+This plugin is also available on Maven Central. For details about how to use it, check out the [gradle
+example](../../_example/gradle).
+
 ### From Source
 
 The binary can be installed from source if Go is available.
