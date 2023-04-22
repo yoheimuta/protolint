@@ -46,7 +46,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-          distribution: 'adopt'
+          distribution: adopt
       - name: Publish package
         uses: gradle/gradle-build-action@v2
         with:
