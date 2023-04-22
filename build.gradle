@@ -1,0 +1,95 @@
+plugins {
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'io.github.yoheimuta'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'io.github.yoheimuta'
+            artifactId = rootProject.name
+            version = System.getenv("GITHUB_REF_NAME")
+            // Strip "v" from version number
+            if (version.startsWith("v")) {
+                version = version.substring(1)
+            }
+
+            pom {
+                name = groupId + ':' + rootProject.name
+                description = 'protolint is the pluggable linting/fixing utility for Protocol Buffer files (proto2+proto3)'
+                url = 'https://github.com/yoheimuta/protolint'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://github.com/yoheimuta/protolint/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yoheimuta'
+                        name = 'yohei yoshimuta'
+                        email = 'yoheimuta@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com:yoheimuta/protolint.git'
+                    developerConnection = 'scm:git:git@github.com:yoheimuta/protolint.git'
+                    url = 'https://github.com/yoheimuta/protolint'
+                }
+            }
+
+            //linux 64 arm
+            artifact("$projectDir/dist/protoc-gen-protolint_linux_arm64/protoc-gen-protolint") {
+                classifier 'linux-aarch_64'
+                extension 'exe'
+            }
+            //linux 64 intel
+            artifact("$projectDir/dist/protoc-gen-protolint_linux_amd64_v1/protoc-gen-protolint") {
+                classifier 'linux-x86_64'
+                extension 'exe'
+            }
+            //mac 64 arm
+            artifact("$projectDir/dist/protoc-gen-protolint_darwin_arm64/protoc-gen-protolint") {
+                classifier 'osx-aarch_64'
+                extension 'exe'
+            }
+            //mac 64 intel
+            artifact("$projectDir/dist/protoc-gen-protolint_darwin_amd64_v1/protoc-gen-protolint") {
+                classifier 'osx-x86_64'
+                extension 'exe'
+            }
+            //windows 64 arm
+            artifact("$projectDir/dist/protoc-gen-protolint_windows_arm64/protoc-gen-protolint.exe") {
+                classifier 'windows-aarch_64'
+                extension 'exe'
+            }
+            //windows 64 intel
+            artifact("$projectDir/dist/protoc-gen-protolint_windows_amd64_v1/protoc-gen-protolint.exe") {
+                classifier 'windows-x86_64'
+                extension 'exe'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "OSSRH"
+            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = project.getProperty('signingKey')
+    def signingPassword = project.getProperty('signingPassword')
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.maven
+}

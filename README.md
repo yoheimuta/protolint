@@ -459,15 +459,6 @@ I wrote an article comparing various Protocol Buffer Linters, including protolin
 
 - [go-protoparser](https://github.com/yoheimuta/go-protoparser)
 
-## Contributing
-
-- Fork it
-- Create your feature branch: git checkout -b your-new-feature
-- Commit changes: git commit -m 'Add your feature'
-- Pass all tests
-- Push to the branch: git push origin your-new-feature
-- Submit a pull request
-
 ## License
 
 The MIT License (MIT)
