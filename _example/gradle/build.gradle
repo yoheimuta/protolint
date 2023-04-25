@@ -9,7 +9,7 @@ protobuf {
     }
     plugins {
         protolint {
-            artifact = "io.github.yoheimuta:protoc-gen-protolint:0.43.1"
+            artifact = "io.github.yoheimuta:protoc-gen-protolint:0.43.2"
         }
     }
 
