@@ -382,6 +382,7 @@ The built-in reporter options are:
 - plain (default)
 - junit
 - json
+- sarif
 - unix
 
 ## Configuring
