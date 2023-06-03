@@ -11,6 +11,7 @@ import (
 
 	"github.com/yoheimuta/protolint/linter/disablerule"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 const (
@@ -24,12 +25,14 @@ const (
 // MaxLineLengthRule enforces a maximum line length to increase code readability and maintainability.
 // The length of a line is defined as the number of Unicode characters in the line.
 type MaxLineLengthRule struct {
+	RuleWithSeverity
 	maxChars int
 	tabChars int
 }
 
 // NewMaxLineLengthRule creates a new MaxLineLengthRule.
 func NewMaxLineLengthRule(
+	severity rule.Severity,
 	maxChars int,
 	tabChars int,
 ) MaxLineLengthRule {
@@ -40,8 +43,9 @@ func NewMaxLineLengthRule(
 		tabChars = defaultTabChars
 	}
 	return MaxLineLengthRule{
-		maxChars: maxChars,
-		tabChars: tabChars,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		maxChars:         maxChars,
+		tabChars:         tabChars,
 	}
 }
 

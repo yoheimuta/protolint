@@ -10,6 +10,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestMessageNamesExcludePrepositionsRule_Apply(t *testing.T) {
@@ -159,7 +160,7 @@ func TestMessageNamesExcludePrepositionsRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewMessageNamesExcludePrepositionsRule(test.inputPrepositions, test.inputExcludes)
+			rule := rules.NewMessageNamesExcludePrepositionsRule(rule.Severity_Error, test.inputPrepositions, test.inputExcludes)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {

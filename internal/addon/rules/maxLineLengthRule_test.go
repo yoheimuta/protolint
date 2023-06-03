@@ -12,6 +12,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestMaxLineLengthRule_Apply(t *testing.T) {
@@ -77,6 +78,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewMaxLineLengthRule(
+				rule.Severity_Error,
 				test.inputMaxChars,
 				test.inputTabChars,
 			)

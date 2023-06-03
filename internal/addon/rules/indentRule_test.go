@@ -15,6 +15,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestIndentRule_Apply(t *testing.T) {
@@ -241,6 +242,7 @@ Fix https://github.com/yoheimuta/protolint/issues/280`,
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewIndentRule(
+				rule.Severity_Error,
 				test.inputStyle,
 				!test.inputInsertNewline,
 				false,
@@ -426,7 +428,8 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewIndentRule(
+			rule_to_test := rules.NewIndentRule(
+				rule.Severity_Error,
 				space2,
 				!test.inputInsertNewline,
 				true,
@@ -438,7 +441,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 				return
 			}
 
-			_, err = rule.Apply(proto)
+			_, err = rule_to_test.Apply(proto)
 			if err != nil {
 				t.Errorf("got err %v, but want nil", err)
 				return
@@ -463,6 +466,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 
 			// check whether the modified content can pass the lint in the end.
 			ruleOnlyCheck := rules.NewIndentRule(
+				rule.Severity_Error,
 				space2,
 				!test.inputInsertNewline,
 				false,

@@ -13,6 +13,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func testImportSortedProtoPath(name string) string {
@@ -112,6 +113,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewImportsSortedRule(
+				rule.Severity_Error,
 				false,
 			)
 
@@ -179,6 +181,7 @@ func TestImportsSortedRule_Apply_fix(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewImportsSortedRule(
+				rule.Severity_Error,
 				true,
 			)
 

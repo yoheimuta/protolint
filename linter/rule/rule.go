@@ -6,6 +6,14 @@ import (
 	"github.com/yoheimuta/protolint/linter/report"
 )
 
+type Severity string
+
+const (
+	Severity_Note    Severity = "note"
+	Severity_Warning Severity = "warning"
+	Severity_Error   Severity = "error"
+)
+
 // HasApply represents a rule which can be applied.
 type HasApply interface {
 	// Apply applies the rule to the proto.
@@ -30,10 +38,17 @@ type HasIsOfficial interface {
 	IsOfficial() bool
 }
 
+// HasSeverity represents a rule with a configurable severity
+type HasSeverity interface {
+	// Severity returns the selected severity of a rule
+	Severity() Severity
+}
+
 // Rule represents a rule which a linter can apply.
 type Rule interface {
 	HasApply
 	HasID
 	HasPurpose
 	HasIsOfficial
+	HasSeverity
 }

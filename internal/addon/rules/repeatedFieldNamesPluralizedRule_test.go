@@ -9,6 +9,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
@@ -223,6 +224,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewRepeatedFieldNamesPluralizedRule(
+				rule.Severity_Error,
 				test.pluralRules,
 				test.singularRules,
 				test.uncountableRules,
@@ -269,6 +271,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply_fix(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			r := rules.NewRepeatedFieldNamesPluralizedRule(
+				rule.Severity_Error,
 				test.pluralRules,
 				test.singularRules,
 				test.uncountableRules,
@@ -315,6 +318,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply_disable(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			r := rules.NewRepeatedFieldNamesPluralizedRule(
+				rule.Severity_Error,
 				test.pluralRules,
 				test.singularRules,
 				test.uncountableRules,

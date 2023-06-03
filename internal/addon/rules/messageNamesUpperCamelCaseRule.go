@@ -5,6 +5,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
+	"github.com/yoheimuta/protolint/linter/rule"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -14,12 +15,14 @@ import (
 // MessageNamesUpperCamelCaseRule verifies that all message names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#message-and-field-names.
 type MessageNamesUpperCamelCaseRule struct {
+	RuleWithSeverity
 	fixMode         bool
 	autoDisableType autodisable.PlacementType
 }
 
 // NewMessageNamesUpperCamelCaseRule creates a new MessageNamesUpperCamelCaseRule.
 func NewMessageNamesUpperCamelCaseRule(
+	severity rule.Severity,
 	fixMode bool,
 	autoDisableType autodisable.PlacementType,
 ) MessageNamesUpperCamelCaseRule {
@@ -27,8 +30,9 @@ func NewMessageNamesUpperCamelCaseRule(
 		fixMode = false
 	}
 	return MessageNamesUpperCamelCaseRule{
-		fixMode:         fixMode,
-		autoDisableType: autoDisableType,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
+		autoDisableType:  autoDisableType,
 	}
 }
 

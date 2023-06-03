@@ -4,11 +4,13 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // FieldsHaveCommentRule verifies that all fields have a comment.
 type FieldsHaveCommentRule struct {
+	RuleWithSeverity
 	// Golang style comments should begin with the name of the thing being described.
 	// See https://github.com/golang/go/wiki/CodeReviewComments#comment-sentences
 	shouldFollowGolangStyle bool
@@ -16,9 +18,11 @@ type FieldsHaveCommentRule struct {
 
 // NewFieldsHaveCommentRule creates a new FieldsHaveCommentRule.
 func NewFieldsHaveCommentRule(
+	severity rule.Severity,
 	shouldFollowGolangStyle bool,
 ) FieldsHaveCommentRule {
 	return FieldsHaveCommentRule{
+		RuleWithSeverity:        RuleWithSeverity{severity: severity},
 		shouldFollowGolangStyle: shouldFollowGolangStyle,
 	}
 }

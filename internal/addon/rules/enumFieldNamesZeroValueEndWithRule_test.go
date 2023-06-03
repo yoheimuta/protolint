@@ -10,6 +10,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestEnumFieldNamesZeroValueEndWithRule_Apply(t *testing.T) {
@@ -87,7 +88,7 @@ func TestEnumFieldNamesZeroValueEndWithRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewEnumFieldNamesZeroValueEndWithRule(test.inputSuffix, false, autodisable.Noop)
+			rule := rules.NewEnumFieldNamesZeroValueEndWithRule(rule.Severity_Error, test.inputSuffix, false, autodisable.Noop)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -122,7 +123,7 @@ func TestEnumFieldNamesZeroValueEndWithRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewEnumFieldNamesZeroValueEndWithRule("", true, autodisable.Noop)
+			r := rules.NewEnumFieldNamesZeroValueEndWithRule(rule.Severity_Error, "", true, autodisable.Noop)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
@@ -157,7 +158,7 @@ func TestEnumFieldNamesZeroValueEndWithRule_Apply_disable(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewEnumFieldNamesZeroValueEndWithRule("", true, test.inputPlacementType)
+			r := rules.NewEnumFieldNamesZeroValueEndWithRule(rule.Severity_Error, "", true, test.inputPlacementType)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

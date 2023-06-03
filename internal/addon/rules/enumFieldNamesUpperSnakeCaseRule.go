@@ -6,6 +6,7 @@ import (
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
@@ -13,12 +14,14 @@ import (
 // EnumFieldNamesUpperSnakeCaseRule verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumFieldNamesUpperSnakeCaseRule struct {
+	RuleWithSeverity
 	fixMode         bool
 	autoDisableType autodisable.PlacementType
 }
 
 // NewEnumFieldNamesUpperSnakeCaseRule creates a new EnumFieldNamesUpperSnakeCaseRule.
 func NewEnumFieldNamesUpperSnakeCaseRule(
+	severity rule.Severity,
 	fixMode bool,
 	autoDisableType autodisable.PlacementType,
 ) EnumFieldNamesUpperSnakeCaseRule {
@@ -26,8 +29,9 @@ func NewEnumFieldNamesUpperSnakeCaseRule(
 		fixMode = false
 	}
 	return EnumFieldNamesUpperSnakeCaseRule{
-		fixMode:         fixMode,
-		autoDisableType: autoDisableType,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
+		autoDisableType:  autoDisableType,
 	}
 }
 

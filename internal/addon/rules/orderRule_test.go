@@ -9,6 +9,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestOrderRule_Apply(t *testing.T) {
@@ -334,7 +335,7 @@ func TestOrderRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewOrderRule(false)
+			rule := rules.NewOrderRule(rule.Severity_Error, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -384,7 +385,7 @@ func TestOrderRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewOrderRule(true)
+			r := rules.NewOrderRule(rule.Severity_Error, true)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

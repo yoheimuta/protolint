@@ -4,11 +4,13 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // RPCsHaveCommentRule verifies that all rpcs have a comment.
 type RPCsHaveCommentRule struct {
+	RuleWithSeverity
 	// Golang style comments should begin with the name of the thing being described.
 	// See https://github.com/golang/go/wiki/CodeReviewComments#comment-sentences
 	shouldFollowGolangStyle bool
@@ -16,9 +18,11 @@ type RPCsHaveCommentRule struct {
 
 // NewRPCsHaveCommentRule creates a new RPCsHaveCommentRule.
 func NewRPCsHaveCommentRule(
+	severity rule.Severity,
 	shouldFollowGolangStyle bool,
 ) RPCsHaveCommentRule {
 	return RPCsHaveCommentRule{
+		RuleWithSeverity:        RuleWithSeverity{severity: severity},
 		shouldFollowGolangStyle: shouldFollowGolangStyle,
 	}
 }

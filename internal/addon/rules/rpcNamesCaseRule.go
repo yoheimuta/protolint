@@ -5,21 +5,25 @@ import (
 	"github.com/yoheimuta/protolint/internal/linter/config"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // RPCNamesCaseRule verifies that all rpc names conform to the specified convention.
 type RPCNamesCaseRule struct {
+	RuleWithSeverity
 	convention config.ConventionType
 }
 
 // NewRPCNamesCaseRule creates a new RPCNamesCaseRule.
 func NewRPCNamesCaseRule(
+	severity rule.Severity,
 	convention config.ConventionType,
 ) RPCNamesCaseRule {
 	return RPCNamesCaseRule{
-		convention: convention,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		convention:       convention,
 	}
 }
 

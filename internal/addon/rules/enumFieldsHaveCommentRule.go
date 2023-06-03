@@ -4,11 +4,13 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // EnumFieldsHaveCommentRule verifies that all enumFields have a comment.
 type EnumFieldsHaveCommentRule struct {
+	RuleWithSeverity
 	// Golang style comments should begin with the name of the thing being described.
 	// See https://github.com/golang/go/wiki/CodeReviewComments#comment-sentences
 	shouldFollowGolangStyle bool
@@ -16,9 +18,11 @@ type EnumFieldsHaveCommentRule struct {
 
 // NewEnumFieldsHaveCommentRule creates a new EnumFieldsHaveCommentRule.
 func NewEnumFieldsHaveCommentRule(
+	severity rule.Severity,
 	shouldFollowGolangStyle bool,
 ) EnumFieldsHaveCommentRule {
 	return EnumFieldsHaveCommentRule{
+		RuleWithSeverity:        RuleWithSeverity{severity: severity},
 		shouldFollowGolangStyle: shouldFollowGolangStyle,
 	}
 }

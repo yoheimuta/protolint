@@ -5,6 +5,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
+	"github.com/yoheimuta/protolint/linter/rule"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -14,12 +15,14 @@ import (
 // ServiceNamesUpperCamelCaseRule verifies that all service names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#services.
 type ServiceNamesUpperCamelCaseRule struct {
+	RuleWithSeverity
 	fixMode         bool
 	autoDisableType autodisable.PlacementType
 }
 
 // NewServiceNamesUpperCamelCaseRule creates a new ServiceNamesUpperCamelCaseRule.
 func NewServiceNamesUpperCamelCaseRule(
+	severity rule.Severity,
 	fixMode bool,
 	autoDisableType autodisable.PlacementType,
 ) ServiceNamesUpperCamelCaseRule {
@@ -27,8 +30,9 @@ func NewServiceNamesUpperCamelCaseRule(
 		fixMode = false
 	}
 	return ServiceNamesUpperCamelCaseRule{
-		fixMode:         fixMode,
-		autoDisableType: autoDisableType,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
+		autoDisableType:  autoDisableType,
 	}
 }
 

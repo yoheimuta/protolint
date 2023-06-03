@@ -9,6 +9,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/linter/file"
 	"github.com/yoheimuta/protolint/internal/setting_test"
 	"github.com/yoheimuta/protolint/internal/util_test"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
@@ -98,7 +99,7 @@ func TestFileNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewFileNamesLowerSnakeCaseRule(test.inputExcluded, false)
+			rule := rules.NewFileNamesLowerSnakeCaseRule(rule.Severity_Error, test.inputExcluded, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -140,7 +141,7 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewFileNamesLowerSnakeCaseRule(test.inputExcluded, true)
+			r := rules.NewFileNamesLowerSnakeCaseRule(rule.Severity_Error, test.inputExcluded, true)
 
 			dataDir := strs.ToLowerCamelCase(r.ID())
 			input, err := util_test.NewTestData(setting_test.TestDataPath("rules", dataDir, test.inputFilename))

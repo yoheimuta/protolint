@@ -7,6 +7,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/stringsutil"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
@@ -42,12 +43,14 @@ var defaultPrepositions = []string{
 // It is assumed that the field names are underscore_separated_names.
 // See https://cloud.google.com/apis/design/naming_convention#field_names.
 type FieldNamesExcludePrepositionsRule struct {
+	RuleWithSeverity
 	prepositions []string
 	excludes     []string
 }
 
 // NewFieldNamesExcludePrepositionsRule creates a new FieldNamesExcludePrepositionsRule.
 func NewFieldNamesExcludePrepositionsRule(
+	severity rule.Severity,
 	prepositions []string,
 	excludes []string,
 ) FieldNamesExcludePrepositionsRule {
@@ -55,8 +58,9 @@ func NewFieldNamesExcludePrepositionsRule(
 		prepositions = defaultPrepositions
 	}
 	return FieldNamesExcludePrepositionsRule{
-		prepositions: prepositions,
-		excludes:     excludes,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		prepositions:     prepositions,
+		excludes:         excludes,
 	}
 }
 

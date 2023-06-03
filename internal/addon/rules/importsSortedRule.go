@@ -6,20 +6,24 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // ImportsSortedRule enforces sorted imports.
 type ImportsSortedRule struct {
+	RuleWithSeverity
 	fixMode bool
 }
 
 // NewImportsSortedRule creates a new ImportsSortedRule.
 func NewImportsSortedRule(
+	severity rule.Severity,
 	fixMode bool,
 ) ImportsSortedRule {
 	return ImportsSortedRule{
-		fixMode: fixMode,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
 	}
 }
 

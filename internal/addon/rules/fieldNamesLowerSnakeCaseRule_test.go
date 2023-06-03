@@ -10,6 +10,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
@@ -139,7 +140,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewFieldNamesLowerSnakeCaseRule(false, autodisable.Noop)
+			rule := rules.NewFieldNamesLowerSnakeCaseRule(rule.Severity_Error, false, autodisable.Noop)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -174,7 +175,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewFieldNamesLowerSnakeCaseRule(true, autodisable.Noop)
+			r := rules.NewFieldNamesLowerSnakeCaseRule(rule.Severity_Error, true, autodisable.Noop)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
@@ -209,7 +210,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply_disable(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewFieldNamesLowerSnakeCaseRule(true, test.inputPlacementType)
+			r := rules.NewFieldNamesLowerSnakeCaseRule(rule.Severity_Error, true, test.inputPlacementType)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

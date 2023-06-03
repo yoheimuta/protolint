@@ -3,16 +3,20 @@ package rules
 import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // FileHasCommentRule verifies that a file starts with a doc comment.
 type FileHasCommentRule struct {
+	RuleWithSeverity
 }
 
 // NewFileHasCommentRule creates a new FileHasCommentRule.
-func NewFileHasCommentRule() FileHasCommentRule {
-	return FileHasCommentRule{}
+func NewFileHasCommentRule(severity rule.Severity) FileHasCommentRule {
+	return FileHasCommentRule{
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+	}
 }
 
 // ID returns the ID of this rule.

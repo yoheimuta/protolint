@@ -6,6 +6,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
+	"github.com/yoheimuta/protolint/linter/rule"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -15,12 +16,14 @@ import (
 // FieldNamesLowerSnakeCaseRule verifies that all field names are underscore_separated_names.
 // See https://developers.google.com/protocol-buffers/docs/style#message-and-field-names.
 type FieldNamesLowerSnakeCaseRule struct {
+	RuleWithSeverity
 	fixMode         bool
 	autoDisableType autodisable.PlacementType
 }
 
 // NewFieldNamesLowerSnakeCaseRule creates a new FieldNamesLowerSnakeCaseRule.
 func NewFieldNamesLowerSnakeCaseRule(
+	severity rule.Severity,
 	fixMode bool,
 	autoDisableType autodisable.PlacementType,
 ) FieldNamesLowerSnakeCaseRule {
@@ -28,8 +31,9 @@ func NewFieldNamesLowerSnakeCaseRule(
 		fixMode = false
 	}
 	return FieldNamesLowerSnakeCaseRule{
-		fixMode:         fixMode,
-		autoDisableType: autoDisableType,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
+		autoDisableType:  autoDisableType,
 	}
 }
 

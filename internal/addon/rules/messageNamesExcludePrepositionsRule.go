@@ -7,6 +7,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/stringsutil"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
@@ -15,12 +16,14 @@ import (
 // It is assumed that the message names are CamelCase (with an initial capital).
 // See https://cloud.google.com/apis/design/naming_convention#message_names.
 type MessageNamesExcludePrepositionsRule struct {
+	RuleWithSeverity
 	prepositions []string
 	excludes     []string
 }
 
 // NewMessageNamesExcludePrepositionsRule creates a new MessageNamesExcludePrepositionsRule.
 func NewMessageNamesExcludePrepositionsRule(
+	severity rule.Severity,
 	prepositions []string,
 	excludes []string,
 ) MessageNamesExcludePrepositionsRule {
@@ -30,8 +33,9 @@ func NewMessageNamesExcludePrepositionsRule(
 		}
 	}
 	return MessageNamesExcludePrepositionsRule{
-		prepositions: prepositions,
-		excludes:     excludes,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		prepositions:     prepositions,
+		excludes:         excludes,
 	}
 }
 

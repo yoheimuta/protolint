@@ -6,6 +6,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/fixer"
+	"github.com/yoheimuta/protolint/linter/rule"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -15,15 +16,18 @@ import (
 // PackageNameLowerCaseRule verifies that the package name doesn't contain any uppercase letters.
 // See https://developers.google.com/protocol-buffers/docs/style#packages.
 type PackageNameLowerCaseRule struct {
+	RuleWithSeverity
 	fixMode bool
 }
 
 // NewPackageNameLowerCaseRule creates a new PackageNameLowerCaseRule.
 func NewPackageNameLowerCaseRule(
+	severity rule.Severity,
 	fixMode bool,
 ) PackageNameLowerCaseRule {
 	return PackageNameLowerCaseRule{
-		fixMode: fixMode,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
+	"github.com/yoheimuta/protolint/linter/rule"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
@@ -20,6 +21,7 @@ const (
 // EnumFieldNamesZeroValueEndWithRule verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID").
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumFieldNamesZeroValueEndWithRule struct {
+	RuleWithSeverity
 	suffix          string
 	fixMode         bool
 	autoDisableType autodisable.PlacementType
@@ -27,6 +29,7 @@ type EnumFieldNamesZeroValueEndWithRule struct {
 
 // NewEnumFieldNamesZeroValueEndWithRule creates a new EnumFieldNamesZeroValueEndWithRule.
 func NewEnumFieldNamesZeroValueEndWithRule(
+	severity rule.Severity,
 	suffix string,
 	fixMode bool,
 	autoDisableType autodisable.PlacementType,
@@ -38,9 +41,10 @@ func NewEnumFieldNamesZeroValueEndWithRule(
 		fixMode = false
 	}
 	return EnumFieldNamesZeroValueEndWithRule{
-		suffix:          suffix,
-		fixMode:         fixMode,
-		autoDisableType: autoDisableType,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		suffix:           suffix,
+		fixMode:          fixMode,
+		autoDisableType:  autoDisableType,
 	}
 }
 

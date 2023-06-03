@@ -10,6 +10,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
@@ -17,18 +18,21 @@ import (
 // FileNamesLowerSnakeCaseRule verifies that all file names are lower_snake_case.proto.
 // See https://developers.google.com/protocol-buffers/docs/style#file-structure.
 type FileNamesLowerSnakeCaseRule struct {
+	RuleWithSeverity
 	excluded []string
 	fixMode  bool
 }
 
 // NewFileNamesLowerSnakeCaseRule creates a new FileNamesLowerSnakeCaseRule.
 func NewFileNamesLowerSnakeCaseRule(
+	severity rule.Severity,
 	excluded []string,
 	fixMode bool,
 ) FileNamesLowerSnakeCaseRule {
 	return FileNamesLowerSnakeCaseRule{
-		excluded: excluded,
-		fixMode:  fixMode,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		excluded:         excluded,
+		fixMode:          fixMode,
 	}
 }
 

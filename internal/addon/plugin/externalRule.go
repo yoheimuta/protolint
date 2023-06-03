@@ -10,24 +10,28 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/plugin/proto"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // externalRule represents a customized rule that works as a plugin.
 type externalRule struct {
-	id      string
-	purpose string
-	client  shared.RuleSet
+	id       string
+	purpose  string
+	client   shared.RuleSet
+	severity rule.Severity
 }
 
 func newExternalRule(
 	id string,
 	purpose string,
 	client shared.RuleSet,
+	severity rule.Severity,
 ) externalRule {
 	return externalRule{
-		id:      id,
-		purpose: purpose,
-		client:  client,
+		id:       id,
+		purpose:  purpose,
+		client:   client,
+		severity: severity,
 	}
 }
 
@@ -44,6 +48,11 @@ func (r externalRule) Purpose() string {
 // IsOfficial decides whether or not this rule belongs to the official guide.
 func (r externalRule) IsOfficial() bool {
 	return true
+}
+
+// Severity returns the severity of a rule (note, warning, error)
+func (r externalRule) Severity() rule.Severity {
+	return r.severity
 }
 
 // Apply applies the rule to the proto.

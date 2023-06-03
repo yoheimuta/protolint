@@ -6,18 +6,24 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // ServiceNamesEndWithRule verifies that all service names end with the specified value.
 type ServiceNamesEndWithRule struct {
+	RuleWithSeverity
 	text string
 }
 
 // NewServiceNamesEndWithRule creates a new ServiceNamesEndWithRule.
-func NewServiceNamesEndWithRule(text string) ServiceNamesEndWithRule {
+func NewServiceNamesEndWithRule(
+	severity rule.Severity,
+	text string,
+) ServiceNamesEndWithRule {
 	return ServiceNamesEndWithRule{
-		text: text,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		text:             text,
 	}
 }
 

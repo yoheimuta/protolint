@@ -6,11 +6,13 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/internal/linter/config"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // QuoteConsistentRule verifies that the use of quote for strings is consistent.
 type QuoteConsistentRule struct {
+	RuleWithSeverity
 	quote config.QuoteType
 
 	fixMode bool
@@ -18,12 +20,14 @@ type QuoteConsistentRule struct {
 
 // NewQuoteConsistentRule creates a new QuoteConsistentRule.
 func NewQuoteConsistentRule(
+	severity rule.Severity,
 	quote config.QuoteType,
 	fixMode bool,
 ) QuoteConsistentRule {
 	return QuoteConsistentRule{
-		quote:   quote,
-		fixMode: fixMode,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		quote:            quote,
+		fixMode:          fixMode,
 	}
 }
 

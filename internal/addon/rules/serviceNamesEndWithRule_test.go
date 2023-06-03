@@ -9,6 +9,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestValidServiceNamesEndWithRule_Apply(t *testing.T) {
@@ -31,7 +32,7 @@ func TestValidServiceNamesEndWithRule_Apply(t *testing.T) {
 	}
 
 	t.Run(validTestCase.name, func(t *testing.T) {
-		rule := rules.NewServiceNamesEndWithRule("Service")
+		rule := rules.NewServiceNamesEndWithRule(rule.Severity_Error, "Service")
 
 		_, err := rule.Apply(validTestCase.inputProto)
 		if err != nil {
@@ -65,7 +66,7 @@ func TestInvalidServiceNamesEndWithRule_Apply(t *testing.T) {
 	}
 
 	t.Run(invalidTestCase.name, func(t *testing.T) {
-		rule := rules.NewServiceNamesEndWithRule("Service")
+		rule := rules.NewServiceNamesEndWithRule(rule.Severity_Error, "Service")
 
 		got, err := rule.Apply(invalidTestCase.inputProto)
 		if err != nil {

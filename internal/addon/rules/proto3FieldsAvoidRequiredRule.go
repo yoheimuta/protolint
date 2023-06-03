@@ -5,21 +5,25 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/fixer"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // Proto3FieldsAvoidRequiredRule verifies that all fields should avoid required for proto3.
 // See https://developers.google.com/protocol-buffers/docs/style#things-to-avoid
 type Proto3FieldsAvoidRequiredRule struct {
+	RuleWithSeverity
 	fixMode bool
 }
 
 // NewProto3FieldsAvoidRequiredRule creates a new Proto3FieldsAvoidRequiredRule.
 func NewProto3FieldsAvoidRequiredRule(
+	severity rule.Severity,
 	fixMode bool,
 ) Proto3FieldsAvoidRequiredRule {
 	return Proto3FieldsAvoidRequiredRule{
-		fixMode: fixMode,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
 	}
 }
 

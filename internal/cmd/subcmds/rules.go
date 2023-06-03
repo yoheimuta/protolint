@@ -7,6 +7,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/linter/config"
 	internalrule "github.com/yoheimuta/protolint/internal/linter/rule"
 	"github.com/yoheimuta/protolint/linter/autodisable"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // NewAllRules creates new all rules.
@@ -49,59 +50,100 @@ func newAllInternalRules(
 	repeatedFieldNamesPluralized := option.RepeatedFieldNamesPluralized
 
 	return internalrule.Rules{
-		rules.NewFileHasCommentRule(),
+		rules.NewFileHasCommentRule(
+			rule.Severity_Error,
+		),
 		rules.NewSyntaxConsistentRule(
+			rule.Severity_Error,
 			syntaxConsistent.Version,
 		),
 		rules.NewFileNamesLowerSnakeCaseRule(
+			rule.Severity_Error,
 			fileNamesLowerSnakeCase.Excludes,
 			fixMode,
 		),
-		rules.NewQuoteConsistentRule(option.QuoteConsistentOption.Quote, fixMode),
-		rules.NewOrderRule(fixMode),
+		rules.NewQuoteConsistentRule(
+			rule.Severity_Error,
+			option.QuoteConsistentOption.Quote,
+			fixMode,
+		),
+		rules.NewOrderRule(
+			rule.Severity_Error,
+			fixMode,
+		),
 		rules.NewIndentRule(
+			rule.Severity_Error,
 			indent.Style,
 			indent.NotInsertNewline,
 			fixMode,
 		),
 		rules.NewMaxLineLengthRule(
+			rule.Severity_Error,
 			maxLineLength.MaxChars,
 			maxLineLength.TabChars,
 		),
-
-		rules.NewPackageNameLowerCaseRule(fixMode),
-
-		rules.NewImportsSortedRule(
+		rules.NewPackageNameLowerCaseRule(
+			rule.Severity_Error,
 			fixMode,
 		),
-
-		rules.NewEnumFieldNamesPrefixRule(fixMode, autoDisableType),
-		rules.NewEnumFieldNamesUpperSnakeCaseRule(fixMode, autoDisableType),
+		rules.NewImportsSortedRule(
+			rule.Severity_Error,
+			fixMode,
+		),
+		rules.NewEnumFieldNamesPrefixRule(
+			rule.Severity_Error,
+			fixMode,
+			autoDisableType,
+		),
+		rules.NewEnumFieldNamesUpperSnakeCaseRule(
+			rule.Severity_Error,
+			fixMode,
+			autoDisableType,
+		),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
+			rule.Severity_Error,
 			enumFieldNamesZeroValueEndWith.Suffix,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewEnumFieldsHaveCommentRule(
+			rule.Severity_Error,
 			enumFieldsHaveComment.ShouldFollowGolangStyle,
 		),
 
-		rules.NewEnumNamesUpperCamelCaseRule(fixMode, autoDisableType),
+		rules.NewEnumNamesUpperCamelCaseRule(
+			rule.Severity_Error,
+			fixMode,
+			autoDisableType,
+		),
 		rules.NewEnumsHaveCommentRule(
+			rule.Severity_Error,
 			enumsHaveComment.ShouldFollowGolangStyle,
 		),
-
-		rules.NewFieldNamesLowerSnakeCaseRule(fixMode, autoDisableType),
+		rules.NewFieldNamesLowerSnakeCaseRule(
+			rule.Severity_Error,
+			fixMode,
+			autoDisableType,
+		),
 		rules.NewFieldNamesExcludePrepositionsRule(
+			rule.Severity_Error,
 			fieldNamesExcludePrepositions.Prepositions,
 			fieldNamesExcludePrepositions.Excludes,
 		),
 		rules.NewFieldsHaveCommentRule(
+			rule.Severity_Error,
 			fieldsHaveComment.ShouldFollowGolangStyle,
 		),
-		rules.NewProto3FieldsAvoidRequiredRule(fixMode),
-		rules.NewProto3GroupsAvoidRule(autoDisableType),
+		rules.NewProto3FieldsAvoidRequiredRule(
+			rule.Severity_Error,
+			fixMode,
+		),
+		rules.NewProto3GroupsAvoidRule(
+			rule.Severity_Error,
+			autoDisableType,
+		),
 		rules.NewRepeatedFieldNamesPluralizedRule(
+			rule.Severity_Error,
 			repeatedFieldNamesPluralized.PluralRules,
 			repeatedFieldNamesPluralized.SingularRules,
 			repeatedFieldNamesPluralized.UncountableRules,
@@ -109,27 +151,44 @@ func newAllInternalRules(
 			fixMode,
 			autoDisableType,
 		),
-
-		rules.NewMessageNamesUpperCamelCaseRule(fixMode, autoDisableType),
+		rules.NewMessageNamesUpperCamelCaseRule(
+			rule.Severity_Error,
+			fixMode,
+			autoDisableType,
+		),
 		rules.NewMessageNamesExcludePrepositionsRule(
+			rule.Severity_Error,
 			messageNamesExcludePrepositions.Prepositions,
 			messageNamesExcludePrepositions.Excludes,
 		),
 		rules.NewMessagesHaveCommentRule(
+			rule.Severity_Error,
 			messagesHaveComment.ShouldFollowGolangStyle,
 		),
-
-		rules.NewRPCNamesUpperCamelCaseRule(fixMode, autoDisableType),
-		rules.NewRPCNamesCaseRule(option.RPCNamesCaseOption.Convention),
+		rules.NewRPCNamesUpperCamelCaseRule(
+			rule.Severity_Error,
+			fixMode,
+			autoDisableType,
+		),
+		rules.NewRPCNamesCaseRule(
+			rule.Severity_Error,
+			option.RPCNamesCaseOption.Convention,
+		),
 		rules.NewRPCsHaveCommentRule(
+			rule.Severity_Error,
 			rpcsHaveComment.ShouldFollowGolangStyle,
 		),
-
-		rules.NewServiceNamesUpperCamelCaseRule(fixMode, autoDisableType),
+		rules.NewServiceNamesUpperCamelCaseRule(
+			rule.Severity_Error,
+			fixMode,
+			autoDisableType,
+		),
 		rules.NewServiceNamesEndWithRule(
+			rule.Severity_Error,
 			serviceNamesEndWith.Text,
 		),
 		rules.NewServicesHaveCommentRule(
+			rule.Severity_Error,
 			servicesHaveComment.ShouldFollowGolangStyle,
 		),
 	}

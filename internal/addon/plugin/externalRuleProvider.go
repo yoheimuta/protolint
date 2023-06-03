@@ -25,7 +25,7 @@ func GetExternalRules(
 		}
 
 		for _, r := range resp.Rules {
-			rs = append(rs, newExternalRule(r.Id, r.Purpose, client))
+			rs = append(rs, newExternalRule(r.Id, r.Purpose, client, rule.Severity_Error))
 		}
 	}
 	return rs, nil
