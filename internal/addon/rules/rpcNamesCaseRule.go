@@ -45,7 +45,7 @@ func (r RPCNamesCaseRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r RPCNamesCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &rpcNamesCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		convention:     r.convention,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

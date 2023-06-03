@@ -45,7 +45,7 @@ func (r ServicesHaveCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r ServicesHaveCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &servicesHaveCommentVisitor{
-		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		shouldFollowGolangStyle: r.shouldFollowGolangStyle,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

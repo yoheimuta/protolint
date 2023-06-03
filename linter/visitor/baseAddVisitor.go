@@ -11,13 +11,15 @@ import (
 type BaseAddVisitor struct {
 	BaseVisitor
 	ruleID   string
+	severity string
 	failures []report.Failure
 }
 
 // NewBaseAddVisitor creates a BaseAddVisitor.
-func NewBaseAddVisitor(ruleID string) *BaseAddVisitor {
+func NewBaseAddVisitor(ruleID string, severity string) *BaseAddVisitor {
 	return &BaseAddVisitor{
-		ruleID: ruleID,
+		ruleID:   ruleID,
+		severity: severity,
 	}
 }
 
@@ -32,7 +34,7 @@ func (v *BaseAddVisitor) AddFailuref(
 	format string,
 	a ...interface{},
 ) {
-	v.failures = append(v.failures, report.Failuref(pos, v.ruleID, format, a...))
+	v.failures = append(v.failures, report.FailureWithSeverityf(pos, v.ruleID, v.severity, format, a...))
 }
 
 // AddFailurefWithProtoMeta adds to the internal buffer and the formatting works like fmt.Sprintf.

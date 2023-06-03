@@ -82,7 +82,7 @@ func (r FieldNamesExcludePrepositionsRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r FieldNamesExcludePrepositionsRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &fieldNamesExcludePrepositionsVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		prepositions:   r.prepositions,
 		excludes:       r.excludes,
 	}

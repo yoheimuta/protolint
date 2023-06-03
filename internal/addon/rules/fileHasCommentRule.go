@@ -37,7 +37,7 @@ func (r FileHasCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r FileHasCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &fileHasCommentVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }

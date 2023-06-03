@@ -45,7 +45,7 @@ func (r ServiceNamesEndWithRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r ServiceNamesEndWithRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &serviceNamesEndWithVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		text:           r.text,
 	}
 

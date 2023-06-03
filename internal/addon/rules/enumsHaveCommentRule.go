@@ -45,7 +45,7 @@ func (r EnumsHaveCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r EnumsHaveCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumsHaveCommentVisitor{
-		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		shouldFollowGolangStyle: r.shouldFollowGolangStyle,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

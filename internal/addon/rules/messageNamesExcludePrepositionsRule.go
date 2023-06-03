@@ -57,7 +57,7 @@ func (r MessageNamesExcludePrepositionsRule) Purpose() string {
 // Apply applies the rule to the proto.
 func (r MessageNamesExcludePrepositionsRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &messageNamesExcludePrepositionsVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		prepositions:   r.prepositions,
 		excludes:       r.excludes,
 	}

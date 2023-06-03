@@ -5,6 +5,7 @@ import (
 
 	"github.com/chavacava/garif"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // SarifReporter creates reports formatted as a JSON
@@ -14,6 +15,12 @@ import (
 // Refer to http://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html
 // for details to the format.
 type SarifReporter struct{}
+
+var allSeverities map[string]rule.Severity = map[string]rule.Severity{
+	string(rule.Severity_Error):   rule.Severity_Error,
+	string(rule.Severity_Warning): rule.Severity_Warning,
+	string(rule.Severity_Note):    rule.Severity_Note,
+}
 
 func contains(s []string, e string) bool {
 	for _, a := range s {
@@ -58,6 +65,16 @@ func (r SarifReporter) Report(w io.Writer, fs []report.Failure) error {
 			failure.Pos().Line,
 			failure.Pos().Column,
 		)
+
+		if len(run.Results) > 0 {
+
+			recentResult := run.Results[len(run.Results)-1]
+			recentResult.Kind = "fail"
+
+			if lvl, ok := allSeverities[failure.Severity()]; ok {
+				recentResult.Level = lvl
+			}
+		}
 	}
 
 	tool.WithRules(allRules...)

@@ -18,13 +18,14 @@ func NewBaseFixableVisitor(
 	ruleID string,
 	fixMode bool,
 	proto *parser.Proto,
+	severity string,
 ) (*BaseFixableVisitor, error) {
 	f, err := fixer.NewFixing(fixMode, proto)
 	if err != nil {
 		return nil, err
 	}
 	return &BaseFixableVisitor{
-		BaseAddVisitor: NewBaseAddVisitor(ruleID),
+		BaseAddVisitor: NewBaseAddVisitor(ruleID, severity),
 		Fixer:          f,
 		finallyFn:      f.Finally,
 	}, nil

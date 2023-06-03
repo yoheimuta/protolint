@@ -46,7 +46,7 @@ func (r SyntaxConsistentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r SyntaxConsistentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &syntaxConsistentVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		version:        r.version,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

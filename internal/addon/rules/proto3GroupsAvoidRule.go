@@ -44,7 +44,7 @@ func (r Proto3GroupsAvoidRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r Proto3GroupsAvoidRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &proto3GroupsAvoidVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 	}
 	return visitor.RunVisitorAutoDisable(v, proto, r.ID(), r.autoDisableType)
 }

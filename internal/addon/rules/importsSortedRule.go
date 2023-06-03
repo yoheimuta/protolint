@@ -46,7 +46,7 @@ func (r ImportsSortedRule) IsOfficial() bool {
 func (r ImportsSortedRule) Apply(
 	proto *parser.Proto,
 ) ([]report.Failure, error) {
-	base, err := visitor.NewBaseFixableVisitor(r.ID(), true, proto)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), true, proto, string(r.Severity()))
 	if err != nil {
 		return nil, err
 	}

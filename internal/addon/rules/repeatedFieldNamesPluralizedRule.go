@@ -81,7 +81,7 @@ func (r RepeatedFieldNamesPluralizedRule) Apply(proto *parser.Proto) ([]report.F
 		c.AddIrregularRule(k, v)
 	}
 
-	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto, string(r.Severity()))
 	if err != nil {
 		return nil, err
 	}

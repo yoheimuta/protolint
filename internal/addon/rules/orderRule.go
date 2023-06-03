@@ -50,7 +50,7 @@ func (r OrderRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r OrderRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto, string(r.Severity()))
 	if err != nil {
 		return nil, err
 	}
