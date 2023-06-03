@@ -1,14 +1,25 @@
 syntax = "proto3";
 package proto;
 
+option go_package = 
+  "github.com/yoheimuta/protolint/internal/addon/plugin/proto";
+
 service RuleSetService {
   rpc ListRules(ListRulesRequest) returns (ListRulesResponse);
   rpc Apply(ApplyRequest) returns (ApplyResponse);
 }
 
+enum RuleSeverity {
+  RULE_SEVERITY_UNSPECIFIED = 0;
+  RULE_SEVERITY_NOTE = 1;
+  RULE_SEVERITY_WARNING = 2;
+  RULE_SEVERITY_ERROR = 3;
+}
+
 message ListRulesRequest {
   bool verbose = 1;
   bool fix_mode = 2;
+  RuleSeverity severity = 3;
 }
 
 message ListRulesResponse {

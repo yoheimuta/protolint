@@ -4,16 +4,23 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // EnumNamesLowerSnakeCaseRule verifies that all enum names are LowerSnakeCase.
-type EnumNamesLowerSnakeCaseRule struct{}
+type EnumNamesLowerSnakeCaseRule struct {
+	severity rule.Severity
+}
 
 // NewEnumNamesLowerSnakeCaseRule creates a new EnumNamesLowerSnakeCaseRule.
-func NewEnumNamesLowerSnakeCaseRule() EnumNamesLowerSnakeCaseRule {
-	return EnumNamesLowerSnakeCaseRule{}
+func NewEnumNamesLowerSnakeCaseRule(
+	severity rule.Severity,
+) EnumNamesLowerSnakeCaseRule {
+	return EnumNamesLowerSnakeCaseRule{
+		severity: severity,
+	}
 }
 
 // ID returns the ID of this rule.
@@ -29,6 +36,11 @@ func (r EnumNamesLowerSnakeCaseRule) Purpose() string {
 // IsOfficial decides whether or not this rule belongs to the official guide.
 func (r EnumNamesLowerSnakeCaseRule) IsOfficial() bool {
 	return true
+}
+
+// Severity gets the severity of the rule
+func (r EnumNamesLowerSnakeCaseRule) Severity() rule.Severity {
+	return r.severity
 }
 
 // Apply applies the rule to the proto.

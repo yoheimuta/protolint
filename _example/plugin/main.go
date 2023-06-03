@@ -18,17 +18,18 @@ func main() {
 
 	plugin.RegisterCustomRules(
 		// The purpose of this line just illustrates that you can implement the same as internal linter rules.
-		rules.NewEnumsHaveCommentRule(*goStyle),
+		rules.NewEnumsHaveCommentRule(rule.Severity_Error, *goStyle),
 
 		// A common custom rule example. It's simple.
-		customrules.NewEnumNamesLowerSnakeCaseRule(),
+		customrules.NewEnumNamesLowerSnakeCaseRule(rule.Severity_Error),
 
 		// Wrapping with RuleGen allows referring to command-line flags.
 		plugin.RuleGen(func(
+			severity rule.Severity,
 			verbose bool,
 			fixMode bool,
 		) rule.Rule {
-			return customrules.NewSimpleRule(verbose, fixMode)
+			return customrules.NewSimpleRule(severity, verbose, fixMode)
 		}),
 	)
 }

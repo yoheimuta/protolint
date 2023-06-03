@@ -27,7 +27,18 @@ func (c *ruleSet) initialize(req *proto.ListRulesRequest) {
 	ruleMap := make(map[string]rule.Rule)
 	for _, r := range c.rawRules {
 		if f, ok := r.(RuleGen); ok {
+			var severity rule.Severity
+			switch req.Severity {
+			case proto.RuleSeverity_RULE_SEVERITY_NOTE:
+				severity = rule.Severity_Note
+			case proto.RuleSeverity_RULE_SEVERITY_WARNING:
+				severity = rule.Severity_Warning
+			case proto.RuleSeverity_RULE_SEVERITY_UNSPECIFIED:
+			case proto.RuleSeverity_RULE_SEVERITY_ERROR:
+				severity = rule.Severity_Error
+			}
 			r = f(
+				severity,
 				req.Verbose,
 				req.FixMode,
 			)
