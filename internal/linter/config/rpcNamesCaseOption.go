@@ -17,6 +17,7 @@ const (
 
 // RPCNamesCaseOption represents the option for the RPC_NAMES_CASE rule.
 type RPCNamesCaseOption struct {
+	CustomizableSeverityOption
 	Convention ConventionType
 }
 

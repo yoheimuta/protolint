@@ -6,6 +6,7 @@ import (
 
 // ImportsSortedOption represents the option for the IMPORTS_SORTED rule.
 type ImportsSortedOption struct {
+	CustomizableSeverityOption
 	// Deprecated: not used
 	Newline string
 }

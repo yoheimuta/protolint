@@ -7,6 +7,7 @@ import (
 
 // IndentOption represents the option for the INDENT rule.
 type IndentOption struct {
+	CustomizableSeverityOption
 	Style string
 	// Deprecated: not used
 	Newline          string
