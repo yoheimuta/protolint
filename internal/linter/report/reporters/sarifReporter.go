@@ -69,10 +69,10 @@ func (r SarifReporter) Report(w io.Writer, fs []report.Failure) error {
 		if len(run.Results) > 0 {
 
 			recentResult := run.Results[len(run.Results)-1]
-			recentResult.Kind = "fail"
+			recentResult.Kind = garif.ResultKind_Fail
 
 			if lvl, ok := allSeverities[failure.Severity()]; ok {
-				recentResult.Level = lvl
+				recentResult.Level = getResultLevel(lvl)
 			}
 		}
 	}
@@ -82,4 +82,17 @@ func (r SarifReporter) Report(w io.Writer, fs []report.Failure) error {
 
 	logFile := garif.NewLogFile([]*garif.Run{run}, garif.Version210)
 	return logFile.PrettyWrite(w)
+}
+
+func getResultLevel(severity rule.Severity) garif.ResultLevel {
+	switch severity {
+	case rule.Severity_Error:
+		return garif.ResultLevel_Error
+	case rule.Severity_Warning:
+		return garif.ResultLevel_Warning
+	case rule.Severity_Note:
+		return garif.ResultLevel_None
+	}
+
+	return garif.ResultLevel_None
 }
