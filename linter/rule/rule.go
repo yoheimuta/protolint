@@ -11,9 +11,12 @@ import (
 type Severity string
 
 const (
-	SeverityNote    Severity = "note"
+	// SeverityNote represents a note only rule severity
+	SeverityNote Severity = "note"
+	// SeverityNote represents a rule severity at a warning level
 	SeverityWarning Severity = "warning"
-	SeverityError   Severity = "error"
+	// SeverityNote represents a rule severity at a warning level
+	SeverityError Severity = "error"
 )
 
 // HasApply represents a rule which can be applied.

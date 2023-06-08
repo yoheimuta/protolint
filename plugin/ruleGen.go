@@ -28,7 +28,7 @@ func (RuleGen) IsOfficial() bool {
 	return true
 }
 
-// HasSeverity implements rule.Rule.
+// Severity implements rule.Rule.
 func (RuleGen) Severity() rule.Severity {
 	return rule.SeverityError
 }
