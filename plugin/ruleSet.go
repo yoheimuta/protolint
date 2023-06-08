@@ -27,18 +27,7 @@ func (c *ruleSet) initialize(req *proto.ListRulesRequest) {
 	ruleMap := make(map[string]rule.Rule)
 	for _, r := range c.rawRules {
 		if f, ok := r.(RuleGen); ok {
-			var severity rule.Severity
-			switch req.Severity {
-			case proto.RuleSeverity_RULE_SEVERITY_NOTE:
-				severity = rule.Severity_Note
-			case proto.RuleSeverity_RULE_SEVERITY_WARNING:
-				severity = rule.Severity_Warning
-			case proto.RuleSeverity_RULE_SEVERITY_UNSPECIFIED:
-			case proto.RuleSeverity_RULE_SEVERITY_ERROR:
-				severity = rule.Severity_Error
-			}
 			r = f(
-				severity,
 				req.Verbose,
 				req.FixMode,
 			)
@@ -54,13 +43,27 @@ func (c *ruleSet) ListRules(req *proto.ListRulesRequest) (*proto.ListRulesRespon
 	var meta []*proto.ListRulesResponse_Rule
 	for _, r := range c.rules {
 		meta = append(meta, &proto.ListRulesResponse_Rule{
-			Id:      r.ID(),
-			Purpose: r.Purpose(),
+			Id:       r.ID(),
+			Purpose:  r.Purpose(),
+			Severity: getSeverity(r.Severity()),
 		})
 	}
 	return &proto.ListRulesResponse{
 		Rules: meta,
 	}, nil
+}
+
+func getSeverity(severity rule.Severity) proto.RuleSeverity {
+	switch severity {
+	case rule.Severity_Error:
+		return proto.RuleSeverity_RULE_SEVERITY_ERROR
+	case rule.Severity_Warning:
+		return proto.RuleSeverity_RULE_SEVERITY_WARNING
+	case rule.Severity_Note:
+		return proto.RuleSeverity_RULE_SEVERITY_NOTE
+	}
+
+	return proto.RuleSeverity_RULE_SEVERITY_UNSPECIFIED
 }
 
 func (c *ruleSet) Apply(req *proto.ApplyRequest) (*proto.ApplyResponse, error) {

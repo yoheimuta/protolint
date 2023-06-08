@@ -11,16 +11,11 @@ import (
 
 // EnumNamesLowerSnakeCaseRule verifies that all enum names are LowerSnakeCase.
 type EnumNamesLowerSnakeCaseRule struct {
-	severity rule.Severity
 }
 
 // NewEnumNamesLowerSnakeCaseRule creates a new EnumNamesLowerSnakeCaseRule.
-func NewEnumNamesLowerSnakeCaseRule(
-	severity rule.Severity,
-) EnumNamesLowerSnakeCaseRule {
-	return EnumNamesLowerSnakeCaseRule{
-		severity: severity,
-	}
+func NewEnumNamesLowerSnakeCaseRule() EnumNamesLowerSnakeCaseRule {
+	return EnumNamesLowerSnakeCaseRule{}
 }
 
 // ID returns the ID of this rule.
@@ -40,13 +35,13 @@ func (r EnumNamesLowerSnakeCaseRule) IsOfficial() bool {
 
 // Severity gets the severity of the rule
 func (r EnumNamesLowerSnakeCaseRule) Severity() rule.Severity {
-	return r.severity
+	return rule.Severity_Warning
 }
 
 // Apply applies the rule to the proto.
 func (r EnumNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumNamesLowerSnakeCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }

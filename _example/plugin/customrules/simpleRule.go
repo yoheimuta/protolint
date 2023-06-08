@@ -10,21 +10,21 @@ import (
 
 // SimpleRule verifies that all enum names are LowerSnakeCase.
 type SimpleRule struct {
-	severity rule.Severity
 	verbose  bool
 	fixMode  bool
+	severity rule.Severity
 }
 
 // NewSimpleRule creates a new SimpleRule.
 func NewSimpleRule(
-	severity rule.Severity,
 	verbose bool,
 	fixMode bool,
+	severity rule.Severity,
 ) SimpleRule {
 	return SimpleRule{
-		severity: severity,
 		verbose:  verbose,
 		fixMode:  fixMode,
+		severity: severity,
 	}
 }
 

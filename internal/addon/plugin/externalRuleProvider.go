@@ -25,8 +25,22 @@ func GetExternalRules(
 		}
 
 		for _, r := range resp.Rules {
-			rs = append(rs, newExternalRule(r.Id, r.Purpose, client, rule.Severity_Error))
+			severity := getSeverity(r.Severity)
+			rs = append(rs, newExternalRule(r.Id, r.Purpose, client, severity))
 		}
 	}
 	return rs, nil
+}
+
+func getSeverity(ruleSeverity proto.RuleSeverity) rule.Severity {
+	switch ruleSeverity {
+	case proto.RuleSeverity_RULE_SEVERITY_ERROR:
+		return rule.Severity_Error
+	case proto.RuleSeverity_RULE_SEVERITY_WARNING:
+		return rule.Severity_Warning
+	case proto.RuleSeverity_RULE_SEVERITY_NOTE:
+		return rule.Severity_Note
+	}
+
+	return rule.Severity_Error
 }

@@ -19,13 +19,13 @@ enum RuleSeverity {
 message ListRulesRequest {
   bool verbose = 1;
   bool fix_mode = 2;
-  RuleSeverity severity = 3;
 }
 
 message ListRulesResponse {
   message Rule {
     string id = 1;
     string purpose = 2;
+    RuleSeverity severity = 3;
   }
   repeated Rule rules = 1;
 }

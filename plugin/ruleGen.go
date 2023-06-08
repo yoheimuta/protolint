@@ -9,7 +9,6 @@ import (
 
 // RuleGen is a generator for a rule. It's adapted to rule.Rule interface.
 type RuleGen func(
-	severity rule.Severity,
 	verbose bool,
 	fixMode bool,
 ) rule.Rule
