@@ -13,9 +13,9 @@ type Severity string
 const (
 	// SeverityNote represents a note only rule severity
 	SeverityNote Severity = "note"
-	// SeverityNote represents a rule severity at a warning level
+	// SeverityWarning represents a rule severity at a warning level
 	SeverityWarning Severity = "warning"
-	// SeverityNote represents a rule severity at a warning level
+	// SeverityError represents a rule severity at a warning level
 	SeverityError Severity = "error"
 )
 
