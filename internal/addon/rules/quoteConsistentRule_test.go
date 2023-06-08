@@ -236,7 +236,7 @@ func TestQuoteConsistentRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewQuoteConsistentRule(rule.Severity_Error, test.inputQuote, false)
+			rule := rules.NewQuoteConsistentRule(rule.SeverityError, test.inputQuote, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -281,7 +281,7 @@ func TestQuoteConsistentRule_Apply_fix(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			r := rules.NewQuoteConsistentRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				test.inputQuote,
 				true,
 			)

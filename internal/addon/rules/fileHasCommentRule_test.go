@@ -65,7 +65,7 @@ func TestFileHasCommentRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewFileHasCommentRule(rule.Severity_Error)
+			rule := rules.NewFileHasCommentRule(rule.SeverityError)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {

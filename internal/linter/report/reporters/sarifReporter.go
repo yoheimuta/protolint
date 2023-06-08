@@ -17,9 +17,9 @@ import (
 type SarifReporter struct{}
 
 var allSeverities map[string]rule.Severity = map[string]rule.Severity{
-	string(rule.Severity_Error):   rule.Severity_Error,
-	string(rule.Severity_Warning): rule.Severity_Warning,
-	string(rule.Severity_Note):    rule.Severity_Note,
+	string(rule.SeverityError):   rule.SeverityError,
+	string(rule.SeverityWarning): rule.SeverityWarning,
+	string(rule.SeverityNote):    rule.SeverityNote,
 }
 
 func contains(s []string, e string) bool {
@@ -86,11 +86,11 @@ func (r SarifReporter) Report(w io.Writer, fs []report.Failure) error {
 
 func getResultLevel(severity rule.Severity) garif.ResultLevel {
 	switch severity {
-	case rule.Severity_Error:
+	case rule.SeverityError:
 		return garif.ResultLevel_Error
-	case rule.Severity_Warning:
+	case rule.SeverityWarning:
 		return garif.ResultLevel_Warning
-	case rule.Severity_Note:
+	case rule.SeverityNote:
 		return garif.ResultLevel_None
 	}
 

@@ -10,9 +10,9 @@ import (
 func TestRulesWithSeverityHasSeverity(t *testing.T) {
 	tests :=
 		[]rule.Severity{
-			rule.Severity_Note,
-			rule.Severity_Warning,
-			rule.Severity_Error,
+			rule.SeverityNote,
+			rule.SeverityWarning,
+			rule.SeverityError,
 		}
 	for _, test := range tests {
 		test := test

@@ -164,7 +164,7 @@ func newAllInternalRules(
 			messagesHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewRPCNamesUpperCamelCaseRule(
-			option.RpcNamesUpperCamelCase.Severity(),
+			option.RPCNamesUpperCamelCase.Severity(),
 			fixMode,
 			autoDisableType,
 		),

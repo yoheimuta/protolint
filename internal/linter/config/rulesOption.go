@@ -30,6 +30,6 @@ type RulesOption struct {
 	PackageNameLowerCase            CustomizableSeverityOption            `yaml:"package_name_lower_case"`
 	Proto3FieldsAvoidRequired       CustomizableSeverityOption            `yaml:"proto3_fields_avoid_required"`
 	Proto3GroupsAvoid               CustomizableSeverityOption            `yaml:"proto3_groups_avoid"`
-	RpcNamesUpperCamelCase          CustomizableSeverityOption            `yaml:"rpc_names_upper_camel_case"`
+	RPCNamesUpperCamelCase          CustomizableSeverityOption            `yaml:"rpc_names_upper_camel_case"`
 	ServiceNamesUpperCamelCase      CustomizableSeverityOption            `yaml:"service_names_upper_caml_case"`
 }

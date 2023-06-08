@@ -114,7 +114,7 @@ func TestRPCNamesUpperCamelCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewRPCNamesUpperCamelCaseRule(rule.Severity_Error, false, autodisable.Noop)
+			rule := rules.NewRPCNamesUpperCamelCaseRule(rule.SeverityError, false, autodisable.Noop)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -149,7 +149,7 @@ func TestRPCNamesUpperCamelCaseRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewRPCNamesUpperCamelCaseRule(rule.Severity_Error, true, autodisable.Noop)
+			r := rules.NewRPCNamesUpperCamelCaseRule(rule.SeverityError, true, autodisable.Noop)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
@@ -184,7 +184,7 @@ func TestRPCNamesUpperCamelCaseRule_Apply_disable(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewRPCNamesUpperCamelCaseRule(rule.Severity_Error, true, test.inputPlacementType)
+			r := rules.NewRPCNamesUpperCamelCaseRule(rule.SeverityError, true, test.inputPlacementType)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

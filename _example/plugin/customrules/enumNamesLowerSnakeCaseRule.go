@@ -35,7 +35,7 @@ func (r EnumNamesLowerSnakeCaseRule) IsOfficial() bool {
 
 // Severity gets the severity of the rule
 func (r EnumNamesLowerSnakeCaseRule) Severity() rule.Severity {
-	return rule.Severity_Warning
+	return rule.SeverityWarning
 }
 
 // Apply applies the rule to the proto.

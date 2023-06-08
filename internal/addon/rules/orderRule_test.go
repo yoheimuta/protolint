@@ -335,7 +335,7 @@ func TestOrderRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewOrderRule(rule.Severity_Error, false)
+			rule := rules.NewOrderRule(rule.SeverityError, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -385,7 +385,7 @@ func TestOrderRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewOrderRule(rule.Severity_Error, true)
+			r := rules.NewOrderRule(rule.SeverityError, true)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

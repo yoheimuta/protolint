@@ -113,7 +113,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewImportsSortedRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				false,
 			)
 
@@ -181,7 +181,7 @@ func TestImportsSortedRule_Apply_fix(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewImportsSortedRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				true,
 			)
 

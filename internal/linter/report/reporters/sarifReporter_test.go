@@ -28,7 +28,7 @@ func TestSarifReporter_Report(t *testing.T) {
 						Column:   10,
 					},
 					"ENUM_NAMES_UPPER_CAMEL_CASE",
-					string(rule.Severity_Error),
+					string(rule.SeverityError),
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
 				report.FailureWithSeverityf(
@@ -39,7 +39,7 @@ func TestSarifReporter_Report(t *testing.T) {
 						Column:   20,
 					},
 					"ENUM_NAMES_UPPER_CAMEL_CASE",
-					string(rule.Severity_Warning),
+					string(rule.SeverityWarning),
 					`EnumField name "SECOND.VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
 			},

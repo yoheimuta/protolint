@@ -35,12 +35,12 @@ func GetExternalRules(
 func getSeverity(ruleSeverity proto.RuleSeverity) rule.Severity {
 	switch ruleSeverity {
 	case proto.RuleSeverity_RULE_SEVERITY_ERROR:
-		return rule.Severity_Error
+		return rule.SeverityError
 	case proto.RuleSeverity_RULE_SEVERITY_WARNING:
-		return rule.Severity_Warning
+		return rule.SeverityWarning
 	case proto.RuleSeverity_RULE_SEVERITY_NOTE:
-		return rule.Severity_Note
+		return rule.SeverityNote
 	}
 
-	return rule.Severity_Error
+	return rule.SeverityError
 }

@@ -172,7 +172,7 @@ func TestServicesHaveCommentRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewServicesHaveCommentRule(rule.Severity_Error, test.inputShouldFollowGolangStyle)
+			rule := rules.NewServicesHaveCommentRule(rule.SeverityError, test.inputShouldFollowGolangStyle)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {

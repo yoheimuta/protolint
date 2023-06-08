@@ -242,7 +242,7 @@ Fix https://github.com/yoheimuta/protolint/issues/280`,
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewIndentRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				test.inputStyle,
 				!test.inputInsertNewline,
 				false,
@@ -429,7 +429,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule_to_test := rules.NewIndentRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				space2,
 				!test.inputInsertNewline,
 				true,
@@ -466,7 +466,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 
 			// check whether the modified content can pass the lint in the end.
 			ruleOnlyCheck := rules.NewIndentRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				space2,
 				!test.inputInsertNewline,
 				false,

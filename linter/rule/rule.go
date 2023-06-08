@@ -6,12 +6,14 @@ import (
 	"github.com/yoheimuta/protolint/linter/report"
 )
 
+// Severity represents the severity of the rule.
+// All failues will have this severity on export.
 type Severity string
 
 const (
-	Severity_Note    Severity = "note"
-	Severity_Warning Severity = "warning"
-	Severity_Error   Severity = "error"
+	SeverityNote    Severity = "note"
+	SeverityWarning Severity = "warning"
+	SeverityError   Severity = "error"
 )
 
 // HasApply represents a rule which can be applied.

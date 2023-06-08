@@ -78,7 +78,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewMaxLineLengthRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				test.inputMaxChars,
 				test.inputTabChars,
 			)

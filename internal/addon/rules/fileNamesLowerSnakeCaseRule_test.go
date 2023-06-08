@@ -99,7 +99,7 @@ func TestFileNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewFileNamesLowerSnakeCaseRule(rule.Severity_Error, test.inputExcluded, false)
+			rule := rules.NewFileNamesLowerSnakeCaseRule(rule.SeverityError, test.inputExcluded, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -141,7 +141,7 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewFileNamesLowerSnakeCaseRule(rule.Severity_Error, test.inputExcluded, true)
+			r := rules.NewFileNamesLowerSnakeCaseRule(rule.SeverityError, test.inputExcluded, true)
 
 			dataDir := strs.ToLowerCamelCase(r.ID())
 			input, err := util_test.NewTestData(setting_test.TestDataPath("rules", dataDir, test.inputFilename))

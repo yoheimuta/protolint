@@ -224,7 +224,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewRepeatedFieldNamesPluralizedRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				test.pluralRules,
 				test.singularRules,
 				test.uncountableRules,
@@ -271,7 +271,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply_fix(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			r := rules.NewRepeatedFieldNamesPluralizedRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				test.pluralRules,
 				test.singularRules,
 				test.uncountableRules,
@@ -318,7 +318,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply_disable(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			r := rules.NewRepeatedFieldNamesPluralizedRule(
-				rule.Severity_Error,
+				rule.SeverityError,
 				test.pluralRules,
 				test.singularRules,
 				test.uncountableRules,

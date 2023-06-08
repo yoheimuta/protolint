@@ -149,7 +149,7 @@ func TestProto3FieldsAvoidRequiredRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewProto3FieldsAvoidRequiredRule(rule.Severity_Error, false)
+			rule := rules.NewProto3FieldsAvoidRequiredRule(rule.SeverityError, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -184,7 +184,7 @@ func TestProto3FieldsAvoidRequiredRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewProto3FieldsAvoidRequiredRule(rule.Severity_Error, true)
+			r := rules.NewProto3FieldsAvoidRequiredRule(rule.SeverityError, true)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

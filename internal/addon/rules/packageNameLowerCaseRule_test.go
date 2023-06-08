@@ -91,7 +91,7 @@ func TestPackageNameLowerCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewPackageNameLowerCaseRule(rule.Severity_Error, false)
+			rule := rules.NewPackageNameLowerCaseRule(rule.SeverityError, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -126,7 +126,7 @@ func TestPackageNameLowerCaseRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewPackageNameLowerCaseRule(rule.Severity_Error, true)
+			r := rules.NewPackageNameLowerCaseRule(rule.SeverityError, true)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

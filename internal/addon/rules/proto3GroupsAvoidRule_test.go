@@ -110,7 +110,7 @@ func TestProto3GroupsAvoidRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewProto3GroupsAvoidRule(rule.Severity_Error, autodisable.Noop)
+			rule := rules.NewProto3GroupsAvoidRule(rule.SeverityError, autodisable.Noop)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -153,7 +153,7 @@ func TestProto3GroupsAvoidRule_Apply_disable(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewProto3GroupsAvoidRule(rule.Severity_Error, test.inputPlacementType)
+			r := rules.NewProto3GroupsAvoidRule(rule.SeverityError, test.inputPlacementType)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

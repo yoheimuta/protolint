@@ -55,11 +55,11 @@ func (c *ruleSet) ListRules(req *proto.ListRulesRequest) (*proto.ListRulesRespon
 
 func getSeverity(severity rule.Severity) proto.RuleSeverity {
 	switch severity {
-	case rule.Severity_Error:
+	case rule.SeverityError:
 		return proto.RuleSeverity_RULE_SEVERITY_ERROR
-	case rule.Severity_Warning:
+	case rule.SeverityWarning:
 		return proto.RuleSeverity_RULE_SEVERITY_WARNING
-	case rule.Severity_Note:
+	case rule.SeverityNote:
 		return proto.RuleSeverity_RULE_SEVERITY_NOTE
 	}
 

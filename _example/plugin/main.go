@@ -18,7 +18,7 @@ func main() {
 
 	plugin.RegisterCustomRules(
 		// The purpose of this line just illustrates that you can implement the same as internal linter rules.
-		rules.NewEnumsHaveCommentRule(rule.Severity_Warning, *goStyle),
+		rules.NewEnumsHaveCommentRule(rule.SeverityWarning, *goStyle),
 
 		// A common custom rule example. It's simple.
 		customrules.NewEnumNamesLowerSnakeCaseRule(),
@@ -28,7 +28,7 @@ func main() {
 			verbose bool,
 			fixMode bool,
 		) rule.Rule {
-			return customrules.NewSimpleRule(verbose, fixMode, rule.Severity_Error)
+			return customrules.NewSimpleRule(verbose, fixMode, rule.SeverityError)
 		}),
 	)
 }

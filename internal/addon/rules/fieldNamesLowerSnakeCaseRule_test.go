@@ -140,7 +140,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewFieldNamesLowerSnakeCaseRule(rule.Severity_Error, false, autodisable.Noop)
+			rule := rules.NewFieldNamesLowerSnakeCaseRule(rule.SeverityError, false, autodisable.Noop)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -175,7 +175,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewFieldNamesLowerSnakeCaseRule(rule.Severity_Error, true, autodisable.Noop)
+			r := rules.NewFieldNamesLowerSnakeCaseRule(rule.SeverityError, true, autodisable.Noop)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
@@ -210,7 +210,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply_disable(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewFieldNamesLowerSnakeCaseRule(rule.Severity_Error, true, test.inputPlacementType)
+			r := rules.NewFieldNamesLowerSnakeCaseRule(rule.SeverityError, true, test.inputPlacementType)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

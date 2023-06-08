@@ -310,7 +310,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewRPCNamesCaseRule(rule.Severity_Error, test.inputConvention)
+			rule := rules.NewRPCNamesCaseRule(rule.SeverityError, test.inputConvention)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {

@@ -32,7 +32,7 @@ func TestValidServiceNamesEndWithRule_Apply(t *testing.T) {
 	}
 
 	t.Run(validTestCase.name, func(t *testing.T) {
-		rule := rules.NewServiceNamesEndWithRule(rule.Severity_Error, "Service")
+		rule := rules.NewServiceNamesEndWithRule(rule.SeverityError, "Service")
 
 		_, err := rule.Apply(validTestCase.inputProto)
 		if err != nil {
@@ -66,7 +66,7 @@ func TestInvalidServiceNamesEndWithRule_Apply(t *testing.T) {
 	}
 
 	t.Run(invalidTestCase.name, func(t *testing.T) {
-		rule := rules.NewServiceNamesEndWithRule(rule.Severity_Error, "Service")
+		rule := rules.NewServiceNamesEndWithRule(rule.SeverityError, "Service")
 
 		got, err := rule.Apply(invalidTestCase.inputProto)
 		if err != nil {
