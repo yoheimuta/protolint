@@ -97,7 +97,7 @@ protolint is available as a [pre-commit](https://pre-commit.com) hook.  Add this
 ```yaml
 repos:
   - repo: https://github.com/yoheimuta/protolint
-    rev: master
+    rev: <version> # Select a release here like v0.44.0
     hooks:
       - id: protolint
 ```
@@ -105,7 +105,7 @@ or alternatively use this to run protolint with Docker:
 ```yaml
 repos:
   - repo: https://github.com/yoheimuta/protolint
-    rev: master
+    rev: <version> # Select a release here like v0.44.0
     hooks:
       - id: protolint-docker
 ```
