@@ -43,13 +43,27 @@ func (c *ruleSet) ListRules(req *proto.ListRulesRequest) (*proto.ListRulesRespon
 	var meta []*proto.ListRulesResponse_Rule
 	for _, r := range c.rules {
 		meta = append(meta, &proto.ListRulesResponse_Rule{
-			Id:      r.ID(),
-			Purpose: r.Purpose(),
+			Id:       r.ID(),
+			Purpose:  r.Purpose(),
+			Severity: getSeverity(r.Severity()),
 		})
 	}
 	return &proto.ListRulesResponse{
 		Rules: meta,
 	}, nil
+}
+
+func getSeverity(severity rule.Severity) proto.RuleSeverity {
+	switch severity {
+	case rule.SeverityError:
+		return proto.RuleSeverity_RULE_SEVERITY_ERROR
+	case rule.SeverityWarning:
+		return proto.RuleSeverity_RULE_SEVERITY_WARNING
+	case rule.SeverityNote:
+		return proto.RuleSeverity_RULE_SEVERITY_NOTE
+	}
+
+	return proto.RuleSeverity_RULE_SEVERITY_UNSPECIFIED
 }
 
 func (c *ruleSet) Apply(req *proto.ApplyRequest) (*proto.ApplyResponse, error) {

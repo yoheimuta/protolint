@@ -8,11 +8,14 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
+const errorLevel = "error"
+
 // Failure represents a lint error information.
 type Failure struct {
-	pos     meta.Position
-	message string
-	ruleID  string
+	pos      meta.Position
+	message  string
+	ruleID   string
+	severity string
 }
 
 // Failuref creates a new Failure and the formatting works like fmt.Sprintf.
@@ -22,10 +25,28 @@ func Failuref(
 	format string,
 	a ...interface{},
 ) Failure {
+	return FailureWithSeverityf(
+		pos,
+		ruleID,
+		errorLevel,
+		format,
+		a...,
+	)
+}
+
+// FailureWithSeverityf creates a new Failure accepting a severity level description and the formatting works like fmt.Sprintf.
+func FailureWithSeverityf(
+	pos meta.Position,
+	ruleID string,
+	severity string,
+	format string,
+	a ...interface{},
+) Failure {
 	return Failure{
-		pos:     pos,
-		message: fmt.Sprintf(format, a...),
-		ruleID:  ruleID,
+		pos:      pos,
+		message:  fmt.Sprintf(format, a...),
+		ruleID:   ruleID,
+		severity: severity,
 	}
 }
 
@@ -47,6 +68,11 @@ func (f Failure) Pos() meta.Position {
 // RuleID returns a rule ID.
 func (f Failure) RuleID() string {
 	return f.ruleID
+}
+
+// Severity represents the severity of a severity
+func (f Failure) Severity() string {
+	return f.severity
 }
 
 // FilenameWithoutExt returns a filename without the extension.

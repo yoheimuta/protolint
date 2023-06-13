@@ -5,22 +5,26 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // SimpleRule verifies that all enum names are LowerSnakeCase.
 type SimpleRule struct {
-	verbose bool
-	fixMode bool
+	verbose  bool
+	fixMode  bool
+	severity rule.Severity
 }
 
 // NewSimpleRule creates a new SimpleRule.
 func NewSimpleRule(
 	verbose bool,
 	fixMode bool,
+	severity rule.Severity,
 ) SimpleRule {
 	return SimpleRule{
-		verbose: verbose,
-		fixMode: fixMode,
+		verbose:  verbose,
+		fixMode:  fixMode,
+		severity: severity,
 	}
 }
 
@@ -37,6 +41,11 @@ func (r SimpleRule) Purpose() string {
 // IsOfficial decides whether or not this rule belongs to the official guide.
 func (r SimpleRule) IsOfficial() bool {
 	return true
+}
+
+// Severity gets the rule severity
+func (r SimpleRule) Severity() rule.Severity {
+	return r.severity
 }
 
 // Apply applies the rule to the proto.

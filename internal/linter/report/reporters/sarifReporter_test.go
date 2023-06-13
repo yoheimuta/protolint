@@ -8,6 +8,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/linter/report/reporters"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestSarifReporter_Report(t *testing.T) {
@@ -19,7 +20,7 @@ func TestSarifReporter_Report(t *testing.T) {
 		{
 			name: "Prints failures in JSON format",
 			inputFailures: []report.Failure{
-				report.Failuref(
+				report.FailureWithSeverityf(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   100,
@@ -27,9 +28,10 @@ func TestSarifReporter_Report(t *testing.T) {
 						Column:   10,
 					},
 					"ENUM_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
-				report.Failuref(
+				report.FailureWithSeverityf(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   200,
@@ -37,6 +39,7 @@ func TestSarifReporter_Report(t *testing.T) {
 						Column:   20,
 					},
 					"ENUM_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityWarning),
 					`EnumField name "SECOND.VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
 			},
@@ -52,6 +55,8 @@ func TestSarifReporter_Report(t *testing.T) {
       ],
       "results": [
         {
+          "kind": "fail",
+          "level": "error",
           "locations": [
             {
               "physicalLocation": {
@@ -71,6 +76,8 @@ func TestSarifReporter_Report(t *testing.T) {
           "ruleId": "ENUM_NAMES_UPPER_CAMEL_CASE"
         },
         {
+          "kind": "fail",
+          "level": "warning",
           "locations": [
             {
               "physicalLocation": {

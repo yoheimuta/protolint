@@ -6,6 +6,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
@@ -17,15 +18,18 @@ import (
 // 5. Everything else
 // See https://developers.google.com/protocol-buffers/docs/style#file-structure.
 type OrderRule struct {
+	RuleWithSeverity
 	fixMode bool
 }
 
 // NewOrderRule creates a new OrderRule.
 func NewOrderRule(
+	severity rule.Severity,
 	fixMode bool,
 ) OrderRule {
 	return OrderRule{
-		fixMode: fixMode,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
 	}
 }
 
@@ -46,7 +50,7 @@ func (r OrderRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r OrderRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto, string(r.Severity()))
 	if err != nil {
 		return nil, err
 	}

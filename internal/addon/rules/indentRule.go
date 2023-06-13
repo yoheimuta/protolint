@@ -8,6 +8,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
@@ -19,6 +20,7 @@ const (
 
 // IndentRule enforces a consistent indentation style.
 type IndentRule struct {
+	RuleWithSeverity
 	style            string
 	notInsertNewline bool
 	fixMode          bool
@@ -26,6 +28,7 @@ type IndentRule struct {
 
 // NewIndentRule creates a new IndentRule.
 func NewIndentRule(
+	severity rule.Severity,
 	style string,
 	notInsertNewline bool,
 	fixMode bool,
@@ -35,6 +38,7 @@ func NewIndentRule(
 	}
 
 	return IndentRule{
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
 		style:            style,
 		notInsertNewline: notInsertNewline,
 		fixMode:          fixMode,
@@ -60,7 +64,7 @@ func (r IndentRule) IsOfficial() bool {
 func (r IndentRule) Apply(
 	proto *parser.Proto,
 ) ([]report.Failure, error) {
-	base, err := visitor.NewBaseFixableVisitor(r.ID(), true, proto)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), true, proto, string(r.Severity()))
 	if err != nil {
 		return nil, err
 	}

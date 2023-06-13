@@ -4,11 +4,13 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // ServicesHaveCommentRule verifies that all services have a comment.
 type ServicesHaveCommentRule struct {
+	RuleWithSeverity
 	// Golang style comments should begin with the name of the thing being described.
 	// See https://github.com/golang/go/wiki/CodeReviewComments#comment-sentences
 	shouldFollowGolangStyle bool
@@ -16,9 +18,11 @@ type ServicesHaveCommentRule struct {
 
 // NewServicesHaveCommentRule creates a new ServicesHaveCommentRule.
 func NewServicesHaveCommentRule(
+	severity rule.Severity,
 	shouldFollowGolangStyle bool,
 ) ServicesHaveCommentRule {
 	return ServicesHaveCommentRule{
+		RuleWithSeverity:        RuleWithSeverity{severity: severity},
 		shouldFollowGolangStyle: shouldFollowGolangStyle,
 	}
 }
@@ -41,7 +45,7 @@ func (r ServicesHaveCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r ServicesHaveCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &servicesHaveCommentVisitor{
-		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		shouldFollowGolangStyle: r.shouldFollowGolangStyle,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

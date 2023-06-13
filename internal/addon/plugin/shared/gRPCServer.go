@@ -8,6 +8,7 @@ import (
 
 // GRPCServer is the implementation of RuleSet.
 type GRPCServer struct {
+	proto.UnimplementedRuleSetServiceServer
 	server RuleSet
 }
 

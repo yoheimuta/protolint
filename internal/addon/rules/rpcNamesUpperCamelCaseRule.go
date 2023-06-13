@@ -5,6 +5,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
+	"github.com/yoheimuta/protolint/linter/rule"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -14,12 +15,14 @@ import (
 // RPCNamesUpperCamelCaseRule verifies that all rpc names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#services.
 type RPCNamesUpperCamelCaseRule struct {
+	RuleWithSeverity
 	fixMode         bool
 	autoDisableType autodisable.PlacementType
 }
 
 // NewRPCNamesUpperCamelCaseRule creates a new RPCNamesUpperCamelCaseRule.
 func NewRPCNamesUpperCamelCaseRule(
+	severity rule.Severity,
 	fixMode bool,
 	autoDisableType autodisable.PlacementType,
 ) RPCNamesUpperCamelCaseRule {
@@ -27,8 +30,9 @@ func NewRPCNamesUpperCamelCaseRule(
 		fixMode = false
 	}
 	return RPCNamesUpperCamelCaseRule{
-		fixMode:         fixMode,
-		autoDisableType: autoDisableType,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
+		autoDisableType:  autoDisableType,
 	}
 }
 
@@ -49,7 +53,7 @@ func (r RPCNamesUpperCamelCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r RPCNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto, string(r.Severity()))
 	if err != nil {
 		return nil, err
 	}

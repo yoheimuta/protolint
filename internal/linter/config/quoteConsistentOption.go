@@ -16,6 +16,7 @@ const (
 
 // QuoteConsistentOption represents the option for the QUOTE_CONSISTENT rule.
 type QuoteConsistentOption struct {
+	CustomizableSeverityOption
 	Quote QuoteType
 }
 

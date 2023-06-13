@@ -9,6 +9,7 @@ import (
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
@@ -16,6 +17,7 @@ import (
 // RepeatedFieldNamesPluralizedRule verifies that repeated field names are pluralized names.
 // See https://developers.google.com/protocol-buffers/docs/style#repeated-fields.
 type RepeatedFieldNamesPluralizedRule struct {
+	RuleWithSeverity
 	pluralRules      map[string]string
 	singularRules    map[string]string
 	uncountableRules []string
@@ -26,6 +28,7 @@ type RepeatedFieldNamesPluralizedRule struct {
 
 // NewRepeatedFieldNamesPluralizedRule creates a new RepeatedFieldNamesPluralizedRule.
 func NewRepeatedFieldNamesPluralizedRule(
+	severity rule.Severity,
 	pluralRules map[string]string,
 	singularRules map[string]string,
 	uncountableRules []string,
@@ -37,6 +40,7 @@ func NewRepeatedFieldNamesPluralizedRule(
 		fixMode = false
 	}
 	return RepeatedFieldNamesPluralizedRule{
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
 		pluralRules:      pluralRules,
 		singularRules:    singularRules,
 		uncountableRules: uncountableRules,
@@ -77,7 +81,7 @@ func (r RepeatedFieldNamesPluralizedRule) Apply(proto *parser.Proto) ([]report.F
 		c.AddIrregularRule(k, v)
 	}
 
-	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto, string(r.Severity()))
 	if err != nil {
 		return nil, err
 	}

@@ -4,23 +4,27 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // SyntaxConsistentRule verifies that syntax is a specified version.
 type SyntaxConsistentRule struct {
+	RuleWithSeverity
 	version string
 }
 
 // NewSyntaxConsistentRule creates a new SyntaxConsistentRule.
 func NewSyntaxConsistentRule(
+	severity rule.Severity,
 	version string,
 ) SyntaxConsistentRule {
 	if len(version) == 0 {
 		version = "proto3"
 	}
 	return SyntaxConsistentRule{
-		version: version,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		version:          version,
 	}
 }
 
@@ -42,7 +46,7 @@ func (r SyntaxConsistentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r SyntaxConsistentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &syntaxConsistentVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		version:        r.version,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

@@ -10,6 +10,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestEnumsHaveCommentRule_Apply(t *testing.T) {
@@ -171,7 +172,7 @@ func TestEnumsHaveCommentRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewEnumsHaveCommentRule(test.inputShouldFollowGolangStyle)
+			rule := rules.NewEnumsHaveCommentRule(rule.SeverityError, test.inputShouldFollowGolangStyle)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {

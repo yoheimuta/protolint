@@ -4,11 +4,13 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // EnumsHaveCommentRule verifies that all enums have a comment.
 type EnumsHaveCommentRule struct {
+	RuleWithSeverity
 	// Golang style comments should begin with the name of the thing being described.
 	// See https://github.com/golang/go/wiki/CodeReviewComments#comment-sentences
 	shouldFollowGolangStyle bool
@@ -16,9 +18,11 @@ type EnumsHaveCommentRule struct {
 
 // NewEnumsHaveCommentRule creates a new EnumsHaveCommentRule.
 func NewEnumsHaveCommentRule(
+	severity rule.Severity,
 	shouldFollowGolangStyle bool,
 ) EnumsHaveCommentRule {
 	return EnumsHaveCommentRule{
+		RuleWithSeverity:        RuleWithSeverity{severity: severity},
 		shouldFollowGolangStyle: shouldFollowGolangStyle,
 	}
 }
@@ -41,7 +45,7 @@ func (r EnumsHaveCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r EnumsHaveCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumsHaveCommentVisitor{
-		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		shouldFollowGolangStyle: r.shouldFollowGolangStyle,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

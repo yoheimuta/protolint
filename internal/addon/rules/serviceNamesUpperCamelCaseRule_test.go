@@ -10,6 +10,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
@@ -95,7 +96,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewServiceNamesUpperCamelCaseRule(false, autodisable.Noop)
+			rule := rules.NewServiceNamesUpperCamelCaseRule(rule.SeverityError, false, autodisable.Noop)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -130,7 +131,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewServiceNamesUpperCamelCaseRule(true, autodisable.Noop)
+			r := rules.NewServiceNamesUpperCamelCaseRule(rule.SeverityError, true, autodisable.Noop)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}
@@ -165,7 +166,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply_disable(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewServiceNamesUpperCamelCaseRule(true, test.inputPlacementType)
+			r := rules.NewServiceNamesUpperCamelCaseRule(rule.SeverityError, true, test.inputPlacementType)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

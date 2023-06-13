@@ -4,12 +4,14 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/strs"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // EnumNamesLowerSnakeCaseRule verifies that all enum names are LowerSnakeCase.
-type EnumNamesLowerSnakeCaseRule struct{}
+type EnumNamesLowerSnakeCaseRule struct {
+}
 
 // NewEnumNamesLowerSnakeCaseRule creates a new EnumNamesLowerSnakeCaseRule.
 func NewEnumNamesLowerSnakeCaseRule() EnumNamesLowerSnakeCaseRule {
@@ -31,10 +33,15 @@ func (r EnumNamesLowerSnakeCaseRule) IsOfficial() bool {
 	return true
 }
 
+// Severity gets the severity of the rule
+func (r EnumNamesLowerSnakeCaseRule) Severity() rule.Severity {
+	return rule.SeverityWarning
+}
+
 // Apply applies the rule to the proto.
 func (r EnumNamesLowerSnakeCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &enumNamesLowerSnakeCaseVisitor{
-		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor: visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 	}
 	return visitor.RunVisitor(v, proto, r.ID())
 }

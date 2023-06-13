@@ -8,6 +8,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestProto3FieldsAvoidRequiredRule_Apply(t *testing.T) {
@@ -148,7 +149,7 @@ func TestProto3FieldsAvoidRequiredRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewProto3FieldsAvoidRequiredRule(false)
+			rule := rules.NewProto3FieldsAvoidRequiredRule(rule.SeverityError, false)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
@@ -183,7 +184,7 @@ func TestProto3FieldsAvoidRequiredRule_Apply_fix(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			r := rules.NewProto3FieldsAvoidRequiredRule(true)
+			r := rules.NewProto3FieldsAvoidRequiredRule(rule.SeverityError, true)
 			testApplyFix(t, r, test.inputFilename, test.wantFilename)
 		})
 	}

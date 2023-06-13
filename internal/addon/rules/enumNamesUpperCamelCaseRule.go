@@ -5,6 +5,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 	"github.com/yoheimuta/protolint/linter/fixer"
+	"github.com/yoheimuta/protolint/linter/rule"
 
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/strs"
@@ -14,12 +15,14 @@ import (
 // EnumNamesUpperCamelCaseRule verifies that all enum names are CamelCase (with an initial capital).
 // See https://developers.google.com/protocol-buffers/docs/style#enums.
 type EnumNamesUpperCamelCaseRule struct {
+	RuleWithSeverity
 	fixMode         bool
 	autoDisableType autodisable.PlacementType
 }
 
 // NewEnumNamesUpperCamelCaseRule creates a new EnumNamesUpperCamelCaseRule.
 func NewEnumNamesUpperCamelCaseRule(
+	severity rule.Severity,
 	fixMode bool,
 	autoDisableType autodisable.PlacementType,
 ) EnumNamesUpperCamelCaseRule {
@@ -27,8 +30,9 @@ func NewEnumNamesUpperCamelCaseRule(
 		fixMode = false
 	}
 	return EnumNamesUpperCamelCaseRule{
-		fixMode:         fixMode,
-		autoDisableType: autoDisableType,
+		RuleWithSeverity: RuleWithSeverity{severity: severity},
+		fixMode:          fixMode,
+		autoDisableType:  autoDisableType,
 	}
 }
 
@@ -49,7 +53,7 @@ func (r EnumNamesUpperCamelCaseRule) IsOfficial() bool {
 
 // Apply applies the rule to the proto.
 func (r EnumNamesUpperCamelCaseRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
-	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto)
+	base, err := visitor.NewBaseFixableVisitor(r.ID(), r.fixMode, proto, string(r.Severity()))
 	if err != nil {
 		return nil, err
 	}

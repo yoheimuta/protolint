@@ -7,11 +7,13 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 )
 
 // MessagesHaveCommentRule verifies that all messages have a comment.
 type MessagesHaveCommentRule struct {
+	RuleWithSeverity
 	// Golang style comments should begin with the name of the thing being described.
 	// See https://github.com/golang/go/wiki/CodeReviewComments#comment-sentences
 	shouldFollowGolangStyle bool
@@ -19,9 +21,11 @@ type MessagesHaveCommentRule struct {
 
 // NewMessagesHaveCommentRule creates a new MessagesHaveCommentRule.
 func NewMessagesHaveCommentRule(
+	severity rule.Severity,
 	shouldFollowGolangStyle bool,
 ) MessagesHaveCommentRule {
 	return MessagesHaveCommentRule{
+		RuleWithSeverity:        RuleWithSeverity{severity: severity},
 		shouldFollowGolangStyle: shouldFollowGolangStyle,
 	}
 }
@@ -44,7 +48,7 @@ func (r MessagesHaveCommentRule) IsOfficial() bool {
 // Apply applies the rule to the proto.
 func (r MessagesHaveCommentRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	v := &messagesHaveCommentVisitor{
-		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID()),
+		BaseAddVisitor:          visitor.NewBaseAddVisitor(r.ID(), string(r.Severity())),
 		shouldFollowGolangStyle: r.shouldFollowGolangStyle,
 	}
 	return visitor.RunVisitor(v, proto, r.ID())

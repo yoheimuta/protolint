@@ -8,6 +8,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestFileHasCommentRule_Apply(t *testing.T) {
@@ -64,7 +65,7 @@ func TestFileHasCommentRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewFileHasCommentRule()
+			rule := rules.NewFileHasCommentRule(rule.SeverityError)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {

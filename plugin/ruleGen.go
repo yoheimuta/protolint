@@ -28,6 +28,11 @@ func (RuleGen) IsOfficial() bool {
 	return true
 }
 
+// Severity implements rule.Rule.
+func (RuleGen) Severity() rule.Severity {
+	return rule.SeverityError
+}
+
 // Apply implements rule.Rule.
 func (RuleGen) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	return nil, nil

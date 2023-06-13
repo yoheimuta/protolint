@@ -5,6 +5,7 @@ import (
 
 	"github.com/chavacava/garif"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 // SarifReporter creates reports formatted as a JSON
@@ -14,6 +15,12 @@ import (
 // Refer to http://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html
 // for details to the format.
 type SarifReporter struct{}
+
+var allSeverities map[string]rule.Severity = map[string]rule.Severity{
+	string(rule.SeverityError):   rule.SeverityError,
+	string(rule.SeverityWarning): rule.SeverityWarning,
+	string(rule.SeverityNote):    rule.SeverityNote,
+}
 
 func contains(s []string, e string) bool {
 	for _, a := range s {
@@ -58,6 +65,16 @@ func (r SarifReporter) Report(w io.Writer, fs []report.Failure) error {
 			failure.Pos().Line,
 			failure.Pos().Column,
 		)
+
+		if len(run.Results) > 0 {
+
+			recentResult := run.Results[len(run.Results)-1]
+			recentResult.Kind = garif.ResultKind_Fail
+
+			if lvl, ok := allSeverities[failure.Severity()]; ok {
+				recentResult.Level = getResultLevel(lvl)
+			}
+		}
 	}
 
 	tool.WithRules(allRules...)
@@ -65,4 +82,17 @@ func (r SarifReporter) Report(w io.Writer, fs []report.Failure) error {
 
 	logFile := garif.NewLogFile([]*garif.Run{run}, garif.Version210)
 	return logFile.PrettyWrite(w)
+}
+
+func getResultLevel(severity rule.Severity) garif.ResultLevel {
+	switch severity {
+	case rule.SeverityError:
+		return garif.ResultLevel_Error
+	case rule.SeverityWarning:
+		return garif.ResultLevel_Warning
+	case rule.SeverityNote:
+		return garif.ResultLevel_None
+	}
+
+	return garif.ResultLevel_None
 }

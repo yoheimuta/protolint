@@ -10,6 +10,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/addon/rules"
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestMessagesHaveCommentRule_Apply(t *testing.T) {
@@ -242,7 +243,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewMessagesHaveCommentRule(test.inputShouldFollowGolangStyle)
+			rule := rules.NewMessagesHaveCommentRule(rule.SeverityError, test.inputShouldFollowGolangStyle)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {

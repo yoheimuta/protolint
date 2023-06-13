@@ -49,7 +49,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit no messages",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE", "error"),
 			},
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{Filename: ""},
@@ -58,7 +58,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit a message",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE", "error"),
 			},
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{Filename: ""},
@@ -91,7 +91,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit messages",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE", "error"),
 			},
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{Filename: ""},
@@ -144,7 +144,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit messages recursively",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE", "error"),
 				next:           true,
 			},
 			inputProto: &parser.Proto{
@@ -200,7 +200,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit a message. one is disabled.",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE", "error"),
 			},
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{Filename: ""},
@@ -249,7 +249,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit a message. one is disabled by an inline comment.",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE", "error"),
 			},
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{Filename: ""},
@@ -296,7 +296,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit messages. others are disabled.",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE", "error"),
 			},
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{Filename: ""},
@@ -360,7 +360,7 @@ func TestRunVisitor(t *testing.T) {
 		{
 			name: "visit messages. others are disabled by a last line comment.",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("MESSAGE_NAMES_UPPER_CAMEL_CASE", "error"),
 			},
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{Filename: ""},
@@ -462,7 +462,7 @@ func TestRunVisitorAutoDisable(t *testing.T) {
 		{
 			name: "Do nothing in case of no failures",
 			inputVisitor: &testVisitor{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE", "error"),
 			},
 			inputFilename:      "invalid.proto",
 			inputRuleID:        "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
@@ -472,7 +472,7 @@ func TestRunVisitorAutoDisable(t *testing.T) {
 		{
 			name: "Insert a disable:next comment",
 			inputVisitor: &testVisitorInvalidEnumField{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE", "error"),
 			},
 			inputFilename:      "invalid.proto",
 			inputRuleID:        "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
@@ -483,7 +483,7 @@ func TestRunVisitorAutoDisable(t *testing.T) {
 		{
 			name: "Insert a disable:this comment",
 			inputVisitor: &testVisitorInvalidEnumField{
-				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE"),
+				BaseAddVisitor: visitor.NewBaseAddVisitor("ENUM_FIELD_NAMES_UPPER_SNAKE_CASE", "error"),
 			},
 			inputFilename:      "invalid.proto",
 			inputRuleID:        "ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
