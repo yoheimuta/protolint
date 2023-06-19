@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
 	"path/filepath"
 
 	"github.com/hashicorp/go-plugin"
@@ -60,12 +59,6 @@ func NewCmdLint(
 	)
 
 	output := stderr
-	if 0 < len(flags.OutputFilePath) {
-		output, err = os.OpenFile(flags.OutputFilePath, os.O_WRONLY|os.O_CREATE, 0666)
-		if err != nil {
-			return nil, err
-		}
-	}
 
 	return &CmdLint{
 		l:          linter.NewLinter(),
@@ -87,7 +80,7 @@ func (c *CmdLint) Run() osutil.ExitCode {
 		return osutil.ExitInternalFailure
 	}
 
-	err = c.config.reporter.Report(c.output, failures)
+	err = c.config.reporters.ReportWithFallback(c.output, failures)
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
 		return osutil.ExitInternalFailure

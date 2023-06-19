@@ -27,6 +27,7 @@ type Flags struct {
 	Verbose                   bool
 	NoErrorOnUnmatchedPattern bool
 	Plugins                   []shared.RuleSet
+	AdditionalReporters       reporterStreamFlags
 }
 
 // NewFlags creates a new Flags.
@@ -41,6 +42,7 @@ func NewFlags(
 	var rf reporterFlag
 	var af autoDisableFlag
 	var pf subcmds.PluginFlag
+	var rfs reporterStreamFlags
 
 	f.StringVar(
 		&f.ConfigPath,
@@ -93,10 +95,18 @@ func NewFlags(
 		false,
 		"exits with 0 when no file is matched",
 	)
+	f.Var(
+		&rfs,
+		"add-reporter",
+		"Adds a reporter to the list of reporters to use. The format should be 'name of reporter':'Path-To_output_file'",
+	)
 
 	_ = f.Parse(args)
 	if rf.reporter != nil {
 		f.Reporter = rf.reporter
+	}
+	if len(rfs) > 0 {
+		f.AdditionalReporters = rfs
 	}
 	if af.autoDisableType != 0 {
 		f.AutoDisableType = af.autoDisableType

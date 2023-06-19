@@ -16,7 +16,7 @@ type CmdLintConfig struct {
 	fixMode         bool
 	autoDisableType autodisable.PlacementType
 	verbose         bool
-	reporter        report.Reporter
+	reporters       report.ReportersWithOutput
 	plugins         []shared.RuleSet
 }
 
@@ -25,12 +25,25 @@ func NewCmdLintConfig(
 	externalConfig config.ExternalConfig,
 	flags Flags,
 ) CmdLintConfig {
+	output := report.WriteToConsole
+	if 0 < len(flags.OutputFilePath) {
+		output = flags.OutputFilePath
+	}
+
+	var reporters report.ReportersWithOutput
+	reporters = append(reporters, *report.NewReporterWithOutput(flags.Reporter, output))
+
+	for _, additionalReporter := range flags.AdditionalReporters {
+		r := *report.NewReporterWithOutput(additionalReporter.reporter, additionalReporter.targetFile)
+		reporters = append(reporters, r)
+	}
+
 	return CmdLintConfig{
 		external:        externalConfig,
 		fixMode:         flags.FixMode,
 		autoDisableType: flags.AutoDisableType,
 		verbose:         flags.Verbose,
-		reporter:        flags.Reporter,
+		reporters:       reporters,
 		plugins:         flags.Plugins,
 	}
 }
