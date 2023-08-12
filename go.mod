@@ -25,4 +25,4 @@ require (
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
 )
 
-go 1.17
+go 1.21
