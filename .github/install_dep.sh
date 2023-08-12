@@ -9,4 +9,3 @@ go install github.com/gordonklaus/ineffassign@latest
 go install github.com/opennota/check/cmd/varcheck@latest
 go install github.com/opennota/check/cmd/aligncheck@latest
 go install github.com/mdempsky/unconvert@latest
-go install github.com/chavacava/garif@latest
