@@ -56,13 +56,6 @@ builds:
     ldflags:
       - -s -w -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.version={{.Version}} -X github.com/yoheimuta/protolint/internal/cmd/protocgenprotolint.revision={{.ShortCommit}}  # yamllint disable-line rule:line-length
 archives:
-  -
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
 checksum:
   name_template: checksums.txt
 snapshot:
