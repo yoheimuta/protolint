@@ -12,12 +12,13 @@ import (
 // for simple machine-readable output.
 //
 // The format is:
-//  {
-// 		"lints":
-// 			[
-// 				{"filename": FILENAME, "line": LINE, "column": COL, "message": MESSAGE, "rule": RULE}
-// 			],
-//  }
+//
+//	 {
+//			"lints":
+//				[
+//					{"filename": FILENAME, "line": LINE, "column": COL, "message": MESSAGE, "rule": RULE}
+//				],
+//	 }
 type JSONReporter struct{}
 
 type lintJSON struct {
