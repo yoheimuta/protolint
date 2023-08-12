@@ -2,11 +2,11 @@
 
 set -eux
 
-go get -u golang.org/x/tools/cmd/goimports
-go get -u github.com/kisielk/errcheck
-go get -u golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
-go get -u github.com/gordonklaus/ineffassign
-go get -u github.com/opennota/check/cmd/varcheck
-go get -u github.com/opennota/check/cmd/aligncheck
-go get -u github.com/mdempsky/unconvert
-go get -u github.com/chavacava/garif
+go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/kisielk/errcheck@latest
+go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow@latest
+go install github.com/gordonklaus/ineffassign@latest
+go install github.com/opennota/check/cmd/varcheck@latest
+go install github.com/opennota/check/cmd/aligncheck@latest
+go install github.com/mdempsky/unconvert@latest
+go install github.com/chavacava/garif@latest
