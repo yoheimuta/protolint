@@ -95,6 +95,7 @@ func GetReporter(value string) (report.Reporter, error) {
 		"unix":    reporters.UnixReporter{},
 		"json":    reporters.JSONReporter{},
 		"sarif":   reporters.SarifReporter{},
+		"sonar":   reporters.SonarReporter{},
 		"ci":      reporters.NewCiReporterWithGenericFormat(),
 		"ci-az":   reporters.NewCiReporterForAzureDevOps(),
 		"ci-gh":   reporters.NewCiReporterForGithubActions(),
