@@ -435,6 +435,7 @@ The built-in reporter options are:
 - junit
 - json
 - sarif
+- sonar (SonarQube generic issue format)
 - unix
 
 ## Configuring
