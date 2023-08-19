@@ -90,7 +90,27 @@ func TestFileNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"FILE_NAMES_LOWER_SNAKE_CASE",
-					`File name "lowerSnakeCase.txt" should be lower_snake_case.proto like "lower_snake_case.txt".`,
+					`File name "lowerSnakeCase.txt" should be lower_snake_case.proto like "lower_snake_case.proto".`,
+				),
+			},
+		},
+		{
+			name: "a failure for proto with an invalid separater",
+			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{
+					Filename: "proto/dot.separated.proto",
+				},
+			},
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{
+						Filename: "proto/dot.separated.proto",
+						Offset:   0,
+						Line:     1,
+						Column:   1,
+					},
+					"FILE_NAMES_LOWER_SNAKE_CASE",
+					`File name "dot.separated.proto" should be lower_snake_case.proto like "dot_separated.proto".`,
 				),
 			},
 		},
