@@ -90,14 +90,19 @@ func (f *reporterFlag) Set(value string) error {
 // GetReporter returns a reporter from the specified key.
 func GetReporter(value string) (report.Reporter, error) {
 	rs := map[string]report.Reporter{
-		"plain": reporters.PlainReporter{},
-		"junit": reporters.JUnitReporter{},
-		"unix":  reporters.UnixReporter{},
-		"json":  reporters.JSONReporter{},
-		"sarif": reporters.SarifReporter{},
+		"plain":   reporters.PlainReporter{},
+		"junit":   reporters.JUnitReporter{},
+		"unix":    reporters.UnixReporter{},
+		"json":    reporters.JSONReporter{},
+		"sarif":   reporters.SarifReporter{},
+		"ci":      reporters.NewCiReporterWithGenericFormat(),
+		"ci-az":   reporters.NewCiReporterForAzureDevOps(),
+		"ci-gh":   reporters.NewCiReporterForGithubActions(),
+		"ci-glab": reporters.NewCiReporterForGitlab(),
+		"ci-env":  reporters.NewCiReporterFromEnv(),
 	}
 	if r, ok := rs[value]; ok {
 		return r, nil
 	}
-	return nil, fmt.Errorf(`available reporters are "plain", "junit", "json", "sarif", and "unix"`)
+	return nil, fmt.Errorf(`available reporters are "plain", "junit", "json", "sarif", and "unix, available reporters for CI/CD are ci, ci-az, ci-gh, ci-glab"`)
 }
