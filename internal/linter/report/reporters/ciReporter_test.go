@@ -306,7 +306,10 @@ func TestEnvMatcherReporterFromUnallowedTemplateFile_Report(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to create temp file: %v", err)
 	}
-	file.Write([]byte("[fromfile:does.exist] {{ .Severity }}@{{ .File }}[{{ .Line }},{{ .Column }}] triggered rule {{ .Rule }} with message {{ .Message }}"))
+	_, err = file.Write([]byte("[fromfile:does.exist] {{ .Severity }}@{{ .File }}[{{ .Line }},{{ .Column }}] triggered rule {{ .Rule }} with message {{ .Message }}"))
+	if err != nil {
+		t.Errorf("Failed to write temp file: %v", err)
+	}
 	err = file.Close()
 	if err != nil {
 		t.Errorf("Failed to create temp file (error while closing): %v", err)
@@ -427,7 +430,14 @@ func (tf *testFiles) appendFile(t *testing.T, fileName string, fileContent strin
 		return
 	}
 
-	defer file.Close()
+	defer func(td *testing.T) {
+		err = file.Close()
+		if err != nil {
+			td.Errorf("Failed to content to file %s: %v", filePath, err)
+			return
+		}
+	}(t)
+
 	_, err = file.WriteString(fileContent)
 	if err != nil {
 		t.Errorf("Failed to content to file %s: %v", filePath, err)

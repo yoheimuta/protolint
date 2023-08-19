@@ -90,7 +90,10 @@ func (c CiReporter) Report(w io.Writer, fs []report.Failure) error {
 		}
 
 		if written > 0 {
-			w.Write([]byte("\n"))
+			_, err = w.Write([]byte("\n"))
+			if err != nil {
+				return err
+			}
 		}
 	}
 
