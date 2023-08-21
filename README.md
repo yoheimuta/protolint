@@ -142,6 +142,58 @@ Jenkins Plugins
 
 - [warnings-ng](https://github.com/jenkinsci/warnings-ng-plugin) and any that use [violatons-lib](https://github.com/tomasbjerre/violations-lib)
 
+### Environment specific output
+
+It is possible to format your linting according to the formatting of the CI/CD environment. The environment must be set using the output format. Currently, the following output is realized:
+
+| Environment | Command Line Value | Description | Example |
+|-------------|--------------------|-------------|---------|
+| Github Actions | ci-gh | [Github Help](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-notice-message) | `::warning file=example.proto,line=10,col=20,title=ENUM_NAMES_UPPER_CAMEL_CASE::EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES` |
+| Azure DevOps | ci-az | [Azure DevOps Help](https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands) | `##vso[task.logissue type=warning;sourcepath=example.proto;linenumber=10;columnnumber=20;code=ENUM_NAMES_UPPER_CAMEL_CASE;]EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES` |
+| Gitlab CI/CD | ci-glab | Reverse Engineered from Examples | `WARNING: ENUM_NAMES_UPPER_CAMEL_CASE  example.proto(10,20) : EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES` |
+
+You can also use the generic `ci` formatter, which will create a generic problem matcher.
+
+With the `ci-env` value, you can specify the template from the following environment variables:
+
+| Environment Variable | Priority | Meaning |
+|----------------------|----------|---------|
+| PROTOLINT_CIREPORTER_TEMPLATE_STRING | 1 | String containing a Go-template |
+| PROTOLINT_CIREPORTER_TEMPLATE_FILE | 2 | Path to a file containing a Go-template |
+
+The resulting line-feed must not be added, as it will be added automatically.
+
+The following fields are available:
+
+`Severity`
+: The severity as string (either note, warning or error)
+
+`File`
+: Path to the file containing the error
+
+`Line`
+: Line within the `file` containing the error (starting position)
+
+`Column`
+: Column within the `file` containing the error (starting position)
+
+`Rule`
+: The name of the rule that is faulting
+
+`Message`
+: The error message that descibes the error
+
+### Producing an output file and an CI/CD Error stream
+
+You can create a specific output matching your CI/CD environment and also create an output file, e.g. for your static code analysis tools like github CodeQL or SonarQube.
+
+This can be done by adding the `--add-reporter` flag.
+Please note, that the value must be formatted `<reporter-name>:<output-file-path>` (omitting `<` and `>`).
+
+```shell
+$ protolint --reporter ci-gh --add-reporter sarif:/path/to/my/output.sarif.json proto/*.proto
+```
+
 ## Use as a protoc plugin
 
 protolint also maintains a binary [protoc-gen-protolint](cmd/protoc-gen-protolint) that performs the lint functionality as a protoc plugin.
@@ -383,6 +435,7 @@ The built-in reporter options are:
 - junit
 - json
 - sarif
+- sonar (SonarQube generic issue format)
 - unix
 
 ## Configuring
