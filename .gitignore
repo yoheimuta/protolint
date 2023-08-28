@@ -21,3 +21,10 @@ atlassian-ide-plugin.xml
 # Gradle files
 /.gradle
 /build
+
+# JS files
+/bdist/js/bin/protolint
+/bdist/js/bin/protoc-gen-protolint
+/bdist/js/node_modules/
+/bdist/js/node_modules/*.tgz
+
