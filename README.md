@@ -87,9 +87,27 @@ During install, the [install.mjs](bdist/js/install.mjs) script will be called. I
 | PROTOLINT_MIRROR_REMOTE_PATH  | yoheimuta/protolint/download/releases | Path to the archives on the remote host       |
 | PROTOLINT_MIRROR_USERNAME     |                                       | HTTP Basic auth user name                     |
 | PROTOLINT_MIRROR_PASSWORD     |                                       | HTTP Basic auth password                      |
+| PROTOLINT_PROXY               |                                       | HTTP(S) Proxy with optional auth data         |
 
 Within the remote path, the archives from the [releases](https://github.com/yoheimuta/protolint/releases/latest/) page must be
 mirrored.
+
+After that, you can use `npx protolint` (with all supplied protolint arguments) within your dev-scripts.
+
+```json
+{
+  ...
+  "scripts": {
+    "protoc": "....",
+    "preprotoc": "npx protolint"
+  },
+  ...
+}
+```
+
+You can add a `protolint` node to your `package.json` which may contain the content of `protolint.yml` below the `lint` node, i.e. the root element of the configuration will be `protolint`.
+
+If you want to get an output that matches the TSC compiler, use reporter `tsc`.
 
 ## Usage
 
@@ -459,6 +477,7 @@ The built-in reporter options are:
 - sarif
 - sonar (SonarQube generic issue format)
 - unix
+- tsc (compatible to TypeScript compiler)
 
 ## Configuring
 
