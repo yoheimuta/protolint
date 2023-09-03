@@ -1,36 +1,16 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/yoheimuta/protolint/internal/stringsutil"
-
-	yaml "gopkg.in/yaml.v2"
 )
-
-const (
-	externalConfigFileName       = ".protolint"
-	externalConfigFileName2      = "protolint"
-	externalConfigFileExtension  = ".yaml"
-	externalConfigFileExtension2 = ".yml"
-)
-
-const packageJsonFileNameForJs = "package.json"
 
 type configLoader interface {
 	LoadExternalConfig() (*ExternalConfig, error)
-}
-
-type yamlConfigLoader struct {
-	filePath string
-}
-
-type jsonConfigLoader struct {
-	filePath string
 }
 
 func loadFileContent(file string) ([]byte, error) {
@@ -43,48 +23,6 @@ func loadFileContent(file string) ([]byte, error) {
 	}
 
 	return data, nil
-}
-
-func (y yamlConfigLoader) LoadExternalConfig() (*ExternalConfig, error) {
-	data, err := loadFileContent(y.filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	var config ExternalConfig
-
-	if err := yaml.UnmarshalStrict(data, &config); err != nil {
-		return nil, err
-	}
-
-	config.SourcePath = y.filePath
-
-	return &config, nil
-}
-
-func (j jsonConfigLoader) LoadExternalConfig() (*ExternalConfig, error) {
-	data, err := loadFileContent(j.filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	var config ExternalConfig
-	var jsonData embeddedConfig
-	// do not unmarshal strict. JS specific package.json will contain
-	// other values as well.
-	if jsonErr := json.Unmarshal(data, &jsonData); jsonErr != nil {
-		return nil, jsonErr
-	}
-
-	readConfig := jsonData.toExternalConfig()
-	if readConfig == nil {
-		return nil, nil
-	}
-	config = *readConfig
-
-	config.SourcePath = j.filePath
-
-	return &config, nil
 }
 
 // GetExternalConfig provides the externalConfig.
@@ -111,7 +49,7 @@ func getLoaderFromExtension(filePath string) (configLoader, error) {
 	if strings.HasSuffix(filePath, externalConfigFileExtension) || strings.HasSuffix(filePath, externalConfigFileExtension2) {
 		return yamlConfigLoader{filePath: filePath}, nil
 	}
-	if strings.HasSuffix(filePath, ".json") {
+	if strings.HasSuffix(filePath, packageJsonFileNameForJsExtension) {
 		return jsonConfigLoader{filePath: filePath}, nil
 	}
 
