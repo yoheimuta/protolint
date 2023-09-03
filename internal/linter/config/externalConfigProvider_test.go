@@ -206,6 +206,71 @@ func TestGetExternalConfig(t *testing.T) {
 			inputFilePath: setting_test.TestDataPath("validconfig", "particular_name", "not_found.yaml"),
 			wantExistErr:  true,
 		},
+		{
+			name:    "found a package.json with 'protolint' in it",
+			cwdPath: setting_test.TestDataPath("js_config", "package"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: "package.json",
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
+			name:               "found a package.json without 'protolint' in it",
+			cwdPath:            setting_test.TestDataPath("js_config", "package_no_protolint"),
+			wantExternalConfig: nil,
+		},
+		{
+			name:    "found a package.json with 'protolint' and other stuff in it",
+			cwdPath: setting_test.TestDataPath("js_config", "non_pure_package"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: "package.json",
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
+			name:    "found a package.json with 'protolint' and other stuff in it, but superseded by sibling protolint.yaml",
+			cwdPath: setting_test.TestDataPath("js_config", "package_with_yaml"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: "protolint.yaml",
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
+			name:    "found a package.json with 'protolint' and other stuff in it, but superseded by parent protolint.yaml",
+			cwdPath: setting_test.TestDataPath("js_config", "package_with_yaml_parent", "child"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("js_config", "package_with_yaml_parent", "protolint.yaml"),
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {

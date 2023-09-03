@@ -1,0 +1,10 @@
+{
+    "protolint": {
+        "rules_option":{
+            "indent": {
+                "style": "\t",
+                "newline": "\n"
+            }
+        }
+    }
+}
