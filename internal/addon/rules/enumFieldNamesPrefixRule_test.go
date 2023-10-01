@@ -72,6 +72,23 @@ func TestEnumFieldNamesPrefixRule_Apply(t *testing.T) {
 			},
 		},
 		{
+			name: "no failures for proto with valid enum field names even when its camel-case string starts with a 2-letter abbreviation",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Enum{
+						EnumName: "ITDepartmentRegion",
+						EnumBody: []parser.Visitee{
+							&parser.EnumField{
+								Ident:  "IT_DEPARTMENT_REGION_UNSPECIFIED",
+								Number: "0",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "failures for proto with invalid enum field names",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
