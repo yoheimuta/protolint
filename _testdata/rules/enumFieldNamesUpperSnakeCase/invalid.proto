@@ -7,5 +7,5 @@ enum enum {
 
 enum enumAlias {
     started_lap = 1;
-    RUNNINGlapUntil = 2 [(custom_option) = "hello world"];
+    RUNNINGLapUntil = 2 [(custom_option) = "hello world"];
 }

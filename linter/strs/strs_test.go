@@ -208,7 +208,8 @@ func TestSplitCamelCaseWord(t *testing.T) {
 			name:  "input consists of words with continuous upper letters",
 			input: "ACCOUNTStatusException",
 			want: []string{
-				"ACCOUNTStatus",
+				"ACCOUNT",
+				"Status",
 				"Exception",
 			},
 		},
@@ -250,6 +251,11 @@ func TestToUpperSnakeCase(t *testing.T) {
 			name:  "input consists of words without an initial capital",
 			input: "accountStatus",
 			want:  "ACCOUNT_STATUS",
+		},
+		{
+			name:  "convert from camel-case strings starting with a 2-letter abbreviation #341",
+			input: "ITDepartmentRegion",
+			want:  "IT_DEPARTMENT_REGION",
 		},
 	}
 
