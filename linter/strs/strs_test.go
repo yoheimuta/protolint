@@ -257,6 +257,31 @@ func TestToUpperSnakeCase(t *testing.T) {
 			input: "ITDepartmentRegion",
 			want:  "IT_DEPARTMENT_REGION",
 		},
+		{
+			name:  "convert from camel-case strings includes OAuth #351",
+			input: "ListAccountPipedriveOAuthsEnabledFilter",
+			want:  "LIST_ACCOUNT_PIPEDRIVE_OAUTHS_ENABLED_FILTER",
+		},
+		{
+			name:  "convert from camel-case strings starting with OAuth #351",
+			input: "OAuthsEnabledFilter",
+			want:  "OAUTHS_ENABLED_FILTER",
+		},
+		{
+			name:  "convert from camel-case strings includes with a 2-letter abbreviation #341",
+			input: "ListITDepartmentRegion",
+			want:  "LIST_IT_DEPARTMENT_REGION",
+		},
+		{
+			name:  "convert from camel-case strings starting with a 3-letter abbreviation",
+			input: "ITCDepartmentRegion",
+			want:  "ITC_DEPARTMENT_REGION",
+		},
+		{
+			name:  "convert from camel-case strings includes a 3-letter abbreviation",
+			input: "ListITCDepartmentRegion",
+			want:  "LIST_ITC_DEPARTMENT_REGION",
+		},
 	}
 
 	for _, test := range tests {

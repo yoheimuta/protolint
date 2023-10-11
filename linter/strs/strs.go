@@ -152,13 +152,21 @@ func ToLowerCamelCase(s string) string {
 func toSnake(s string) string {
 	output := ""
 	s = strings.TrimSpace(s)
-	priorUpper := false
-	for i, c := range s {
-		if priorUpper && isLower(c) && 1 < i {
-			output = output[:len(output)-1] + "_" + output[len(output)-1:]
+	priorUpperN := 0
+	for _, c := range s {
+		if isLower(c) {
+			if 2 < priorUpperN {
+				output = output[:len(output)-1] + "_" + output[len(output)-1:]
+			}
+		} else if priorUpperN == 0 && len(output) > 0 {
+			output += "_"
 		}
 		output += string(c)
-		priorUpper = isUpper(c)
+		if isUpper(c) {
+			priorUpperN += 1
+		} else {
+			priorUpperN = 0
+		}
 	}
 	return output
 }
