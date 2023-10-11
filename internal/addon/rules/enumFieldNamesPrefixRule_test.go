@@ -89,6 +89,23 @@ func TestEnumFieldNamesPrefixRule_Apply(t *testing.T) {
 			},
 		},
 		{
+			name: "no failures for proto with valid enum field names even when its camel-case string includes OAuth",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Enum{
+						EnumName: "ListAccountPipedriveOAuthsEnabledFilter",
+						EnumBody: []parser.Visitee{
+							&parser.EnumField{
+								Ident:  "LIST_ACCOUNT_PIPEDRIVE_OAUTHS_ENABLED_FILTER_UNSPECIFIED",
+								Number: "0",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "failures for proto with invalid enum field names",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
