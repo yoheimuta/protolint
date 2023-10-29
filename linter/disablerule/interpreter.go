@@ -75,6 +75,9 @@ func (i *Interpreter) CallEachIfValid(
 			shouldSkip = false
 			continue
 		}
+		if i.isDisabled {
+			continue
+		}
 
 		f(index, line)
 	}

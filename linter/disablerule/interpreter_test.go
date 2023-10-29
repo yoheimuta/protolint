@@ -380,6 +380,19 @@ func TestInterpreter_CallEachIfValid(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:        "protolint:disable doesn't collide with protolint:disable that has a different ruleID",
+			inputRuleID: "MAX_LINE_LENGTH",
+			inputLines: []string{
+				`// protolint:disable MAX_LINE_LENGTH`,
+				`syntax = "proto3";`,
+				`/** Schnufte test enumeration. */`,
+				`enum TestEnum {`,
+				`  TEST_ENUM_UNSPECIFIED = 0; // Unspecified.`,
+				`  FOO = 1;                               // protolint:disable:this ENUM_FIELD_NAMES_PREFIX`,
+				`}`,
+			},
+		},
 	}
 
 	for _, test := range tests {
