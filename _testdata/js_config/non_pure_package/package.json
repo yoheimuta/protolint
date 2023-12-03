@@ -1,0 +1,12 @@
+{
+    "name": "protolint_user",
+    "version": "0.1.0",
+    "protolint": {
+        "rules_option":{
+            "indent": {
+                "style": "\t",
+                "newline": "\n"
+            }
+        }
+    }
+}

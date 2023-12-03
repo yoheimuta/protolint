@@ -1,0 +1,52 @@
+{
+  "name": "protolint",
+  "version": "0.46.0",
+  "description": "A pluggable linter and fixer to enforce Protocol Buffer style and conventions.",
+  "main": "index.js",
+  "bin": {
+    "protolint": "./bin/protolint.js",
+    "protoc-gen-protolint": "./bin/protoc-gen-protolint.js"
+  },
+  "scripts": {
+    "install": "node install.mjs",
+    "version": "node version.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yoheimuta/protolint.git"
+  },
+  "files": [
+    "install.mjs",
+    "version.mjs",
+    "./bin/protolint.js",
+    "./bin/protoc-gen-protolint.js",
+    "index.js"
+  ],
+  "keywords": [
+    "lint",
+    "cli",
+    "golang",
+    "protobuf",
+    "style-linter",
+    "linter",
+    "protocol-buffers",
+    "proto3",
+    "fixer",
+    "plugin-architecture"
+  ],
+  "author": "yohei yoshimuta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yoheimuta/protolint/issues"
+  },
+  "homepage": "https://github.com/yoheimuta/protolint#readme",
+  "dependencies": {
+    "got": "^12.0.0",
+    "got-fetch": "^5.1.6",
+    "http-proxy-agent": "^7.0.0",
+    "npmlog": "^7.0.1",
+    "semver": "^7.5.4",
+    "tar": "^6.1.15",
+    "tempy": "^3.1.0"
+  }
+}

@@ -1,0 +1,42 @@
+---
+name: Publish NPM Package
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [goreleaser]
+    types:
+      - completed
+
+jobs:
+  publish_npm:
+    name: Publish NPM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        with:
+          fetch-tags: true
+      - name: Install node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        working-directory: ./bdist/js
+        run: npm install --ignore-scripts
+      - name: Set package version
+        working-directory: ./bdist/js
+        run: npm run version
+      - name: Pack NPM Package
+        working-directory: ./bdist/js
+        run: npm pack
+      - name: Issue warning if NPM_TOKEN is not set
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "::warning title=Missing authentication token::In order to publish an NPM package, you must set the NPM_TOKEN secret"
+        if: ${{ env.NODE_AUTH_TOKEN == '' }}
+      - name: Publish NPM package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
+        if: ${{ env.NODE_AUTH_TOKEN != '' }}

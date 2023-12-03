@@ -2,29 +2,35 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/yoheimuta/protolint/internal/stringsutil"
-
-	yaml "gopkg.in/yaml.v2"
 )
 
-const (
-	externalConfigFileName       = ".protolint"
-	externalConfigFileName2      = "protolint"
-	externalConfigFileExtension  = ".yaml"
-	externalConfigFileExtension2 = ".yml"
-)
+type configLoader interface {
+	LoadExternalConfig() (*ExternalConfig, error)
+}
+
+func loadFileContent(file string) ([]byte, error) {
+	data, err := os.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+	if len(data) == 0 {
+		return nil, fmt.Errorf("read %s, but the content is empty", file)
+	}
+
+	return data, nil
+}
 
 // GetExternalConfig provides the externalConfig.
 func GetExternalConfig(
 	filePath string,
 	dirPath string,
 ) (*ExternalConfig, error) {
-	newPath, err := getExternalConfigPath(filePath, dirPath)
+	reader, err := getExternalConfigLoader(filePath, dirPath)
 	if err != nil {
 		if len(filePath) == 0 && len(dirPath) == 0 {
 			return nil, nil
@@ -32,36 +38,37 @@ func GetExternalConfig(
 		return nil, err
 	}
 
-	data, err := ioutil.ReadFile(newPath)
 	if err != nil {
 		return nil, err
 	}
-	if len(data) == 0 {
-		return nil, fmt.Errorf("read %s, but the content is empty", newPath)
-	}
 
-	var config ExternalConfig
-	if err := yaml.UnmarshalStrict(data, &config); err != nil {
-		return nil, err
-	}
-	config.SourcePath = newPath
-
-	return &config, nil
+	return reader.LoadExternalConfig()
 }
 
-func getExternalConfigPath(
+func getLoaderFromExtension(filePath string) (configLoader, error) {
+	if strings.HasSuffix(filePath, externalConfigFileExtension) || strings.HasSuffix(filePath, externalConfigFileExtension2) {
+		return yamlConfigLoader{filePath: filePath}, nil
+	}
+	if strings.HasSuffix(filePath, packageJsonFileNameForJsExtension) {
+		return jsonConfigLoader{filePath: filePath}, nil
+	}
+
+	return nil, fmt.Errorf("%s is not a valid support file extension", filePath)
+}
+
+func getExternalConfigLoader(
 	filePath string,
 	dirPath string,
-) (string, error) {
+) (configLoader, error) {
 	if 0 < len(filePath) {
-		return filePath, nil
+		return getLoaderFromExtension(filePath)
 	}
 
 	dirPaths := []string{dirPath}
 	if len(dirPath) == 0 {
 		absPath, err := os.Getwd()
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 
 		absPath = filepath.Dir(absPath)
@@ -72,6 +79,7 @@ func getExternalConfigPath(
 	}
 
 	var checkedPaths []string
+	// use protolint native files for default
 	for _, dir := range dirPaths {
 		for _, name := range []string{
 			externalConfigFileName,
@@ -87,11 +95,25 @@ func getExternalConfigPath(
 					if os.IsNotExist(err) {
 						continue
 					}
-					return "", err
+					return nil, err
 				}
-				return filePath, nil
+				return yamlConfigLoader{filePath: filePath}, nil
 			}
 		}
 	}
-	return "", fmt.Errorf("not found config file by searching `%s`", strings.Join(checkedPaths, ","))
+
+	// after checking for protolint yaml files, go for package.json of npm
+	for _, dir := range dirPaths {
+		filePath := filepath.Join(dir, packageJsonFileNameForJs)
+		checkedPaths = append(checkedPaths, filePath)
+		if _, err := os.Stat(filePath); err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return nil, err
+		}
+		return jsonConfigLoader{filePath: filePath}, nil
+	}
+
+	return nil, fmt.Errorf("not found config file by searching `%s`", strings.Join(checkedPaths, ","))
 }
