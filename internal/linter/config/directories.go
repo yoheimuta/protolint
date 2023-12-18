@@ -8,7 +8,7 @@ import (
 
 // Directories represents the target directories.
 type Directories struct {
-	Exclude []string `yaml:"exclude"`
+	Exclude []string `yaml:"exclude" json:"exclude" toml:"exclude"`
 }
 
 func (d Directories) shouldSkipRule(

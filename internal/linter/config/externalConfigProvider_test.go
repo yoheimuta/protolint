@@ -49,10 +49,10 @@ func TestGetExternalConfig(t *testing.T) {
 						},
 					},
 					Rules: struct {
-						NoDefault  bool     `yaml:"no_default"`
-						AllDefault bool     `yaml:"all_default"`
-						Add        []string `yaml:"add"`
-						Remove     []string `yaml:"remove"`
+						NoDefault  bool     `yaml:"no_default" json:"no_default" toml:"no_default"`
+						AllDefault bool     `yaml:"all_default" json:"all_default" toml:"all_default"`
+						Add        []string `yaml:"add" json:"add" toml:"add"`
+						Remove     []string `yaml:"remove" json:"remove" toml:"remove"`
 					}{
 						NoDefault: true,
 						Add: []string{
@@ -227,10 +227,35 @@ func TestGetExternalConfig(t *testing.T) {
 			wantExternalConfig: nil,
 		},
 		{
+			name:               "found a pyproject.toml without 'tools.protolint' in it",
+			cwdPath:            setting_test.TestDataPath("py_project", "pyproject_no_protolint"),
+			wantExternalConfig: nil,
+		},
+		{
+			name:               "found a pyproject.toml without 'tools' in it",
+			cwdPath:            setting_test.TestDataPath("py_project", "pyproject_no_tools"),
+			wantExternalConfig: nil,
+		},
+		{
 			name:    "found a package.json with 'protolint' and other stuff in it",
 			cwdPath: setting_test.TestDataPath("js_config", "non_pure_package"),
 			wantExternalConfig: &config.ExternalConfig{
 				SourcePath: "package.json",
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
+			name:    "found a pyproject.toml with 'tools.protolint' and other stuff in it",
+			cwdPath: setting_test.TestDataPath("py_project", "with_pyproject"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: "pyproject.toml",
 				Lint: config.Lint{
 					RulesOption: config.RulesOption{
 						Indent: config.IndentOption{
@@ -257,10 +282,40 @@ func TestGetExternalConfig(t *testing.T) {
 			},
 		},
 		{
+			name:    "found a pyproject.toml with 'toolsprotolint' and other stuff in it, but superseded by sibling protolint.yaml",
+			cwdPath: setting_test.TestDataPath("py_project", "project_with_yaml"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: "protolint.yaml",
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
 			name:    "found a package.json with 'protolint' and other stuff in it, but superseded by parent protolint.yaml",
 			cwdPath: setting_test.TestDataPath("js_config", "package_with_yaml_parent", "child"),
 			wantExternalConfig: &config.ExternalConfig{
 				SourcePath: setting_test.TestDataPath("js_config", "package_with_yaml_parent", "protolint.yaml"),
+				Lint: config.Lint{
+					RulesOption: config.RulesOption{
+						Indent: config.IndentOption{
+							Style:   "\t",
+							Newline: "\n",
+						},
+					},
+				},
+			},
+		},
+		{
+			name:    "found a pyproject.toml with 'toolsprotolint' and other stuff in it, but superseded by parent protolint.yaml",
+			cwdPath: setting_test.TestDataPath("py_project", "project_with_yaml_parent", "child"),
+			wantExternalConfig: &config.ExternalConfig{
+				SourcePath: setting_test.TestDataPath("py_project", "project_with_yaml_parent", "protolint.yaml"),
 				Lint: config.Lint{
 					RulesOption: config.RulesOption{
 						Indent: config.IndentOption{

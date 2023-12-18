@@ -6,11 +6,7 @@ type Lint struct {
 	Files       Files
 	Directories Directories
 	Rules       Rules
-	RulesOption RulesOption `yaml:"rules_option" json:"rules_option"`
-}
-
-type embeddedConfig struct {
-	Protolint *Lint `json:"protolint"`
+	RulesOption RulesOption `yaml:"rules_option" json:"rules_option" toml:"rules_option"`
 }
 
 // ExternalConfig represents the external configuration.
@@ -30,14 +26,4 @@ func (c ExternalConfig) ShouldSkipRule(
 		lint.Files.shouldSkipRule(displayPath) ||
 		lint.Directories.shouldSkipRule(displayPath) ||
 		lint.Rules.shouldSkipRule(ruleID, defaultRuleIDs)
-}
-
-func (p embeddedConfig) toExternalConfig() *ExternalConfig {
-	if p.Protolint == nil {
-		return nil
-	}
-
-	return &ExternalConfig{
-		Lint: *p.Protolint,
-	}
 }

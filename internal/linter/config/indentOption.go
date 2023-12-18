@@ -49,3 +49,46 @@ func (i *IndentOption) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	i.NotInsertNewline = option.NotInsertNewline
 	return nil
 }
+
+// UnmarshalTOML implements toml Unmarshaler interface.
+func (i *IndentOption) UnmarshalTOML(data interface{}) error {
+	optionsMap := map[string]interface{}{}
+	for k, v := range data.(map[string]interface{}) {
+		optionsMap[k] = v.(string)
+	}
+
+	if style, ok := optionsMap["style"]; ok {
+		styleStr := style.(string)
+		switch styleStr {
+		case "\t":
+			styleStr = "\t"
+		case "tab":
+			styleStr = "\t"
+		case "4":
+			styleStr = strings.Repeat(" ", 4)
+		case "2":
+			styleStr = strings.Repeat(" ", 2)
+		case "":
+			break
+		default:
+			return fmt.Errorf("%s is an invalid style option. valid option is \\t, tab, 4 or 2", style)
+		}
+		i.Style = styleStr
+	}
+
+	if newLine, ok := optionsMap["newline"]; ok {
+		newLineStr := newLine.(string)
+		switch newLineStr {
+		case "\n", "\r", "\r\n", "":
+			i.Newline = newLineStr
+		default:
+			return fmt.Errorf(`%s is an invalid newline option. valid option is \n, \r or \r\n`, newLine)
+		}
+	}
+
+	if insertNoNewLine, ok := optionsMap["not_insert_newline"]; ok {
+		i.NotInsertNewline = insertNoNewLine.(bool)
+	}
+
+	return nil
+}

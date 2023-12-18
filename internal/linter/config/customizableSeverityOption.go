@@ -5,7 +5,7 @@ import "github.com/yoheimuta/protolint/linter/rule"
 // CustomizableSeverityOption represents an option where the
 // severity of a rule can be configured via yaml.
 type CustomizableSeverityOption struct {
-	severity *rule.Severity `yaml:"severity"`
+	severity *rule.Severity `yaml:"severity" toml:"severity"`
 }
 
 // Severity returns the configured severity. If no severity

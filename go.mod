@@ -1,6 +1,8 @@
 module github.com/yoheimuta/protolint
 
 require (
+	github.com/BurntSushi/toml v1.3.2
+	github.com/chavacava/garif v0.0.0-20230608123814-4bd63c2919ab
 	github.com/gertd/go-pluralize v0.2.0
 	github.com/golang/protobuf v1.5.2
 	github.com/hashicorp/go-hclog v1.2.0
@@ -12,7 +14,6 @@ require (
 )
 
 require (
-	github.com/chavacava/garif v0.0.0-20230608123814-4bd63c2919ab // indirect
 	github.com/fatih/color v1.7.0 // indirect
 	github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb // indirect
 	github.com/mattn/go-colorable v0.1.4 // indirect
