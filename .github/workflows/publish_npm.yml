@@ -39,4 +39,5 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish
+        working-directory: ./bdist/js
         if: ${{ env.NODE_AUTH_TOKEN != '' }}
