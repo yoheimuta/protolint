@@ -40,7 +40,8 @@ jobs:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_AUTH_TOKEN }}
         run: |
-          echo "::warning title=Missing authentication token::In order to publish an wheel package, you must set the PYPI_USERNAME and PYPI_AUTH_TOKEN secrets"
+          echo -n "::warning title=Missing authentication token::In order to publish an wheel package, you must set "
+          echo "the PYPI_USERNAME and PYPI_AUTH_TOKEN secrets"
         if: ${{ (env.TWINE_USERNAME == '') || (env.TWINE_PASSWORD == '') }}
       - name: Publish WHEEL package
         env:
