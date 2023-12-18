@@ -109,6 +109,16 @@ You can add a `protolint` node to your `package.json` which may contain the cont
 
 If you want to get an output that matches the TSC compiler, use reporter `tsc`.
 
+### Within Python projects
+
+You can use `protolint` as a linter within your python projects. Just add the desired version to
+your `pyproject.toml` or `requirements.txt`.
+
+The wheels downloaded will contain the compiled go binaries for `protolint` and `protoc-gen-protolint`. Your platform must
+be compatible with the supported binary platforms.
+
+You can add the linter configuration to the `tools.protolint` package in `pyproject.toml`.
+
 ## Usage
 
 ```sh
