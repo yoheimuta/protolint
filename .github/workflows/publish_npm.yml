@@ -47,7 +47,8 @@ jobs:
           NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
         run: |
           # Use project specific npmrc file (cf. https://docs.npmjs.com/cli/v6/using-npm/config)
-          echo "_auth = $NPM_AUTH_TOKEN" > .npmrc
+          # Use scoped AUTH TOKEN (cf. https://docs.npmjs.com/cli/v9/configuring-npm/npmrc#auth-related-configuration)
+          echo "//registry.npmjs.org/:_authToken = $NPM_AUTH_TOKEN" >> .npmrc
           echo "email = $NPM_EMAIL" >> .npmrc
         working-directory: ./bdist/js
         if: ${{ env.NPM_AUTH_TOKEN != '' }}
