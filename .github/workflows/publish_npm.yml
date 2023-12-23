@@ -41,10 +41,19 @@ jobs:
         run: |
           echo "::warning title=Missing authentication information::In order to publish an NPM package, you must set the NPM_EMAIL secret"
         if: ${{ env.NPM_EMAIL == '' }}
-      - name: Publish NPM package
+      - name: Create .npmrc file
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
-        run: npm publish
+        run: |
+          # Use project specific npmrc file (cf. https://docs.npmjs.com/cli/v6/using-npm/config)
+          echo "_auth = $NPM_AUTH_TOKEN" > .npmrc
+          echo "email = $NPM_EMAIL" >> .npmrc
         working-directory: ./bdist/js
         if: ${{ env.NPM_AUTH_TOKEN != '' }}
+      - name: Publish NPM package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
+        working-directory: ./bdist/js
+        if: ${{ env.NODE_AUTH_TOKEN != '' }}
