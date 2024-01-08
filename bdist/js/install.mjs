@@ -26,20 +26,24 @@ const arch = _arch_mapping[_arch] ?? _arch;
 
 const url = `${protolint_host}/${protolint_path}/v${protolint_version}/${module_name}_${protolint_version}_${platform}_${arch}.tar.gz`;
 
-var agent = null;
+let agent;
 if (process.env.PROTOLINT_PROXY) {
     agent = HttpProxyAgent(process.env.PROTOLINT_PROXY);
 }
 
-const instance = got.extend({
+const agent_config = {
+    http: agent
+};
+
+const got_config = {
     followRedirect: true,
     maxRedirects: 3,
     username: process.env.PROTOLINT_MIRROR_USERNAME ?? '',
     password: process.env.PROTOLINT_MIRROR_PASSWORD ?? '',
-    agent: {
-        http: agent
-    }
-});
+    agent: agent_config,
+};
+
+const instance = got.extend(got_config);
 
 function get_filename_with_extension(fileName) {
     const ext = process.platform == "win32" ? ".exe" : "";
