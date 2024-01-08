@@ -1,6 +1,6 @@
 {
   "name": "protolint",
-  "version": "0.46.0",
+  "version": "0.47.4",
   "description": "A pluggable linter and fixer to enforce Protocol Buffer style and conventions.",
   "main": "index.js",
   "bin": {
