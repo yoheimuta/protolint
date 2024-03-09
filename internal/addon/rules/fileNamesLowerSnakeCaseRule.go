@@ -79,7 +79,6 @@ func (v *fileNamesLowerSnakeCaseVisitor) OnStart(proto *parser.Proto) error {
 	base := strings.TrimSuffix(filename, ext)
 	if ext != ".proto" || !strs.IsLowerSnakeCase(base) {
 		expected := strs.ToLowerSnakeCase(base)
-		expected = strings.ReplaceAll(expected, ".", "_")
 		expected += ".proto"
 		v.AddFailurefWithProtoMeta(proto.Meta, "File name %q should be lower_snake_case.proto like %q.", filename, expected)
 
