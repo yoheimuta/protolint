@@ -102,6 +102,8 @@ func HasAnyUpperCase(s string) bool {
 
 // ToUpperSnakeCase converts s to UPPER_SNAKE_CASE.
 func ToUpperSnakeCase(s string) string {
+	s = strings.ReplaceAll(s, ".", "_")
+	s = strings.ReplaceAll(s, "-", "_")
 	ws := SplitCamelCaseWord(s)
 	if ws == nil {
 		ws = []string{s}
@@ -113,6 +115,8 @@ func ToUpperSnakeCase(s string) string {
 
 // ToLowerSnakeCase converts s to lower_snake_case.
 func ToLowerSnakeCase(s string) string {
+	s = strings.ReplaceAll(s, ".", "_")
+	s = strings.ReplaceAll(s, "-", "_")
 	ws := SplitCamelCaseWord(s)
 	if ws == nil {
 		ws = []string{s}

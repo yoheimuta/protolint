@@ -282,6 +282,16 @@ func TestToUpperSnakeCase(t *testing.T) {
 			input: "ListITCDepartmentRegion",
 			want:  "LIST_ITC_DEPARTMENT_REGION",
 		},
+		{
+			name:  "input consists of kebab case",
+			input: "account-status",
+			want:  "ACCOUNT_STATUS",
+		},
+		{
+			name:  "input consists of .",
+			input: "account.status",
+			want:  "ACCOUNT_STATUS",
+		},
 	}
 
 	for _, test := range tests {
@@ -314,6 +324,16 @@ func TestToLowerSnakeCase(t *testing.T) {
 		{
 			name:  "input consists of words without an initial capital",
 			input: "accountStatus",
+			want:  "account_status",
+		},
+		{
+			name:  "input consists of kebab case",
+			input: "account-status",
+			want:  "account_status",
+		},
+		{
+			name:  "input consists of .",
+			input: "account.status",
 			want:  "account_status",
 		},
 	}

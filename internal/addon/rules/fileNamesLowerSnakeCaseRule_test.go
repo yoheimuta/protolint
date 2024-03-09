@@ -114,6 +114,26 @@ func TestFileNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 				),
 			},
 		},
+		{
+			name: "a failure for proto with a kebab case file name",
+			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{
+					Filename: "proto/user-role.proto",
+				},
+			},
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{
+						Filename: "proto/user-role.proto",
+						Offset:   0,
+						Line:     1,
+						Column:   1,
+					},
+					"FILE_NAMES_LOWER_SNAKE_CASE",
+					`File name "user-role.proto" should be lower_snake_case.proto like "user_role.proto".`,
+				),
+			},
+		},
 	}
 
 	for _, test := range tests {
@@ -155,6 +175,11 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 			name:          "fix for an incorrect proto",
 			inputFilename: "UpperCamelCase.proto",
 			wantFilename:  "upper_camel_case.proto",
+		},
+		{
+			name:          "fix for a kebab case proto",
+			inputFilename: "kebab-case.proto",
+			wantFilename:  "kebab_case.proto",
 		},
 	}
 
