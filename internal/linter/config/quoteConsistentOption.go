@@ -47,3 +47,31 @@ func (r *QuoteConsistentOption) UnmarshalYAML(unmarshal func(interface{}) error)
 	}
 	return nil
 }
+
+func (r *QuoteConsistentOption) UnmarshalToml(data interface{}) error {
+	optionsMap := map[string]interface{}{}
+	for k, v := range data.(map[string]interface{}) {
+		optionsMap[k] = v.(string)
+	}
+
+	if quote, ok := optionsMap["quote"]; ok {
+		quoteStr := quote.(string)
+		if 0 < len(quoteStr) {
+			supportQuotes := map[string]QuoteType{
+				"double": DoubleQuote,
+				"single": SingleQuote,
+			}
+			quote, ok := supportQuotes[quoteStr]
+			if !ok {
+				var list []string
+				for k := range supportQuotes {
+					list = append(list, k)
+				}
+				return fmt.Errorf("%s is an invalid quote. valid options are [%s]",
+					quoteStr, strings.Join(list, ","))
+			}
+			r.Quote = quote
+		}
+	}
+	return nil
+}

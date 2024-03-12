@@ -1,0 +1,7 @@
+[project]
+name = "protolint_user"
+version = "0.1.0"
+
+[tools.protolint.rules_option.indent]
+style = "\t"
+newline = "\r\n"

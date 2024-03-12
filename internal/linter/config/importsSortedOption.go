@@ -28,3 +28,21 @@ func (i *ImportsSortedOption) UnmarshalYAML(unmarshal func(interface{}) error) e
 	}
 	return nil
 }
+
+// UnmarshalTOML implements toml Unmarshaler interface.
+func (i *ImportsSortedOption) UnmarshalTOML(data interface{}) error {
+	optionsMap := map[string]interface{}{}
+	for k, v := range data.(map[string]interface{}) {
+		optionsMap[k] = v.(string)
+	}
+
+	if newline, ok := optionsMap["newline"]; ok {
+		switch newline.(string) {
+		case "\n", "\r", "\r\n", "":
+			i.Newline = newline.(string)
+		default:
+			return fmt.Errorf(`%s is an invalid newline option. valid option is \n, \r or \r\n`, newline)
+		}
+	}
+	return nil
+}

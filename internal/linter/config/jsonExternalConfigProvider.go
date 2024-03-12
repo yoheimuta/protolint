@@ -18,7 +18,7 @@ func (j jsonConfigLoader) LoadExternalConfig() (*ExternalConfig, error) {
 	}
 
 	var config ExternalConfig
-	var jsonData embeddedConfig
+	var jsonData jsonEmbeddedConfig
 	// do not unmarshal strict. JS specific package.json will contain
 	// other values as well.
 	if jsonErr := json.Unmarshal(data, &jsonData); jsonErr != nil {
@@ -34,4 +34,18 @@ func (j jsonConfigLoader) LoadExternalConfig() (*ExternalConfig, error) {
 	config.SourcePath = j.filePath
 
 	return &config, nil
+}
+
+type jsonEmbeddedConfig struct {
+	Protolint *Lint `json:"protolint"`
+}
+
+func (p jsonEmbeddedConfig) toExternalConfig() *ExternalConfig {
+	if p.Protolint == nil {
+		return nil
+	}
+
+	return &ExternalConfig{
+		Lint: *p.Protolint,
+	}
 }

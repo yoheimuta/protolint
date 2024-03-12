@@ -52,6 +52,9 @@ func getLoaderFromExtension(filePath string) (configLoader, error) {
 	if strings.HasSuffix(filePath, packageJsonFileNameForJsExtension) {
 		return jsonConfigLoader{filePath: filePath}, nil
 	}
+	if strings.HasSuffix(filePath, pyProjectTomlFileNameForPyExtension) {
+		return tomlConfigLoader{filePath: filePath}, nil
+	}
 
 	return nil, fmt.Errorf("%s is not a valid support file extension", filePath)
 }
@@ -113,6 +116,19 @@ func getExternalConfigLoader(
 			return nil, err
 		}
 		return jsonConfigLoader{filePath: filePath}, nil
+	}
+
+	// after checking for protolint yaml and npm.json files, go for pyproject.toml of python
+	for _, dir := range dirPaths {
+		filePath := filepath.Join(dir, pyProjectTomlFileNameForPy)
+		checkedPaths = append(checkedPaths, filePath)
+		if _, err := os.Stat(filePath); err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return nil, err
+		}
+		return tomlConfigLoader{filePath: filePath}, nil
 	}
 
 	return nil, fmt.Errorf("not found config file by searching `%s`", strings.Join(checkedPaths, ","))

@@ -1,0 +1,6 @@
+[project]
+name = "protolint_user"
+version = "0.1.0"
+
+[tools]
+y = "x"
