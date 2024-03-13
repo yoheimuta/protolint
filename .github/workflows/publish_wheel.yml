@@ -49,4 +49,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_AUTH_TOKEN }}
         run: twine upload _wheel/*
         working-directory: ./bdist/py
-        if: ${{ (env.TWINE_USERNAME == '') || (env.TWINE_PASSWORD == '') }}
+        if: ${{ (env.TWINE_USERNAME != '') && (env.TWINE_PASSWORD != '') }}
