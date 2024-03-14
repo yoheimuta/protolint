@@ -81,6 +81,9 @@ executables = {"protolint", "protoc-gen-protolint"}
 PY_TAG = "py2.py3"
 ABI_TAG = "none"
 
+package_name = "protolint-bin"
+
+
 for arch_platform in ap_map.keys():
     tag = f"{PY_TAG}-{ABI_TAG}-{ap_map[arch_platform]}"
     logger.info("Packing files for %s using tag %s", arch_platform, tag)
@@ -93,9 +96,9 @@ for arch_platform in ap_map.keys():
     p_executables = [dist / f"{exe}_{arch_platform}" / f"{exe}{suffix}" for exe in executables]
 
     logger.debug("Creating wheel data folder")
-    dataFolder = pdir / f"protolint-{version_id}.data"
+    dataFolder = pdir / f"{package_name}-{version_id}.data"
     logger.debug("Creating wheel data folder")
-    distInfoFolder = pdir / f"protolint-{version_id}.dist-info"
+    distInfoFolder = pdir / f"{package_name}-{version_id}.dist-info"
 
     dataFolder.mkdir(parents=True, exist_ok=True)
     distInfoFolder.mkdir(parents=True, exist_ok=True)
@@ -124,8 +127,8 @@ for arch_platform in ap_map.keys():
             logger.debug("Writing METADATA file")
             ml.writelines([
                 "Metadata-Version: 2.1\n",
-                "Name: protolint\n",
-                "Summary: A pluggable linter and fixer to enforce Protocol Buffer style and conventions.\n",
+                f"Name: {package_name}\n",
+                "Summary: A pluggable linter and fixer to enforce Protocol Buffer style and conventions.\nThis package contains the pre-compiled binaries.\n",
                 "Description-Content-Type: text/markdown\n",
                 "Author: yohei yoshimuta\n",
                 "Maintainer: yohei yoshimuta\n",
@@ -166,7 +169,7 @@ for arch_platform in ap_map.keys():
             rl.write(distInfoFolder.name + "/RECORD,,\n")
             wheel_content.append(distInfoFolder / "RECORD")
 
-        whl_file = wheel / f"protolint-{version_id}-{tag}.whl"
+        whl_file = wheel / f"{package_name}-{version_id}-{tag}.whl"
         if whl_file.is_file():
             logger.debug("Removing existing wheel file")
             whl_file.unlink()
