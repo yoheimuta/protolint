@@ -111,7 +111,7 @@ If you want to get an output that matches the TSC compiler, use reporter `tsc`.
 
 ### Within Python projects
 
-You can use `protolint` as a linter within your python projects. Just add the desired version to
+You can use `protolint` as a linter within your python projects, the wheel `protolint-bin` on [pypi](https://pypi.org) contains the pre-compiled binaries for various platforms. Just add the desired version to
 your `pyproject.toml` or `requirements.txt`.
 
 The wheels downloaded will contain the compiled go binaries for `protolint` and `protoc-gen-protolint`. Your platform must
