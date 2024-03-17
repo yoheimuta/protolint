@@ -128,6 +128,7 @@ for arch_platform in ap_map.keys():
             ml.writelines([
                 "Metadata-Version: 2.1\n",
                 f"Name: {package_name}\n",
+                f"Version: {version_id} \n",
                 "Summary: A pluggable linter and fixer to enforce Protocol Buffer style and conventions.\nThis package contains the pre-compiled binaries.\n",
                 "Description-Content-Type: text/markdown\n",
                 "Author: yohei yoshimuta\n",
@@ -149,7 +150,6 @@ for arch_platform in ap_map.keys():
                 "Project-URL: Official Website, https://github.com/yoheimuta/protolint/\n",
                 "Project-URL: Source Code, https://github.com/yoheimuta/protolint.git\n",
                 "Project-URL: Issue Tracker, https://github.com/yoheimuta/protolint/issues\n",
-                f"Version: {version_id} \n",
                 f"Download-URL: https://github.com/yoheimuta/protolint/releases/tag/v{version_id}/\n",
             ])
 
