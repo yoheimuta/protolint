@@ -52,7 +52,7 @@ wheel.mkdir(exist_ok=True, parents=True)
 logger.info("Building files from %s", file_dir)
 repo_root = file_dir / ".." / ".."
 license_file = repo_root / "LICENSE"
-readme_md = repo_root / "README.md"
+readme_rst = file_dir / "ReadMe.rst"
 
 logger.info("Using repository root %s", repo_root)
 
@@ -114,7 +114,7 @@ for arch_platform in ap_map.keys():
         logger.debug("Copying LICENSE from %s", license_file)
         shutil.copy(license_file, distInfoFolder)
 
-        with (distInfoFolder / "WHEEL").open("w+") as wl:
+        with (distInfoFolder / "WHEEL").open("w+", encoding="utf-8") as wl:
             logger.debug("Writing WHEEL file")
             wl.writelines([
                 "Wheel-Version: 1.0\n",
@@ -123,19 +123,20 @@ for arch_platform in ap_map.keys():
                 f"Tag: {tag}\n"]
             )
 
-        with (distInfoFolder / "METADATA").open("w+") as ml:
+        with (distInfoFolder / "METADATA").open("w+", encoding="utf-8") as ml:
             logger.debug("Writing METADATA file")
             ml.writelines([
                 "Metadata-Version: 2.1\n",
                 f"Name: {package_name}\n",
                 f"Version: {version_id} \n",
                 "Summary: A pluggable linter and fixer to enforce Protocol Buffer style and conventions.\nThis package contains the pre-compiled binaries.\n",
-                "Description-Content-Type: text/markdown\n",
+                "Home-page: https://github.com/yoheimuta/protolint/\n",
                 "Author: yohei yoshimuta\n",
                 "Maintainer: yohei yoshimuta\n",
-                "Home-page: https://github.com/yoheimuta/protolint/\n",
-                "License-File: LICENSE\n",
                 "License: MIT\n",
+                "Project-URL: Official Website, https://github.com/yoheimuta/protolint/\n",
+                "Project-URL: Source Code, https://github.com/yoheimuta/protolint.git\n",
+                "Project-URL: Issue Tracker, https://github.com/yoheimuta/protolint/issues\n",
                 "Classifier: Development Status :: 5 - Production/Stable\n",
                 "Classifier: Environment :: Console\n",
                 "Classifier: Intended Audience :: Developers\n",
@@ -146,19 +147,20 @@ for arch_platform in ap_map.keys():
                 "Classifier: Operating System :: POSIX :: Linux\n",
                 "Classifier: Programming Language :: Go\n",
                 "Classifier: Topic :: Software Development :: Pre-processors\n",
-                "Classifier: Topic :: Utilities\n",
-                "Project-URL: Official Website, https://github.com/yoheimuta/protolint/\n",
-                "Project-URL: Source Code, https://github.com/yoheimuta/protolint.git\n",
-                "Project-URL: Issue Tracker, https://github.com/yoheimuta/protolint/issues\n",
-                f"Download-URL: https://github.com/yoheimuta/protolint/releases/tag/v{version_id}/\n",
+                "Classifier: Topic :: Utilities\n", 
+                "Requires-Python: >= 3.0\n",
+                "Description-Content-Type: text/rst\n",
+                "License-File: LICENSE\n",
             ])
 
-            with readme_md.open("r") as readme:
+            ml.writelines(["\n"])
+
+            with readme_rst.open("r", encoding="utf-8") as readme:
                 ml.writelines(readme.readlines())
 
         wheel_content = list(distInfoFolder.glob("**/*")) + list(dataFolder.glob("**/*"))
         elements_to_relative_paths = {entry: str(entry).lstrip(str(pdir)).lstrip("/").lstrip("\\") for entry in wheel_content if entry.is_file()}
-        with (distInfoFolder / "RECORD").open("w+") as rl:
+        with (distInfoFolder / "RECORD").open("w+", encoding="utf-8") as rl:
             logger.debug("Writing RECORD file")
             for entry in elements_to_relative_paths.keys():
                 relPath = elements_to_relative_paths[entry]

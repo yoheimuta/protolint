@@ -35,6 +35,9 @@ jobs:
       - name: Pack WHEEL Package
         working-directory: ./bdist/py
         run: python3 setup.py
+      - name: Check WHEEL Packages
+        working-directory: ./bdist/py
+        run: twine check _wheel/*
       - name: Issue warning if TWINE_USERNAME and TWINE_PASSWORD are not set
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
