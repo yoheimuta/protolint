@@ -67,13 +67,13 @@ del cp
 logger.info("Assuming version is %s", version_id)
 
 ap_map: dict[str, str] = {
-    "darwin_amd64_v1": "macosx_x86_64",
-    "darwin_arm64": "darwin_aarch64",
-    "linux_amd64_v1": "manylinux1_x86_64",
-    "linux_arm64": "manylinux1_aarch64",
-    "linux_arm_7": "linux_armv7l",
+    "darwin_amd64_v1": "macosx_10_0_x86_64",
+    "darwin_arm64": "macosx_10_0_arm64",
+    "linux_amd64_v1": "manylinux2014_x86_64",
+    "linux_arm64": "manylinux2014_aarch64",
+    "linux_arm_7": "manylinux2014_armv7l",
     "windows_amd64_v1": "win_amd64",
-    "windows_arm64": "win_arch64",
+    "windows_arm64": "win_arm64",
 }
 
 executables = {"protolint", "protoc-gen-protolint"}
@@ -95,10 +95,12 @@ for arch_platform in ap_map.keys():
 
     p_executables = [dist / f"{exe}_{arch_platform}" / f"{exe}{suffix}" for exe in executables]
 
+    file_name = package_name.replace('-', '_')
+
     logger.debug("Creating wheel data folder")
-    dataFolder = pdir / f"{package_name}-{version_id}.data"
+    dataFolder = pdir / f"{file_name}-{version_id}.data"
     logger.debug("Creating wheel data folder")
-    distInfoFolder = pdir / f"{package_name}-{version_id}.dist-info"
+    distInfoFolder = pdir / f"{file_name}-{version_id}.dist-info"
 
     dataFolder.mkdir(parents=True, exist_ok=True)
     distInfoFolder.mkdir(parents=True, exist_ok=True)
@@ -171,7 +173,7 @@ for arch_platform in ap_map.keys():
             rl.write(distInfoFolder.name + "/RECORD,,\n")
             wheel_content.append(distInfoFolder / "RECORD")
 
-        whl_file = wheel / f"{package_name}-{version_id}-{tag}.whl"
+        whl_file = wheel / f"{file_name}-{version_id}-{tag}.whl"
         if whl_file.is_file():
             logger.debug("Removing existing wheel file")
             whl_file.unlink()
