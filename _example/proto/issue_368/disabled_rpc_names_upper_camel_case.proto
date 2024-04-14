@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+service OrgSubscriptionGrpcManager {
+    rpc findCurrentOrgSubscription (FindCurrentOrgSubscriptionRequest) returns (OneOrgSubscriptionResponse) { // protolint:disable:this RPC_NAMES_UPPER_CAMEL_CASE //
+    }
+    rpc findPartialPayEligibleSubscription (FindPartialPayEligibleSubscriptionRequest) // protolint:disable:this RPC_NAMES_UPPER_CAMEL_CASE
+    returns (OneOrgSubscriptionResponse) {
+    }
+}

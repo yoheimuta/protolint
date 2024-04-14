@@ -137,7 +137,10 @@ func (v extendedDisableRuleVisitor) VisitReserved(r *parser.Reserved) (next bool
 }
 
 func (v extendedDisableRuleVisitor) VisitRPC(r *parser.RPC) (next bool) {
-	if v.interpreter.Interpret(r.Comments, r.InlineComment) {
+	var inlines []*parser.Comment
+	inlines = append(inlines, r.InlineComment, r.InlineCommentBehindLeftCurly)
+	inlines = append(inlines, r.EmbeddedComments...)
+	if v.interpreter.Interpret(r.Comments, inlines...) {
 		return true
 	}
 	return v.inner.VisitRPC(r)
