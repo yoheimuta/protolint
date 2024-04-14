@@ -179,6 +179,18 @@ func TestRPCNamesUpperCamelCaseRule_Apply_disable(t *testing.T) {
 			inputPlacementType: autodisable.ThisThenNext,
 			wantFilename:       "disable_this.proto",
 		},
+		{
+			name:               "apply nothing to already disabled lines",
+			inputFilename:      "disable_this.proto",
+			inputPlacementType: autodisable.ThisThenNext,
+			wantFilename:       "disable_this.proto",
+		},
+		{
+			name:               "apply nothing to already disabled lines behind a left curly. See #368",
+			inputFilename:      "disable_this_left_curly.proto",
+			inputPlacementType: autodisable.ThisThenNext,
+			wantFilename:       "disable_this_left_curly.proto",
+		},
 	}
 
 	for _, test := range tests {
