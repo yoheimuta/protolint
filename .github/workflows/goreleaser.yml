@@ -48,7 +48,7 @@ jobs:
           java-version: '11'
           distribution: adopt
       - name: Publish package
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           gradle-version: 7.5.1
           arguments: publish
