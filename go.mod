@@ -9,7 +9,7 @@ require (
 	github.com/hashicorp/go-plugin v1.6.0
 	github.com/yoheimuta/go-protoparser/v4 v4.10.0
 	google.golang.org/grpc v1.63.2
-	google.golang.org/protobuf v1.34.0
+	google.golang.org/protobuf v1.34.1
 	gopkg.in/yaml.v2 v2.4.0
 )
 
