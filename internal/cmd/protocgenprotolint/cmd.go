@@ -123,7 +123,7 @@ func newFlags(
 			if len(params) != 2 {
 				return nil, fmt.Errorf("config_path should be specified")
 			}
-			flags.ConfigDirPath = params[1]
+			flags.ConfigPath = params[1]
 		case "config_dir_path":
 			if len(params) != 2 {
 				return nil, fmt.Errorf("config_dir_path should be specified")
