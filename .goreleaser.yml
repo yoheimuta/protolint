@@ -1,4 +1,5 @@
 ---
+version: 2
 before:
   hooks:
     - go mod download
@@ -69,13 +70,13 @@ changelog:
 brews:
   -
     name: protolint
-    tap:
+    repository:
       owner: yoheimuta
       name: homebrew-protolint
     commit_author:
       name: goreleaserbot
       email: yoheimuta@gmail.com
-    folder: Formula
+    directory: Formula
     description: Pluggable tool to enforce Protocol Buffer style and conventions
     homepage: https://github.com/yoheimuta/protolint
     test: |
