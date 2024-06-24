@@ -2,6 +2,7 @@ package reporters_test
 
 import (
 	"bytes"
+	"os"
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
@@ -14,7 +15,7 @@ func TestJSONReporter_Report(t *testing.T) {
 	tests := []struct {
 		name          string
 		inputFailures []report.Failure
-		wantOutput    string
+		wantOutput    func(basedir string) string
 	}{
 		{
 			name: "Prints failures in JSON format",
@@ -40,25 +41,30 @@ func TestJSONReporter_Report(t *testing.T) {
 					`EnumField name "SECOND.VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
 			},
-			wantOutput: `{
+			wantOutput: func(basedir string) string {
+				return `{
+  "basedir": "` + basedir + `",
   "lints": [
     {
       "filename": "example.proto",
       "line": 5,
       "column": 10,
       "message": "EnumField name \"fIRST_VALUE\" must be CAPITALS_WITH_UNDERSCORES",
-      "rule": "ENUM_NAMES_UPPER_CAMEL_CASE"
+      "rule": "ENUM_NAMES_UPPER_CAMEL_CASE",
+      "severity": "error"
     },
     {
       "filename": "example.proto",
       "line": 10,
       "column": 20,
       "message": "EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES",
-      "rule": "ENUM_NAMES_UPPER_CAMEL_CASE"
+      "rule": "ENUM_NAMES_UPPER_CAMEL_CASE",
+      "severity": "error"
     }
   ]
 }
-`,
+`
+			},
 		},
 	}
 
@@ -71,8 +77,16 @@ func TestJSONReporter_Report(t *testing.T) {
 				t.Errorf("got err %v, but want nil", err)
 				return
 			}
-			if buf.String() != test.wantOutput {
-				t.Errorf("got %s, but want %s", buf.String(), test.wantOutput)
+
+			cwd, err := os.Getwd()
+			if err != nil {
+				t.Errorf("Failed to get current working directory: %v", err)
+				return
+			}
+
+			wantedOutput := test.wantOutput(cwd)
+			if buf.String() != wantedOutput {
+				t.Errorf("got %s, but want %s", buf.String(), wantedOutput)
 			}
 		})
 	}

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 
 	"github.com/yoheimuta/protolint/linter/report"
 )
@@ -27,15 +28,24 @@ type lintJSON struct {
 	Column   int    `json:"column"`
 	Message  string `json:"message"`
 	Rule     string `json:"rule"`
+	Severity string `json:"severity"`
 }
 
 type outJSON struct {
-	Lints []lintJSON `json:"lints"`
+	Basedir string     `json:"basedir"`
+	Lints   []lintJSON `json:"lints"`
 }
 
 // Report writes failures to w.
 func (r JSONReporter) Report(w io.Writer, fs []report.Failure) error {
 	out := outJSON{}
+	// Write base dir
+	pwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	out.Basedir = pwd
+	// Write failures
 	for _, failure := range fs {
 		out.Lints = append(out.Lints, lintJSON{
 			Filename: failure.Pos().Filename,
@@ -43,6 +53,7 @@ func (r JSONReporter) Report(w io.Writer, fs []report.Failure) error {
 			Column:   failure.Pos().Column,
 			Message:  failure.Message(),
 			Rule:     failure.RuleID(),
+			Severity: failure.Severity(),
 		})
 	}
 
