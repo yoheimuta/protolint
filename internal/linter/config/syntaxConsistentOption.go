@@ -2,6 +2,6 @@ package config
 
 // SyntaxConsistentOption represents the option for the SYNTAX_CONSISTENT rule.
 type SyntaxConsistentOption struct {
-	CustomizableSeverityOption
-	Version string `yaml:"version" json:"version" toml:"version"`
+	CustomizableSeverityOption `yaml:",inline"`
+	Version                    string `yaml:"version" json:"version" toml:"version"`
 }

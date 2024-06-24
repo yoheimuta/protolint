@@ -14,7 +14,8 @@ type ImportsSortedOption struct {
 // UnmarshalYAML implements yaml.v2 Unmarshaler interface.
 func (i *ImportsSortedOption) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var option struct {
-		Newline string `yaml:"newline"`
+		CustomizableSeverityOption `yaml:",inline"`
+		Newline                    string `yaml:"newline"`
 	}
 	if err := unmarshal(&option); err != nil {
 		return err
@@ -26,6 +27,7 @@ func (i *ImportsSortedOption) UnmarshalYAML(unmarshal func(interface{}) error) e
 	default:
 		return fmt.Errorf(`%s is an invalid newline option. valid option is \n, \r or \r\n`, option.Newline)
 	}
+	i.CustomizableSeverityOption = option.CustomizableSeverityOption
 	return nil
 }
 
