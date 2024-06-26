@@ -23,7 +23,8 @@ type QuoteConsistentOption struct {
 // UnmarshalYAML implements yaml.v2 Unmarshaler interface.
 func (r *QuoteConsistentOption) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var option struct {
-		Quote string `yaml:"quote"`
+		CustomizableSeverityOption `yaml:",inline"`
+		Quote                      string `yaml:"quote"`
 	}
 	if err := unmarshal(&option); err != nil {
 		return err
@@ -45,6 +46,7 @@ func (r *QuoteConsistentOption) UnmarshalYAML(unmarshal func(interface{}) error)
 		}
 		r.Quote = quote
 	}
+	r.CustomizableSeverityOption = option.CustomizableSeverityOption
 	return nil
 }
 

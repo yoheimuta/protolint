@@ -17,9 +17,10 @@ type IndentOption struct {
 // UnmarshalYAML implements yaml.v2 Unmarshaler interface.
 func (i *IndentOption) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var option struct {
-		Style            string `yaml:"style"`
-		Newline          string `yaml:"newline"`
-		NotInsertNewline bool   `yaml:"not_insert_newline"`
+		CustomizableSeverityOption `yaml:",inline"`
+		Style                      string `yaml:"style"`
+		Newline                    string `yaml:"newline"`
+		NotInsertNewline           bool   `yaml:"not_insert_newline"`
 	}
 	if err := unmarshal(&option); err != nil {
 		return err
@@ -47,6 +48,7 @@ func (i *IndentOption) UnmarshalYAML(unmarshal func(interface{}) error) error {
 		return fmt.Errorf(`%s is an invalid newline option. valid option is \n, \r or \r\n`, option.Newline)
 	}
 	i.NotInsertNewline = option.NotInsertNewline
+	i.CustomizableSeverityOption = option.CustomizableSeverityOption
 	return nil
 }
 

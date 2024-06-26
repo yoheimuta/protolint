@@ -24,7 +24,8 @@ type RPCNamesCaseOption struct {
 // UnmarshalYAML implements yaml.v2 Unmarshaler interface.
 func (r *RPCNamesCaseOption) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var option struct {
-		Convention string `yaml:"convention"`
+		CustomizableSeverityOption `yaml:",inline"`
+		Convention                 string `yaml:"convention"`
 	}
 	if err := unmarshal(&option); err != nil {
 		return err
@@ -47,6 +48,7 @@ func (r *RPCNamesCaseOption) UnmarshalYAML(unmarshal func(interface{}) error) er
 		}
 		r.Convention = convention
 	}
+	r.CustomizableSeverityOption = option.CustomizableSeverityOption
 	return nil
 }
 
