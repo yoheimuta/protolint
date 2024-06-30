@@ -100,13 +100,14 @@ func (r MaxLineLengthRule) Apply(proto *parser.Proto) (
 			line = strings.Replace(line, "\t", strings.Repeat(" ", r.tabChars), -1)
 			lineCount := utf8.RuneCountInString(line)
 			if r.maxChars < lineCount {
-				failures = append(failures, report.Failuref(
+				failures = append(failures, report.FailureWithSeverityf(
 					meta.Position{
 						Filename: fileName,
 						Line:     index + 1,
 						Column:   1,
 					},
 					r.ID(),
+					string(r.Severity()),
 					"The line length is %d, but it must be shorter than %d",
 					lineCount,
 					r.maxChars,

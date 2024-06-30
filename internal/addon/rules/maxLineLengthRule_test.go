@@ -20,6 +20,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 		name          string
 		inputMaxChars int
 		inputTabChars int
+		severity      rule.Severity
 		inputProto    *parser.Proto
 		wantFailures  []report.Failure
 		wantExistErr  bool
@@ -46,6 +47,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 		{
 			name:          "found long lines",
 			inputTabChars: 4,
+			severity:      rule.SeverityError,
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{
 					Filename: setting_test.TestDataPath("rules", "max_line_length_rule.proto"),
@@ -72,13 +74,45 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 				),
 			},
 		},
+		{
+			name:          "found long lines (with warning severity)",
+			inputTabChars: 4,
+			severity:      rule.SeverityWarning,
+			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{
+					Filename: setting_test.TestDataPath("rules", "max_line_length_rule.proto"),
+				},
+			},
+			wantFailures: []report.Failure{
+				report.FailureWithSeverityf(
+					meta.Position{
+						Filename: setting_test.TestDataPath("rules", "max_line_length_rule.proto"),
+						Line:     3,
+						Column:   1,
+					},
+					"MAX_LINE_LENGTH",
+					"warning",
+					`The line length is 91, but it must be shorter than 80`,
+				),
+				report.FailureWithSeverityf(
+					meta.Position{
+						Filename: setting_test.TestDataPath("rules", "max_line_length_rule.proto"),
+						Line:     15,
+						Column:   1,
+					},
+					"MAX_LINE_LENGTH",
+					"warning",
+					`The line length is 88, but it must be shorter than 80`,
+				),
+			},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			rule := rules.NewMaxLineLengthRule(
-				rule.SeverityError,
+				test.severity,
 				test.inputMaxChars,
 				test.inputTabChars,
 			)
