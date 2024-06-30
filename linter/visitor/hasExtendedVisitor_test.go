@@ -10,6 +10,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/setting_test"
 	"github.com/yoheimuta/protolint/internal/util_test"
 	"github.com/yoheimuta/protolint/linter/autodisable"
+	"github.com/yoheimuta/protolint/linter/rule"
 	"github.com/yoheimuta/protolint/linter/visitor"
 
 	"github.com/yoheimuta/protolint/linter/report"
@@ -84,6 +85,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   5,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 			},
@@ -127,6 +129,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   5,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 				report.Failuref(
@@ -137,6 +140,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   10,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 			},
@@ -183,6 +187,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   5,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 				report.Failuref(
@@ -193,6 +198,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   10,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 			},
@@ -242,6 +248,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   10,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 			},
@@ -289,6 +296,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   10,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 			},
@@ -353,6 +361,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   15,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 			},
@@ -415,6 +424,7 @@ func TestRunVisitor(t *testing.T) {
 						Column:   15,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					"Test Message",
 				),
 			},

@@ -194,6 +194,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"REPEATED_FIELD_NAMES_PLURALIZED",
+					string(rule.SeverityError),
 					`Repeated field name "singer" must be pluralized name "singers"`,
 				),
 				report.Failuref(
@@ -204,6 +205,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"REPEATED_FIELD_NAMES_PLURALIZED",
+					string(rule.SeverityError),
 					`Repeated field name "persons" must be pluralized name "people"`,
 				),
 				report.Failuref(
@@ -214,6 +216,7 @@ func TestRepeatedFieldNamesPluralizedRule_Apply(t *testing.T) {
 						Column:   30,
 					},
 					"REPEATED_FIELD_NAMES_PLURALIZED",
+					string(rule.SeverityError),
 					`Repeated group name "some_singer" must be pluralized name "some_singers"`,
 				),
 			},

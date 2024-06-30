@@ -40,7 +40,7 @@ func makeTestData() testCases {
 			expectedError: nil,
 			files:         testFiles{},
 			inputFailures: []report.Failure{
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   100,
@@ -51,7 +51,7 @@ func makeTestData() testCases {
 					string(rule.SeverityWarning),
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   200,
@@ -71,7 +71,7 @@ func makeTestData() testCases {
 			expectedError: nil,
 			files:         testFiles{},
 			inputFailures: []report.Failure{
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   100,
@@ -82,7 +82,7 @@ func makeTestData() testCases {
 					string(rule.SeverityError),
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   200,
@@ -93,7 +93,7 @@ func makeTestData() testCases {
 					string(rule.SeverityError),
 					`EnumField name "SECOND.VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   300,
@@ -113,7 +113,7 @@ func makeTestData() testCases {
 			expectedError: nil,
 			files:         testFiles{},
 			inputFailures: []report.Failure{
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   100,
@@ -124,7 +124,7 @@ func makeTestData() testCases {
 					string(rule.SeverityNote),
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   200,
@@ -135,7 +135,7 @@ func makeTestData() testCases {
 					string(rule.SeverityWarning),
 					`EnumField name "SECOND.VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   300,

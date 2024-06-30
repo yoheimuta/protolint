@@ -61,6 +61,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"MAX_LINE_LENGTH",
+					string(rule.SeverityError),
 					`The line length is 91, but it must be shorter than 80`,
 				),
 				report.Failuref(
@@ -70,6 +71,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"MAX_LINE_LENGTH",
+					string(rule.SeverityError),
 					`The line length is 88, but it must be shorter than 80`,
 				),
 			},
@@ -84,7 +86,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 				},
 			},
 			wantFailures: []report.Failure{
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "max_line_length_rule.proto"),
 						Line:     3,
@@ -94,7 +96,7 @@ func TestMaxLineLengthRule_Apply(t *testing.T) {
 					"warning",
 					`The line length is 91, but it must be shorter than 80`,
 				),
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: setting_test.TestDataPath("rules", "max_line_length_rule.proto"),
 						Line:     15,

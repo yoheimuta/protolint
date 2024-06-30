@@ -183,6 +183,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "FieldName" should have a comment`,
 				),
 				report.Failuref(
@@ -193,6 +194,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   30,
 					},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "MapFieldName" should have a comment`,
 				),
 				report.Failuref(
@@ -203,6 +205,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   45,
 					},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "OneofFieldName" should have a comment`,
 				),
 			},
@@ -279,6 +282,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "FieldName" should have a comment of the form "// FieldName ..."`,
 				),
 				report.Failuref(
@@ -289,6 +293,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   30,
 					},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "MapFieldName" should have a comment of the form "// MapFieldName ..."`,
 				),
 				report.Failuref(
@@ -299,6 +304,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   45,
 					},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "OneofFieldName" should have a comment of the form "// OneofFieldName ..."`,
 				),
 			},
@@ -340,16 +346,19 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "FieldName2" should have a comment of the form "// FieldName2 ..."`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "MapFieldName2" should have a comment of the form "// MapFieldName2 ..."`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Field "OneofFieldName2" should have a comment of the form "// OneofFieldName2 ..."`,
 				),
 			},

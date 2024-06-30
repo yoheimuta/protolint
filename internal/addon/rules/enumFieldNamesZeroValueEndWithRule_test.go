@@ -79,6 +79,7 @@ func TestEnumFieldNamesZeroValueEndWithRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH",
+					string(rule.SeverityError),
 					`EnumField name "FIRST_VALUE" with zero value should have the suffix "UNSPECIFIED"`,
 				),
 			},

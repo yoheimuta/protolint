@@ -141,26 +141,31 @@ func TestQuoteConsistentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be 'proto3' but was "proto3".`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be 'google/protobuf/empty.proto' but was "google/protobuf/empty.proto".`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be 'com.example.foo' but was "com.example.foo".`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be 'custom option' but was "custom option".`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be 'field option' but was "field option".`,
 				),
 			},
@@ -207,26 +212,31 @@ func TestQuoteConsistentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be "proto3" but was 'proto3'.`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be "google/protobuf/empty.proto" but was 'google/protobuf/empty.proto'.`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be "com.example.foo" but was 'com.example.foo'.`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be "custom option" but was 'custom option'.`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"QUOTE_CONSISTENT",
+					string(rule.SeverityError),
 					`Quoted string should be "field option" but was 'field option'.`,
 				),
 			},

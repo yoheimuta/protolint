@@ -100,7 +100,7 @@ func (r MaxLineLengthRule) Apply(proto *parser.Proto) (
 			line = strings.Replace(line, "\t", strings.Repeat(" ", r.tabChars), -1)
 			lineCount := utf8.RuneCountInString(line)
 			if r.maxChars < lineCount {
-				failures = append(failures, report.FailureWithSeverityf(
+				failures = append(failures, report.Failuref(
 					meta.Position{
 						Filename: fileName,
 						Line:     index + 1,
