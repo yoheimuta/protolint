@@ -47,6 +47,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"IMPORTS_SORTED",
+					string(rule.SeverityError),
 					`Imports are not sorted.`,
 				),
 				report.Failuref(
@@ -57,6 +58,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"IMPORTS_SORTED",
+					string(rule.SeverityError),
 					`Imports are not sorted.`,
 				),
 			},
@@ -73,6 +75,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"IMPORTS_SORTED",
+					string(rule.SeverityError),
 					`Imports are not sorted.`,
 				),
 				report.Failuref(
@@ -83,6 +86,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"IMPORTS_SORTED",
+					string(rule.SeverityError),
 					`Imports are not sorted.`,
 				),
 				report.Failuref(
@@ -93,6 +97,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"IMPORTS_SORTED",
+					string(rule.SeverityError),
 					`Imports are not sorted.`,
 				),
 				report.Failuref(
@@ -103,6 +108,7 @@ func TestImportsSortedRule_Apply(t *testing.T) {
 						Column:   1,
 					},
 					"IMPORTS_SORTED",
+					string(rule.SeverityError),
 					`Imports are not sorted.`,
 				),
 			},

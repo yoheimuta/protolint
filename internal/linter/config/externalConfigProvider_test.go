@@ -67,17 +67,14 @@ func TestGetExternalConfig(t *testing.T) {
 					RulesOption: config.RulesOption{
 						MaxLineLength: config.MaxLineLengthOption{
 							CustomizableSeverityOption: config.CustomizableSeverityOption{
-								SeverityInternal: func(s rule.Severity) *rule.Severity { return &s }(rule.SeverityNote),
+								Severity: rule.SeverityNote,
 							},
 							MaxChars: 80,
 							TabChars: 2,
 						},
 						Indent: config.IndentOption{
 							CustomizableSeverityOption: config.CustomizableSeverityOption{
-								SeverityInternal: func() *rule.Severity {
-									severity := rule.SeverityWarning
-									return &severity
-								}(),
+								Severity: rule.SeverityWarning,
 							},
 							Style:   "\t",
 							Newline: "\n",

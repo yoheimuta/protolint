@@ -91,6 +91,7 @@ func TestProto3GroupsAvoidRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"PROTO3_GROUPS_AVOID",
+					string(rule.SeverityError),
 					`Group "song_Name" should be avoided for proto3`,
 				),
 				report.Failuref(
@@ -101,6 +102,7 @@ func TestProto3GroupsAvoidRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"PROTO3_GROUPS_AVOID",
+					string(rule.SeverityError),
 					`Group "song.name" should be avoided for proto3`,
 				),
 			},

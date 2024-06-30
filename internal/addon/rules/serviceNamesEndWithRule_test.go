@@ -60,8 +60,8 @@ func TestInvalidServiceNamesEndWithRule_Apply(t *testing.T) {
 			},
 		},
 		wantFailures: []report.Failure{
-			report.Failuref(meta.Position{}, "SERVICE_NAMES_END_WITH", `Service name "SomeThing" must end with Service`),
-			report.Failuref(meta.Position{}, "SERVICE_NAMES_END_WITH", `Service name "AnotherThing" must end with Service`),
+			report.Failuref(meta.Position{}, "SERVICE_NAMES_END_WITH", string(rule.SeverityError), `Service name "SomeThing" must end with Service`),
+			report.Failuref(meta.Position{}, "SERVICE_NAMES_END_WITH", string(rule.SeverityError), `Service name "AnotherThing" must end with Service`),
 		},
 	}
 

@@ -51,6 +51,6 @@ func (r SimpleRule) Severity() rule.Severity {
 // Apply applies the rule to the proto.
 func (r SimpleRule) Apply(proto *parser.Proto) ([]report.Failure, error) {
 	return []report.Failure{
-		report.Failuref(meta.Position{}, r.ID(), "Custom Rule, verbose=%v, fixMode=%v", r.verbose, r.fixMode),
+		report.Failuref(meta.Position{}, r.ID(), r.severity, "Custom Rule, verbose=%v, fixMode=%v", r.verbose, r.fixMode),
 	}, nil
 }

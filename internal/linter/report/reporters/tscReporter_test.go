@@ -9,6 +9,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
 	"github.com/yoheimuta/protolint/linter/report"
+	"github.com/yoheimuta/protolint/linter/rule"
 )
 
 func TestTscReporter_Report(t *testing.T) {
@@ -20,7 +21,7 @@ func TestTscReporter_Report(t *testing.T) {
 		{
 			name: "Prints failures in the plain format",
 			inputFailures: []report.Failure{
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   100,
@@ -28,10 +29,10 @@ func TestTscReporter_Report(t *testing.T) {
 						Column:   10,
 					},
 					"ENUM_NAMES_UPPER_CAMEL_CASE",
-					"error",
+					string(rule.SeverityError),
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   200,

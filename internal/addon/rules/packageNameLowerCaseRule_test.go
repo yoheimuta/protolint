@@ -72,6 +72,7 @@ func TestPackageNameLowerCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"PACKAGE_NAME_LOWER_CASE",
+					string(rule.SeverityError),
 					`Package name "myV1Package" must not contain any uppercase letter. Consider to change like "myv1package".`,
 				),
 			},

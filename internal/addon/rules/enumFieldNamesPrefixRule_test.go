@@ -137,6 +137,7 @@ func TestEnumFieldNamesPrefixRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"ENUM_FIELD_NAMES_PREFIX",
+					string(rule.SeverityError),
 					`EnumField name "BAR_UNSPECIFIED" should have the prefix "FOO_BAR"`,
 				),
 			},

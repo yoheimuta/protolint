@@ -56,6 +56,7 @@ func TestFileHasCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"FILE_HAS_COMMENT",
+					string(rule.SeverityError),
 					`File should start with a doc comment`,
 				),
 			},

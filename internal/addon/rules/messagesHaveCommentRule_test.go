@@ -129,6 +129,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"MESSAGES_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Message "MessageName" should have a comment`,
 				),
 				report.Failuref(
@@ -139,6 +140,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"MESSAGES_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Message "MessageName2" should have a comment`,
 				),
 			},
@@ -189,6 +191,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"MESSAGES_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Message "MessageName" should have a comment of the form "// MessageName ..."`,
 				),
 				report.Failuref(
@@ -199,6 +202,7 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"MESSAGES_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Message "MessageName2" should have a comment of the form "// MessageName2 ..."`,
 				),
 			},
@@ -229,11 +233,13 @@ func TestMessagesHaveCommentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{},
 					"MESSAGES_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Message "MessageName" should have a comment of the form "// MessageName ..."`,
 				),
 				report.Failuref(
 					meta.Position{},
 					"MESSAGES_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`Message "MessageName2" should have a comment of the form "// MessageName2 ..."`,
 				),
 			},

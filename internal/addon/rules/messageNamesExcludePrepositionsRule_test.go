@@ -82,6 +82,7 @@ func TestMessageNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"MESSAGE_NAMES_EXCLUDE_PREPOSITIONS",
+					string(rule.SeverityError),
 					`Message name "StatusOfAccount" should not include a preposition "Of"`,
 				),
 				report.Failuref(
@@ -92,6 +93,7 @@ func TestMessageNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"MESSAGE_NAMES_EXCLUDE_PREPOSITIONS",
+					string(rule.SeverityError),
 					`Message name "WithAccountForActive" should not include a preposition "With"`,
 				),
 				report.Failuref(
@@ -102,6 +104,7 @@ func TestMessageNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"MESSAGE_NAMES_EXCLUDE_PREPOSITIONS",
+					string(rule.SeverityError),
 					`Message name "WithAccountForActive" should not include a preposition "For"`,
 				),
 			},
@@ -151,6 +154,7 @@ func TestMessageNamesExcludePrepositionsRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"MESSAGE_NAMES_EXCLUDE_PREPOSITIONS",
+					string(rule.SeverityError),
 					`Message name "EndOfSales" should not include a preposition "Of"`,
 				),
 			},

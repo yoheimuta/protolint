@@ -16,6 +16,10 @@ func NewRuleWithSeverity(
 }
 
 // Severity returns the configured severity.
+// If no severity is set, the default severity will be ERROR
 func (r RuleWithSeverity) Severity() rule.Severity {
+	if r.severity == "" {
+		return rule.SeverityError
+	}
 	return r.severity
 }

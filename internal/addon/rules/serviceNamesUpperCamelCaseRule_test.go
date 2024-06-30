@@ -77,6 +77,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"SERVICE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					`Service name "serviceName" must be UpperCamelCase like "ServiceName"`,
 				),
 				report.Failuref(
@@ -87,6 +88,7 @@ func TestServiceNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"SERVICE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					`Service name "Service_name" must be UpperCamelCase like "ServiceName"`,
 				),
 			},

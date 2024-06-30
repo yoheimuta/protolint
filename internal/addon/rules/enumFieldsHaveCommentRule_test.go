@@ -101,6 +101,7 @@ func TestEnumFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"ENUM_FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`EnumField "EnumFieldName" should have a comment`,
 				),
 			},
@@ -141,6 +142,7 @@ func TestEnumFieldsHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"ENUM_FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`EnumField "EnumFieldName" should have a comment of the form "// EnumFieldName ..."`,
 				),
 			},
@@ -166,6 +168,7 @@ func TestEnumFieldsHaveCommentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{},
 					"ENUM_FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`EnumField "EnumFieldName" should have a comment of the form "// EnumFieldName ..."`,
 				),
 			},

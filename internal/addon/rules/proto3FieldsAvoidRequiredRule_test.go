@@ -130,6 +130,7 @@ func TestProto3FieldsAvoidRequiredRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"PROTO3_FIELDS_AVOID_REQUIRED",
+					string(rule.SeverityError),
 					`Field "song_Name" should avoid required for proto3`,
 				),
 				report.Failuref(
@@ -140,6 +141,7 @@ func TestProto3FieldsAvoidRequiredRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"PROTO3_FIELDS_AVOID_REQUIRED",
+					string(rule.SeverityError),
 					`Field "song.name" should avoid required for proto3`,
 				),
 			},

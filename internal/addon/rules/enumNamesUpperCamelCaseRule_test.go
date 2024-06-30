@@ -79,6 +79,7 @@ func TestEnumNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"ENUM_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					`Enum name "enumName" must be UpperCamelCase like "EnumName"`,
 				),
 				report.Failuref(
@@ -89,6 +90,7 @@ func TestEnumNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"ENUM_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					`Enum name "Enum_name" must be UpperCamelCase like "EnumName"`,
 				),
 			},

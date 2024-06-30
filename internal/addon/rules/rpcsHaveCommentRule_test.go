@@ -107,6 +107,7 @@ func TestRPCsHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"RPCS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`RPC "RPCName" should have a comment`,
 				),
 			},
@@ -147,6 +148,7 @@ func TestRPCsHaveCommentRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"RPCS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`RPC "RPCName" should have a comment of the form "// RPCName ..."`,
 				),
 			},
@@ -172,6 +174,7 @@ func TestRPCsHaveCommentRule_Apply(t *testing.T) {
 				report.Failuref(
 					meta.Position{},
 					"RPCS_HAVE_COMMENT",
+					string(rule.SeverityError),
 					`RPC "RPCName" should have a comment of the form "// RPCName ..."`,
 				),
 			},

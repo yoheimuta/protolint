@@ -73,7 +73,7 @@ func (r externalRule) Apply(p *parser.Proto) ([]report.Failure, error) {
 
 	var fs []report.Failure
 	for _, f := range resp.Failures {
-		fs = append(fs, report.FailureWithSeverityf(meta.Position{
+		fs = append(fs, report.Failuref(meta.Position{
 			Filename: relPath,
 			Offset:   int(f.Pos.Offset),
 			Line:     int(f.Pos.Line),

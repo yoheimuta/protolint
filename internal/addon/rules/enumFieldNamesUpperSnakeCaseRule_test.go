@@ -86,6 +86,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+					string(rule.SeverityError),
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES like "FIRST_VALUE"`,
 				),
 				report.Failuref(
@@ -96,6 +97,7 @@ func TestEnumFieldNamesUpperSnakeCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"ENUM_FIELD_NAMES_UPPER_SNAKE_CASE",
+					string(rule.SeverityError),
 					`EnumField name "secondValue" must be CAPITALS_WITH_UNDERSCORES like "SECOND_VALUE"`,
 				),
 			},

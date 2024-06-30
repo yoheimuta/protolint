@@ -20,7 +20,7 @@ func TestSarifReporter_Report(t *testing.T) {
 		{
 			name: "Prints failures in JSON format",
 			inputFailures: []report.Failure{
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   100,
@@ -31,7 +31,7 @@ func TestSarifReporter_Report(t *testing.T) {
 					string(rule.SeverityError),
 					`EnumField name "fIRST_VALUE" must be CAPITALS_WITH_UNDERSCORES`,
 				),
-				report.FailureWithSeverityf(
+				report.Failuref(
 					meta.Position{
 						Filename: "example.proto",
 						Offset:   200,

@@ -111,6 +111,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"FIELD_NAMES_LOWER_SNAKE_CASE",
+					string(rule.SeverityError),
 					`Field name "song_Name" must be underscore_separated_names like "song_name"`,
 				),
 				report.Failuref(
@@ -121,6 +122,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Column:   30,
 					},
 					"FIELD_NAMES_LOWER_SNAKE_CASE",
+					string(rule.SeverityError),
 					`Field name "MapFieldName" must be underscore_separated_names like "map_field_name"`,
 				),
 				report.Failuref(
@@ -131,6 +133,7 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 						Column:   45,
 					},
 					"FIELD_NAMES_LOWER_SNAKE_CASE",
+					string(rule.SeverityError),
 					`Field name "OneofFieldName" must be underscore_separated_names like "oneof_field_name"`,
 				),
 			},
