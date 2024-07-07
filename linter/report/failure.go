@@ -8,8 +8,6 @@ import (
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
-const errorLevel = "error"
-
 // Failure represents a lint error information.
 type Failure struct {
 	pos      meta.Position
@@ -20,22 +18,6 @@ type Failure struct {
 
 // Failuref creates a new Failure and the formatting works like fmt.Sprintf.
 func Failuref(
-	pos meta.Position,
-	ruleID string,
-	format string,
-	a ...interface{},
-) Failure {
-	return FailureWithSeverityf(
-		pos,
-		ruleID,
-		errorLevel,
-		format,
-		a...,
-	)
-}
-
-// FailureWithSeverityf creates a new Failure accepting a severity level description and the formatting works like fmt.Sprintf.
-func FailureWithSeverityf(
 	pos meta.Position,
 	ruleID string,
 	severity string,

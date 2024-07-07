@@ -50,98 +50,98 @@ func newAllInternalRules(
 
 	return internalrule.Rules{
 		rules.NewFileHasCommentRule(
-			option.FileHasComment.Severity(),
+			option.FileHasComment.Severity,
 		),
 		rules.NewSyntaxConsistentRule(
-			syntaxConsistent.Severity(),
+			syntaxConsistent.Severity,
 			syntaxConsistent.Version,
 		),
 		rules.NewFileNamesLowerSnakeCaseRule(
-			fileNamesLowerSnakeCase.Severity(),
+			fileNamesLowerSnakeCase.Severity,
 			fileNamesLowerSnakeCase.Excludes,
 			fixMode,
 		),
 		rules.NewQuoteConsistentRule(
-			option.QuoteConsistentOption.Severity(),
+			option.QuoteConsistentOption.Severity,
 			option.QuoteConsistentOption.Quote,
 			fixMode,
 		),
 		rules.NewOrderRule(
-			option.Order.Severity(),
+			option.Order.Severity,
 			fixMode,
 		),
 		rules.NewIndentRule(
-			indent.Severity(),
+			indent.Severity,
 			indent.Style,
 			indent.NotInsertNewline,
 			fixMode,
 		),
 		rules.NewMaxLineLengthRule(
-			maxLineLength.Severity(),
+			maxLineLength.Severity,
 			maxLineLength.MaxChars,
 			maxLineLength.TabChars,
 		),
 		rules.NewPackageNameLowerCaseRule(
-			option.PackageNameLowerCase.Severity(),
+			option.PackageNameLowerCase.Severity,
 			fixMode,
 		),
 		rules.NewImportsSortedRule(
-			option.ImportsSorted.Severity(),
+			option.ImportsSorted.Severity,
 			fixMode,
 		),
 		rules.NewEnumFieldNamesPrefixRule(
-			option.EnumFieldNamesPrefix.Severity(),
+			option.EnumFieldNamesPrefix.Severity,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewEnumFieldNamesUpperSnakeCaseRule(
-			option.EnumFieldNamesUpperSnakeCase.Severity(),
+			option.EnumFieldNamesUpperSnakeCase.Severity,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewEnumFieldNamesZeroValueEndWithRule(
-			enumFieldNamesZeroValueEndWith.Severity(),
+			enumFieldNamesZeroValueEndWith.Severity,
 			enumFieldNamesZeroValueEndWith.Suffix,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewEnumFieldsHaveCommentRule(
-			enumFieldsHaveComment.Severity(),
+			enumFieldsHaveComment.Severity,
 			enumFieldsHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewEnumNamesUpperCamelCaseRule(
-			option.EnumFieldNamesUpperSnakeCase.Severity(),
+			option.EnumFieldNamesUpperSnakeCase.Severity,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewEnumsHaveCommentRule(
-			enumsHaveComment.Severity(),
+			enumsHaveComment.Severity,
 			enumsHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewFieldNamesLowerSnakeCaseRule(
-			option.FieldNamesLowerSnakeCase.Severity(),
+			option.FieldNamesLowerSnakeCase.Severity,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewFieldNamesExcludePrepositionsRule(
-			fieldNamesExcludePrepositions.Severity(),
+			fieldNamesExcludePrepositions.Severity,
 			fieldNamesExcludePrepositions.Prepositions,
 			fieldNamesExcludePrepositions.Excludes,
 		),
 		rules.NewFieldsHaveCommentRule(
-			fieldsHaveComment.Severity(),
+			fieldsHaveComment.Severity,
 			fieldsHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewProto3FieldsAvoidRequiredRule(
-			option.Proto3FieldsAvoidRequired.Severity(),
+			option.Proto3FieldsAvoidRequired.Severity,
 			fixMode,
 		),
 		rules.NewProto3GroupsAvoidRule(
-			option.Proto3GroupsAvoid.Severity(),
+			option.Proto3GroupsAvoid.Severity,
 			autoDisableType,
 		),
 		rules.NewRepeatedFieldNamesPluralizedRule(
-			repeatedFieldNamesPluralized.Severity(),
+			repeatedFieldNamesPluralized.Severity,
 			repeatedFieldNamesPluralized.PluralRules,
 			repeatedFieldNamesPluralized.SingularRules,
 			repeatedFieldNamesPluralized.UncountableRules,
@@ -150,43 +150,43 @@ func newAllInternalRules(
 			autoDisableType,
 		),
 		rules.NewMessageNamesUpperCamelCaseRule(
-			option.MessageNamesUpperCamelCase.Severity(),
+			option.MessageNamesUpperCamelCase.Severity,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewMessageNamesExcludePrepositionsRule(
-			messageNamesExcludePrepositions.Severity(),
+			messageNamesExcludePrepositions.Severity,
 			messageNamesExcludePrepositions.Prepositions,
 			messageNamesExcludePrepositions.Excludes,
 		),
 		rules.NewMessagesHaveCommentRule(
-			messagesHaveComment.Severity(),
+			messagesHaveComment.Severity,
 			messagesHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewRPCNamesUpperCamelCaseRule(
-			option.RPCNamesUpperCamelCase.Severity(),
+			option.RPCNamesUpperCamelCase.Severity,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewRPCNamesCaseRule(
-			option.RPCNamesCaseOption.Severity(),
+			option.RPCNamesCaseOption.Severity,
 			option.RPCNamesCaseOption.Convention,
 		),
 		rules.NewRPCsHaveCommentRule(
-			rpcsHaveComment.Severity(),
+			rpcsHaveComment.Severity,
 			rpcsHaveComment.ShouldFollowGolangStyle,
 		),
 		rules.NewServiceNamesUpperCamelCaseRule(
-			option.ServiceNamesUpperCamelCase.Severity(),
+			option.ServiceNamesUpperCamelCase.Severity,
 			fixMode,
 			autoDisableType,
 		),
 		rules.NewServiceNamesEndWithRule(
-			option.ServiceNamesEndWith.Severity(),
+			option.ServiceNamesEndWith.Severity,
 			serviceNamesEndWith.Text,
 		),
 		rules.NewServicesHaveCommentRule(
-			option.ServicesHaveComment.Severity(),
+			option.ServicesHaveComment.Severity,
 			servicesHaveComment.ShouldFollowGolangStyle,
 		),
 	}

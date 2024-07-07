@@ -97,6 +97,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					`Message name "messageName" must be UpperCamelCase like "MessageName"`,
 				),
 				report.Failuref(
@@ -107,6 +108,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   15,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					`Message name "Inner_MessageName" must be UpperCamelCase like "InnerMessageName"`,
 				),
 				report.Failuref(
@@ -117,6 +119,7 @@ func TestMessageNamesUpperCamelCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"MESSAGE_NAMES_UPPER_CAMEL_CASE",
+					string(rule.SeverityError),
 					`Message name "Message_name" must be UpperCamelCase like "MessageName"`,
 				),
 			},

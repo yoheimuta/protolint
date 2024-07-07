@@ -127,6 +127,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "RPCName" must be LowerCamelCase`,
 				),
 				report.Failuref(
@@ -137,6 +138,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "RPC_NAME" must be LowerCamelCase`,
 				),
 				report.Failuref(
@@ -147,6 +149,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   30,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "rpc_name" must be LowerCamelCase`,
 				),
 			},
@@ -204,6 +207,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "RPCName" must be UpperSnakeCase`,
 				),
 				report.Failuref(
@@ -214,6 +218,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "rpcName" must be UpperSnakeCase`,
 				),
 				report.Failuref(
@@ -224,6 +229,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   30,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "rpc_name" must be UpperSnakeCase`,
 				),
 			},
@@ -281,6 +287,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   10,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "RPCName" must be LowerSnakeCase`,
 				),
 				report.Failuref(
@@ -291,6 +298,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   20,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "rpcName" must be LowerSnakeCase`,
 				),
 				report.Failuref(
@@ -301,6 +309,7 @@ func TestRPCNamesCaseRule_Apply(t *testing.T) {
 						Column:   30,
 					},
 					"RPC_NAMES_CASE",
+					string(rule.SeverityError),
 					`RPC name "RPC_NAME" must be LowerSnakeCase`,
 				),
 			},

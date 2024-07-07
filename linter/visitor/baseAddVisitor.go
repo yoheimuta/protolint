@@ -34,7 +34,7 @@ func (v *BaseAddVisitor) AddFailuref(
 	format string,
 	a ...interface{},
 ) {
-	v.failures = append(v.failures, report.FailureWithSeverityf(pos, v.ruleID, v.severity, format, a...))
+	v.failures = append(v.failures, report.Failuref(pos, v.ruleID, v.severity, format, a...))
 }
 
 // AddFailurefWithProtoMeta adds to the internal buffer and the formatting works like fmt.Sprintf.
