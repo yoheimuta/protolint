@@ -4,7 +4,7 @@ Protolint is a go based linter for `.proto` files for google protobuf und gRPC. 
 
 The npm package provides a wrapper around the executables `protolint` and `protoc-gen-protolint`. During installation process, it will download the binaries matching the version and your operating system and CPU architecture from github.
 
-If your behind a proxy, you can add the `PROTOLINT_PROXY` environment variable including the HTTP basic authentication information like username and password. **NOTE** that this will take precedence of the system `HTTP_PROXY`/`HTTPS_PROXY` environment variables. If these variables should be used, do not use `PROTOLINT_PROXY`.
+If your behind a proxy, you can add the `PROTOLINT_PROXY` environment variable including the HTTP basic authentication information like username and password. **NOTE** that this will take precedence of the system `HTTP_PROXY`/`HTTPS_PROXY` environment variables. If these variables should be used, do not use `PROTOLINT_PROXY`. If a proxy server is set that should not be used, set `PROTOLINT_NO_PROXY` to non-zero value.
 
 If your running an airgapped environment, you can add the following environment variables:
 
