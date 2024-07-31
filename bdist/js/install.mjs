@@ -27,8 +27,19 @@ const arch = _arch_mapping[_arch] ?? _arch;
 const url = `${protolint_host}/${protolint_path}/v${protolint_version}/${module_name}_${protolint_version}_${platform}_${arch}.tar.gz`;
 
 let agent;
-if (process.env.PROTOLINT_PROXY) {
-    agent = HttpProxyAgent(process.env.PROTOLINT_PROXY);
+
+let proxy_address;
+
+if (!process.env.PROTOLINT_NO_PROXY) {
+    proxy_address = process.env.PROTOLINT_PROXY;
+    if (!proxy_address)
+    {
+        proxy_address = protolint_host.startsWith("https") ? process.env.HTTPS_PROXY : process.env.HTTP_PROXY;
+    }
+}
+
+if (proxy_address) {
+    agent = new HttpProxyAgent(proxy_address);
 }
 
 const agent_config = {
