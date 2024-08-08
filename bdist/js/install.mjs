@@ -2,6 +2,7 @@ import { got } from 'got';
 import { createFetch } from 'got-fetch';
 import npmlog from 'npmlog';
 import { HttpProxyAgent } from 'http-proxy-agent';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 import * as fs from 'fs';
 import { temporaryFile } from 'tempy';
 import * as tar from 'tar';
@@ -26,7 +27,8 @@ const arch = _arch_mapping[_arch] ?? _arch;
 
 const url = `${protolint_host}/${protolint_path}/v${protolint_version}/${module_name}_${protolint_version}_${platform}_${arch}.tar.gz`;
 
-let agent;
+let httpAgent;
+let httpsAgent;
 
 let proxy_address;
 
@@ -39,11 +41,13 @@ if (!process.env.PROTOLINT_NO_PROXY) {
 }
 
 if (proxy_address) {
-    agent = new HttpProxyAgent(proxy_address);
+    httpAgent = new HttpProxyAgent(proxy_address);
+    httpsAgent = new HttpsProxyAgent(proxy_address);
 }
 
 const agent_config = {
-    http: agent
+    http: httpAgent,
+    https: httpsAgent
 };
 
 const got_config = {
