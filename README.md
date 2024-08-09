@@ -572,4 +572,4 @@ The MIT License (MIT)
 
 Thank you to the prototool package: https://github.com/uber/prototool
 
-I referred to the package for the good proven design, interface and some source code.
+I referred to the package for the good proven design and interface.
