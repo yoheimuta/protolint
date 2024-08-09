@@ -567,9 +567,3 @@ I wrote an article comparing various Protocol Buffer Linters, including protolin
 ## License
 
 The MIT License (MIT)
-
-## Acknowledgement
-
-Thank you to the prototool package: https://github.com/uber/prototool
-
-I referred to the package for the good proven design and interface.
