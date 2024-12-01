@@ -53,3 +53,11 @@ func (v *fileHasCommentVisitor) VisitSyntax(s *parser.Syntax) bool {
 	}
 	return false
 }
+
+// VisitEdition checks the syntax.
+func (v *fileHasCommentVisitor) VisitEdition(s *parser.Edition) bool {
+	if !hasComment(s.Comments) {
+		v.AddFailuref(s.Meta.Pos, `File should start with a doc comment`)
+	}
+	return false
+}

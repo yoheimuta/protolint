@@ -38,6 +38,10 @@ func (v *extendedAutoDisableVisitor) Finally() error {
 }
 func (v *extendedAutoDisableVisitor) Failures() []report.Failure { return v.inner.Failures() }
 
+func (v *extendedAutoDisableVisitor) VisitEdition(s *parser.Edition) (next bool) {
+	return v.inner.VisitEdition(s)
+}
+
 func (v *extendedAutoDisableVisitor) VisitEmptyStatement(e *parser.EmptyStatement) (next bool) {
 	return v.inner.VisitEmptyStatement(e)
 }

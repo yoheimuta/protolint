@@ -75,6 +75,16 @@ func (v quoteConsistentVisitor) VisitSyntax(s *parser.Syntax) bool {
 	return false
 }
 
+func (v quoteConsistentVisitor) VisitEdition(s *parser.Edition) bool {
+	str := s.EditionQuote
+	converted := convertConsistentQuote(str, v.quote)
+	if str != converted {
+		v.AddFailuref(s.Meta.Pos, "Quoted string should be %s but was %s.", converted, str)
+		v.Fixer.ReplaceText(s.Meta.Pos.Line, str, converted)
+	}
+	return false
+}
+
 func (v quoteConsistentVisitor) VisitImport(i *parser.Import) (next bool) {
 	str := i.Location
 	converted := convertConsistentQuote(str, v.quote)
