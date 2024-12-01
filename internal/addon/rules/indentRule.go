@@ -289,6 +289,14 @@ func (v indentVisitor) VisitSyntax(s *parser.Syntax) (next bool) {
 	return false
 }
 
+func (v indentVisitor) VisitEdition(s *parser.Edition) (next bool) {
+	v.validateIndentLeading(s.Meta.Pos)
+	for _, comment := range s.Comments {
+		v.validateIndentLeading(comment.Meta.Pos)
+	}
+	return false
+}
+
 func (v indentVisitor) validateIndentLeading(
 	pos meta.Position,
 ) {

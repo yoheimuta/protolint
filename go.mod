@@ -7,7 +7,7 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/hashicorp/go-plugin v1.6.1
-	github.com/yoheimuta/go-protoparser/v4 v4.11.0
+	github.com/yoheimuta/go-protoparser/v4 v4.12.0
 	google.golang.org/grpc v1.66.0
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/yaml.v2 v2.4.0
@@ -26,4 +26,4 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240604185151-ef581f913117 // indirect
 )
 
-go 1.21
+go 1.23

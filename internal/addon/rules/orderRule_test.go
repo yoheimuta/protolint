@@ -36,6 +36,23 @@ func TestOrderRule_Apply(t *testing.T) {
 			},
 		},
 		{
+			name: "no failures with editions for proto including all elements in order",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Edition{},
+					&parser.Package{},
+					&parser.Import{},
+					&parser.Import{},
+					&parser.Option{},
+					&parser.Option{},
+					&parser.Message{},
+					&parser.Enum{},
+					&parser.Service{},
+					&parser.Extend{},
+				},
+			},
+		},
+		{
 			name: "no failures for proto omitting the syntax",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -367,9 +384,19 @@ func TestOrderRule_Apply_fix(t *testing.T) {
 			wantFilename:  "order.proto",
 		},
 		{
+			name:          "no fix for a correct proto with editions",
+			inputFilename: "orderEditions.proto",
+			wantFilename:  "orderEditions.proto",
+		},
+		{
 			name:          "fix for an incorrect proto",
 			inputFilename: "invalid.proto",
 			wantFilename:  "order.proto",
+		},
+		{
+			name:          "fix for an incorrect proto with editions",
+			inputFilename: "invalidEditions.proto",
+			wantFilename:  "orderEditions.proto",
 		},
 		{
 			name:          "fix for an incorrect proto while keeping contiguous misc elements",

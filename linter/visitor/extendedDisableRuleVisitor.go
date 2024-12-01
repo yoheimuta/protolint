@@ -38,6 +38,13 @@ func (v extendedDisableRuleVisitor) VisitComment(c *parser.Comment) {
 	v.inner.VisitComment(c)
 }
 
+func (v extendedDisableRuleVisitor) VisitEdition(s *parser.Edition) (next bool) {
+	if v.interpreter.Interpret(s.Comments, s.InlineComment) {
+		return true
+	}
+	return v.inner.VisitEdition(s)
+}
+
 func (v extendedDisableRuleVisitor) VisitEnum(e *parser.Enum) (next bool) {
 	if v.interpreter.Interpret(e.Comments, e.InlineComment, e.InlineCommentBehindLeftCurly) {
 		return true
