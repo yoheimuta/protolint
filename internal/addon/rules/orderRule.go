@@ -11,7 +11,7 @@ import (
 )
 
 // OrderRule verifies that all files should be ordered in the following manner:
-// 1. Syntax
+// 1. Syntax or Edition
 // 2. Package
 // 3. Imports (sorted)
 // 4. File options
@@ -97,6 +97,16 @@ func (v *orderVisitor) VisitSyntax(s *parser.Syntax) bool {
 	}
 	v.state = syntaxOrderState
 	v.formatter.syntax = s
+	return false
+}
+
+func (v *orderVisitor) VisitEdition(e *parser.Edition) bool {
+	next := v.machine.transit(v.state, syntaxVisitEvent)
+	if next == invalidOrderState {
+		v.AddFailuref(e.Meta.Pos, "Edition should be located at the top. Check if the file is ordered in the correct manner.")
+	}
+	v.state = syntaxOrderState
+	v.formatter.edition = e
 	return false
 }
 
@@ -273,6 +283,7 @@ func (i indexedVisitee) isContiguous(a indexedVisitee) bool {
 
 type formatter struct {
 	syntax   *parser.Syntax
+	edition  *parser.Edition
 	pkg      *parser.Package
 	imports  []indexedVisitee
 	options  []indexedVisitee
@@ -282,7 +293,7 @@ type formatter struct {
 
 func (f formatter) index() int {
 	idx := 0
-	if f.syntax != nil {
+	if f.syntax != nil || f.edition != nil {
 		idx = 1
 	}
 	if f.pkg != nil {
@@ -328,6 +339,8 @@ func newLine(meta meta.Meta, comments []*parser.Comment, inline *parser.Comment)
 func newVisiteeLine(elm parser.Visitee) line {
 	switch e := elm.(type) {
 	case *parser.Syntax:
+		return newLine(e.Meta, e.Comments, e.InlineComment)
+	case *parser.Edition:
 		return newLine(e.Meta, e.Comments, e.InlineComment)
 	case *parser.Package:
 		return newLine(e.Meta, e.Comments, e.InlineComment)
@@ -385,8 +398,15 @@ func (w *writer) removeLastRedundantN() {
 func (f formatter) format(content []byte) []byte {
 	w := writer{content: content}
 
-	sl := newVisiteeLine(f.syntax)
-	w.writeNN(sl)
+	if f.syntax != nil {
+		sl := newVisiteeLine(f.syntax)
+		w.writeNN(sl)
+	}
+
+	if f.edition != nil {
+		el := newVisiteeLine(f.edition)
+		w.writeNN(el)
+	}
 
 	if f.pkg != nil {
 		pl := newVisiteeLine(f.pkg)
