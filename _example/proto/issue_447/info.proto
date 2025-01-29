@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+message Xyz {
+  repeated AdditionalInfo additional_info = 1;
+}
