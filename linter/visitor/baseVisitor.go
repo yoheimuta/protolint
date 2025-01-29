@@ -16,6 +16,9 @@ func (BaseVisitor) Finally() error { return nil }
 // VisitComment works noop.
 func (BaseVisitor) VisitComment(*parser.Comment) {}
 
+// VisitDeclaration works noop.
+func (BaseVisitor) VisitDeclaration(*parser.Declaration) (next bool) { return true }
+
 // VisitEdition works noop.
 func (BaseVisitor) VisitEdition(*parser.Edition) (next bool) { return true }
 

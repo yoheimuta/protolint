@@ -38,6 +38,13 @@ func (v extendedDisableRuleVisitor) VisitComment(c *parser.Comment) {
 	v.inner.VisitComment(c)
 }
 
+func (v extendedDisableRuleVisitor) VisitDeclaration(s *parser.Declaration) (next bool) {
+	if v.interpreter.Interpret(s.Comments, s.InlineComment) {
+		return true
+	}
+	return v.inner.VisitDeclaration(s)
+}
+
 func (v extendedDisableRuleVisitor) VisitEdition(s *parser.Edition) (next bool) {
 	if v.interpreter.Interpret(s.Comments, s.InlineComment) {
 		return true
