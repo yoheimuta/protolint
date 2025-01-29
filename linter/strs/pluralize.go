@@ -16,6 +16,7 @@ func NewPluralizeClient() *PluralizeClient {
 	}
 	c.AddPluralRule("(?i)uri$", "uris")
 	c.AddSingularRule("(?i)uris$", "uri")
+	c.AddUncountableRule("(?i)info$")
 	return c
 }
 
