@@ -70,7 +70,7 @@ ap_map: dict[str, str] = {
     "darwin_amd64_v1": "macosx_10_0_x86_64",
     "darwin_arm64_v8.0": "macosx_10_0_arm64",
     "linux_amd64_v1": "manylinux2014_x86_64",
-    "linux_arm64": "manylinux2014_aarch64",
+    "linux_arm64_v8.0": "manylinux2014_aarch64",
     "linux_arm_7": "manylinux2014_armv7l",
     "windows_amd64_v1": "win_amd64",
     "windows_arm64_v8.0": "win_arm64",

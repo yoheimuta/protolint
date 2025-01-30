@@ -41,7 +41,7 @@ publishing {
             }
 
             //linux 64 arm
-            artifact("$projectDir/dist/protoc-gen-protolint_linux_arm64/protoc-gen-protolint") {
+            artifact("$projectDir/dist/protoc-gen-protolint_linux_arm64_v8.0/protoc-gen-protolint") {
                 classifier 'linux-aarch_64'
                 extension 'exe'
             }
