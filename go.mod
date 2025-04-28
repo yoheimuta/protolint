@@ -1,7 +1,7 @@
 module github.com/yoheimuta/protolint
 
 require (
-	github.com/BurntSushi/toml v1.4.0
+	github.com/BurntSushi/toml v1.5.0
 	github.com/chavacava/garif v0.1.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/golang/protobuf v1.5.4
