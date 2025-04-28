@@ -7,7 +7,7 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/hashicorp/go-plugin v1.6.1
-	github.com/yoheimuta/go-protoparser/v4 v4.14.0
+	github.com/yoheimuta/go-protoparser/v4 v4.14.1
 	google.golang.org/grpc v1.72.0
 	google.golang.org/protobuf v1.36.5
 	gopkg.in/yaml.v2 v2.4.0
