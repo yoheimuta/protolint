@@ -137,6 +137,8 @@ protolint lint -output_file=path/to/out.txt # output results to path/to/out.txt
 protolint lint -plugin ./my_custom_rule1 -plugin ./my_custom_rule2 .   # run custom lint rules.
 protolint list                              # list all current lint rules being used
 protolint version                           # print protolint version
+protolint --version                         # print protolint version (global flag)
+protolint -v                                # print protolint version (when used as the only argument)
 ```
 
 protolint does not require configuration by default, for the majority of projects it should work out of the box.
