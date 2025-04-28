@@ -16,11 +16,16 @@ Protocol Buffer Linter Command.
 
 Usage:
 	protolint <command> [arguments]
+	protolint --version
 
 The commands are:
 	lint     lint protocol buffer files
 	list     list all current lint rules being used
 	version  print protolint version
+
+The flags are:
+	--version  print protolint version
+	-v         print protolint version (when used as the only argument)
 `
 )
 
@@ -41,6 +46,13 @@ func Do(
 	stdout io.Writer,
 	stderr io.Writer,
 ) osutil.ExitCode {
+	// Check for --version flag
+	for _, arg := range args {
+		if arg == "--version" || (arg == "-v" && len(args) == 1) {
+			return doVersion(stdout)
+		}
+	}
+
 	switch {
 	case len(args) == 0:
 		_, _ = fmt.Fprint(stderr, help)
