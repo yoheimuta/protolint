@@ -1,0 +1,15 @@
+{
+    "name": "protolint devcontainer",
+    "image": "mcr.microsoft.com/devcontainers/go:1.22",
+    "features": {},
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "go.useLanguageServer": true
+            },
+            "extensions": [
+                "golang.go"
+            ]
+        }
+    }
+}
