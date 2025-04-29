@@ -262,7 +262,7 @@ Fix https://github.com/yoheimuta/protolint/issues/280`,
 
 			proto, err := file.NewProtoFile(test.inputProtoPath, test.inputProtoPath).Parse(false)
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Errorf("%v", err)
 				return
 			}
 
@@ -449,7 +449,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 
 			proto, err := file.NewProtoFile(test.inputTestData.FilePath, test.inputTestData.FilePath).Parse(false)
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Errorf("%v", err)
 				return
 			}
 
@@ -485,7 +485,7 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 			)
 			proto, err = file.NewProtoFile(test.inputTestData.FilePath, test.inputTestData.FilePath).Parse(false)
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Errorf("%v", err)
 				return
 			}
 			gotCheck, err := ruleOnlyCheck.Apply(proto)

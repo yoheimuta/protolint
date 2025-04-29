@@ -78,7 +78,7 @@ func (r externalRule) Apply(p *parser.Proto) ([]report.Failure, error) {
 			Offset:   int(f.Pos.Offset),
 			Line:     int(f.Pos.Line),
 			Column:   int(f.Pos.Column),
-		}, r.id, string(r.severity), f.Message))
+		}, r.id, string(r.severity), "%s", f.Message))
 	}
 	return fs, nil
 }

@@ -200,7 +200,7 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 			}
 			proto, err := file.NewProtoFile(input.FilePath, input.FilePath).Parse(false)
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Errorf("%v", err.Error())
 				return
 			}
 			fs, err := r.Apply(proto)

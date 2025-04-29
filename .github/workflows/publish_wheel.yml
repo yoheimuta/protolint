@@ -19,7 +19,7 @@ jobs:
       - name: Run go release to create binaries
         uses: actions/setup-go@v5
         with:
-          go-version: 1.23
+          go-version: 1.24.2
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
