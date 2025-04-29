@@ -452,7 +452,7 @@ func (ts *testStruct) want(input string) {
 }
 
 func (ts *testStruct) expectError(err string) {
-	ts.expectedError = fmt.Errorf(err)
+	ts.expectedError = fmt.Errorf("%v", err)
 	ts.want("")
 }
 

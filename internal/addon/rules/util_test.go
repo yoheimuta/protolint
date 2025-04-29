@@ -33,7 +33,7 @@ func testApplyFix(
 
 	proto, err := file.NewProtoFile(input.FilePath, input.FilePath).Parse(false)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%v", err)
 		return
 	}
 
@@ -44,6 +44,10 @@ func testApplyFix(
 	}
 
 	got, err := input.Data()
+	if err != nil {
+		t.Errorf("got err %v, but want nil", err)
+		return
+	}
 	if !reflect.DeepEqual(got, want.OriginData) {
 		t.Errorf(
 			"got %s(%v), but want %s(%v)",
