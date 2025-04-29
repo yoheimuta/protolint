@@ -566,6 +566,20 @@ I wrote an article comparing various Protocol Buffer Linters, including protolin
 
 - [go-protoparser](https://github.com/yoheimuta/go-protoparser)
 
+## Development 
+
+### Release
+
+To streamline the release process and reduce human error, a `release.sh` script is included in the repository. This script automates the steps required to create and push a new release tag.
+
+### How to Use
+
+Run the following command to create a new release:
+
+```bash
+bash release.sh <version> [message]
+```
+
 ## License
 
 The MIT License (MIT)
