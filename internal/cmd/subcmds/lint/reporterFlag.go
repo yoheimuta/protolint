@@ -97,6 +97,7 @@ func GetReporter(value string) (report.Reporter, error) {
 		"sarif":   reporters.SarifReporter{},
 		"sonar":   reporters.SonarReporter{},
 		"tsc":     reporters.TscReporter{},
+		"mcp":     reporters.MCPReporter{},
 		"ci":      reporters.NewCiReporterWithGenericFormat(),
 		"ci-az":   reporters.NewCiReporterForAzureDevOps(),
 		"ci-gh":   reporters.NewCiReporterForGithubActions(),
@@ -106,5 +107,5 @@ func GetReporter(value string) (report.Reporter, error) {
 	if r, ok := rs[value]; ok {
 		return r, nil
 	}
-	return nil, fmt.Errorf(`available reporters are "plain", "junit", "json", "sarif", and "unix, available reporters for CI/CD are ci, ci-az, ci-gh, ci-glab"`)
+	return nil, fmt.Errorf(`available reporters are "plain", "junit", "json", "sarif", "unix", "mcp", available reporters for CI/CD are ci, ci-az, ci-gh, ci-glab"`)
 }

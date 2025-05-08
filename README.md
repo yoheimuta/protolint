@@ -27,6 +27,16 @@ For example, vim-protolint works like the following.
 
 <img src="_doc/demo-v2.gif" alt="demo" width="600"/>
 
+## MCP Server
+protolint now includes support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io), which allows AI models to interact with protolint directly.
+
+### Usage
+```sh
+protolint --mcp
+```
+
+For detailed documentation on how to use and integrate protolint's MCP server functionality, see the [MCP documentation](./mcp/README.md).
+
 ## Installation
 
 ### Via Homebrew

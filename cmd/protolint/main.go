@@ -7,6 +7,9 @@ import (
 )
 
 func main() {
+	// Initialize the lint runner
+	cmd.Initialize()
+
 	os.Exit(int(
 		cmd.Do(
 			os.Args[1:],
