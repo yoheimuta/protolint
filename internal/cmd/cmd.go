@@ -8,6 +8,7 @@ import (
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds/lint"
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds/list"
 	"github.com/yoheimuta/protolint/internal/osutil"
+	"github.com/yoheimuta/protolint/mcp"
 )
 
 const (
@@ -17,6 +18,7 @@ Protocol Buffer Linter Command.
 Usage:
 	protolint <command> [arguments]
 	protolint --version
+	protolint --mcp
 
 The commands are:
 	lint     lint protocol buffer files
@@ -26,6 +28,7 @@ The commands are:
 The flags are:
 	--version  print protolint version
 	-v         print protolint version (when used as the only argument)
+	--mcp      start as an MCP server
 `
 )
 
@@ -33,6 +36,7 @@ const (
 	subCmdLint    = "lint"
 	subCmdList    = "list"
 	subCmdVersion = "version"
+	mcpFlag       = "--mcp"
 )
 
 var (
@@ -46,10 +50,13 @@ func Do(
 	stdout io.Writer,
 	stderr io.Writer,
 ) osutil.ExitCode {
-	// Check for --version flag
+	// Check for --version and --mcp flags
 	for _, arg := range args {
 		if arg == "--version" || (arg == "-v" && len(args) == 1) {
 			return doVersion(stdout)
+		}
+		if arg == mcpFlag {
+			return doMCP(stdout, stderr)
 		}
 	}
 
@@ -145,4 +152,12 @@ func doVersion(
 ) osutil.ExitCode {
 	_, _ = fmt.Fprintln(stdout, "protolint version "+version+"("+revision+")")
 	return osutil.ExitSuccess
+}
+
+func doMCP(
+	stdout io.Writer,
+	stderr io.Writer,
+) osutil.ExitCode {
+	server := mcp.NewServer(stdout, stderr)
+	return server.Run()
 }

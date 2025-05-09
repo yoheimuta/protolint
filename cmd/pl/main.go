@@ -8,6 +8,9 @@ import (
 
 // DEPRECATED: Use cmd/protolint. See https://github.com/yoheimuta/protolint/issues/20.
 func main() {
+	// Initialize the lint runner
+	cmd.Initialize()
+
 	os.Exit(int(
 		cmd.Do(
 			os.Args[1:],
