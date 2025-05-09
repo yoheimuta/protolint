@@ -58,8 +58,12 @@ func TestServer_handleInitialize_Success(t *testing.T) {
 	}
 
 	// Check capabilities
-	if result.Capabilities.Tools != nil {
-		t.Errorf("Expected capabilities.tools to be nil")
+	if result.Capabilities.Tools == nil {
+		t.Errorf("Expected capabilities.tools to be non-nil")
+	} else {
+		if _, ok := result.Capabilities.Tools["listChanged"]; !ok {
+			t.Errorf("Expected capabilities.tools.listChanged to be present")
+		}
 	}
 }
 
