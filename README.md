@@ -23,7 +23,11 @@ protolint is the pluggable linting/fixing utility for Protocol Buffer files (pro
 
 ## Demo
 
-For example, vim-protolint works like the following.
+Once MCP server configured, you can ask any MCP clients like Claude Desktop to lint and fix your Protocol Buffer files like this:
+
+<img src="_doc/claude.gif" alt="demo" width="720"/>
+
+Also, vim-protolint works like the following.
 
 <img src="_doc/demo-v2.gif" alt="demo" width="600"/>
 

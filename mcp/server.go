@@ -95,7 +95,7 @@ func (s *Server) handleRequest(req *Request) *Response {
 func (s *Server) handleInitialize(req *Request) *Response {
 	// Parse the initialize parameters
 	var params InitializeParams
-	if req.Params != nil && len(req.Params) > 0 {
+	if len(req.Params) > 0 {
 		if err := json.Unmarshal(req.Params, &params); err != nil {
 			_, _ = fmt.Fprintf(s.stderr, "Warning: failed to parse initialize params: %v\n", err)
 			return &Response{
@@ -135,13 +135,8 @@ func (s *Server) handleInitialize(req *Request) *Response {
 			Name:    "protolint-mcp",
 			Version: "1.0.0",
 		},
-		Capabilities: ServerCapabilities{
-			// We only support tools with listChanged capability
-			Tools: map[string]interface{}{
-				"listChanged": true,
-			},
-		},
-		Instructions: "Protocol Buffer linter for enforcing proto style guide rules",
+		Capabilities: ServerCapabilities{},
+		Instructions: "protolint: Protocol Buffer linter and fixer for enforcing proto style guide rules",
 	}
 
 	return &Response{

@@ -41,6 +41,24 @@ To use protolint with Claude Desktop:
 
 4. Restart Claude Desktop.
 
+## Protocol Implementation
+
+The MCP server implementation follows the [Model Context Protocol specification](https://modelcontextprotocol.io) and uses JSON-RPC 2.0 for communication:
+
+1. **Protocol Version**: The server supports version "2024-11-05" of the MCP protocol. If a client requests a different version, the server will respond with this supported version as specified in the protocol's version negotiation mechanism.
+
+2. **Server Information**: The server identifies itself as "protolint-mcp" with version "1.0.0".
+
+3. **Communication**: Uses stdio for communication between the client and server.
+
+4. **Request Methods**:
+   - `initialize`: Initializes the connection and negotiates protocol version
+   - `notifications/initialized`: Notification that the client is ready
+   - `tools/list`: Returns a list of available tools
+   - `tools/call`: Calls a specific tool with arguments
+
+5. **Response Format**: All responses follow the JSON-RPC 2.0 format with appropriate result or error fields.
+
 ## Available Tools
 
 When running in MCP mode, protolint provides the following tools:
@@ -57,9 +75,10 @@ Lint Protocol Buffer files using protolint.
 **Example request:**
 ```json
 {
-  "type": "call_tool",
+  "jsonrpc": "2.0",
+  "method": "tools/call",
   "id": "request-1234",
-  "payload": {
+  "params": {
     "name": "lint-files",
     "arguments": {
       "files": ["/path/to/file1.proto", "/path/to/file2.proto"],
@@ -73,26 +92,16 @@ Lint Protocol Buffer files using protolint.
 **Example response:**
 ```json
 {
-  "type": "call_tool_response",
+  "jsonrpc": "2.0",
   "id": "request-1234",
-  "payload": {
-    "result": {
-      "exit_code": 0,
-      "results": [
-        {
-          "file_path": "/path/to/file1.proto",
-          "failures": [
-            {
-              "rule_id": "ENUM_NAMES_UPPER_CAMEL_CASE",
-              "message": "Enum name must be UpperCamelCase",
-              "line": 5,
-              "column": 6,
-              "severity": "error"
-            }
-          ]
-        }
-      ]
-    }
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"exit_code\":0,\"results\":[{\"file_path\":\"/path/to/file1.proto\",\"failures\":[{\"rule_id\":\"ENUM_NAMES_UPPER_CAMEL_CASE\",\"message\":\"Enum name must be UpperCamelCase\",\"line\":5,\"column\":6,\"severity\":\"error\"}]}]}"
+      }
+    ],
+    "isError": false
   }
 }
 ```
@@ -107,21 +116,6 @@ Can you lint my protocol buffer files /path/to/file1.proto and /path/to/file2.pr
 
 Claude will use protolint to analyze the files and report any issues it finds.
 
-## Protocol Implementation
-
-The MCP server implementation follows the [Model Context Protocol specification](https://modelcontextprotocol.io) version 2024-11-05:
-
-1. **Communication**: Uses stdio for communication between the client and server
-2. **Request Types**:
-   - `tools/list`: Returns a list of available tools
-   - `tools/call`: Calls a specific tool with arguments
-3. **Response Types**:
-   - `list_tools_response`: Contains a list of available tools
-   - `call_tool_response`: Contains the result of a tool call
-   - `error`: Contains an error message
-
-The server implements the protocol's version negotiation mechanism, responding with its supported version (2024-11-05) even if the client requests a different version. This follows the specification, which states that if the server doesn't support the requested version, it should respond with another version it does support.
-
 ## Exit Codes
 
 The `lint-files` tool returns the following exit codes:
@@ -134,12 +128,11 @@ The `lint-files` tool returns the following exit codes:
 
 The MCP implementation is located in the `mcp` directory and consists of:
 
-- `server.go`: The MCP server implementation
-- `protocol.go`: Protocol message definitions
-- `tools.go`: Tool implementations
+- `protocol.go`: Protocol message definitions and JSON-RPC 2.0 structures
+- `server.go`: The MCP server implementation with request handling
+- `tools.go`: Tool implementations, currently only the lint-files tool
 
-The reporter for MCP output format is in:
-- `internal/linter/report/reporters/mcpReporter.go`
+The server uses the MCP reporter for output formatting, which is configured when executing the lint command.
 
 ## Troubleshooting
 
@@ -149,3 +142,4 @@ If you encounter issues with the MCP server:
 2. Verify that the configuration file is correctly formatted.
 3. Restart Claude Desktop after making changes to the configuration.
 4. Check if there are any error messages in the Claude Desktop logs.
+5. Ensure the protocol version in your client configuration matches "2024-11-05" or is omitted to allow version negotiation.

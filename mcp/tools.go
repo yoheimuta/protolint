@@ -12,7 +12,7 @@ import (
 // Tool defines the interface for MCP tools
 type Tool interface {
 	GetInfo() ToolInfo
-	Execute(args json.RawMessage) (interface{}, error)
+	Execute(args json.RawMessage) (any, error)
 }
 
 // LintFilesTool is a tool for linting Proto files
@@ -27,24 +27,24 @@ func NewLintFilesTool() *LintFilesTool {
 func (t *LintFilesTool) GetInfo() ToolInfo {
 	return ToolInfo{
 		Name:        "lint-files",
-		Description: "Lint Protocol Buffer files using protolint",
-		InputSchema: map[string]interface{}{
+		Description: "Lint and fix Protocol Buffer files using protolint",
+		InputSchema: map[string]any{
 			"type": "object",
-			"properties": map[string]interface{}{
-				"files": map[string]interface{}{
+			"properties": map[string]any{
+				"files": map[string]any{
 					"type": "array",
-					"items": map[string]interface{}{
+					"items": map[string]any{
 						"type": "string",
 					},
-					"description": "List of file paths to lint",
+					"description": "List of file paths to lint. The paths must be absolute.",
 				},
-				"config_path": map[string]interface{}{
+				"config_path": map[string]any{
 					"type":        "string",
 					"description": "Path to protolint config file",
 				},
-				"fix": map[string]interface{}{
+				"fix": map[string]any{
 					"type":        "boolean",
-					"description": "Fix lint errors if possible",
+					"description": "Fix lint errors if possible. Default is false. It may return failures even if all errors are fixed, so you are strongly recommended to lint the target files again to see if they are fixed.",
 				},
 			},
 			"required": []string{"files"},
@@ -60,7 +60,7 @@ type LintFilesArgs struct {
 }
 
 // Execute runs the lint-files tool
-func (t *LintFilesTool) Execute(args json.RawMessage) (interface{}, error) {
+func (t *LintFilesTool) Execute(args json.RawMessage) (any, error) {
 	var lintArgs LintFilesArgs
 	if err := json.Unmarshal(args, &lintArgs); err != nil {
 		return nil, fmt.Errorf("invalid arguments: %v", err)
@@ -102,7 +102,7 @@ func (t *LintFilesTool) Execute(args json.RawMessage) (interface{}, error) {
 		} else {
 			exitCode = 2
 			// Return error information if internal error occurred
-			return map[string]interface{}{
+			return map[string]any{
 				"exit_code": exitCode,
 				"error":     err.Error(),
 				"stderr":    errorBuffer.String(),
@@ -111,13 +111,18 @@ func (t *LintFilesTool) Execute(args json.RawMessage) (interface{}, error) {
 	}
 
 	// Parse the JSON output from MCP reporter
-	var result map[string]interface{}
+	var result map[string]any
 	if err := json.Unmarshal(errorBuffer.Bytes(), &result); err != nil {
 		return nil, fmt.Errorf("failed to parse lint output: %v\n%s", err, errorBuffer.String())
 	}
 
 	// Add exit code to result
 	result["exit_code"] = exitCode
+
+	if lintArgs.Fix {
+		// If fix is enabled, add a message indicating that you should lint again
+		result["message"] = "Don't think these failures remain now. The fixer could fix all the failures already. Before you manually edit the file, you must lint the files again to see if they are fixed."
+	}
 
 	return result, nil
 }
