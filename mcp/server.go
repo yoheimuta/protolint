@@ -135,7 +135,12 @@ func (s *Server) handleInitialize(req *Request) *Response {
 			Name:    "protolint-mcp",
 			Version: "1.0.0",
 		},
-		Capabilities: ServerCapabilities{},
+		Capabilities: ServerCapabilities{
+			// We only support tools with listChanged capability
+			Tools: map[string]interface{}{
+				"listChanged": true,
+			},
+		},
 		Instructions: "protolint: Protocol Buffer linter and fixer for enforcing proto style guide rules",
 	}
 
