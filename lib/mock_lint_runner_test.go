@@ -1,4 +1,4 @@
-package lib
+package lib_test
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/yoheimuta/protolint/internal/osutil"
+	"github.com/yoheimuta/protolint/lib"
 )
 
 // MockLintRunner is a mock implementation of LintRunner for testing
@@ -38,7 +39,7 @@ func (r *MockLintRunner) Run(args []string, stdout, stderr io.Writer) osutil.Exi
 	return osutil.ExitSuccess
 }
 
-func init() {
-	// Set the default runner to our mock implementation
-	SetLintRunner(&MockLintRunner{})
+// NewMockLintRunner creates a new MockLintRunner
+func NewMockLintRunner() lib.LintRunner {
+	return &MockLintRunner{}
 }

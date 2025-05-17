@@ -11,6 +11,14 @@ import (
 )
 
 func TestLint(t *testing.T) {
+	// Set the mock lint runner for testing
+	originalRunner := lib.GetLintRunner() // Save the original runner to restore later
+	lib.SetLintRunner(NewMockLintRunner())
+	defer func() {
+		// Restore the original runner after the test
+		lib.SetLintRunner(originalRunner)
+	}()
+
 	tests := []struct {
 		name            string
 		inputArgs       []string

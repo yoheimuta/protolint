@@ -26,6 +26,11 @@ func SetLintRunner(runner LintRunner) {
 	defaultRunner = runner
 }
 
+// GetLintRunner returns the current lint runner
+func GetLintRunner() LintRunner {
+	return defaultRunner
+}
+
 // Lint is used to lint Protocol Buffer files with the protolint tool.
 // It takes an array of strings (args) representing command line arguments,
 // as well as two io.Writer instances (stdout and stderr) to which the output of the command should be written.
