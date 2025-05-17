@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/yoheimuta/protolint/lib"
+	"github.com/yoheimuta/protolint/internal/libinternal"
 )
 
 // Tool defines the interface for MCP tools
@@ -92,12 +92,12 @@ func (t *LintFilesTool) Execute(args json.RawMessage) (any, error) {
 	var errorBuffer bytes.Buffer
 
 	// Run lint command
-	err := lib.Lint(cmdArgs, &outputBuffer, &errorBuffer)
+	err := libinternal.Lint(cmdArgs, &outputBuffer, &errorBuffer)
 
 	// Determine exit code based on error
 	exitCode := 0
 	if err != nil {
-		if err == lib.ErrLintFailure {
+		if err == libinternal.ErrLintFailure {
 			exitCode = 1
 		} else {
 			exitCode = 2

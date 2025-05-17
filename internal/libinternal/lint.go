@@ -1,30 +1,34 @@
-package lib
+package libinternal
 
 import (
+	"errors"
 	"io"
 
-	"github.com/yoheimuta/protolint/internal/cmd"
-	"github.com/yoheimuta/protolint/internal/libinternal"
+	"github.com/yoheimuta/protolint/internal/osutil"
 )
 
 var (
 	// ErrLintFailure error is returned when there is a linting error
-	ErrLintFailure = libinternal.ErrLintFailure
+	ErrLintFailure = errors.New("lint error")
 	// ErrInternalFailure error is returned when there is a parsing, internal, or runtime error.
-	ErrInternalFailure = libinternal.ErrInternalFailure
+	ErrInternalFailure = errors.New("parsing, internal or runtime errors")
 )
 
 // LintRunner is an interface for running lint commands
-type LintRunner = libinternal.LintRunner
+type LintRunner interface {
+	Run(args []string, stdout, stderr io.Writer) osutil.ExitCode
+}
+
+var defaultRunner LintRunner
 
 // SetLintRunner sets the runner used by the Lint function
 func SetLintRunner(runner LintRunner) {
-	libinternal.SetLintRunner(runner)
+	defaultRunner = runner
 }
 
 // GetLintRunner returns the current lint runner
 func GetLintRunner() LintRunner {
-	return libinternal.GetLintRunner()
+	return defaultRunner
 }
 
 // Lint is used to lint Protocol Buffer files with the protolint tool.
@@ -33,15 +37,19 @@ func GetLintRunner() LintRunner {
 // It returns an error in the case of a linting error (ErrLintFailure)
 // or a parsing, internal, or runtime error (ErrInternalFailure).
 // Otherwise, it returns nil on success.
-//
-// Note: This function automatically initializes the default lint runner if none is set,
-// so you don't need to call cmd.Initialize() before using it.
 func Lint(args []string, stdout, stderr io.Writer) error {
-	// Auto-initialize if needed
-	if libinternal.GetLintRunner() == nil {
-		cmd.Initialize()
+	if defaultRunner == nil {
+		return ErrInternalFailure
 	}
 
-	// Use the internal implementation
-	return libinternal.Lint(args, stdout, stderr)
+	switch defaultRunner.Run(args, stdout, stderr) {
+	case osutil.ExitSuccess:
+		return nil
+
+	case osutil.ExitLintFailure:
+		return ErrLintFailure
+
+	default:
+		return ErrInternalFailure
+	}
 }

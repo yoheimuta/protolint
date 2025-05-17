@@ -273,11 +273,24 @@ You can also use protolint from Go code.
 See [Go Documentation](https://pkg.go.dev/github.com/yoheimuta/protolint/lib) and [lib/lint_test.go](https://github.com/yoheimuta/protolint/blob/master/lib/lint_test.go) in detail.
 
 ```go
-args := []string{"-config_path", "path/to/your_protolint.yaml", "."}
-var stdout bytes.Buffer
-var stderr bytes.Buffer
+import (
+    "bytes"
+    
+    "github.com/yoheimuta/protolint/lib"
+)
 
-err := lib.Lint(test.inputArgs, &stdout, &stderr)
+func main() {
+    args := []string{"-config_path", "path/to/your_protolint.yaml", "."}
+    var stdout bytes.Buffer
+    var stderr bytes.Buffer
+    
+    err := lib.Lint(args, &stdout, &stderr)
+    if err != nil {
+        // Handle error
+    }
+    
+    // Process output in stdout and stderr
+}
 ```
 
 ## Rules
