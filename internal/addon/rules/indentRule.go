@@ -97,9 +97,9 @@ type indentVisitor struct {
 	indentFixes      map[int][]indentFix
 }
 
-func (v indentVisitor) Finally() error {
+func (v indentVisitor) Finally(proto *parser.Proto) error {
 	if v.fixMode {
-		return v.fix()
+		return v.fix(proto)
 	}
 	return nil
 }
@@ -358,7 +358,7 @@ func (v *indentVisitor) nest() func() {
 	}
 }
 
-func (v indentVisitor) fix() error {
+func (v indentVisitor) fix(proto *parser.Proto) error {
 	var shouldFixed bool
 
 	v.Fixer.ReplaceAll(func(lines []string) []string {
@@ -410,5 +410,5 @@ func (v indentVisitor) fix() error {
 	if !shouldFixed {
 		return nil
 	}
-	return v.BaseFixableVisitor.Finally()
+	return v.BaseFixableVisitor.Finally(proto)
 }

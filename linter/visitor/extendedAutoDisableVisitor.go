@@ -28,13 +28,12 @@ func newExtendedAutoDisableVisitor(
 	}, nil
 }
 
-func (v *extendedAutoDisableVisitor) OnStart(p *parser.Proto) error { return v.inner.OnStart(p) }
-func (v *extendedAutoDisableVisitor) Finally() error {
+func (v *extendedAutoDisableVisitor) Finally(p *parser.Proto) error {
 	err := v.automator.Finalize()
 	if err != nil {
 		return err
 	}
-	return v.inner.Finally()
+	return v.inner.Finally(p)
 }
 func (v *extendedAutoDisableVisitor) Failures() []report.Failure { return v.inner.Failures() }
 

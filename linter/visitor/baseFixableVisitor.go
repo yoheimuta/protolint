@@ -32,10 +32,10 @@ func NewBaseFixableVisitor(
 }
 
 // Finally fixes the proto file by overwriting it.
-func (v *BaseFixableVisitor) Finally() error {
+func (v *BaseFixableVisitor) Finally(proto *parser.Proto) error {
 	err := v.finallyFn()
 	if err != nil {
 		return err
 	}
-	return v.BaseAddVisitor.Finally()
+	return v.BaseAddVisitor.Finally(proto)
 }
