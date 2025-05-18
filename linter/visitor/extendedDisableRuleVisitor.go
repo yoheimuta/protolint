@@ -24,9 +24,13 @@ func newExtendedDisableRuleVisitor(
 	}
 }
 
-func (v extendedDisableRuleVisitor) OnStart(p *parser.Proto) error { return v.inner.OnStart(p) }
-func (v extendedDisableRuleVisitor) Finally() error                { return v.inner.Finally() }
-func (v extendedDisableRuleVisitor) Failures() []report.Failure    { return v.inner.Failures() }
+func (v extendedDisableRuleVisitor) Finally(p *parser.Proto) error {
+	if v.interpreter.Interpret([]*parser.Comment{}) {
+		return nil
+	}
+	return v.inner.Finally(p)
+}
+func (v extendedDisableRuleVisitor) Failures() []report.Failure { return v.inner.Failures() }
 func (v extendedDisableRuleVisitor) VisitEmptyStatement(e *parser.EmptyStatement) (next bool) {
 	return v.inner.VisitEmptyStatement(e)
 }

@@ -11,10 +11,8 @@ import (
 type HasExtendedVisitor interface {
 	parser.Visitor
 
-	// OnStart is called when visiting is started.
-	OnStart(*parser.Proto) error
 	// Finally is called when visiting is done.
-	Finally() error
+	Finally(*parser.Proto) error
 	// Failures returns the accumulated failures.
 	Failures() []report.Failure
 }
@@ -49,11 +47,8 @@ func RunVisitorAutoDisable(
 		ruleID,
 	)
 
-	if err := disabled.OnStart(proto); err != nil {
-		return nil, err
-	}
 	proto.Accept(disabled)
-	if err := disabled.Finally(); err != nil {
+	if err := disabled.Finally(proto); err != nil {
 		return nil, err
 	}
 	return disabled.Failures(), nil

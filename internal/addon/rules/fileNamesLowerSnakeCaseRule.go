@@ -67,8 +67,8 @@ type fileNamesLowerSnakeCaseVisitor struct {
 	fixMode  bool
 }
 
-// OnStart checks the file.
-func (v *fileNamesLowerSnakeCaseVisitor) OnStart(proto *parser.Proto) error {
+// Finally checks the file name and renames it if necessary.
+func (v *fileNamesLowerSnakeCaseVisitor) Finally(proto *parser.Proto) error {
 	path := proto.Meta.Filename
 	if stringsutil.ContainsStringInSlice(path, v.excluded) {
 		return nil

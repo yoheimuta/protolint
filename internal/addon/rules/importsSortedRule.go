@@ -70,7 +70,7 @@ func (v importsSortedVisitor) VisitImport(i *parser.Import) (next bool) {
 	return false
 }
 
-func (v importsSortedVisitor) Finally() error {
+func (v importsSortedVisitor) Finally(proto *parser.Proto) error {
 	notSorted := v.sorter.notSortedImports()
 
 	v.Fixer.ReplaceAll(func(lines []string) []string {
@@ -91,7 +91,7 @@ func (v importsSortedVisitor) Finally() error {
 	if !v.fixMode {
 		return nil
 	}
-	return v.BaseFixableVisitor.Finally()
+	return v.BaseFixableVisitor.Finally(proto)
 }
 
 type notSortedImport struct {

@@ -71,7 +71,7 @@ type orderVisitor struct {
 	formatter formatter
 }
 
-func (v *orderVisitor) Finally() error {
+func (v *orderVisitor) Finally(proto *parser.Proto) error {
 	if 0 < len(v.Failures()) {
 		shouldFixed := true
 		v.Fixer.ReplaceContent(func(content []byte) []byte {
@@ -84,7 +84,7 @@ func (v *orderVisitor) Finally() error {
 
 		// TODO: BaseFixableVisitor.Finally should run the base Finally first, and then the fixing later.
 		if shouldFixed {
-			return v.BaseFixableVisitor.Finally()
+			return v.BaseFixableVisitor.Finally(proto)
 		}
 	}
 	return nil

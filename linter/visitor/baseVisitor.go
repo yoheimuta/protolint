@@ -7,11 +7,8 @@ import (
 // BaseVisitor represents a base visitor with noop logic.
 type BaseVisitor struct{}
 
-// OnStart works noop.
-func (BaseVisitor) OnStart(*parser.Proto) error { return nil }
-
 // Finally works noop.
-func (BaseVisitor) Finally() error { return nil }
+func (BaseVisitor) Finally(*parser.Proto) error { return nil }
 
 // VisitComment works noop.
 func (BaseVisitor) VisitComment(*parser.Comment) {}

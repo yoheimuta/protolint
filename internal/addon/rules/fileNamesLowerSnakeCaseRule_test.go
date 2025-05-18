@@ -55,6 +55,19 @@ func TestFileNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 			},
 		},
 		{
+			name: "no failures for proto with disable directive",
+			inputProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{
+					Filename: "proto/lowerSnakeCase.proto",
+				},
+				ProtoBody: []parser.Visitee{
+					&parser.Comment{
+						Raw: "// protolint:disable FILE_NAMES_LOWER_SNAKE_CASE",
+					},
+				},
+			},
+		},
+		{
 			name: "a failure for proto with a camel case file name",
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{
@@ -185,6 +198,11 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 			inputFilename: "kebab-case.proto",
 			wantFilename:  "kebab_case.proto",
 		},
+		{
+			name:          "no fix for a proto with disable directive",
+			inputFilename: "dot.separated.proto",
+			wantFilename:  "dot.separated.proto",
+		},
 	}
 
 	for _, test := range tests {
@@ -198,6 +216,7 @@ func TestFileNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 				t.Errorf("got err %v", err)
 				return
 			}
+
 			proto, err := file.NewProtoFile(input.FilePath, input.FilePath).Parse(false)
 			if err != nil {
 				t.Errorf("%v", err.Error())
