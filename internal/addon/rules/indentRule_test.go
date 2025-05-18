@@ -378,6 +378,18 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 		return
 	}
 
+	issue409Path, err := newTestIndentData("issue_409.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	issue409FixedPath, err := newTestIndentData("issue_409_fixed.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
 	tests := []struct {
 		name               string
 		inputTestData      util_test.TestData
@@ -434,6 +446,12 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 			inputTestData:      incorrectIssue139Path,
 			inputInsertNewline: true,
 			wantCorrectData:    correctIssue139InsertPath,
+		},
+		{
+			name:               "handle comments around repeated keyword without panic. Fix https://github.com/yoheimuta/protolint/issues/409",
+			inputTestData:      issue409Path,
+			inputInsertNewline: true,
+			wantCorrectData:    issue409FixedPath,
 		},
 	}
 

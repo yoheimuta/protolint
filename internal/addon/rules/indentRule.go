@@ -370,35 +370,99 @@ func (v indentVisitor) fix(proto *parser.Proto) error {
 				shouldFixed = true
 
 				if 1 < len(fixes) && !v.notInsertNewline {
-					// compose multiple lines in reverse order from right to left on one line.
-					var rlines []string
-					for j := len(fixes) - 1; 0 <= j; j-- {
-						indentation := strings.Repeat(v.style, fixes[j].level)
-						if fixes[j].isLast {
-							// deal with last position followed by ';'. See https://github.com/yoheimuta/protolint/issues/99
-							for line[fixes[j].pos.Column-1] == ';' {
-								fixes[j].pos.Column--
+					// Check if we need to sort the fixes
+					// This is needed for cases like issue #409 where comments can cause
+					// positions to be out of order
+					needsSort := false
+					for j := 0; j < len(fixes)-1; j++ {
+						if fixes[j].pos.Column > fixes[j+1].pos.Column {
+							needsSort = true
+							break
+						}
+					}
+
+					if needsSort {
+						// Sort fixes by column position to ensure they are processed in order
+						// This prevents the "slice bounds out of range" error when comments
+						// are interleaved with code elements
+						sortedFixes := make([]indentFix, len(fixes))
+						copy(sortedFixes, fixes)
+						// Sort by column position
+						for i := 0; i < len(sortedFixes); i++ {
+							for j := i + 1; j < len(sortedFixes); j++ {
+								if sortedFixes[i].pos.Column > sortedFixes[j].pos.Column {
+									sortedFixes[i], sortedFixes[j] = sortedFixes[j], sortedFixes[i]
+								}
 							}
 						}
 
-						endColumn := len(line)
-						if j < len(fixes)-1 {
-							endColumn = fixes[j+1].pos.Column - 1
+						// compose multiple lines in order from left to right
+						var rlines []string
+						for j := 0; j < len(sortedFixes); j++ {
+							indentation := strings.Repeat(v.style, sortedFixes[j].level)
+							if sortedFixes[j].isLast {
+								// deal with last position followed by ';'. See https://github.com/yoheimuta/protolint/issues/99
+								for line[sortedFixes[j].pos.Column-1] == ';' {
+									sortedFixes[j].pos.Column--
+								}
+							}
+
+							endColumn := len(line)
+							if j < len(sortedFixes)-1 {
+								endColumn = sortedFixes[j+1].pos.Column - 1
+							}
+
+							// Ensure start index is less than end index
+							if sortedFixes[j].pos.Column-1 < endColumn {
+								text := line[sortedFixes[j].pos.Column-1 : endColumn]
+								text = strings.TrimRightFunc(text, func(r rune) bool {
+									// removing right spaces is a possible side effect that users do not expect,
+									// but it's probably acceptable and usually recommended.
+									return unicode.IsSpace(r)
+								})
+
+								rlines = append(rlines, indentation+text)
+							}
 						}
-						text := line[fixes[j].pos.Column-1 : endColumn]
-						text = strings.TrimRightFunc(text, func(r rune) bool {
-							// removing right spaces is a possible side effect that users do not expect,
-							// but it's probably acceptable and usually recommended.
-							return unicode.IsSpace(r)
-						})
 
-						rlines = append(rlines, indentation+text)
-					}
+						// Use the processed lines
+						lines = rlines
+					} else {
+						// Use the original processing for cases where positions are already in order
+						// compose multiple lines in reverse order from right to left on one line.
+						var rlines []string
+						for j := len(fixes) - 1; 0 <= j; j-- {
+							indentation := strings.Repeat(v.style, fixes[j].level)
+							if fixes[j].isLast {
+								// deal with last position followed by ';'. See https://github.com/yoheimuta/protolint/issues/99
+								for line[fixes[j].pos.Column-1] == ';' {
+									fixes[j].pos.Column--
+								}
+							}
 
-					// sort the multiple lines in order
-					lines = []string{}
-					for j := len(rlines) - 1; 0 <= j; j-- {
-						lines = append(lines, rlines[j])
+							endColumn := len(line)
+							if j < len(fixes)-1 {
+								endColumn = fixes[j+1].pos.Column - 1
+							}
+
+							// Ensure start index is less than end index
+							if fixes[j].pos.Column-1 < endColumn {
+								text := line[fixes[j].pos.Column-1 : endColumn]
+								text = strings.TrimRightFunc(text, func(r rune) bool {
+									// removing right spaces is a possible side effect that users do not expect,
+									// but it's probably acceptable and usually recommended.
+									return unicode.IsSpace(r)
+								})
+
+								rlines = append(rlines, indentation+text)
+							}
+						}
+
+						// sort the multiple lines in order
+						lines = []string{}
+						for j := len(rlines) - 1; 0 <= j; j-- {
+							lines = append(lines, rlines[j])
+						}
 					}
 				}
 			}
