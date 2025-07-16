@@ -1,7 +1,7 @@
 package util_test
 
 import (
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/yoheimuta/protolint/internal/osutil"
@@ -17,7 +17,7 @@ type TestData struct {
 func NewTestData(
 	filePath string,
 ) (TestData, error) {
-	data, err := ioutil.ReadFile(filePath)
+	data, err := os.ReadFile(filePath)
 	if err != nil {
 		return TestData{}, nil
 	}
@@ -29,7 +29,7 @@ func NewTestData(
 
 // Data returns a content.
 func (d TestData) Data() ([]byte, error) {
-	return ioutil.ReadFile(d.FilePath)
+	return os.ReadFile(d.FilePath)
 }
 
 // Restore writes the original content back to the file.

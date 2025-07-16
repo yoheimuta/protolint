@@ -2,7 +2,7 @@ package fixer
 
 import (
 	"bytes"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
@@ -56,7 +56,7 @@ type BaseFixing struct {
 
 // NewBaseFixing creates a BaseFixing.
 func NewBaseFixing(protoFileName string) (*BaseFixing, error) {
-	content, err := ioutil.ReadFile(protoFileName)
+	content, err := os.ReadFile(protoFileName)
 	if err != nil {
 		return nil, err
 	}

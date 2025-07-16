@@ -3,7 +3,6 @@ package osutil
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -20,7 +19,7 @@ func ReadAllLines(
 	fileName string,
 	newlineChar string,
 ) ([]string, error) {
-	data, err := ioutil.ReadFile(fileName)
+	data, err := os.ReadFile(fileName)
 	if err != nil {
 		return nil, err
 	}
