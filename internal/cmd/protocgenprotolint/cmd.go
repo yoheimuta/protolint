@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -78,7 +77,7 @@ func newSubCmd(
 	stdout io.Writer,
 	stderr io.Writer,
 ) (*lint.CmdLint, error) {
-	data, err := ioutil.ReadAll(stdin)
+	data, err := io.ReadAll(stdin)
 	if err != nil {
 		return nil, err
 	}
