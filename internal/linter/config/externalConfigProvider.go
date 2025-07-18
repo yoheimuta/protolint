@@ -38,10 +38,6 @@ func GetExternalConfig(
 		return nil, err
 	}
 
-	if err != nil {
-		return nil, err
-	}
-
 	return reader.LoadExternalConfig()
 }
 
