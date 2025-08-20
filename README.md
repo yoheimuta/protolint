@@ -274,22 +274,22 @@ See [Go Documentation](https://pkg.go.dev/github.com/yoheimuta/protolint/lib) an
 
 ```go
 import (
-"bytes"
+    "bytes"
 
-"github.com/yoheimuta/protolint/lib"
+    "github.com/yoheimuta/protolint/lib"
 )
 
 func main() {
-args := []string{"-config_path", "path/to/your_protolint.yaml", "."}
-var stdout bytes.Buffer
-var stderr bytes.Buffer
+    args := []string{"-config_path", "path/to/your_protolint.yaml", "."}
+    var stdout bytes.Buffer
+    var stderr bytes.Buffer
 
-err := lib.Lint(args, &stdout, &stderr)
-if err != nil {
-// Handle error
-}
+    err := lib.Lint(args, &stdout, &stderr)
+    if err != nil {
+        // Handle error
+    }
 
-// Process output in stdout and stderr
+    // Process output in stdout and stderr
 }
 ```
 
