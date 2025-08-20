@@ -189,5 +189,8 @@ func newAllInternalRules(
 			option.ServicesHaveComment.Severity,
 			servicesHaveComment.ShouldFollowGolangStyle,
 		),
+		rules.NewFieldNumbersOrderAscendingRule(
+			option.FieldNumbersOrderAscending.Severity,
+		),
 	}
 }

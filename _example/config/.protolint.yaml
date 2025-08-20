@@ -61,6 +61,7 @@ lint:
       - RPC_NAMES_CASE
       - FILE_HAS_COMMENT
       - QUOTE_CONSISTENT
+      - FIELD_NUMBERS_ORDER_ASCENDING
 
     # The specific linters to remove.
     remove:

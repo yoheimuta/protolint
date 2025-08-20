@@ -1,4 +1,5 @@
 # protolint
+
 ![Action](https://github.com/yoheimuta/protolint/workflows/Go/badge.svg)
 [![Release](https://img.shields.io/github/v/release/yoheimuta/protolint?include_prereleases)](https://github.com/yoheimuta/protolint/releases)[
 ![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)
@@ -9,21 +10,22 @@ protolint is the pluggable linting/fixing utility for Protocol Buffer files (pro
 
 - Runs fast because this works without compiler.
 - Easy to follow the official style guide. The rules and the style guide correspond to each other exactly.
-  - Fixer automatically fixes all the possible official style guide violations.
+    - Fixer automatically fixes all the possible official style guide violations.
 - Allows to disable rules with a comment in a Protocol Buffer file.
-  - It is useful for projects which must keep API compatibility while enforce the style guide as much as possible.
-  - Some rules can be automatically disabled by inserting comments to the spotted violations.
+    - It is useful for projects which must keep API compatibility while enforce the style guide as much as possible.
+    - Some rules can be automatically disabled by inserting comments to the spotted violations.
 - Loads plugins to contain your custom lint rules.
 - Undergone testing for all rules.
 - Many integration supports.
-  - protoc plugin
-  - Editor integration
-  - GitHub Action
-  - CI Integration
+    - protoc plugin
+    - Editor integration
+    - GitHub Action
+    - CI Integration
 
 ## Demo
 
-Once MCP server configured, you can ask any MCP clients like Claude Desktop to lint and fix your Protocol Buffer files like this:
+Once MCP server configured, you can ask any MCP clients like Claude Desktop to lint and fix your Protocol Buffer files
+like this:
 
 <img src="_doc/claude.gif" alt="demo" width="720"/>
 
@@ -32,28 +34,35 @@ Also, vim-protolint works like the following.
 <img src="_doc/demo-v2.gif" alt="demo" width="600"/>
 
 ## MCP Server
-protolint now includes support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io), which allows AI models to interact with protolint directly.
+
+protolint now includes support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io), which allows AI
+models to interact with protolint directly.
 
 ### Usage
+
 ```sh
 protolint --mcp
 ```
 
-For detailed documentation on how to use and integrate protolint's MCP server functionality, see the [MCP documentation](./mcp/README.md).
+For detailed documentation on how to use and integrate protolint's MCP server functionality, see
+the [MCP documentation](./mcp/README.md).
 
 ## Installation
 
 ### Via Homebrew
 
-protolint can be installed for Mac or Linux using Homebrew via the [yoheimuta/protolint](https://github.com/yoheimuta/homebrew-protolint) tap.
+protolint can be installed for Mac or Linux using Homebrew via
+the [yoheimuta/protolint](https://github.com/yoheimuta/homebrew-protolint) tap.
 
 ```sh
 brew tap yoheimuta/protolint
 brew install protolint
 ```
 
-Since [homebrew-core](https://github.com/Homebrew/homebrew-core/pkgs/container/core%2Fprotolint) includes `protolint,` you can also install it by just `brew install protolint.` This is the default tap that is installed by default. It's easier, but not maintained by the same author. To keep it updated, I recommend you run `brew tap yoheimuta/protolint` first.
-
+Since [homebrew-core](https://github.com/Homebrew/homebrew-core/pkgs/container/core%2Fprotolint) includes `protolint,`
+you can also install it by just `brew install protolint.` This is the default tap that is installed by default. It's
+easier, but not maintained by the same author. To keep it updated, I recommend you run `brew tap yoheimuta/protolint`
+first.
 
 ### Via GitHub Releases
 
@@ -65,7 +74,8 @@ In the downloads section of each release, you can find pre-built binaries in .ta
 
 ### Use the maintained Docker image
 
-protolint ships a Docker image [yoheimuta/protolint](https://hub.docker.com/r/yoheimuta/protolint) that allows you to use protolint as part of your Docker workflow.
+protolint ships a Docker image [yoheimuta/protolint](https://hub.docker.com/r/yoheimuta/protolint) that allows you to
+use protolint as part of your Docker workflow.
 
 ```
 ❯❯❯ docker run --volume "$(pwd):/workspace" --workdir /workspace yoheimuta/protolint lint _example/proto
@@ -93,17 +103,20 @@ $ npm install protolint --save-dev
 
 This will add a reference to a development dependency to your local `package.json`.
 
-During install, the [install.mjs](bdist/js/install.mjs) script will be called. It will download the matching `protolint` from github. Just like [@electron/get](https://github.com/electron/get/), you can bypass the download using the following environment variables:
+During install, the [install.mjs](bdist/js/install.mjs) script will be called. It will download the matching `protolint`
+from github. Just like [@electron/get](https://github.com/electron/get/), you can bypass the download using the
+following environment variables:
 
-| Environment Variable          | Default value                         | Description                                   |
-|-------------------------------|---------------------------------------|-----------------------------------------------|
-| PROTOLINT_MIRROR_HOST         | https://github.com                    | HTTP/Web server base url hosting the binaries |
-| PROTOLINT_MIRROR_REMOTE_PATH  | yoheimuta/protolint/download/releases | Path to the archives on the remote host       |
-| PROTOLINT_MIRROR_USERNAME     |                                       | HTTP Basic auth user name                     |
-| PROTOLINT_MIRROR_PASSWORD     |                                       | HTTP Basic auth password                      |
-| PROTOLINT_PROXY               |                                       | HTTP(S) Proxy with optional auth data         |
+| Environment Variable         | Default value                         | Description                                   |
+|------------------------------|---------------------------------------|-----------------------------------------------|
+| PROTOLINT_MIRROR_HOST        | https://github.com                    | HTTP/Web server base url hosting the binaries |
+| PROTOLINT_MIRROR_REMOTE_PATH | yoheimuta/protolint/download/releases | Path to the archives on the remote host       |
+| PROTOLINT_MIRROR_USERNAME    |                                       | HTTP Basic auth user name                     |
+| PROTOLINT_MIRROR_PASSWORD    |                                       | HTTP Basic auth password                      |
+| PROTOLINT_PROXY              |                                       | HTTP(S) Proxy with optional auth data         |
 
-Within the remote path, the archives from the [releases](https://github.com/yoheimuta/protolint/releases/latest/) page must be
+Within the remote path, the archives from the [releases](https://github.com/yoheimuta/protolint/releases/latest/) page
+must be
 mirrored.
 
 After that, you can use `npx protolint` (with all supplied protolint arguments) within your dev-scripts.
@@ -119,16 +132,19 @@ After that, you can use `npx protolint` (with all supplied protolint arguments) 
 }
 ```
 
-You can add a `protolint` node to your `package.json` which may contain the content of `protolint.yml` below the `lint` node, i.e. the root element of the configuration will be `protolint`.
+You can add a `protolint` node to your `package.json` which may contain the content of `protolint.yml` below the `lint`
+node, i.e. the root element of the configuration will be `protolint`.
 
 If you want to get an output that matches the TSC compiler, use reporter `tsc`.
 
 ### Within Python projects
 
-You can use `protolint` as a linter within your python projects, the wheel `protolint-bin` on [pypi](https://pypi.org) contains the pre-compiled binaries for various platforms. Just add the desired version to
+You can use `protolint` as a linter within your python projects, the wheel `protolint-bin` on [pypi](https://pypi.org)
+contains the pre-compiled binaries for various platforms. Just add the desired version to
 your `pyproject.toml` or `requirements.txt`.
 
-The wheels downloaded will contain the compiled go binaries for `protolint` and `protoc-gen-protolint`. Your platform must
+The wheels downloaded will contain the compiled go binaries for `protolint` and `protoc-gen-protolint`. Your platform
+must
 be compatible with the supported binary platforms.
 
 You can add the linter configuration to the `tools.protolint` package in `pyproject.toml`.
@@ -159,7 +175,9 @@ protolint does not require configuration by default, for the majority of project
 
 ## Version Control Integration
 
-protolint is available as a [pre-commit](https://pre-commit.com) hook.  Add this to your `.pre-commit-config.yaml` in your repository to run protolint with Go:
+protolint is available as a [pre-commit](https://pre-commit.com) hook. Add this to your `.pre-commit-config.yaml` in
+your repository to run protolint with Go:
+
 ```yaml
 repos:
   - repo: https://github.com/yoheimuta/protolint
@@ -167,7 +185,9 @@ repos:
     hooks:
       - id: protolint
 ```
+
 or alternatively use this to run protolint with Docker:
+
 ```yaml
 repos:
   - repo: https://github.com/yoheimuta/protolint
@@ -188,7 +208,8 @@ JetBrains IntelliJ IDEA, GoLand, WebStorm, PHPStorm, PyCharm...
 
 Vim([ALE engine](https://github.com/dense-analysis/ale))
 
-- [ale](https://github.com/dense-analysis/ale)'s [built-in support](https://github.com/dense-analysis/ale/blob/master/supported-tools.md)
+- [ale](https://github.com/dense-analysis/ale)'
+  s [built-in support](https://github.com/dense-analysis/ale/blob/master/supported-tools.md)
 
 Vim([Syntastic](https://github.com/vim-syntastic/syntastic))
 
@@ -200,32 +221,35 @@ A [GitHub Action](https://github.com/features/actions) to run protolint in your 
 
 - [github/super-linter](https://github.com/github/super-linter)
 - [plexsystems/protolint-action](https://github.com/plexsystems/protolint-action)
-- [yoheimuta/action-protolint](https://github.com/yoheimuta/action-protolint) - Integrated with [reviewdog](https://github.com/reviewdog/reviewdog)
+- [yoheimuta/action-protolint](https://github.com/yoheimuta/action-protolint) - Integrated
+  with [reviewdog](https://github.com/reviewdog/reviewdog)
 
 ## CI Integration
 
 Jenkins Plugins
 
-- [warnings-ng](https://github.com/jenkinsci/warnings-ng-plugin) and any that use [violatons-lib](https://github.com/tomasbjerre/violations-lib)
+- [warnings-ng](https://github.com/jenkinsci/warnings-ng-plugin) and any that
+  use [violatons-lib](https://github.com/tomasbjerre/violations-lib)
 
 ### Environment specific output
 
-It is possible to format your linting according to the formatting of the CI/CD environment. The environment must be set using the output format. Currently, the following output is realized:
+It is possible to format your linting according to the formatting of the CI/CD environment. The environment must be set
+using the output format. Currently, the following output is realized:
 
-| Environment | Command Line Value | Description | Example |
-|-------------|--------------------|-------------|---------|
-| Github Actions | ci-gh | [Github Help](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-notice-message) | `::warning file=example.proto,line=10,col=20,title=ENUM_NAMES_UPPER_CAMEL_CASE::EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES` |
-| Azure DevOps | ci-az | [Azure DevOps Help](https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands) | `##vso[task.logissue type=warning;sourcepath=example.proto;linenumber=10;columnnumber=20;code=ENUM_NAMES_UPPER_CAMEL_CASE;]EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES` |
-| Gitlab CI/CD | ci-glab | Reverse Engineered from Examples | `WARNING: ENUM_NAMES_UPPER_CAMEL_CASE  example.proto(10,20) : EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES` |
+| Environment    | Command Line Value | Description                                                                                                                                      | Example                                                                                                                                                                                       |
+|----------------|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Github Actions | ci-gh              | [Github Help](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-notice-message)                  | `::warning file=example.proto,line=10,col=20,title=ENUM_NAMES_UPPER_CAMEL_CASE::EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES`                                            |
+| Azure DevOps   | ci-az              | [Azure DevOps Help](https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash#task-commands) | `##vso[task.logissue type=warning;sourcepath=example.proto;linenumber=10;columnnumber=20;code=ENUM_NAMES_UPPER_CAMEL_CASE;]EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES` |
+| Gitlab CI/CD   | ci-glab            | Reverse Engineered from Examples                                                                                                                 | `WARNING: ENUM_NAMES_UPPER_CAMEL_CASE  example.proto(10,20) : EnumField name \"SECOND.VALUE\" must be CAPITALS_WITH_UNDERSCORES`                                                              |
 
 You can also use the generic `ci` formatter, which will create a generic problem matcher.
 
 With the `ci-env` value, you can specify the template from the following environment variables:
 
-| Environment Variable | Priority | Meaning |
-|----------------------|----------|---------|
-| PROTOLINT_CIREPORTER_TEMPLATE_STRING | 1 | String containing a Go-template |
-| PROTOLINT_CIREPORTER_TEMPLATE_FILE | 2 | Path to a file containing a Go-template |
+| Environment Variable                 | Priority | Meaning                                 |
+|--------------------------------------|----------|-----------------------------------------|
+| PROTOLINT_CIREPORTER_TEMPLATE_STRING | 1        | String containing a Go-template         |
+| PROTOLINT_CIREPORTER_TEMPLATE_FILE   | 2        | Path to a file containing a Go-template |
 
 The resulting line-feed must not be added, as it will be added automatically.
 
@@ -251,7 +275,8 @@ The following fields are available:
 
 ### Producing an output file and an CI/CD Error stream
 
-You can create a specific output matching your CI/CD environment and also create an output file, e.g. for your static code analysis tools like github CodeQL or SonarQube.
+You can create a specific output matching your CI/CD environment and also create an output file, e.g. for your static
+code analysis tools like github CodeQL or SonarQube.
 
 This can be done by adding the `--add-reporter` flag.
 Please note, that the value must be formatted `<reporter-name>:<output-file-path>` (omitting `<` and `>`).
@@ -262,34 +287,37 @@ $ protolint --reporter ci-gh --add-reporter sarif:/path/to/my/output.sarif.json 
 
 ## Use as a protoc plugin
 
-protolint also maintains a binary [protoc-gen-protolint](cmd/protoc-gen-protolint) that performs the lint functionality as a protoc plugin.
-See [cmd/protoc-gen-protolint/README.md](https://github.com/yoheimuta/protolint/blob/master/cmd/protoc-gen-protolint/README.md) in detail.
+protolint also maintains a binary [protoc-gen-protolint](cmd/protoc-gen-protolint) that performs the lint functionality
+as a protoc plugin.
+See [cmd/protoc-gen-protolint/README.md](https://github.com/yoheimuta/protolint/blob/master/cmd/protoc-gen-protolint/README.md)
+in detail.
 
 This is useful in situations where you already have a protoc plugin workflow.
 
 ## Call from Go code
 
 You can also use protolint from Go code.
-See [Go Documentation](https://pkg.go.dev/github.com/yoheimuta/protolint/lib) and [lib/lint_test.go](https://github.com/yoheimuta/protolint/blob/master/lib/lint_test.go) in detail.
+See [Go Documentation](https://pkg.go.dev/github.com/yoheimuta/protolint/lib)
+and [lib/lint_test.go](https://github.com/yoheimuta/protolint/blob/master/lib/lint_test.go) in detail.
 
 ```go
 import (
-    "bytes"
-    
-    "github.com/yoheimuta/protolint/lib"
+"bytes"
+
+"github.com/yoheimuta/protolint/lib"
 )
 
 func main() {
-    args := []string{"-config_path", "path/to/your_protolint.yaml", "."}
-    var stdout bytes.Buffer
-    var stderr bytes.Buffer
-    
-    err := lib.Lint(args, &stdout, &stderr)
-    if err != nil {
-        // Handle error
-    }
-    
-    // Process output in stdout and stderr
+args := []string{"-config_path", "path/to/your_protolint.yaml", "."}
+var stdout bytes.Buffer
+var stderr bytes.Buffer
+
+err := lib.Lint(args, &stdout, &stderr)
+if err != nil {
+// Handle error
+}
+
+// Process output in stdout and stderr
 }
 ```
 
@@ -299,52 +327,57 @@ See `internal/addon/rules` in detail.
 
 The rule set follows:
 
-- [Official Style Guide](https://protobuf.dev/programming-guides/style/). This is enabled by default. Basically, these rules can fix the violations by appending `-fix` option.
+- [Official Style Guide](https://protobuf.dev/programming-guides/style/). This is enabled by default. Basically, these
+  rules can fix the violations by appending `-fix` option.
 - Unofficial Style Guide. This is disabled by default. You can enable each rule with `.protolint.yaml`.
 
 The `-fix` option on the command line can automatically fix all the problems reported by fixable rules.
 See Fixable columns below.
 
-The `-auto_disable` option on the command line can automatically disable all the problems reported by auto-disable rules.
+The `-auto_disable` option on the command line can automatically disable all the problems reported by auto-disable
+rules.
 This feature is helpful when fixing the existing violations breaks the compatibility.
 See AutoDisable columns below.
 
-- *1: These rules are not supposed to support AutoDisable because the fixes don't break their compatibilities. You should run the protolint with `-fix`.
+- *1: These rules are not supposed to support AutoDisable because the fixes don't break their compatibilities. You
+  should run the protolint with `-fix`.
 
-| Official | Fixable | AutoDisable | ID                                | Purpose                                                                  |
-|----------|---------|---------|-----------------------------------|--------------------------------------------------------------------------|
-| Yes | ✅ | ✅ | ENUM_FIELD_NAMES_PREFIX | Verifies that enum field names are prefixed with its ENUM_NAME_UPPER_SNAKE_CASE.        |
-| Yes | ✅ | ✅ | ENUM_FIELD_NAMES_UPPER_SNAKE_CASE | Verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.        |
-| Yes | ✅ | ✅ | ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH | Verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID"). The default is "UNSPECIFIED". You can configure the specific suffix with `.protolint.yaml`. |
-| Yes | ✅ | ✅ | ENUM_NAMES_UPPER_CAMEL_CASE       | Verifies that all enum names are CamelCase (with an initial capital).    |
-| Yes | ✅ | *1 | FILE_NAMES_LOWER_SNAKE_CASE       | Verifies that all file names are lower_snake_case.proto. You can configure the excluded files with `.protolint.yaml`. |
-| Yes | ✅ | ✅ | FIELD_NAMES_LOWER_SNAKE_CASE      | Verifies that all field names are underscore_separated_names.            |
-| Yes | ✅ | *1 | IMPORTS_SORTED                    | Verifies that all imports are sorted. |
-| Yes | ✅ | ✅ | MESSAGE_NAMES_UPPER_CAMEL_CASE    | Verifies that all message names are CamelCase (with an initial capital). |
-| Yes | ✅ | *1 | ORDER                             | Verifies that all files should be ordered in the specific manner. |
-| Yes | ✅ | *1 | PACKAGE_NAME_LOWER_CASE           | Verifies that the package name should only contain lowercase letters. |
-| Yes | ✅ | ✅ | RPC_NAMES_UPPER_CAMEL_CASE        | Verifies that all rpc names are CamelCase (with an initial capital).     |
-| Yes | ✅ | ✅ | SERVICE_NAMES_UPPER_CAMEL_CASE    | Verifies that all service names are CamelCase (with an initial capital). |
-| Yes | ✅ | ✅ | REPEATED_FIELD_NAMES_PLURALIZED   | Verifies that repeated field names are pluralized names.            |
-| Yes | ✅ | *1 | QUOTE_CONSISTENT   | Verifies that the use of quote for strings is consistent. The default is double quoted. You can configure the specific quote with `.protolint.yaml`.          |
-| Yes | ✅ | *1 | INDENT    | Enforces a consistent indentation style. The default style is 2 spaces. Inserting appropriate new lines is also forced by default. You can configure the detail with `.protolint.yaml`. |
-| Yes | ✅ | *1 | PROTO3_FIELDS_AVOID_REQUIRED      | Verifies that all fields should avoid required for proto3.            |
-| Yes | _  | ✅ | PROTO3_GROUPS_AVOID      | Verifies that all groups should be avoided for proto3.            |
-| Yes | _  | *1 | MAX_LINE_LENGTH    | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |
-| No | _  | - | SERVICE_NAMES_END_WITH    | Enforces a consistent suffix for service names. You can configure the specific suffix with `.protolint.yaml`. |
-| No | _  | - | FIELD_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
-| No | _  | - | MESSAGE_NAMES_EXCLUDE_PREPOSITIONS | Verifies that all message names don't include prepositions (e.g. "With", "For"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`. |
-| No | _  | - | RPC_NAMES_CASE        | Verifies that all rpc names conform to the specified convention. You need to configure the specific convention with `.protolint.yaml`.     |
-| No | _  | - | MESSAGES_HAVE_COMMENT | Verifies that all messages have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | - | SERVICES_HAVE_COMMENT | Verifies that all services have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | - | RPCS_HAVE_COMMENT | Verifies that all rps have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | - | FIELDS_HAVE_COMMENT | Verifies that all fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | - | ENUMS_HAVE_COMMENT | Verifies that all enums have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | - | ENUM_FIELDS_HAVE_COMMENT | Verifies that all enum fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`. |
-| No | _  | - | FILE_HAS_COMMENT | Verifies that a file starts with a doc comment. |
-| No | _  | - | SYNTAX_CONSISTENT | Verifies that syntax is a specified version. The default is proto3. You can configure the version with `.protolint.yaml`. |
+| Official | Fixable | AutoDisable | ID                                   | Purpose                                                                                                                                                                                             |
+|----------|---------|-------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Yes      | ✅       | ✅           | ENUM_FIELD_NAMES_PREFIX              | Verifies that enum field names are prefixed with its ENUM_NAME_UPPER_SNAKE_CASE.                                                                                                                    |
+| Yes      | ✅       | ✅           | ENUM_FIELD_NAMES_UPPER_SNAKE_CASE    | Verifies that all enum field names are CAPITALS_WITH_UNDERSCORES.                                                                                                                                   |
+| Yes      | ✅       | ✅           | ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH | Verifies that the zero value enum should have the suffix (e.g. "UNSPECIFIED", "INVALID"). The default is "UNSPECIFIED". You can configure the specific suffix with `.protolint.yaml`.               |
+| Yes      | ✅       | ✅           | ENUM_NAMES_UPPER_CAMEL_CASE          | Verifies that all enum names are CamelCase (with an initial capital).                                                                                                                               |
+| Yes      | ✅       | *1          | FILE_NAMES_LOWER_SNAKE_CASE          | Verifies that all file names are lower_snake_case.proto. You can configure the excluded files with `.protolint.yaml`.                                                                               |
+| Yes      | ✅       | ✅           | FIELD_NAMES_LOWER_SNAKE_CASE         | Verifies that all field names are underscore_separated_names.                                                                                                                                       |
+| Yes      | ✅       | *1          | IMPORTS_SORTED                       | Verifies that all imports are sorted.                                                                                                                                                               |
+| Yes      | ✅       | ✅           | MESSAGE_NAMES_UPPER_CAMEL_CASE       | Verifies that all message names are CamelCase (with an initial capital).                                                                                                                            |
+| Yes      | ✅       | *1          | ORDER                                | Verifies that all files should be ordered in the specific manner.                                                                                                                                   |
+| Yes      | ✅       | *1          | PACKAGE_NAME_LOWER_CASE              | Verifies that the package name should only contain lowercase letters.                                                                                                                               |
+| Yes      | ✅       | ✅           | RPC_NAMES_UPPER_CAMEL_CASE           | Verifies that all rpc names are CamelCase (with an initial capital).                                                                                                                                |
+| Yes      | ✅       | ✅           | SERVICE_NAMES_UPPER_CAMEL_CASE       | Verifies that all service names are CamelCase (with an initial capital).                                                                                                                            |
+| Yes      | ✅       | ✅           | REPEATED_FIELD_NAMES_PLURALIZED      | Verifies that repeated field names are pluralized names.                                                                                                                                            |
+| Yes      | ✅       | *1          | QUOTE_CONSISTENT                     | Verifies that the use of quote for strings is consistent. The default is double quoted. You can configure the specific quote with `.protolint.yaml`.                                                |
+| Yes      | ✅       | *1          | INDENT                               | Enforces a consistent indentation style. The default style is 2 spaces. Inserting appropriate new lines is also forced by default. You can configure the detail with `.protolint.yaml`.             |
+| Yes      | ✅       | *1          | PROTO3_FIELDS_AVOID_REQUIRED         | Verifies that all fields should avoid required for proto3.                                                                                                                                          |
+| Yes      | _       | ✅           | PROTO3_GROUPS_AVOID                  | Verifies that all groups should be avoided for proto3.                                                                                                                                              |
+| Yes      | _       | *1          | MAX_LINE_LENGTH                      | Enforces a maximum line length. The length of a line is defined as the number of Unicode characters in the line. The default is 80 characters. You can configure the detail with `.protolint.yaml`. |
+| No       | _       | -           | SERVICE_NAMES_END_WITH               | Enforces a consistent suffix for service names. You can configure the specific suffix with `.protolint.yaml`.                                                                                       |
+| No       | _       | -           | FIELD_NAMES_EXCLUDE_PREPOSITIONS     | Verifies that all field names don't include prepositions (e.g. "for", "during", "at"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`.                    |
+| No       | _       | -           | MESSAGE_NAMES_EXCLUDE_PREPOSITIONS   | Verifies that all message names don't include prepositions (e.g. "With", "For"). You can configure the specific prepositions and excluded keywords with `.protolint.yaml`.                          |
+| No       | _       | -           | RPC_NAMES_CASE                       | Verifies that all rpc names conform to the specified convention. You need to configure the specific convention with `.protolint.yaml`.                                                              |
+| No       | _       | -           | MESSAGES_HAVE_COMMENT                | Verifies that all messages have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                               |
+| No       | _       | -           | SERVICES_HAVE_COMMENT                | Verifies that all services have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                               |
+| No       | _       | -           | RPCS_HAVE_COMMENT                    | Verifies that all rps have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                                    |
+| No       | _       | -           | FIELDS_HAVE_COMMENT                  | Verifies that all fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                                 |
+| No       | _       | -           | ENUMS_HAVE_COMMENT                   | Verifies that all enums have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                                  |
+| No       | _       | -           | ENUM_FIELDS_HAVE_COMMENT             | Verifies that all enum fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                            |
+| No       | _       | -           | FILE_HAS_COMMENT                     | Verifies that a file starts with a doc comment.                                                                                                                                                     |
+| No       | _       | -           | SYNTAX_CONSISTENT                    | Verifies that syntax is a specified version. The default is proto3. You can configure the version with `.protolint.yaml`.                                                                           |
+| No       | _       | -           | FIELD_NUMBERS_ORDER_ASCENDING        | Verifies the order of fields is ascending.                                                                                                                                                          |
 
-I recommend that you add `all_default: true` in `.protolint.yaml`, because all linters above are automatically enabled so that you can always enjoy maximum benefits whenever protolint is updated.
+I recommend that you add `all_default: true` in `.protolint.yaml`, because all linters above are automatically enabled
+so that you can always enjoy maximum benefits whenever protolint is updated.
 
 Here are some examples that show good style enabled by default.
 `-` is a bad style, `+` is a good style:
@@ -506,7 +539,8 @@ A complete sample project (aka plugin) is included in this repo under the [_exam
 
 protolint comes with several built-in reporters(aka. formatters) to control the appearance of the linting results.
 
-You can specify a reporter using the -reporter flag on the command line. For example, `-reporter junit` uses the junit reporter.
+You can specify a reporter using the -reporter flag on the command line. For example, `-reporter junit` uses the junit
+reporter.
 
 The built-in reporter options are:
 
@@ -531,7 +565,8 @@ The rules will be disabled until the end of the file or until the linter sees a 
 // protolint:enable <ruleID1> [<ruleID2> <ruleID3>...]
 ```
 
-It's also possible to modify a disable command by appending :next or :this for only applying the command to this(current) or the next line respectively.
+It's also possible to modify a disable command by appending :next or :this for only applying the command to this(
+current) or the next line respectively.
 
 For example:
 
@@ -544,9 +579,10 @@ enum Foo {
 }
 ```
 
-Setting the command-line option `-auto_disable` to `next` or `this` inserts disable commands whenever spotting problems. 
+Setting the command-line option `-auto_disable` to `next` or `this` inserts disable commands whenever spotting problems.
 
-You can specify `-fix` option together. The rules supporting auto_disable suppress the violations instead of fixing them that cause a schema incompatibility.
+You can specify `-fix` option together. The rules supporting auto_disable suppress the violations instead of fixing them
+that cause a schema incompatibility.
 
 __Config file__
 
@@ -580,24 +616,26 @@ Other is a command line tool which also lints Protocol Buffer files.
 
 - While it has a lot of features other than lint, it seems cumbersome for users who just want the linter.
 - The lint rule slants towards to be opinionated.
-- Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to understand both rules and the guide in detail, and then to combine the rules accurately.
+- Further more, the rule set and the official style guide don't correspond to each other exactly. It requires to
+  understand both rules and the guide in detail, and then to combine the rules accurately.
 
 ### Other tools
 
 I wrote an article comparing various Protocol Buffer Linters, including protolint, on 2019/12/17.
 
 - https://qiita.com/yoheimuta/items/da7678fcd046b93a2637
-  - NOTE: This one is written in Japanese.
+    - NOTE: This one is written in Japanese.
 
 ## Dependencies
 
 - [go-protoparser](https://github.com/yoheimuta/go-protoparser)
 
-## Development 
+## Development
 
 ### Release
 
-To streamline the release process and reduce human error, a `release.sh` script is included in the repository. This script automates the steps required to create and push a new release tag.
+To streamline the release process and reduce human error, a `release.sh` script is included in the repository. This
+script automates the steps required to create and push a new release tag.
 
 ### How to Use
 
