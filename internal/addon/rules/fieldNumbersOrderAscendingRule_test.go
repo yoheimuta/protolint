@@ -301,7 +301,7 @@ func TestFieldNumbersOrderAscendingRule_Apply(t *testing.T) {
 			},
 		},
 		{
-			name: "not failures for proto message with enum inside",
+			name: "no failures for proto message with enum inside",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
 					&parser.Service{},
