@@ -78,7 +78,7 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitMessage(message *parser.Message
 		if number <= 0 {
 			v.AddFailuref(
 				field.Meta.Pos,
-				"field number should be positive",
+				"field number should be positive integer",
 			)
 
 			hasError = true
@@ -126,7 +126,7 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitEnum(enum *parser.Enum) bool {
 		if number < 0 {
 			v.AddFailuref(
 				field.Meta.Pos,
-				"field number should be positive",
+				"field number should be positive integer",
 			)
 
 			hasError = true
