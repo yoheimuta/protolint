@@ -52,7 +52,7 @@ type fieldNumbersOrderAscendingVisitor struct {
 // VisitMessage checks the message
 func (v *fieldNumbersOrderAscendingVisitor) VisitMessage(message *parser.Message) bool {
 	var (
-		lastNumber int = -1
+		lastNumber int
 		lastName   string
 		hasError   bool
 	)
@@ -63,7 +63,29 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitMessage(message *parser.Message
 			continue
 		}
 
-		number, isError := v.isAscending(field.Meta.Pos, field.FieldName, field.FieldNumber, lastName, lastNumber)
+		number, err := strconv.Atoi(field.FieldNumber)
+		if err != nil {
+			v.AddFailuref(
+				field.Meta.Pos,
+				"field number '%s' is not a number",
+				field.FieldNumber,
+			)
+
+			hasError = true
+			continue
+		}
+
+		if number <= 0 {
+			v.AddFailuref(
+				field.Meta.Pos,
+				"field number should be positive",
+			)
+
+			hasError = true
+			continue
+		}
+
+		number, isError := v.isAscending(field.Meta.Pos, field.FieldName, number, lastName, lastNumber)
 		if isError {
 			hasError = true
 		}
@@ -89,7 +111,29 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitEnum(enum *parser.Enum) bool {
 			continue
 		}
 
-		number, isError := v.isAscending(field.Meta.Pos, field.Ident, field.Number, lastIdent, lastNumber)
+		number, err := strconv.Atoi(field.Number)
+		if err != nil {
+			v.AddFailuref(
+				field.Meta.Pos,
+				"field number '%s' is not a number",
+				field.Number,
+			)
+
+			hasError = true
+			continue
+		}
+
+		if number < 0 {
+			v.AddFailuref(
+				field.Meta.Pos,
+				"field number should be positive",
+			)
+
+			hasError = true
+			continue
+		}
+
+		number, isError := v.isAscending(field.Meta.Pos, field.Ident, number, lastIdent, lastNumber)
 		if isError {
 			hasError = true
 		}
@@ -102,19 +146,8 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitEnum(enum *parser.Enum) bool {
 }
 
 func (v *fieldNumbersOrderAscendingVisitor) isAscending(
-	pos meta.Position, fieldName, fieldNumber, lastName string, lastNumber int,
+	pos meta.Position, fieldName string, number int, lastName string, lastNumber int,
 ) (curNumber int, hasError bool) {
-	number, err := strconv.Atoi(fieldNumber)
-	if err != nil {
-		v.AddFailuref(
-			pos,
-			"field number '%s' is not a number",
-			fieldNumber,
-		)
-
-		return 0, true
-	}
-
 	if number == lastNumber {
 		v.AddFailuref(
 			pos,

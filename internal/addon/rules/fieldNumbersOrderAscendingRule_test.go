@@ -81,6 +81,34 @@ func TestFieldNumbersOrderAscendingRule_Apply(t *testing.T) {
 			wantFailures: nil,
 		},
 		{
+			name: "failures for proto enum with negative number",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Enum{
+						EnumBody: []parser.Visitee{
+							&parser.EnumField{
+								Ident:  "FIRST_VALUE",
+								Number: "-1",
+							},
+							&parser.EnumField{
+								Ident:  "SECOND_VALUE",
+								Number: "2",
+							},
+						},
+					},
+				},
+			},
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"FIELD_NUMBERS_ORDER_ASCENDING",
+					string(rule.SeverityError),
+					"field number should be positive",
+				),
+			},
+		},
+		{
 			name: "failures for proto enum with duplicated numbers",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -334,6 +362,54 @@ func TestFieldNumbersOrderAscendingRule_Apply(t *testing.T) {
 				},
 			},
 			wantFailures: nil,
+		},
+		{
+			name: "failures for proto message with number 0",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Message{
+						MessageBody: []parser.Visitee{
+							&parser.Field{
+								FieldName:   "FIRST_VALUE",
+								FieldNumber: "0",
+							},
+						},
+					},
+				},
+			},
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"FIELD_NUMBERS_ORDER_ASCENDING",
+					string(rule.SeverityError),
+					"field number should be positive",
+				),
+			},
+		},
+		{
+			name: "failures for proto message with negative number",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Message{
+						MessageBody: []parser.Visitee{
+							&parser.Field{
+								FieldName:   "FIRST_VALUE",
+								FieldNumber: "-1",
+							},
+						},
+					},
+				},
+			},
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"FIELD_NUMBERS_ORDER_ASCENDING",
+					string(rule.SeverityError),
+					"field number should be positive",
+				),
+			},
 		},
 	}
 
