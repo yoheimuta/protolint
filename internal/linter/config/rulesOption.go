@@ -32,4 +32,5 @@ type RulesOption struct {
 	Proto3GroupsAvoid               CustomizableSeverityOption            `yaml:"proto3_groups_avoid" json:"proto3_groups_avoid" toml:"proto3_groups_avoid"`
 	RPCNamesUpperCamelCase          CustomizableSeverityOption            `yaml:"rpc_names_upper_camel_case" json:"rpc_names_upper_camel_case" toml:"rpc_names_upper_camel_case"`
 	ServiceNamesUpperCamelCase      CustomizableSeverityOption            `yaml:"service_names_upper_caml_case" json:"service_names_upper_caml_case" toml:"service_names_upper_caml_case"`
+	FieldNumbersOrderAscending      CustomizableSeverityOption            `yaml:"field_numbers_order_ascending" json:"field_numbers_order_ascending" toml:"field_numbers_order_ascending"`
 }
