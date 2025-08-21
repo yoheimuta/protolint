@@ -36,7 +36,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: latest
+          version: v2.9.0
           args: release --clean
         env:
           # You can't set the default GITHUB_TOKEN because of 403 Resource not accessible to the relevant homebrew repository
