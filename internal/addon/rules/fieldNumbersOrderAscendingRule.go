@@ -52,7 +52,7 @@ type fieldNumbersOrderAscendingVisitor struct {
 // VisitMessage checks the message
 func (v *fieldNumbersOrderAscendingVisitor) VisitMessage(message *parser.Message) bool {
 	var (
-		lastNumber int
+		lastNumber int = -1
 		lastName   string
 		hasError   bool
 	)
@@ -78,7 +78,7 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitMessage(message *parser.Message
 // VisitEnum checks the enum
 func (v *fieldNumbersOrderAscendingVisitor) VisitEnum(enum *parser.Enum) bool {
 	var (
-		lastNumber int
+		lastNumber int = -1
 		lastIdent  string
 		hasError   bool
 	)

@@ -39,6 +39,27 @@ func TestFieldNumbersOrderAscendingRule_Apply(t *testing.T) {
 			wantFailures: nil,
 		},
 		{
+			name: "no failures for proto enum started from 0",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Enum{
+						EnumBody: []parser.Visitee{
+							&parser.EnumField{
+								Ident:  "VALUE_UNSPECIFIED",
+								Number: "0",
+							},
+							&parser.EnumField{
+								Ident:  "FIRST_VALUE",
+								Number: "1",
+							},
+						},
+					},
+				},
+			},
+			wantFailures: nil,
+		},
+		{
 			name: "no failures for proto enum with ascending order numbers with gap",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
@@ -278,6 +299,41 @@ func TestFieldNumbersOrderAscendingRule_Apply(t *testing.T) {
 					"field THIRD_VALUE should be after SECOND_VALUE (ascending order expected)",
 				),
 			},
+		},
+		{
+			name: "not failures for proto message with enum inside",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Message{
+						MessageBody: []parser.Visitee{
+							&parser.Enum{
+								EnumName: "MY_ENUM",
+								EnumBody: []parser.Visitee{
+									&parser.Service{},
+									&parser.EnumField{
+										Ident:  "FIRST_ENUM_VALUE",
+										Number: "0",
+									},
+								},
+								Comments:                     nil,
+								InlineComment:                nil,
+								InlineCommentBehindLeftCurly: nil,
+								Meta:                         meta.Meta{},
+							},
+							&parser.Field{
+								FieldName:   "FIRST_VALUE",
+								FieldNumber: "1",
+							},
+							&parser.Field{
+								FieldName:   "SECOND_VALUE",
+								FieldNumber: "2",
+							},
+						},
+					},
+				},
+			},
+			wantFailures: nil,
 		},
 	}
 
