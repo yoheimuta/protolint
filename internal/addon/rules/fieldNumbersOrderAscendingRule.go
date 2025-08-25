@@ -85,7 +85,7 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitMessage(message *parser.Message
 			continue
 		}
 
-		number, isError := v.isAscending(field.Meta.Pos, field.FieldName, number, lastName, lastNumber)
+		number, isError := v.isAscending(field.Meta.Pos, field.FieldName, number, lastName, lastNumber, false)
 		if isError {
 			hasError = true
 		}
@@ -104,6 +104,19 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitEnum(enum *parser.Enum) bool {
 		lastIdent  string
 		hasError   bool
 	)
+
+	// Detect enum option: allow_alias = true;
+	allowAlias := false
+	for _, element := range enum.EnumBody {
+		opt, ok := element.(*parser.Option)
+		if !ok {
+			continue
+		}
+		if opt.OptionName == "allow_alias" && opt.Constant == "true" {
+			allowAlias = true
+			break
+		}
+	}
 
 	for _, element := range enum.EnumBody {
 		field, ok := element.(*parser.EnumField)
@@ -133,7 +146,7 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitEnum(enum *parser.Enum) bool {
 			continue
 		}
 
-		number, isError := v.isAscending(field.Meta.Pos, field.Ident, number, lastIdent, lastNumber)
+		number, isError := v.isAscending(field.Meta.Pos, field.Ident, number, lastIdent, lastNumber, allowAlias)
 		if isError {
 			hasError = true
 		}
@@ -146,9 +159,12 @@ func (v *fieldNumbersOrderAscendingVisitor) VisitEnum(enum *parser.Enum) bool {
 }
 
 func (v *fieldNumbersOrderAscendingVisitor) isAscending(
-	pos meta.Position, fieldName string, number int, lastName string, lastNumber int,
+	pos meta.Position, fieldName string, number int, lastName string, lastNumber int, allowEqual bool,
 ) (curNumber int, hasError bool) {
 	if number == lastNumber {
+		if allowEqual {
+			return number, false
+		}
 		v.AddFailuref(
 			pos,
 			"fields %s and %s have the same number %d",
