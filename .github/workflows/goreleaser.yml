@@ -65,13 +65,13 @@ jobs:
             -u "${{ secrets.OSSRH_USERNAME }}:${{ secrets.OSSRH_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d '{}')
-          
+
           http_code="${response: -3}"
           response_body="${response%???}"
-          
+
           echo "HTTP Status: $http_code"
           echo "Response: $response_body"
-          
+
           if [ "$http_code" -ne 200 ] && [ "$http_code" -ne 201 ] && [ "$http_code" -ne 204 ]; then
             echo "Upload failed with HTTP $http_code"
             echo "Response: $response_body"
