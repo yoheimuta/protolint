@@ -343,7 +343,7 @@ See AutoDisable columns below.
 | No | _  | - | ENUM_FIELDS_HAVE_COMMENT | Verifies that all enum fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                            |
 | No | _  | - | FILE_HAS_COMMENT | Verifies that a file starts with a doc comment.                                                                                                                                                     |
 | No | _  | - | SYNTAX_CONSISTENT | Verifies that syntax is a specified version. The default is proto3. You can configure the version with `.protolint.yaml`.                                                                           |
-| No | _  | - | FIELD_NUMBERS_ORDER_ASCENDING | Verifies the order of fields is ascending.                                                                                                                                                          |
+| No | _  | - | FIELD_NUMBERS_ORDER_ASCENDING | Verifies the order of fields is ascending. For enums, honors `option allow_alias = true;` by allowing adjacent equal numbers (non-decreasing).                                                     |
 
 I recommend that you add `all_default: true` in `.protolint.yaml`, because all linters above are automatically enabled so that you can always enjoy maximum benefits whenever protolint is updated.
 

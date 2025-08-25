@@ -18,6 +18,62 @@ func TestFieldNumbersOrderAscendingRule_Apply(t *testing.T) {
 		wantFailures []report.Failure
 	}{
 		{
+			name: "no failures for proto enum with allow_alias and adjacent duplicate numbers",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Enum{
+						EnumBody: []parser.Visitee{
+							&parser.Option{OptionName: "allow_alias", Constant: "true"},
+							&parser.EnumField{Ident: "FIRST_VALUE", Number: "1"},
+							&parser.EnumField{Ident: "FIRST_VALUE_ALIAS", Number: "1"},
+						},
+					},
+				},
+			},
+			wantFailures: nil,
+		},
+		{
+			name: "failures for proto enum with allow_alias but non-adjacent decrease (1,2,1)",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Enum{
+						EnumBody: []parser.Visitee{
+							&parser.Option{OptionName: "allow_alias", Constant: "true"},
+							&parser.EnumField{Ident: "FIRST_VALUE", Number: "1"},
+							&parser.EnumField{Ident: "SECOND_VALUE", Number: "2"},
+							&parser.EnumField{Ident: "THIRD_VALUE", Number: "1"},
+						},
+					},
+				},
+			},
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"FIELD_NUMBERS_ORDER_ASCENDING",
+					string(rule.SeverityError),
+					"field SECOND_VALUE should be after THIRD_VALUE (ascending order expected)",
+				),
+			},
+		},
+		{
+			name: "no failures for proto enum with allow_alias and zero value alias (0,0)",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Service{},
+					&parser.Enum{
+						EnumBody: []parser.Visitee{
+							&parser.Option{OptionName: "allow_alias", Constant: "true"},
+							&parser.EnumField{Ident: "VALUE_UNSPECIFIED", Number: "0"},
+							&parser.EnumField{Ident: "VALUE_UNSPECIFIED_ALIAS", Number: "0"},
+						},
+					},
+				},
+			},
+			wantFailures: nil,
+		},
+		{
 			name: "no failures for proto enum with ascending order numbers",
 			inputProto: &parser.Proto{
 				ProtoBody: []parser.Visitee{
