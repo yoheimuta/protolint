@@ -163,17 +163,27 @@ protolint is available as a [pre-commit](https://pre-commit.com) hook.  Add this
 ```yaml
 repos:
   - repo: https://github.com/yoheimuta/protolint
-    rev: <version> # Select a release here like v0.44.0
+    rev: v0.56.3 # Select a release here
     hooks:
       - id: protolint
 ```
-or alternatively use this to run protolint with Docker:
+
+For Docker-based execution, use the `protolint-docker` hook:
 ```yaml
 repos:
   - repo: https://github.com/yoheimuta/protolint
-    rev: <version> # Select a release here like v0.44.0
+    hooks:
+      - id: protolint-docker # Uses yoheimuta/protolint:latest by default
+```
+
+**Important:** For Docker hooks, the `rev` parameter is meaningless for versioning per [pre-commit's design](https://pre-commit.com/#docker_image). To pin to a specific protolint version, specify the Docker image tag in the `entry`:
+
+```yaml
+repos:
+  - repo: https://github.com/yoheimuta/protolint
     hooks:
       - id: protolint-docker
+        entry: yoheimuta/protolint:v0.55.6 lint # Pin to specific version
 ```
 
 ## Editor Integration
