@@ -103,7 +103,7 @@ func doLint(
 
 	flags, err := lint.NewFlags(args)
 	if err != nil {
-		_, _ = fmt.Fprint(stderr, err)
+		_, _ = fmt.Fprintln(stderr, err)
 		return osutil.ExitInternalFailure
 	}
 	if len(flags.Args()) < 1 {
