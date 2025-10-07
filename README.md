@@ -191,6 +191,7 @@ repos:
 Visual Studio Code
 
 - [vscode-protolint](https://github.com/plexsystems/vscode-protolint)
+- [protolint-vscode](https://marketplace.visualstudio.com/items?itemName=astryna-tools.protolint-vscode)
 
 JetBrains IntelliJ IDEA, GoLand, WebStorm, PHPStorm, PyCharm...
 
