@@ -4,6 +4,7 @@
 ![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
 [![Docker](https://img.shields.io/docker/pulls/yoheimuta/protolint)](https://hub.docker.com/r/yoheimuta/protolint)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/yoheimuta/protolint/badge)](https://api.securityscorecards.dev/projects/github.com/yoheimuta/protolint)
 
 protolint is the pluggable linting/fixing utility for Protocol Buffer files (proto2+proto3):
 
@@ -143,7 +144,7 @@ protolint lint -config_path=path/to/your_protolint.yaml . # use path/to/your_pro
 protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
 protolint lint -fix -auto_disable=next .    # this is preferable when you want to fix problems while maintaining the compatibility. Automatically fix some problems and insert disable comments to the other problems. The available values are next and this.
-protolint lint -auto_disable=next .         # automatically insert disable comments to the other problems. 
+protolint lint -auto_disable=next .         # automatically insert disable comments to the other problems.
 protolint lint -v .                         # with verbose output to investigate the parsing error
 protolint lint -no-error-on-unmatched-pattern . # exits with success code even if no file is found (file & directory mode)
 protolint lint -reporter junit .            # output results in JUnit XML format
