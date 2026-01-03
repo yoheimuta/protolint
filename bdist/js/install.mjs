@@ -69,39 +69,17 @@ fetch_protolint(url, { responseType: "buffer" }).then(
     async response => {
         if (response.ok)
         {
-            const targetFile = temporaryFile({ name: "_protolint.tar.gz"});
-            const out = fs.createWriteStream(targetFile, {
-                flags: "w+"
-            });
-            var success = undefined;
-            const streaming = pipeline.pipeline(
-                response.body,
-                out,
-                (err) => {
-                    if (err)
-                    {
-                        console.error("%s: Failed to save downloaded file: %s", script_name, err);
-                        success = false;
-                    }
-                    else
-                    {
-                        console.info("%s :Protolint saved to %s", script_name, targetFile);
-                        success = true;
-                    }
-                }
-            );
+            try {
+                const targetFile = temporaryFile({ name: "_protolint.tar.gz"});
+                fs.writeFileSync(targetFile, response.body);
+                
+                console.info("%s: Protolint saved to %s", script_name, targetFile);
 
-            while (success === undefined)
-            {
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-
-            if (success)
-            {
                 return targetFile;
             }
-
-            return null;
+            catch (error) {
+                console.error("%s: Failed to save downloaded file: %s", script_name, err);
+            }
         }
         else
         {
