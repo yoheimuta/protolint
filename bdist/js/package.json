@@ -42,7 +42,6 @@
   "homepage": "https://github.com/yoheimuta/protolint#readme",
   "dependencies": {
     "got": "^12.0.0",
-    "got-fetch": "^5.1.6",
     "http-proxy-agent": "^7.0.0",
     "https-proxy-agent": "^7.0.0",
     "semver": "^7.5.4",
