@@ -1,6 +1,5 @@
 import { got } from 'got';
 import { createFetch } from 'got-fetch';
-import npmlog from 'npmlog';
 import { HttpProxyAgent } from 'http-proxy-agent';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import * as fs from 'fs';
@@ -65,7 +64,7 @@ function get_filename_with_extension(fileName) {
     return `${fileName}${ext}`;
 }
 
-npmlog.info(script_name, "Fetching protolint executable from %s", url);
+console.info("%s: Fetching protolint executable from %s", script_name, url);
 
 const fetch = createFetch(instance);
 
@@ -84,12 +83,12 @@ fetch(url).then(
                 (err) => {
                     if (err)
                     {
-                        npmlog.error(script_name, "Failed to save downloaded file: %s", err);
+                        console.error("%s: Failed to save downloaded file: %s", script_name, err);
                         success = false;
                     }
                     else
                     {
-                        npmlog.info(script_name, "Protolint saved to %s", targetFile);
+                        console.info("%s :Protolint saved to %s", script_name, targetFile);
                         success = true;
                     }
                 }
@@ -109,7 +108,7 @@ fetch(url).then(
         }
         else
         {
-            npmlog.error(script_name, "Failed to download %s. Got status: %i", response.url, response.status);
+            console.error("%s: Failed to download %s. Got status: %i", script_name, response.url, response.status);
             return null;
         }
     }
@@ -140,7 +139,7 @@ fetch(url).then(
                 ],
                 (err) => {
                     if (err) {
-                        npmlog.error(script_name, "Failed to extract protlint executables: %s");
+                        console.error("%s: Failed to extract protlint executables: %s", script_name, err);
                     }
                 },
             )
@@ -153,7 +152,7 @@ fetch(url).then(
                 }
             ).catch(
                 (err) => {
-                    npmlog.error(script_name, "Failed to extract files from downloaded tar file: %s", err);
+                    console.error("%s: Failed to extract files from downloaded tar file: %s", script_name, err);
                     return {
                        protolint: undefined, 
                        protoc_gen_protolint: undefined,
@@ -165,7 +164,7 @@ fetch(url).then(
         }
         else
         {
-            npmlog.warn(script_name, "Could not find downloaded protolint archive.");
+            console.warn("%s: Could not find downloaded protolint archive.", script_name);
             return {
                 protolint: undefined, 
                 protoc_gen_protolint: undefined,
@@ -179,15 +178,15 @@ fetch(url).then(
 ).then(
     (result) => {
         if (result){
-            npmlog.info(script_name, "Protolint installed successfully.");
+            console.info("%s: Protolint installed successfully.", script_name);
         }
         else {
-            npmlog.warn(script_name, "Failed to download protolint. See previous messages for details");
+            console.warn("%s: Failed to download protolint. See previous messages for details", script_name);
         }
     }
 ).catch(
     reason => {
-        npmlog.error(script_name, "Failed to install protolint: %s", reason);
+        console.error("%s: Failed to install protolint: %s", script_name, reason);
         process.exit(1);
     }
 );
