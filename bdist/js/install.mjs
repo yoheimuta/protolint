@@ -1,5 +1,4 @@
 import { got } from 'got';
-import { createFetch } from 'got-fetch';
 import { HttpProxyAgent } from 'http-proxy-agent';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import * as fs from 'fs';
@@ -57,7 +56,7 @@ const got_config = {
     agent: agent_config,
 };
 
-const instance = got.extend(got_config);
+const fetch_protolint = got.extend(got_config);
 
 function get_filename_with_extension(fileName) {
     const ext = process.platform == "win32" ? ".exe" : "";
@@ -66,9 +65,7 @@ function get_filename_with_extension(fileName) {
 
 console.info("%s: Fetching protolint executable from %s", script_name, url);
 
-const fetch = createFetch(instance);
-
-fetch(url).then(
+fetch_protolint(url, { responseType: "buffer" }).then(
     async response => {
         if (response.ok)
         {
