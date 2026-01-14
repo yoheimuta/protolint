@@ -1,7 +1,6 @@
 import * as child_process from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import npmlog from 'npmlog';
 import semver from 'semver';
 
 import { dirname } from 'path';
@@ -13,8 +12,8 @@ const command = child_process.spawn("git", ["describe", "--tag"], {cwd: __dirnam
 var gdt = "";
 var done = undefined;
 command.stdout.on("data", (data) => { gdt += data; });
-command.stderr.on("data", (data) => { npmlog.warn("protolint-version[git]", "git ran into the following error: %s", data) });
-command.on("error", (err) => { npmlog.error("protolint-version[git]", "Failed to start git executable: %s",  err) });
+command.stderr.on("data", (data) => { console.warn("protolint-version[git]: git ran into the following error: %s", data) });
+command.on("error", (err) => { console.error("protolint-version[git]: Failed to start git executable: %s",  err) });
 command.on("close", (exit_code) => { done = exit_code; });
 
 while (done === undefined) {
@@ -23,19 +22,19 @@ while (done === undefined) {
 
 if (done !== 0)
 {
-    npmlog.error("protolint-version", "Failed to get git tag: %i", done);
+    console.error("protolint-version: Failed to get git tag: %i", done);
     process.exit(done);
 }
 
 var version = semver.coerce(gdt);
 if (!semver.valid(version)) {
-    npmlog.error("protolint-version", "Cannot parse %s to a valid version: %s", gdt, version);
+    console.error("protolint-version: Cannot parse %s to a valid version: %s", gdt, version);
 }
 
-npmlog.info("protolint-version", "Preparing to publish %s", version);
+console.info("protolint-version: Preparing to publish %s", version);
 const package_json_file = path.join(__dirname, "package.json");
 var package_json = JSON.parse(fs.readFileSync(package_json_file));
 package_json["version"] = version.version;
 fs.writeFileSync(package_json_file, JSON.stringify(package_json, undefined, 2));
 
-npmlog.info("protolint-version", "Successfully written version %s to %s", version, package_json_file);
+console.info("protolint-version: Successfully written version %s to %s", version, package_json_file);
