@@ -3,7 +3,6 @@
   "version": "0.47.4",
   "description": "A pluggable linter and fixer to enforce Protocol Buffer style and conventions.",
   "type": "module",
-  "main": "index.js",
   "bin": {
     "protolint": "./bin/protolint.js",
     "protoc-gen-protolint": "./bin/protoc-gen-protolint.js"
@@ -25,8 +24,7 @@
     "postinstall.js",
     "version.mjs",
     "./bin/protolint.js",
-    "./bin/protoc-gen-protolint.js",
-    "index.js"
+    "./bin/protoc-gen-protolint.js"
   ],
   "keywords": [
     "lint",

@@ -1,20 +1,25 @@
 #!/usr/bin/env node
 
-'use strict';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-var path = require('path');
-var spawn = require('child_process').spawn;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-var exe_ext = process.platform === 'win32' ? '.exe' : '';
+const extension = process.platform === 'win32' ? '.exe' : '';
 
-var protoc = path.resolve(__dirname, 'protoc-gen-protolint' + exe_ext);
+const command = path.resolve(__dirname, 'protoc-gen-protolint' + extension);
 
-var args = process.argv.slice(2);
-
-var child_process = spawn(protoc, args, {
-  stdio: 'inherit' // This inherits stdin, stdout, and stderr
+const protoc = spawn(command, process.argv.slice(2), {
+  stdio: 'inherit', // This inherits stdin, stdout, and stderr
+  windowsHide: true,
 });
 
-child_process.on("exit", (exit_code, _) => {
-    process.exit(exit_code);
+protoc.on('close', (code) => {
+  process.exitCode = code ?? 0;
+});
+
+protoc.on('error', (error) => {
+  console.error(`Failed to start protoc-gen-protolint: ${error.message}`);
+  process.exitCode = 1;
 });
