@@ -93,12 +93,12 @@ $ npm install protolint --save-dev
 
 This will add a reference to a development dependency to your local `package.json`.
 
-During install, the [install.mjs](bdist/js/install.mjs) script will be called. It will download the matching `protolint` from github. Just like [@electron/get](https://github.com/electron/get/), you can bypass the download using the following environment variables:
+During install, the [postinstall.js](bdist/js/postinstall.js) script will be called. It will download the matching `protolint` from github. Just like [@electron/get](https://github.com/electron/get/), you can bypass the download using the following environment variables:
 
 | Environment Variable          | Default value                         | Description                                   |
 |-------------------------------|---------------------------------------|-----------------------------------------------|
 | PROTOLINT_MIRROR_HOST         | https://github.com                    | HTTP/Web server base url hosting the binaries |
-| PROTOLINT_MIRROR_REMOTE_PATH  | yoheimuta/protolint/download/releases | Path to the archives on the remote host       |
+| PROTOLINT_MIRROR_REMOTE_PATH  | yoheimuta/protolint/releases/download | Path to the archives on the remote host       |
 | PROTOLINT_MIRROR_USERNAME     |                                       | HTTP Basic auth user name                     |
 | PROTOLINT_MIRROR_PASSWORD     |                                       | HTTP Basic auth password                      |
 | PROTOLINT_PROXY               |                                       | HTTP(S) Proxy with optional auth data         |
