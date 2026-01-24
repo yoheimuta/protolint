@@ -2,6 +2,7 @@
   "name": "protolint",
   "version": "0.47.4",
   "description": "A pluggable linter and fixer to enforce Protocol Buffer style and conventions.",
+  "type": "module",
   "main": "index.js",
   "bin": {
     "protolint": "./bin/protolint.js",
@@ -9,7 +10,12 @@
   },
   "scripts": {
     "install": "node install.mjs",
-    "version": "node version.mjs"
+    "version": "node version.mjs",
+    "check": "tsc",
+    "check:watch": "tsc --watch",
+    "lint": "npx eslint . --concurrency=auto",
+    "prettier:check": "npx prettier --check .",
+    "prettier:format": "npx prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -40,6 +46,9 @@
     "url": "https://github.com/yoheimuta/protolint/issues"
   },
   "homepage": "https://github.com/yoheimuta/protolint#readme",
+  "engines": {
+    "node": ">=20.18.1"
+  },
   "dependencies": {
     "got": "^12.0.0",
     "http-proxy-agent": "^7.0.0",
@@ -47,5 +56,18 @@
     "semver": "^7.5.4",
     "tar": "^6.2.0",
     "tempy": "^3.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@tsconfig/node20": "^20.1.8",
+    "@types/node": "^20.19.30",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^17.23.2",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-sonarjs": "^3.0.5",
+    "eslint-plugin-unicorn": "^62.0.0",
+    "prettier": "3.8.1",
+    "typescript": "^5.9.3"
   }
 }
