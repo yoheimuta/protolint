@@ -9,7 +9,6 @@
   },
   "scripts": {
     "postinstall": "node postinstall.js",
-    "version": "node version.mjs",
     "check": "tsc",
     "check:watch": "tsc --watch",
     "lint": "npx eslint . --concurrency=auto",
@@ -22,7 +21,6 @@
   },
   "files": [
     "postinstall.js",
-    "version.mjs",
     "./bin/protolint.js",
     "./bin/protoc-gen-protolint.js"
   ],
@@ -49,7 +47,6 @@
   },
   "dependencies": {
     "modern-tar": "^0.7.3",
-    "semver": "^7.5.4",
     "undici": "^7.19.1"
   },
   "devDependencies": {
