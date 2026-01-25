@@ -17,3 +17,9 @@ updates:
     # Check for updates once a week
     schedule:
       interval: weekly
+  - package-ecosystem: npm
+    # Look for a `package.json` in the `/bdist/js` directory
+    directory: /bdist/js
+    # Check for updates once a week
+    schedule:
+      interval: weekly
