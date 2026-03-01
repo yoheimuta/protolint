@@ -1,0 +1,84 @@
+---
+name: NPM Package Integration Tests
+
+on:
+  pull_request:
+    paths:
+      - bdist/js/**
+      - .github/workflows/test_npm.yml
+  workflow_dispatch:
+
+jobs:
+  matrix-tests:
+    name: Test install on ${{ matrix.os }} / Node ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [20, lts/*]  # nvm syntax (lts/* for the latest LTS)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: ./bdist/js/package-lock.json
+
+      - name: Local Install and Verify
+        working-directory: ./bdist/js
+        run: |
+          npm install --omit=dev --no-audit --no-fund
+          # Verify local binaries via npx (using --no-install to force local check)
+          npx --no-install protolint version
+          npx --no-install protoc-gen-protolint version
+
+      - name: Global Install and Verify
+        shell: bash
+        run: |
+          npm install --global ./bdist/js
+          protolint version
+          protoc-gen-protolint version
+
+  proxy-tests:
+    name: Proxy Install Validation
+    runs-on: ubuntu-latest
+    services:
+      squid:
+        image: ubuntu/squid:latest
+        ports:
+          - 3128:3128
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Verify Proxy & Auth Environment
+        working-directory: ./bdist/js
+        env:
+          # We use dummy auth to ensure the code handles credentials correctly
+          PROTOLINT_MIRROR_USERNAME: username
+          PROTOLINT_MIRROR_PASSWORD: password
+          NO_PROXY: localhost,127.0.0.1,::1
+        run: |
+          # 1. Clean cache to force a fresh download
+          npm cache clean --force
+
+          # 2. Test via PROTOLINT_PROXY (priority variable)
+          echo "Testing with PROTOLINT_PROXY..."
+          PROTOLINT_PROXY=http://localhost:3128 npm install --omit=dev --no-audit --no-fund
+          npx --no-install protolint version
+
+          # 3. Cleanup for next sub-test
+          rm -rf node_modules
+
+          # 4. Test via standard HTTP_PROXY
+          echo "Testing with standard HTTP_PROXY..."
+          HTTP_PROXY=http://localhost:3128 HTTPS_PROXY=http://localhost:3128 npm install --omit=dev --no-audit --no-fund
+          npx --no-install protolint version
