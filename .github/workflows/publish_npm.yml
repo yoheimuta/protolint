@@ -19,16 +19,13 @@ jobs:
       - name: Install node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version-file: ./bdist/js/package.json
       - name: Install dependencies
         working-directory: ./bdist/js
-        run: npm install --ignore-scripts
+        run: npm ci --omit=dev --ignore-scripts --no-audit --no-fund
       - name: Set package version
         working-directory: ./bdist/js
-        run: npm run version
-      - name: Pack NPM Package
-        working-directory: ./bdist/js
-        run: npm pack
+        run: npm version from-git --no-git-tag-version
       - name: Issue warning if NPM_TOKEN is not set
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,14 @@
+# Ignore everything by default
+*
+
+# Don't ignore directories (so we can look inside them for other files)
+!*/
+
+# Don't ignore JavaScript files
+!**/*.js
+!**/*.cjs
+!**/*.mjs
+
+# Ignore npm files
+**/package-lock.json
+**/package.json

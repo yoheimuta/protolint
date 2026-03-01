@@ -9,7 +9,7 @@ If your behind a proxy, you can add the `PROTOLINT_PROXY` environment variable i
 If your running an airgapped environment, you can add the following environment variables:
 
 `PROTOLINT_MIRROR_HOST`: The basic url you are using to serve the binaries. Defaults to `https://github.com`
-`PROTOLINT_MIRROR_REMOTE_PATH`: The relative path on the mirror host. Defaults to `yoheimuta/protolint/releases/download/`
+`PROTOLINT_MIRROR_REMOTE_PATH`: The relative path on the mirror host. Defaults to `yoheimuta/protolint/releases/download`
 
 Within the remote path, make sure, that a folder `v<version>` exists containing the files downloaded from the github releases.
 
