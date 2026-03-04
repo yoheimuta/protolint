@@ -1,0 +1,43 @@
+---
+name: JS Pull Request Verification
+
+on:
+  pull_request:
+    paths:
+      - bdist/js/**
+      - .github/workflows/js_pr_verification.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-and-lint:
+    name: Check and lint JS
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bdist/js
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version-file: bdist/js/package.json
+          cache-dependency-path: bdist/js/package-lock.json
+
+      - name: Install dependencies
+        run: npm clean-install --ignore-scripts --prefer-offline --no-audit --no-fund
+
+      - name: Check via TypeScript
+        run: npm run check
+
+      - name: Prettier
+        run: npm run prettier:check
+
+      - name: ESLint
+        run: npm run lint
