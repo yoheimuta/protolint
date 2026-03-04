@@ -53,7 +53,7 @@
     "@eslint/js": "^9.39.3",
     "@tsconfig/node20": "^20.1.8",
     "@types/node": "^20.19.30",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-n": "^17.23.2",
     "eslint-plugin-promise": "^7.2.1",
