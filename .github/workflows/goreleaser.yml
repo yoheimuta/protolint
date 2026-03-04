@@ -33,7 +33,7 @@ jobs:
           logout: true  # optional, default is true
       -
         name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@v7
         with:
           distribution: goreleaser
           version: v2.9.0
