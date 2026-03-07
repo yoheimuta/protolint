@@ -2,13 +2,13 @@ package rules
 
 import (
 	"bufio"
-	"os"
 	"strings"
 	"unicode/utf8"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
+	"github.com/yoheimuta/protolint/internal/file"
 	"github.com/yoheimuta/protolint/linter/disablerule"
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/rule"
@@ -70,7 +70,7 @@ func (r MaxLineLengthRule) Apply(proto *parser.Proto) (
 	err error,
 ) {
 	fileName := proto.Meta.Filename
-	reader, err := os.Open(fileName)
+	reader, err := file.Open(fileName)
 	if err != nil {
 		return nil, err
 	}
