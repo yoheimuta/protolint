@@ -19,7 +19,7 @@ jobs:
         node-version: [20, lts/*]  # nvm syntax (lts/* for the latest LTS)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -52,7 +52,7 @@ jobs:
         ports:
           - 3128:3128
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
