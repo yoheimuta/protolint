@@ -50,7 +50,7 @@ func NewCmdLintConfig(
 
 // GenRules generates rules which are applied to the filename path.
 func (c CmdLintConfig) GenRules(
-	f file.ProtoFile,
+	f *file.ProtoFile,
 ) ([]rule.HasApply, error) {
 	allRules, err := subcmds.NewAllRules(c.external.Lint.RulesOption, c.fixMode, c.autoDisableType, c.verbose, c.plugins)
 	if err != nil {
@@ -73,4 +73,9 @@ func (c CmdLintConfig) GenRules(
 	}
 
 	return hasApplies, nil
+}
+
+// IsModifyingMode returns true if the linter is in a mode that modifies files.
+func (c CmdLintConfig) IsModifyingMode() bool {
+	return c.fixMode || c.autoDisableType != autodisable.Noop
 }

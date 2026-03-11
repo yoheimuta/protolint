@@ -4,18 +4,31 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/yoheimuta/protolint/internal/file"
 )
 
 // ProtoSet represents a set of .proto files.
 type ProtoSet struct {
-	protoFiles []ProtoFile
+	protoFiles []*ProtoFile
 }
 
 // NewProtoSet creates a new ProtoSet.
 func NewProtoSet(
 	targetPaths []string,
+	stdinFileName string,
 ) (ProtoSet, error) {
-	fs, err := collectAllProtoFilesFromArgs(targetPaths)
+	stdinCount := 0
+	for _, path := range targetPaths {
+		if path == file.StdinPath {
+			stdinCount++
+		}
+	}
+	if stdinCount > 1 {
+		return ProtoSet{}, fmt.Errorf("stdin (%s) can only be specified once", file.StdinPath)
+	}
+
+	fs, err := collectAllProtoFilesFromArgs(targetPaths, stdinFileName)
 	if err != nil {
 		return ProtoSet{}, err
 	}
@@ -29,13 +42,14 @@ func NewProtoSet(
 }
 
 // ProtoFiles returns proto files.
-func (s ProtoSet) ProtoFiles() []ProtoFile {
+func (s *ProtoSet) ProtoFiles() []*ProtoFile {
 	return s.protoFiles
 }
 
 func collectAllProtoFilesFromArgs(
 	targetPaths []string,
-) ([]ProtoFile, error) {
+	stdinFileName string,
+) ([]*ProtoFile, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -49,8 +63,17 @@ func collectAllProtoFilesFromArgs(
 		absCwd = newPath
 	}
 
-	var fs []ProtoFile
+	var fs []*ProtoFile
 	for _, path := range targetPaths {
+		if path == file.StdinPath {
+			displayPath := file.StdinDisplayPath
+			if stdinFileName != "" {
+				displayPath = stdinFileName
+			}
+			fs = append(fs, NewProtoFile(file.StdinPath, stdinFilenameClean(absCwd, displayPath)))
+			continue
+		}
+
 		absTarget, err := absClean(path)
 		if err != nil {
 			return nil, err
@@ -68,8 +91,8 @@ func collectAllProtoFilesFromArgs(
 func collectAllProtoFiles(
 	absWorkDirPath string,
 	absPath string,
-) ([]ProtoFile, error) {
-	var fs []ProtoFile
+) ([]*ProtoFile, error) {
+	var fs []*ProtoFile
 
 	err := filepath.Walk(
 		absPath,
@@ -105,4 +128,27 @@ func absClean(path string) (string, error) {
 		return filepath.Abs(path)
 	}
 	return filepath.Clean(path), nil
+}
+
+// stdinFilenameClean returns a normalized path for content received via stdin.
+// It attempts to make the targpath absolute and then calculates its relative path
+// with respect to basepath (usually the current working directory).
+//
+// This normalization is crucial for the linter to correctly match the file
+// against configuration-specific rules defined in .protolint.yaml, which typically
+// use paths relative to the project root.
+//
+// If the path cannot be made relative (e.g., different drive letters on Windows),
+// it returns the cleaned absolute path.
+func stdinFilenameClean(basepath, targpath string) string {
+	target, err := absClean(targpath)
+	if err != nil {
+		target = targpath
+	}
+
+	if relative, err := filepath.Rel(basepath, target); err == nil {
+		return relative
+	}
+
+	return target
 }

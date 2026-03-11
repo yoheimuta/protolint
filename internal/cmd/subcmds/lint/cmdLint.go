@@ -23,7 +23,7 @@ type CmdLint struct {
 	l          *linter.Linter
 	stdout     io.Writer
 	stderr     io.Writer
-	protoFiles []file.ProtoFile
+	protoFiles []*file.ProtoFile
 	config     CmdLintConfig
 	output     io.Writer
 }
@@ -34,7 +34,7 @@ func NewCmdLint(
 	stdout io.Writer,
 	stderr io.Writer,
 ) (*CmdLint, error) {
-	protoSet, err := file.NewProtoSet(flags.FilePaths)
+	protoSet, err := file.NewProtoSet(flags.FilePaths, flags.StdinFilename)
 	if err != nil {
 		return nil, err
 	}
@@ -94,6 +94,14 @@ func (c *CmdLint) Run() osutil.ExitCode {
 }
 
 func (c *CmdLint) run() ([]report.Failure, error) {
+	if c.config.IsModifyingMode() {
+		for _, f := range c.protoFiles {
+			if f.IsStdin() {
+				return nil, fmt.Errorf("fix and auto_disable modes are not supported for stdin")
+			}
+		}
+	}
+
 	var allFailures []report.Failure
 
 	for _, f := range c.protoFiles {
@@ -116,7 +124,7 @@ func (p ParseError) Error() string {
 }
 
 func (c *CmdLint) runOneFile(
-	f file.ProtoFile,
+	f *file.ProtoFile,
 ) ([]report.Failure, error) {
 	// Gen rules first
 	// If there is no rule, we can skip parse proto file
@@ -129,11 +137,20 @@ func (c *CmdLint) runOneFile(
 	}
 
 	return c.l.Run(func(p *parser.Proto) (*parser.Proto, error) {
+		if !c.config.IsModifyingMode() && p != nil {
+			return p, nil
+		}
+
 		// Recreate a protoFile if the previous rule changed the filename.
 		if p != nil && p.Meta.Filename != f.DisplayPath() {
 			newFilename := p.Meta.Filename
 			newBase := filepath.Base(newFilename)
 			f = file.NewProtoFile(filepath.Join(filepath.Dir(f.Path()), newBase), newFilename)
+		}
+
+		if c.config.IsModifyingMode() {
+			f.ResetCache()
+			f.ResetData()
 		}
 
 		proto, err := f.Parse(c.config.verbose)

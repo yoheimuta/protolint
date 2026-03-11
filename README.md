@@ -139,6 +139,7 @@ You can add the linter configuration to the `tools.protolint` package in `pyproj
 protolint lint example.proto example2.proto # file mode, specify multiple specific files
 protolint lint .                            # directory mode, search for all .proto files recursively
 protolint .                                 # same as "protolint lint ."
+protolint lint -stdin_filename=v1/f.proto - # read from stdin and assume its path is v1/f.proto
 protolint lint -config_path=path/to/your_protolint.yaml . # use path/to/your_protolint.yaml
 protolint lint -config_dir_path=path/to .   # search path/to for .protolint.yaml
 protolint lint -fix .                       # automatically fix some of the problems reported by some rules
@@ -156,6 +157,26 @@ protolint -v                                # print protolint version (when used
 ```
 
 protolint does not require configuration by default, for the majority of projects it should work out of the box.
+
+### Linting from stdin
+
+You can lint Protobuf content from standard input by using `-` as the file path. 
+This is particularly useful for integration with scripts or IDEs.
+
+```sh
+cat example.proto | protolint lint -
+```
+
+If you need to provide a virtual filename for [configuration](#configuring)
+resolution or for more descriptive error reporting, use the `-stdin_filename`
+flag:
+
+```sh
+cat example.proto | protolint lint -stdin_filename=api/v1/user.proto -
+```
+
+Note: linting from stdin support does not currently support `-fix` or
+`-auto_disable` modes, as these involve editing the physical file in-place.
 
 ## Version Control Integration
 
