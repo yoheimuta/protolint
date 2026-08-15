@@ -49,6 +49,7 @@ func NewFixing(fixMode bool, proto *parser.Proto) (Fixing, error) {
 // BaseFixing implements Fixing.
 type BaseFixing struct {
 	content    []byte
+	original   []byte
 	lineEnding string
 	fileName   string
 	textEdits  []TextEdit
@@ -70,6 +71,7 @@ func NewBaseFixing(protoFileName string) (*BaseFixing, error) {
 
 	return &BaseFixing{
 		content:    content,
+		original:   append([]byte(nil), content...),
 		lineEnding: lineEnding,
 		fileName:   protoFileName,
 	}, nil
@@ -116,6 +118,9 @@ func (f *BaseFixing) Lines() []string {
 }
 
 // Finally writes the fixed content to the file.
+// The file is left untouched when the content is not changed, so that -fix does not
+// update the modification time of files that have nothing to fix.
+// See https://github.com/yoheimuta/protolint/issues/452
 func (f *BaseFixing) Finally() error {
 	diff := 0
 	for _, t := range f.textEdits {
@@ -123,6 +128,9 @@ func (f *BaseFixing) Finally() error {
 		t.End += diff
 		f.content = append(f.content[:t.Pos], append(t.NewText, f.content[t.End+1:]...)...)
 		diff += len(t.NewText) - (t.End - t.Pos + 1)
+	}
+	if bytes.Equal(f.content, f.original) {
+		return nil
 	}
 	return osutil.WriteExistingFile(f.fileName, f.content)
 }
