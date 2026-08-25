@@ -22,7 +22,7 @@ jobs:
           go-version: 1.24.2
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
       -
         name: Docker Login
         uses: docker/login-action@v3.7.0
