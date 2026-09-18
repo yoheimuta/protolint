@@ -28,5 +28,8 @@ atlassian-ide-plugin.xml
 /bdist/js/node_modules/
 /bdist/js/node_modules/*.tgz
 
+# Go releaser files
+/dist
+
 # Claude Code local settings (the committed skills under .claude/skills/ are shared)
 .claude/settings.local.json

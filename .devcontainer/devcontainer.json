@@ -1,7 +1,18 @@
 {
     "name": "protolint devcontainer",
-    "image": "mcr.microsoft.com/devcontainers/go:1.24",
-    "features": {},
+    "image": "mcr.microsoft.com/devcontainers/base:debian",
+    "features": {
+        "ghcr.io/devcontainers/features/node:2": {
+            "version": "lts"
+        },
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "os-provided",
+            "installTools": false
+        },
+        "ghcr.io/devcontainers/features/go:1": {
+            "version": "latest"
+        }
+    },
     "customizations": {
         "vscode": {
             "settings": {
@@ -11,5 +22,6 @@
                 "golang.go"
             ]
         }
-    }
+    },
+    "postCreateCommand": "sh -c 'go install github.com/goreleaser/goreleaser/v2@latest'"
 }

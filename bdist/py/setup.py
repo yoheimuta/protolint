@@ -34,6 +34,17 @@ def clear_dir(path):
         logger.debug("Removing directory %s", path)
         path.rmdir()
 
+def sanitize_entry(path, parent):
+    path_value = str(path)
+    parent_value = str(parent)
+    if (path_value.startswith(parent_value)):
+        path_value = path_value[len(parent_value):]
+
+    if path_value.startswith('/') or path_value.startswith('\\'):
+        path_value = path_value.lstrip('/').lstrip('\\')
+
+    return path_value
+
 
 logger = logging.getLogger("BUILD")
 logger.setLevel(logging.INFO)
@@ -161,11 +172,12 @@ for arch_platform in ap_map.keys():
                 ml.writelines(readme.readlines())
 
         wheel_content = list(distInfoFolder.glob("**/*")) + list(dataFolder.glob("**/*"))
-        elements_to_relative_paths = {entry: str(entry).lstrip(str(pdir)).lstrip("/").lstrip("\\") for entry in wheel_content if entry.is_file()}
+        elements_to_relative_paths = {entry: sanitize_entry(entry, pdir) for entry in wheel_content if entry.is_file()}
         with (distInfoFolder / "RECORD").open("w+", encoding="utf-8") as rl:
             logger.debug("Writing RECORD file")
             for entry in elements_to_relative_paths.keys():
                 relPath = elements_to_relative_paths[entry]
+                logger.debug("Setting record for %s using relative path %s", entry, relPath)
                 sha256 = hashlib.sha256(entry.read_bytes())
                 fs = entry.stat().st_size
                 rl.write(f"{relPath},sha256={sha256.hexdigest()},{str(fs)}\n")
