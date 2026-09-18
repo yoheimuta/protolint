@@ -4,6 +4,7 @@ import (
 	"flag"
 
 	"github.com/yoheimuta/protolint/internal/cmd/subcmds"
+	"github.com/yoheimuta/protolint/internal/file"
 	"github.com/yoheimuta/protolint/linter/autodisable"
 
 	"github.com/yoheimuta/protolint/internal/addon/plugin/shared"
@@ -28,6 +29,7 @@ type Flags struct {
 	NoErrorOnUnmatchedPattern bool
 	Plugins                   []shared.RuleSet
 	AdditionalReporters       reporterStreamFlags
+	StdinFilename             string
 }
 
 // NewFlags creates a new Flags.
@@ -100,7 +102,12 @@ func NewFlags(
 		"add-reporter",
 		"Adds a reporter to the list of reporters to use. The format should be 'name of reporter':'Path-To_output_file'",
 	)
-
+	f.StringVar(
+		&f.StdinFilename,
+		"stdin_filename",
+		file.StdinDisplayPath,
+		"a filename for the text passed via stdin.",
+	)
 	_ = f.Parse(args)
 	if rf.reporter != nil {
 		f.Reporter = rf.reporter
