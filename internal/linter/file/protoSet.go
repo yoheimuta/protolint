@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 
 	"github.com/yoheimuta/protolint/internal/file"
 )
@@ -18,14 +19,8 @@ func NewProtoSet(
 	targetPaths []string,
 	stdinFileName string,
 ) (ProtoSet, error) {
-	stdinCount := 0
-	for _, path := range targetPaths {
-		if path == file.StdinPath {
-			stdinCount++
-		}
-	}
-	if stdinCount > 1 {
-		return ProtoSet{}, fmt.Errorf("stdin (%s) can only be specified once", file.StdinPath)
+	if slices.Contains(targetPaths, file.StdinPath) && len(targetPaths) > 1 {
+		return ProtoSet{}, fmt.Errorf("multiple inputs are not allowed when using stdin (%s)", file.StdinPath)
 	}
 
 	fs, err := collectAllProtoFilesFromArgs(targetPaths, stdinFileName)

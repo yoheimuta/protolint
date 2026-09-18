@@ -97,33 +97,16 @@ func TestNewProtoSet_MixedMode(t *testing.T) {
 	realFile := setting_test.TestDataPath("testdir", "test.proto")
 	inputPaths := []string{realFile, vfs.StdinPath}
 
-	ps, err := file.NewProtoSet(inputPaths, "virtual_stdin.proto")
-	if err != nil {
-		t.Fatalf("NewProtoSet failed: %v", err)
-	}
+	_, err := file.NewProtoSet(inputPaths, "virtual_stdin.proto")
 
-	files := ps.ProtoFiles()
-	if len(files) != 2 {
-		t.Fatalf("expected 2 files, got %d", len(files))
-	}
-
-	// Verify the first one is the real file
-	if files[0].Path() != realFile {
-		t.Errorf("expected first file to be %s, got %s", realFile, files[0].Path())
-	}
-
-	// Verify the second one is our virtual stdin
-	if !files[1].IsStdin() {
-		t.Errorf("expected second file to be stdin")
-	}
-	if files[1].DisplayPath() != "virtual_stdin.proto" {
-		t.Errorf("expected virtual display path, got %s", files[1].DisplayPath())
+	if err == nil {
+		t.Fatal("expected error when mixing stdin with other files, but got nil")
 	}
 }
 
 func TestNewProtoSet_MultipleStdinError(t *testing.T) {
 	// Scenario: User tries to pass "-" twice in the arguments
-	inputPaths := []string{vfs.StdinPath, "other.proto", vfs.StdinPath}
+	inputPaths := []string{vfs.StdinPath, vfs.StdinPath}
 	virtualName := "any.proto"
 
 	_, err := file.NewProtoSet(inputPaths, virtualName)
