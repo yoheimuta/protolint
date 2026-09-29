@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io"
 
+	"github.com/yoheimuta/protolint/internal/file"
 	"github.com/yoheimuta/protolint/internal/osutil"
 )
 
@@ -41,6 +42,11 @@ func Lint(args []string, stdout, stderr io.Writer) error {
 	if defaultRunner == nil {
 		return ErrInternalFailure
 	}
+
+	// Isolate the in-memory virtual files (e.g. stdin content) of each run,
+	// since this is called repeatedly within one process by lib.Lint and the MCP server.
+	file.ResetVFS()
+	defer file.ResetVFS()
 
 	switch defaultRunner.Run(args, stdout, stderr) {
 	case osutil.ExitSuccess:

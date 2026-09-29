@@ -5,7 +5,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"slices"
 
+	"github.com/yoheimuta/protolint/internal/file"
 	"github.com/yoheimuta/protolint/internal/libinternal"
 )
 
@@ -68,6 +70,12 @@ func (t *LintFilesTool) Execute(args json.RawMessage) (any, error) {
 
 	if len(lintArgs.Files) == 0 {
 		return nil, fmt.Errorf("no files specified")
+	}
+
+	// The MCP server's stdin is the JSON-RPC transport, so reading it as a proto file
+	// would block and consume protocol messages.
+	if slices.Contains(lintArgs.Files, file.StdinPath) {
+		return nil, fmt.Errorf("stdin (%s) is not supported by the MCP server", file.StdinPath)
 	}
 
 	// Construct command line arguments

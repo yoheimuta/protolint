@@ -4,7 +4,6 @@ import (
 	"io"
 
 	"github.com/yoheimuta/protolint/internal/cmd"
-	"github.com/yoheimuta/protolint/internal/file"
 	"github.com/yoheimuta/protolint/internal/libinternal"
 )
 
@@ -38,9 +37,6 @@ func GetLintRunner() LintRunner {
 // Note: This function automatically initializes the default lint runner if none is set,
 // so you don't need to call cmd.Initialize() before using it.
 func Lint(args []string, stdout, stderr io.Writer) error {
-	file.ResetVFS()
-	defer file.ResetVFS()
-
 	// Auto-initialize if needed
 	if libinternal.GetLintRunner() == nil {
 		cmd.Initialize()

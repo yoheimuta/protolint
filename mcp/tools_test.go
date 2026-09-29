@@ -78,6 +78,11 @@ func TestLintFilesTool_Execute_InvalidArgs(t *testing.T) {
 			args:    `{"config_path": "/path/to/config.yaml"}`,
 			wantErr: true,
 		},
+		{
+			name:    "stdin path",
+			args:    `{"files": ["-"]}`,
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {
