@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package example;
+
+message ExampleMessage {
+  /* leading */
+  repeated/* trailing */ bool boolean = 1;
+}

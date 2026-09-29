@@ -1,6 +1,7 @@
 package rules
 
 import (
+	"sort"
 	"strings"
 	"unicode"
 
@@ -314,12 +315,24 @@ func (v indentVisitor) validateIndent(
 	isLast bool,
 ) {
 	line := v.Fixer.Lines()[pos.Line-1]
-	leading := ""
-	for _, r := range string([]rune(line)[:pos.Column-1]) {
-		if unicode.IsSpace(r) {
-			leading += string(r)
+	runes := []rune(line)
+	column := pos.Column
+	if isLast {
+		// deal with last position followed by ';'. See https://github.com/yoheimuta/protolint/issues/99
+		for 1 < column && runes[column-1] == ';' {
+			column--
 		}
 	}
+	// An element is only responsible for the line's indentation when nothing but
+	// whitespace precedes it. Otherwise it shares the line with an earlier element
+	// or comment, and the spaces in between are not indentation. Counting every
+	// space before the element as indentation reported a wrong current style and,
+	// in fix mode, sliced the line at the wrong offset (see issue #409).
+	isFirstOnLine := strings.TrimSpace(string(runes[:column-1])) == ""
+	leading := line[:len(line)-len(strings.TrimLeftFunc(line, unicode.IsSpace))]
+	// When newlines are not inserted, the whole line is re-indented as one unit,
+	// so every element on it is judged by the line's indentation.
+	judgedByLineIndent := isFirstOnLine || v.notInsertNewline
 
 	indentation := strings.Repeat(v.style, v.currentLevel)
 	v.indentFixes[pos.Line-1] = append(v.indentFixes[pos.Line-1], indentFix{
@@ -330,13 +343,16 @@ func (v indentVisitor) validateIndent(
 		isLast:       isLast,
 	})
 
-	if leading == indentation {
+	if judgedByLineIndent && leading == indentation {
 		return
 	}
 	if 1 < len(v.indentFixes[pos.Line-1]) && v.notInsertNewline {
 		return
 	}
-	if len(v.indentFixes[pos.Line-1]) == 1 {
+	// Only the element that starts the line owns its indentation, whichever of
+	// the line's elements happens to be visited first. The others are told to
+	// move to a line of their own (see issue #349).
+	if judgedByLineIndent {
 		v.AddFailuref(
 			pos,
 			`Found an incorrect indentation style "%s". "%s" is correct.`,
@@ -366,6 +382,14 @@ func (v indentVisitor) fix(proto *parser.Proto) error {
 		for i, line := range lines {
 			lines := []string{line}
 			if fixes, ok := v.indentFixes[i]; ok {
+				// Fixes are recorded in visiting order, and a visitor validates an
+				// element before the comments attached to it, so a comment that
+				// precedes its element on the same line arrives after it. The split
+				// below walks the line from right to left and needs the fixes in
+				// column order (see issue #409).
+				sort.SliceStable(fixes, func(a, b int) bool {
+					return fixes[a].pos.Column < fixes[b].pos.Column
+				})
 				lines[0] = fixes[0].replacement + line[fixes[0].currentChars:]
 				shouldFixed = true
 
