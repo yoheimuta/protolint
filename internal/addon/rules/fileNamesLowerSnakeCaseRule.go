@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/yoheimuta/protolint/internal/file"
 	"github.com/yoheimuta/protolint/internal/stringsutil"
 
 	"github.com/yoheimuta/go-protoparser/v4/parser"
@@ -82,7 +83,7 @@ func (v *fileNamesLowerSnakeCaseVisitor) Finally(proto *parser.Proto) error {
 		expected += ".proto"
 		v.AddFailurefWithProtoMeta(proto.Meta, "File name %q should be lower_snake_case.proto like %q.", filename, expected)
 
-		if v.fixMode {
+		if v.fixMode && !file.IsStdin(path) {
 			dir := filepath.Dir(path)
 			newPath := filepath.Join(dir, expected)
 			if _, err := os.Stat(newPath); !os.IsNotExist(err) {

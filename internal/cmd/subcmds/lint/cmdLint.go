@@ -12,6 +12,7 @@ import (
 
 	"github.com/yoheimuta/protolint/internal/linter/config"
 
+	vfs "github.com/yoheimuta/protolint/internal/file"
 	"github.com/yoheimuta/protolint/internal/linter"
 	"github.com/yoheimuta/protolint/internal/linter/file"
 	"github.com/yoheimuta/protolint/internal/osutil"
@@ -23,7 +24,7 @@ type CmdLint struct {
 	l          *linter.Linter
 	stdout     io.Writer
 	stderr     io.Writer
-	protoFiles []file.ProtoFile
+	protoFiles []*file.ProtoFile
 	config     CmdLintConfig
 	output     io.Writer
 }
@@ -34,7 +35,7 @@ func NewCmdLint(
 	stdout io.Writer,
 	stderr io.Writer,
 ) (*CmdLint, error) {
-	protoSet, err := file.NewProtoSet(flags.FilePaths)
+	protoSet, err := file.NewProtoSet(flags.FilePaths, flags.StdinFilename)
 	if err != nil {
 		return nil, err
 	}
@@ -80,6 +81,22 @@ func (c *CmdLint) Run() osutil.ExitCode {
 		return osutil.ExitInternalFailure
 	}
 
+	if c.config.IsModifyingMode() {
+		for _, f := range c.protoFiles {
+			if vfs.IsStdin(f.DisplayPath()) {
+				fixedContent, err := vfs.ReadFile(f.DisplayPath())
+				if err != nil {
+					_, _ = fmt.Fprintln(c.stderr, "failed to read fixed stdin from VFS:", err)
+					return osutil.ExitInternalFailure
+				}
+
+				_, _ = c.stdout.Write(fixedContent)
+
+				return osutil.ExitSuccess
+			}
+		}
+	}
+
 	err = c.config.reporters.ReportWithFallback(c.output, failures)
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
@@ -116,7 +133,7 @@ func (p ParseError) Error() string {
 }
 
 func (c *CmdLint) runOneFile(
-	f file.ProtoFile,
+	f *file.ProtoFile,
 ) ([]report.Failure, error) {
 	// Gen rules first
 	// If there is no rule, we can skip parse proto file
@@ -134,6 +151,11 @@ func (c *CmdLint) runOneFile(
 			newFilename := p.Meta.Filename
 			newBase := filepath.Base(newFilename)
 			f = file.NewProtoFile(filepath.Join(filepath.Dir(f.Path()), newBase), newFilename)
+		}
+
+		if c.config.IsModifyingMode() {
+			f.ResetCache()
+			f.ResetData()
 		}
 
 		proto, err := f.Parse(c.config.verbose)

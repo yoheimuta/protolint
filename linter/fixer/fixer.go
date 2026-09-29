@@ -2,7 +2,6 @@ package fixer
 
 import (
 	"bytes"
-	"os"
 	"strings"
 
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
@@ -10,6 +9,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 
+	"github.com/yoheimuta/protolint/internal/file"
 	"github.com/yoheimuta/protolint/internal/osutil"
 )
 
@@ -57,7 +57,7 @@ type BaseFixing struct {
 
 // NewBaseFixing creates a BaseFixing.
 func NewBaseFixing(protoFileName string) (*BaseFixing, error) {
-	content, err := os.ReadFile(protoFileName)
+	content, err := file.ReadFile(protoFileName)
 	if err != nil {
 		return nil, err
 	}
@@ -130,6 +130,10 @@ func (f *BaseFixing) Finally() error {
 		diff += len(t.NewText) - (t.End - t.Pos + 1)
 	}
 	if bytes.Equal(f.content, f.original) {
+		return nil
+	}
+	if file.IsStdin(f.fileName) {
+		file.SetVirtualFile(f.fileName, f.content)
 		return nil
 	}
 	return osutil.WriteExistingFile(f.fileName, f.content)
