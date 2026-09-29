@@ -75,7 +75,7 @@ func ReadFile(path string) ([]byte, error) {
 
 // ResetVFS clears all virtual file entries.
 // This is required to isolate independent execution cycles when protolint is invoked
-// via the public lib.Lint() API inside a single process.
+// in-process via libinternal.Lint (used by lib.Lint and the MCP server).
 func ResetVFS() {
 	mu.Lock()
 	defer mu.Unlock()
