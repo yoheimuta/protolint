@@ -400,16 +400,16 @@ func (v indentVisitor) fix(proto *parser.Proto) error {
 						indentation := strings.Repeat(v.style, fixes[j].level)
 						if fixes[j].isLast {
 							// deal with last position followed by ';'. See https://github.com/yoheimuta/protolint/issues/99
-							for line[fixes[j].pos.Column-1] == ';' {
+							for 1 < fixes[j].pos.Column && line[byteOffset(line, fixes[j].pos.Column)] == ';' {
 								fixes[j].pos.Column--
 							}
 						}
 
-						endColumn := len(line)
+						end := len(line)
 						if j < len(fixes)-1 {
-							endColumn = fixes[j+1].pos.Column - 1
+							end = byteOffset(line, fixes[j+1].pos.Column)
 						}
-						text := line[fixes[j].pos.Column-1 : endColumn]
+						text := line[byteOffset(line, fixes[j].pos.Column):end]
 						text = strings.TrimRightFunc(text, func(r rune) bool {
 							// removing right spaces is a possible side effect that users do not expect,
 							// but it's probably acceptable and usually recommended.
@@ -435,4 +435,16 @@ func (v indentVisitor) fix(proto *parser.Proto) error {
 		return nil
 	}
 	return v.BaseFixableVisitor.Finally(proto)
+}
+
+// byteOffset converts a 1-based column, which counts runes, into a 0-based byte offset of line.
+func byteOffset(line string, column int) int {
+	n := 1
+	for i := range line {
+		if n == column {
+			return i
+		}
+		n++
+	}
+	return len(line)
 }

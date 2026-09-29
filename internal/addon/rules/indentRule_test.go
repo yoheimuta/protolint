@@ -500,6 +500,24 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 		return
 	}
 
+	incorrectIssue409MultibytePath, err := newTestIndentData("incorrect_issue_409_multibyte.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	correctIssue409MultibytePath, err := newTestIndentData("issue_409_multibyte.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
+	correctIssue409MultibyteInsertPath, err := newTestIndentData("issue_409_multibyte_insert_linebreaks.proto")
+	if err != nil {
+		t.Errorf("got err %v", err)
+		return
+	}
+
 	tests := []struct {
 		name               string
 		inputTestData      util_test.TestData
@@ -567,6 +585,17 @@ func TestIndentRule_Apply_fix(t *testing.T) {
 			inputTestData:      incorrectIssue409Path,
 			inputInsertNewline: true,
 			wantCorrectData:    correctIssue409InsertPath,
+		},
+		{
+			name:            "re-indent a line whose leading comment has multibyte characters",
+			inputTestData:   incorrectIssue409MultibytePath,
+			wantCorrectData: correctIssue409MultibytePath,
+		},
+		{
+			name:               "insert linebreaks at the right byte offsets on a line with multibyte characters",
+			inputTestData:      incorrectIssue409MultibytePath,
+			inputInsertNewline: true,
+			wantCorrectData:    correctIssue409MultibyteInsertPath,
 		},
 	}
 

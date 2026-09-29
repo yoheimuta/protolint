@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package example;
+
+message ExampleMessage {
+    /* é */repeated/* ü */ bool boolean = 1;
+  string s = 2; /* 日本語 */ int32 t = 3;
+}
