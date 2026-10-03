@@ -15,7 +15,14 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v6
         with:
-          fetch-tags: true
+          # The release tag is not necessarily the branch tip: workflow_run hands
+          # us the default branch, and a manual re-run happens after later merges.
+          # A shallow clone leaves the tag unreachable, so fetch the full history.
+          fetch-depth: 0
+      - name: Check out the release tag
+        # Build and pack the tagged tree rather than whatever has landed on master
+        # since. setup.py derives the wheel version from `git describe --tag`.
+        run: git checkout --detach "$(git describe --tags --abbrev=0 --match='v*.*.*')"
       - name: Run go release to create binaries
         uses: actions/setup-go@v6
         with:
