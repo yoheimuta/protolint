@@ -1,8 +1,8 @@
 # protolint
-![Action](https://github.com/yoheimuta/protolint/workflows/Go/badge.svg)
-[![Release](https://img.shields.io/github/v/release/yoheimuta/protolint?include_prereleases)](https://github.com/yoheimuta/protolint/releases)[
-![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/protolint)](https://goreportcard.com/report/github.com/yoheimuta/protolint)
-[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
+
+[![Go](https://github.com/yoheimuta/protolint/actions/workflows/go.yml/badge.svg)](https://github.com/yoheimuta/protolint/actions/workflows/go.yml)
+[![Release](https://img.shields.io/github/v/release/yoheimuta/protolint?include_prereleases)](https://github.com/yoheimuta/protolint/releases)
+[![License](https://img.shields.io/github/license/yoheimuta/protolint?color=blue)](https://github.com/yoheimuta/protolint/blob/master/LICENSE)
 [![Docker](https://img.shields.io/docker/pulls/yoheimuta/protolint)](https://hub.docker.com/r/yoheimuta/protolint)
 
 protolint is the pluggable linting/fixing utility for Protocol Buffer files (proto2+proto3):
