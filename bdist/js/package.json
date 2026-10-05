@@ -4,8 +4,8 @@
   "description": "A pluggable linter and fixer to enforce Protocol Buffer style and conventions.",
   "type": "module",
   "bin": {
-    "protolint": "./bin/protolint.js",
-    "protoc-gen-protolint": "./bin/protoc-gen-protolint.js"
+    "protolint": "bin/protolint.js",
+    "protoc-gen-protolint": "bin/protoc-gen-protolint.js"
   },
   "scripts": {
     "postinstall": "node postinstall.js",
