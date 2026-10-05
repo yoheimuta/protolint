@@ -40,6 +40,9 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 							&parser.Field{
 								FieldName: "singer",
 							},
+							&parser.Field{
+								FieldName: "number2_should_be_valid",
+							},
 							&parser.MapField{
 								MapName: "song_name2",
 							},
@@ -68,6 +71,50 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 										Filename: "example.proto",
 										Offset:   100,
 										Line:     5,
+										Column:   10,
+									},
+								},
+							},
+							&parser.Field{
+								FieldName: "number_1_should_be_invalid",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   130,
+										Line:     6,
+										Column:   10,
+									},
+								},
+							},
+							&parser.Field{
+								FieldName: "_leading_under_score_should_be_invalid",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   160,
+										Line:     7,
+										Column:   10,
+									},
+								},
+							},
+							&parser.Field{
+								FieldName: "trailing_under_score_should_be_invalid_",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   190,
+										Line:     8,
+										Column:   10,
+									},
+								},
+							},
+							&parser.Field{
+								FieldName: "double__under__score__should__be__invalid_",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "example.proto",
+										Offset:   200,
+										Line:     9,
 										Column:   10,
 									},
 								},
@@ -113,6 +160,50 @@ func TestFieldNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 					"FIELD_NAMES_LOWER_SNAKE_CASE",
 					string(rule.SeverityError),
 					`Field name "song_Name" must be underscore_separated_names like "song_name"`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   130,
+						Line:     6,
+						Column:   10,
+					},
+					"FIELD_NAMES_LOWER_SNAKE_CASE",
+					string(rule.SeverityError),
+					`Field name "number_1_should_be_invalid" must be underscore_separated_names like "number1_should_be_invalid"`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   160,
+						Line:     7,
+						Column:   10,
+					},
+					"FIELD_NAMES_LOWER_SNAKE_CASE",
+					string(rule.SeverityError),
+					`Field name "_leading_under_score_should_be_invalid" must be underscore_separated_names like "leading_under_score_should_be_invalid"`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   190,
+						Line:     8,
+						Column:   10,
+					},
+					"FIELD_NAMES_LOWER_SNAKE_CASE",
+					string(rule.SeverityError),
+					`Field name "trailing_under_score_should_be_invalid_" must be underscore_separated_names like "trailing_under_score_should_be_invalid"`,
+				),
+				report.Failuref(
+					meta.Position{
+						Filename: "example.proto",
+						Offset:   200,
+						Line:     9,
+						Column:   10,
+					},
+					"FIELD_NAMES_LOWER_SNAKE_CASE",
+					string(rule.SeverityError),
+					`Field name "double__under__score__should__be__invalid_" must be underscore_separated_names like "double_under_score_should_be_invalid"`,
 				),
 				report.Failuref(
 					meta.Position{
@@ -172,6 +263,11 @@ func TestFieldNamesLowerSnakeCaseRule_Apply_fix(t *testing.T) {
 			name:          "fix for an incorrect proto",
 			inputFilename: "invalid.proto",
 			wantFilename:  "lower_snake_case.proto",
+		},
+		{
+			name:          "fix for invalid underscore usage in proto",
+			inputFilename: "invalid_underscores.proto",
+			wantFilename:  "fixed_underscores.proto",
 		},
 	}
 
