@@ -97,13 +97,23 @@ func (c *CmdLint) Run() osutil.ExitCode {
 		}
 	}
 
-	err = c.config.reporters.ReportWithFallback(c.output, failures)
+	reportedFailures := failures
+	if c.config.fixMode && len(failures) > 0 {
+		remainingFailures, err := c.checkRemaining()
+		if err != nil {
+			_, _ = fmt.Fprintln(c.stderr, err)
+			return osutil.ExitInternalFailure
+		}
+		reportedFailures = remainingFailures
+	}
+
+	err = c.config.reporters.ReportWithFallback(c.output, reportedFailures)
 	if err != nil {
 		_, _ = fmt.Fprintln(c.stderr, err)
 		return osutil.ExitInternalFailure
 	}
 
-	if 0 < len(failures) {
+	if 0 < len(reportedFailures) {
 		return osutil.ExitLintFailure
 	}
 
@@ -113,14 +123,32 @@ func (c *CmdLint) Run() osutil.ExitCode {
 func (c *CmdLint) run() ([]report.Failure, error) {
 	var allFailures []report.Failure
 
-	for _, f := range c.protoFiles {
-		failures, err := c.runOneFile(f)
+	for i, f := range c.protoFiles {
+		newF, failures, err := c.runOneFile(f, c.config)
 		if err != nil {
 			return nil, err
 		}
+		c.protoFiles[i] = newF
 		allFailures = append(allFailures, failures...)
 	}
 	return allFailures, nil
+}
+
+func (c *CmdLint) checkRemaining() ([]report.Failure, error) {
+	checkConfig := c.config.CheckConfig()
+	var remainingFailures []report.Failure
+
+	for _, f := range c.protoFiles {
+		f.ResetCache()
+		f.ResetData()
+
+		_, failures, err := c.runOneFile(f, checkConfig)
+		if err != nil {
+			return nil, err
+		}
+		remainingFailures = append(remainingFailures, failures...)
+	}
+	return remainingFailures, nil
 }
 
 // ParseError represents the error returned through a parsing exception.
@@ -134,18 +162,19 @@ func (p ParseError) Error() string {
 
 func (c *CmdLint) runOneFile(
 	f *file.ProtoFile,
-) ([]report.Failure, error) {
+	cfg CmdLintConfig,
+) (*file.ProtoFile, []report.Failure, error) {
 	// Gen rules first
 	// If there is no rule, we can skip parse proto file
-	rs, err := c.config.GenRules(f)
+	rs, err := cfg.GenRules(f)
 	if err != nil {
-		return nil, err
+		return f, nil, err
 	}
 	if len(rs) == 0 {
-		return []report.Failure{}, nil
+		return f, []report.Failure{}, nil
 	}
 
-	return c.l.Run(func(p *parser.Proto) (*parser.Proto, error) {
+	failures, err := c.l.Run(func(p *parser.Proto) (*parser.Proto, error) {
 		// Recreate a protoFile if the previous rule changed the filename.
 		if p != nil && p.Meta.Filename != f.DisplayPath() {
 			newFilename := p.Meta.Filename
@@ -153,18 +182,22 @@ func (c *CmdLint) runOneFile(
 			f = file.NewProtoFile(filepath.Join(filepath.Dir(f.Path()), newBase), newFilename)
 		}
 
-		if c.config.IsModifyingMode() {
+		if cfg.IsModifyingMode() {
 			f.ResetCache()
 			f.ResetData()
 		}
 
-		proto, err := f.Parse(c.config.verbose)
+		proto, err := f.Parse(cfg.verbose)
 		if err != nil {
-			if c.config.verbose {
+			if cfg.verbose {
 				return nil, ParseError{Message: err.Error()}
 			}
 			return nil, ParseError{Message: fmt.Sprintf("%s. Use -v for more details", err)}
 		}
 		return proto, nil
 	}, rs)
+	if err != nil {
+		return f, nil, err
+	}
+	return f, failures, nil
 }

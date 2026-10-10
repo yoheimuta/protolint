@@ -79,3 +79,11 @@ func (c CmdLintConfig) GenRules(
 func (c CmdLintConfig) IsModifyingMode() bool {
 	return c.fixMode || c.autoDisableType != autodisable.Noop
 }
+
+// CheckConfig returns a copy of CmdLintConfig with fixMode disabled and autoDisable set to Noop.
+func (c CmdLintConfig) CheckConfig() CmdLintConfig {
+	cfg := c
+	cfg.fixMode = false
+	cfg.autoDisableType = autodisable.Noop
+	return cfg
+}
