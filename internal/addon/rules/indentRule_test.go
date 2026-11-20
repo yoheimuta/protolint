@@ -1,6 +1,8 @@
 package rules_test
 
 import (
+	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -17,6 +19,117 @@ import (
 	"github.com/yoheimuta/protolint/linter/report"
 	"github.com/yoheimuta/protolint/linter/rule"
 )
+
+func TestIndentRule_FieldOptions(t *testing.T) {
+	const input = `syntax = "proto3";
+
+message Example {
+  string value = 1 [
+          // The ] here is part of the comment.
+     deprecated = true,
+           json_name = "a]b"
+         ];
+  string inline_value = 2 [deprecated = true];
+  map<string, string> labels = 3
+      [
+      deprecated = true];
+  oneof choice {
+    string name = 4 [
+    deprecated = true
+        ];
+  }
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0 [
+      deprecated = true
+    ];
+}
+
+message Custom {
+  string value = 1 [
+        (custom_option) = {
+      numbers: [
+        1, 2
+      ]
+    },
+      deprecated = true
+    ];
+}
+`
+	const want = `syntax = "proto3";
+
+message Example {
+  string value = 1 [
+    // The ] here is part of the comment.
+    deprecated = true,
+    json_name = "a]b"
+  ];
+  string inline_value = 2 [deprecated = true];
+  map<string, string> labels = 3
+  [
+    deprecated = true];
+  oneof choice {
+    string name = 4 [
+      deprecated = true
+    ];
+  }
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0 [
+    deprecated = true
+  ];
+}
+
+message Custom {
+  string value = 1 [
+    (custom_option) = {
+      numbers: [
+        1, 2
+      ]
+    },
+    deprecated = true
+  ];
+}
+`
+	path := filepath.Join(t.TempDir(), "field_options.proto")
+	if err := os.WriteFile(path, []byte(input), 0600); err != nil {
+		t.Fatal(err)
+	}
+	apply := func(fix bool) []report.Failure {
+		t.Helper()
+		proto, err := file.NewProtoFile(path, path).Parse(false)
+		if err != nil {
+			t.Fatal(err)
+		}
+		failures, err := rules.NewIndentRule(rule.SeverityError, "", false, fix).Apply(proto)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return failures
+	}
+
+	var lines []int
+	for _, failure := range apply(false) {
+		lines = append(lines, failure.Pos().Line)
+	}
+	if want := []int{5, 6, 7, 8, 11, 12, 15, 16, 22, 23, 28, 33, 34}; !reflect.DeepEqual(lines, want) {
+		t.Errorf("lint reported lines %v, want %v", lines, want)
+	}
+
+	apply(true)
+	got, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != want {
+		t.Errorf("autofix produced:\n%s\nwant:\n%s", got, want)
+	}
+	if failures := apply(false); len(failures) != 0 {
+		t.Errorf("autofixed file still reports failures: %v", failures)
+	}
+}
 
 func TestIndentRule_Apply(t *testing.T) {
 	defaultSpace := strings.Repeat(" ", 2)
