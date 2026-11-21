@@ -38,13 +38,18 @@ func IsUpperSnakeCase(s string) bool {
 }
 
 // IsLowerSnakeCase returns true if s only contains lowercase letters,
-// digits, and/or underscores. s MUST NOT begin or end with an underscore.
+// digits, and/or underscores. s MUST NOT begin or end with an underscore,
+// and any underscore must always be followed by a letter (not a number or a second underscore).
 func IsLowerSnakeCase(s string) bool {
 	if s == "" || s[0] == '_' || s[len(s)-1] == '_' {
 		return false
 	}
-	for _, r := range s {
-		if !(isLower(r) || isDigit(r) || r == '_') {
+	for i, r := range s {
+		if r == '_' {
+			if i+1 >= len(s) || !isLower(rune(s[i+1])) {
+				return false
+			}
+		} else if !(isLower(r) || isDigit(r)) {
 			return false
 		}
 	}
@@ -117,12 +122,34 @@ func ToUpperSnakeCase(s string) string {
 func ToLowerSnakeCase(s string) string {
 	s = strings.ReplaceAll(s, ".", "_")
 	s = strings.ReplaceAll(s, "-", "_")
-	ws := SplitCamelCaseWord(s)
-	if ws == nil {
-		ws = []string{s}
+
+	rawParts := strings.Split(s, "_")
+	var words []string
+	for _, part := range rawParts {
+		if part == "" {
+			continue
+		}
+		if isCamelCase(part) {
+			cws := SplitCamelCaseWord(part)
+			if cws != nil {
+				words = append(words, cws...)
+				continue
+			}
+		}
+		words = append(words, part)
 	}
+
+	var merged []string
+	for _, w := range words {
+		if len(merged) > 0 && isDigit(rune(w[0])) {
+			merged[len(merged)-1] += w
+		} else {
+			merged = append(merged, w)
+		}
+	}
+
 	return strings.ToLower(
-		strings.Join(ws, "_"),
+		strings.Join(merged, "_"),
 	)
 }
 
@@ -162,7 +189,7 @@ func toSnake(s string) string {
 			if 2 < priorUpperN {
 				output = output[:len(output)-1] + "_" + output[len(output)-1:]
 			}
-		} else if priorUpperN == 0 && len(output) > 0 {
+		} else if isUpper(c) && priorUpperN == 0 && len(output) > 0 {
 			output += "_"
 		}
 		output += string(c)

@@ -155,6 +155,41 @@ func TestIsLowerSnakeCase(t *testing.T) {
 			input: "song_name",
 			want:  true,
 		},
+		{
+			name:  "underscore followed by a number is invalid",
+			input: "number_1_should_be_invalid",
+		},
+		{
+			name:  "number followed by underscore and letter is valid",
+			input: "number2_should_be_valid",
+			want:  true,
+		},
+		{
+			name:  "leading underscore is invalid",
+			input: "_leading_under_score_should_be_invalid",
+		},
+		{
+			name:  "trailing underscore is invalid",
+			input: "trailing_under_score_should_be_invalid_",
+		},
+		{
+			name:  "consecutive underscores are invalid",
+			input: "double__under__score__should__be__invalid_",
+		},
+		{
+			name:  "song_name_1 is invalid",
+			input: "song_name_1",
+		},
+		{
+			name:  "song_name1 is valid",
+			input: "song_name1",
+			want:  true,
+		},
+		{
+			name:  "song1_name is valid",
+			input: "song1_name",
+			want:  true,
+		},
 	}
 
 	for _, test := range tests {
@@ -335,6 +370,51 @@ func TestToLowerSnakeCase(t *testing.T) {
 			name:  "input consists of .",
 			input: "account.status",
 			want:  "account_status",
+		},
+		{
+			name:  "underscore followed by number is removed",
+			input: "number_1_should_be_invalid",
+			want:  "number1_should_be_invalid",
+		},
+		{
+			name:  "valid number before underscore is preserved",
+			input: "number2_should_be_valid",
+			want:  "number2_should_be_valid",
+		},
+		{
+			name:  "leading underscore is removed",
+			input: "_leading_under_score_should_be_invalid",
+			want:  "leading_under_score_should_be_invalid",
+		},
+		{
+			name:  "trailing underscore is removed",
+			input: "trailing_under_score_should_be_invalid_",
+			want:  "trailing_under_score_should_be_invalid",
+		},
+		{
+			name:  "consecutive and trailing underscores are fixed",
+			input: "double__under__score__should__be__invalid_",
+			want:  "double_under_score_should_be_invalid",
+		},
+		{
+			name:  "song_name_1 converted to song_name1",
+			input: "song_name_1",
+			want:  "song_name1",
+		},
+		{
+			name:  "song_1_name converted to song1_name",
+			input: "song_1_name",
+			want:  "song1_name",
+		},
+		{
+			name:  "SongName1 converted to song_name1",
+			input: "SongName1",
+			want:  "song_name1",
+		},
+		{
+			name:  "Song1Name converted to song1_name",
+			input: "Song1Name",
+			want:  "song1_name",
 		},
 	}
 

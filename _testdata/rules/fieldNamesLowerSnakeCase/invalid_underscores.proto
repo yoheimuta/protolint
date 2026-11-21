@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+message Test {
+    int64 number_1_should_be_invalid = 1;
+    int64 number2_should_be_valid = 2;
+    int64 _leading_under_score_should_be_invalid = 3;
+    int64 trailing_under_score_should_be_invalid_ = 4;
+    int64 double__under__score__should__be__invalid_ = 5;
+}
