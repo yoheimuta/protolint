@@ -5,6 +5,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/yoheimuta/go-protoparser/v4/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
@@ -72,6 +73,7 @@ func (r IndentRule) Apply(
 
 	v := &indentVisitor{
 		BaseFixableVisitor: base,
+		lines:              base.Fixer.Lines(),
 		style:              r.style,
 		fixMode:            r.fixMode,
 		notInsertNewline:   r.notInsertNewline,
@@ -90,6 +92,7 @@ type indentFix struct {
 
 type indentVisitor struct {
 	*visitor.BaseFixableVisitor
+	lines        []string
 	style        string
 	currentLevel int
 
@@ -124,6 +127,9 @@ func (v indentVisitor) VisitEnumField(f *parser.EnumField) (next bool) {
 	for _, comment := range f.Comments {
 		v.validateIndentLeading(comment.Meta.Pos)
 	}
+	if len(f.EnumValueOptions) > 0 {
+		v.validateFieldOptions(f.Meta)
+	}
 	return false
 }
 
@@ -145,6 +151,9 @@ func (v indentVisitor) VisitField(f *parser.Field) (next bool) {
 	v.validateIndentLeading(f.Meta.Pos)
 	for _, comment := range f.Comments {
 		v.validateIndentLeading(comment.Meta.Pos)
+	}
+	if len(f.FieldOptions) > 0 {
+		v.validateFieldOptions(f.Meta)
 	}
 	return false
 }
@@ -175,6 +184,9 @@ func (v indentVisitor) VisitMapField(m *parser.MapField) (next bool) {
 	v.validateIndentLeading(m.Meta.Pos)
 	for _, comment := range m.Comments {
 		v.validateIndentLeading(comment.Meta.Pos)
+	}
+	if len(m.FieldOptions) > 0 {
+		v.validateFieldOptions(m.Meta)
 	}
 	return false
 }
@@ -212,7 +224,65 @@ func (v indentVisitor) VisitOneofField(f *parser.OneofField) (next bool) {
 	for _, comment := range f.Comments {
 		v.validateIndentLeading(comment.Meta.Pos)
 	}
+	if len(f.FieldOptions) > 0 {
+		v.validateFieldOptions(f.Meta)
+	}
 	return false
+}
+
+func (v indentVisitor) validateFieldOptions(field meta.Meta) {
+	start, end := field.Pos, field.LastPos
+	if start.Line == end.Line {
+		return
+	}
+
+	// Field options have no source positions in the AST. Scan the field text so
+	// brackets in quoted values and comments cannot be mistaken for delimiters.
+	lines := append([]string(nil), v.lines[start.Line-1:end.Line]...)
+	lines[0] = lines[0][byteOffset(lines[0], start.Column):]
+	last := len(lines) - 1
+	lines[last] = lines[last][:byteOffset(lines[last], end.Column)]
+	s := scanner.NewScanner(strings.NewReader(strings.Join(lines, "\n")))
+	s.Mode = scanner.ScanStrLit | scanner.ScanComment
+
+	depth := 0
+	lastLine := 1 // The field already owns its first line.
+	for {
+		token, _, scanned, err := s.Scan()
+		if err != nil || token == scanner.TEOF {
+			return
+		}
+		pos := scanned.Position
+		if pos.Line != lastLine {
+			lastLine = pos.Line
+			pos.Line += start.Line - 1
+			pos.Offset += start.Offset
+			pos.Filename = start.Filename
+			line := v.lines[pos.Line-1]
+			if strings.TrimSpace(line[:byteOffset(line, pos.Column)]) == "" {
+				switch {
+				case depth == 0 && token == scanner.TLEFTSQUARE,
+					depth == 1 && token == scanner.TRIGHTSQUARE:
+					v.validateIndentLeading(pos)
+				case depth == 1:
+					option := v
+					option.currentLevel++
+					option.validateIndentLeading(pos)
+				}
+			}
+		}
+
+		// Keep the indentation inside nested option values as written.
+		switch token {
+		case scanner.TLEFTSQUARE, scanner.TLEFTCURLY:
+			depth++
+		case scanner.TRIGHTSQUARE, scanner.TRIGHTCURLY:
+			depth--
+			if depth == 0 {
+				return
+			}
+		}
+	}
 }
 
 func (v indentVisitor) VisitOption(o *parser.Option) (next bool) {
@@ -242,7 +312,7 @@ func (v indentVisitor) VisitReserved(r *parser.Reserved) (next bool) {
 func (v indentVisitor) VisitRPC(r *parser.RPC) (next bool) {
 	v.validateIndentLeading(r.Meta.Pos)
 	defer func() {
-		line := v.Fixer.Lines()[r.Meta.LastPos.Line-1]
+		line := v.lines[r.Meta.LastPos.Line-1]
 		runes := []rune(line)
 		for i := r.Meta.LastPos.Column - 2; 0 < i; i-- {
 			r := runes[i]
@@ -314,7 +384,7 @@ func (v indentVisitor) validateIndent(
 	pos meta.Position,
 	isLast bool,
 ) {
-	line := v.Fixer.Lines()[pos.Line-1]
+	line := v.lines[pos.Line-1]
 	runes := []rune(line)
 	column := pos.Column
 	if isLast {
