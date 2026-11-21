@@ -24,7 +24,7 @@ jobs:
         # since. setup.py derives the wheel version from `git describe --tag`.
         run: git checkout --detach "$(git describe --tags --abbrev=0 --match='v*.*.*')"
       - name: Run go release to create binaries
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
           go-version: 1.25.x
       - name: Run GoReleaser
