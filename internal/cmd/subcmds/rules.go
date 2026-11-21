@@ -123,6 +123,10 @@ func newAllInternalRules(
 			fixMode,
 			autoDisableType,
 		),
+		rules.NewUnderscoreRule(
+			option.Underscore.Severity,
+			autoDisableType,
+		),
 		rules.NewFieldNamesExcludePrepositionsRule(
 			fieldNamesExcludePrepositions.Severity,
 			fieldNamesExcludePrepositions.Prepositions,
