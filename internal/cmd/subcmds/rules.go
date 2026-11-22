@@ -131,6 +131,7 @@ func newAllInternalRules(
 		rules.NewFieldsHaveCommentRule(
 			fieldsHaveComment.Severity,
 			fieldsHaveComment.ShouldFollowGolangStyle,
+			fieldsHaveComment.Excludes,
 		),
 		rules.NewProto3FieldsAvoidRequiredRule(
 			option.Proto3FieldsAvoidRequired.Severity,
