@@ -34,4 +34,5 @@ type RulesOption struct {
 	ServiceNamesUpperCamelCase      CustomizableSeverityOption            `yaml:"service_names_upper_caml_case" json:"service_names_upper_caml_case" toml:"service_names_upper_caml_case"`
 	Underscore                      CustomizableSeverityOption            `yaml:"underscore" json:"underscore" toml:"underscore"`
 	FieldNumbersOrderAscending      CustomizableSeverityOption            `yaml:"field_numbers_order_ascending" json:"field_numbers_order_ascending" toml:"field_numbers_order_ascending"`
+	EnumFirstValueZero              CustomizableSeverityOption            `yaml:"enum_first_value_zero" json:"enum_first_value_zero" toml:"enum_first_value_zero"`
 }

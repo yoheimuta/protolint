@@ -62,6 +62,7 @@ lint:
       - FILE_HAS_COMMENT
       - QUOTE_CONSISTENT
       - FIELD_NUMBERS_ORDER_ASCENDING
+      - ENUM_FIRST_VALUE_ZERO
 
     # The specific linters to remove.
     remove:
