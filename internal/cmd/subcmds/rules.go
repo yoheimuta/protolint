@@ -109,6 +109,10 @@ func newAllInternalRules(
 			enumFieldsHaveComment.Severity,
 			enumFieldsHaveComment.ShouldFollowGolangStyle,
 		),
+		rules.NewEnumFirstValueZeroRule(
+			option.EnumFirstValueZero.Severity,
+			autoDisableType,
+		),
 		rules.NewEnumNamesUpperCamelCaseRule(
 			option.EnumFieldNamesUpperSnakeCase.Severity,
 			fixMode,

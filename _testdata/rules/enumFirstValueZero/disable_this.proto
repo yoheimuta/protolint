@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+enum Status {
+  STATUS_ACTIVE = 1; // protolint:disable:this ENUM_FIRST_VALUE_ZERO
+  STATUS_INACTIVE = 2;
+}
