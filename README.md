@@ -280,7 +280,7 @@ The following fields are available:
 : The name of the rule that is faulting
 
 `Message`
-: The error message that descibes the error
+: The error message that describes the error
 
 ### Producing an output file and an CI/CD Error stream
 

@@ -30,7 +30,7 @@ test/lint:
 	# checks dispensable type conversions.
 	unconvert -v ./...
 
-## dev/install/dep installs depenencies required for development.
+## dev/install/dep installs dependencies required for development.
 dev/install/dep:
 	sh ./.github/install_dep.sh
 

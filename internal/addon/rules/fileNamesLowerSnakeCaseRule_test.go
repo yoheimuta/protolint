@@ -110,7 +110,7 @@ func TestFileNamesLowerSnakeCaseRule_Apply(t *testing.T) {
 			},
 		},
 		{
-			name: "a failure for proto with an invalid separater",
+			name: "a failure for proto with an invalid separator",
 			inputProto: &parser.Proto{
 				Meta: &parser.ProtoMeta{
 					Filename: "proto/dot.separated.proto",
