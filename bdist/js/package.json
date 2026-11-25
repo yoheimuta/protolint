@@ -60,7 +60,7 @@
     "eslint-plugin-sonarjs": "^4.0.0",
     "eslint-plugin-unicorn": "^63.0.0",
     "prettier": "3.8.1",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   },
   "overrides": {
     "minimatch@>=10 <11.0.1": "^11.0.1"
