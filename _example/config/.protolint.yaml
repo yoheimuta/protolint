@@ -158,6 +158,9 @@ lint:
     fields_have_comment:
       # Comments need to begin with the name of the thing being described. default is false.
       should_follow_golang_style: true
+      # Field names that do not need a comment.
+      excludes:
+        - id
 
     # ENUMS_HAVE_COMMENT rule option.
     enums_have_comment:

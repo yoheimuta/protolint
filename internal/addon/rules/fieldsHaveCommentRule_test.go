@@ -18,8 +18,50 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 		name                         string
 		inputProto                   *parser.Proto
 		inputShouldFollowGolangStyle bool
+		inputExcludes                []string
 		wantFailures                 []report.Failure
 	}{
+		{
+			name: "no failures for excluded field names without comments",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Message{
+						MessageBody: []parser.Visitee{
+							&parser.Field{FieldName: "id"},
+							&parser.MapField{MapName: "labels"},
+							&parser.Oneof{
+								OneofFields: []*parser.OneofField{
+									{FieldName: "uid"},
+								},
+							},
+						},
+					},
+				},
+			},
+			inputExcludes: []string{"id", "labels", "uid"},
+		},
+		{
+			name: "failures only for fields not in excludes",
+			inputProto: &parser.Proto{
+				ProtoBody: []parser.Visitee{
+					&parser.Message{
+						MessageBody: []parser.Visitee{
+							&parser.Field{FieldName: "id"},
+							&parser.Field{FieldName: "name"},
+						},
+					},
+				},
+			},
+			inputExcludes: []string{"id"},
+			wantFailures: []report.Failure{
+				report.Failuref(
+					meta.Position{},
+					"FIELDS_HAVE_COMMENT",
+					string(rule.SeverityError),
+					`Field "name" should have a comment`,
+				),
+			},
+		},
 		{
 			name: "no failures for proto without field",
 			inputProto: &parser.Proto{
@@ -368,7 +410,7 @@ func TestFieldsHaveCommentRule_Apply(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			rule := rules.NewFieldsHaveCommentRule(rule.SeverityError, test.inputShouldFollowGolangStyle)
+			rule := rules.NewFieldsHaveCommentRule(rule.SeverityError, test.inputShouldFollowGolangStyle, test.inputExcludes)
 
 			got, err := rule.Apply(test.inputProto)
 			if err != nil {
