@@ -10,6 +10,10 @@ on:
 jobs:
   publish_whl:
     name: Publish Wheel
+    # workflow_run fires on every completed goreleaser run, failed ones included.
+    # Publish only when goreleaser succeeded, so PyPI never gets a version
+    # that has no GitHub Release. Manual runs are always allowed.
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
