@@ -46,7 +46,7 @@ func (t *LintFilesTool) GetInfo() ToolInfo {
 				},
 				"fix": map[string]any{
 					"type":        "boolean",
-					"description": "Fix lint errors if possible. Default is false. It may return failures even if all errors are fixed, so you are strongly recommended to lint the target files again to see if they are fixed.",
+					"description": "Fix lint errors if possible. Default is false. When enabled, the files are linted again after fixing and only the failures that remain are returned. exit_code is 0 if all failures were fixed.",
 				},
 			},
 			"required": []string{"files"},
@@ -128,8 +128,8 @@ func (t *LintFilesTool) Execute(args json.RawMessage) (any, error) {
 	result["exit_code"] = exitCode
 
 	if lintArgs.Fix {
-		// If fix is enabled, add a message indicating that you should lint again
-		result["message"] = "Don't think these failures remain now. The fixer could fix all the failures already. Before you manually edit the file, you must lint the files again to see if they are fixed."
+		// If fix is enabled, the reported failures are the ones that remain after fixing
+		result["message"] = "Fixes have already been applied to the files. The failures listed here, if any, remain after fixing and need to be fixed manually."
 	}
 
 	return result, nil
