@@ -371,7 +371,7 @@ See AutoDisable columns below.
 | No | _  | - | MESSAGES_HAVE_COMMENT | Verifies that all messages have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                               |
 | No | _  | - | SERVICES_HAVE_COMMENT | Verifies that all services have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                               |
 | No | _  | - | RPCS_HAVE_COMMENT | Verifies that all rps have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                                    |
-| No | _  | - | FIELDS_HAVE_COMMENT | Verifies that all fields have a comment. You can configure to enforce Golang Style comments and to exclude specific field names with `.protolint.yaml`.                                             |
+| No | _  | - | FIELDS_HAVE_COMMENT | Verifies that all fields have a comment. You can configure to enforce Golang Style comments and to exclude specific field names with `.protolint.yaml`. `excludes` matches the field name exactly (case-sensitive), regardless of the enclosing message. |
 | No | _  | - | ENUMS_HAVE_COMMENT | Verifies that all enums have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                                  |
 | No | _  | - | ENUM_FIELDS_HAVE_COMMENT | Verifies that all enum fields have a comment. You can configure to enforce Golang Style comments with `.protolint.yaml`.                                                                            |
 | No | _  | - | FILE_HAS_COMMENT | Verifies that a file starts with a doc comment.                                                                                                                                                     |
@@ -600,6 +600,8 @@ When linting files, protolint will exit with one of the following exit codes:
 - `0`: Linting was successful and there are no linting errors.
 - `1`: Linting was successful and there is at least one linting error.
 - `2`: Linting was unsuccessful due to all other errors, such as parsing, internal, and runtime errors.
+
+With `-fix`, protolint lints the fixed files again and the exit code reflects only the remaining problems: `0` if all reported problems were fixed, and `1` if at least one problem could not be fixed. Only the remaining problems are reported.
 
 ## Motivation
 
