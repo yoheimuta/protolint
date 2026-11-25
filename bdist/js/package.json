@@ -55,7 +55,7 @@
     "@types/node": "^20.19.30",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-n": "^17.23.2",
+    "eslint-plugin-n": "^18.5.0",
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-sonarjs": "^4.0.0",
     "eslint-plugin-unicorn": "^63.0.0",
