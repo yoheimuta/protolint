@@ -33,7 +33,7 @@ jobs:
         # Publish the tagged tree rather than whatever has landed on master since.
         run: git checkout --detach "$(git describe --tags --abbrev=0 --match='v*.*.*')"
       - name: Install node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           # Trusted publishing needs Node >= 22.14.0 and npm >= 11.5.1, which is
           # stricter than the engines range in ./bdist/js/package.json.
