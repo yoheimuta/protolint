@@ -102,6 +102,9 @@ docker_manifests:
       - yoheimuta/{{ .ProjectName }}:latest-armv7
 dockers:
   # https://goreleaser.com/customization/docker/
+  # --provenance=false/--sbom=false: with the containerd image store (Docker 29+),
+  # buildx attaches attestations and pushes each image as an index, which
+  # docker_manifests (docker manifest create) rejects as "is a manifest list".
   - use: buildx
     goos: linux
     goarch: amd64
@@ -114,6 +117,8 @@ dockers:
       - --label=org.opencontainers.image.title={{.ProjectName}}
       - --label=org.opencontainers.image.revision={{.FullCommit}}
       - --label=org.opencontainers.image.version={{.Version}}
+      - --provenance=false
+      - --sbom=false
   - use: buildx
     goos: linux
     goarch: arm64
@@ -126,6 +131,8 @@ dockers:
       - --label=org.opencontainers.image.title={{.ProjectName}}
       - --label=org.opencontainers.image.revision={{.FullCommit}}
       - --label=org.opencontainers.image.version={{.Version}}
+      - --provenance=false
+      - --sbom=false
   - use: buildx
     goos: linux
     goarch: arm
@@ -139,6 +146,8 @@ dockers:
       - --label=org.opencontainers.image.title={{.ProjectName}}
       - --label=org.opencontainers.image.revision={{.FullCommit}}
       - --label=org.opencontainers.image.version={{.Version}}
+      - --provenance=false
+      - --sbom=false
   - use: buildx
     goos: linux
     goarch: arm
@@ -152,3 +161,5 @@ dockers:
       - --label=org.opencontainers.image.title={{.ProjectName}}
       - --label=org.opencontainers.image.revision={{.FullCommit}}
       - --label=org.opencontainers.image.version={{.Version}}
+      - --provenance=false
+      - --sbom=false
