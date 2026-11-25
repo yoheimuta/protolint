@@ -354,6 +354,7 @@ See AutoDisable columns below.
 | Yes | ✅ | ✅ | FIELD_NAMES_LOWER_SNAKE_CASE  | Verifies that all field names are underscore_separated_names.                                                                                                                                       |
 | Yes | ✅ | *1 | IMPORTS_SORTED                | Verifies that all imports are sorted.                                                                                                                                                               |
 | Yes | ✅ | ✅ | MESSAGE_NAMES_UPPER_CAMEL_CASE | Verifies that all message names are CamelCase (with an initial capital).                                                                                                                            |
+| Yes | _  | ✅ | UNDERSCORE                    | Verifies that identifiers do not begin or end with an underscore and that every underscore is followed by a letter.                                                                                 |
 | Yes | ✅ | *1 | ORDER                         | Verifies that all files should be ordered in the specific manner.                                                                                                                                   |
 | Yes | ✅ | *1 | PACKAGE_NAME_LOWER_CASE       | Verifies that the package name should only contain lowercase letters.                                                                                                                               |
 | Yes | ✅ | ✅ | RPC_NAMES_UPPER_CAMEL_CASE    | Verifies that all rpc names are CamelCase (with an initial capital).                                                                                                                                |
@@ -428,6 +429,21 @@ __FIELD_NAMES_LOWER_SNAKE_CASE__
 message SongServerRequest {
 -  required string SongName = 1;
 +  required string song_name = 1;
+}
+```
+
+__UNDERSCORE__
+
+```diff
+message Test {
+-  int64 number_1 = 1;
+-  int64 _leading_underscore = 2;
+-  int64 trailing_underscore_ = 3;
+-  int64 double__underscore = 4;
++  int64 number_one = 1;
++  int64 leading_underscore = 2;
++  int64 trailing_underscore = 3;
++  int64 double_underscore = 4;
 }
 ```
 
