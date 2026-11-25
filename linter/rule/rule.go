@@ -7,7 +7,7 @@ import (
 )
 
 // Severity represents the severity of the rule.
-// All failues will have this severity on export.
+// All failures will have this severity on export.
 type Severity string
 
 const (

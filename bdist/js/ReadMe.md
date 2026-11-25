@@ -16,7 +16,7 @@ Within the remote path, make sure, that a folder `v<version>` exists containing 
 If you are required to authenticate against your mirror, use the following environment variables:
 
 `PROTOLINT_MIRROR_USERNAME`: The user name. Defaults to an empty string.
-`PROTOLINT_MIRROR_PASSWORD`: The password or identifaction token. Defaults to an empty string.
+`PROTOLINT_MIRROR_PASSWORD`: The password or identification token. Defaults to an empty string.
 
 For node based projects, you can add the protobuf configuration to your `package.json` using a node called `protolint`.
 
