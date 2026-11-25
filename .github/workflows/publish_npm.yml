@@ -16,6 +16,10 @@ permissions:
 jobs:
   publish_npm:
     name: Publish NPM
+    # workflow_run fires on every completed goreleaser run, failed ones included.
+    # Publish only when goreleaser succeeded, so the GitHub Release the npm
+    # postinstall downloads from exists. Manual runs are always allowed.
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
