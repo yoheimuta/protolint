@@ -38,6 +38,7 @@ func newAllInternalRules(
 	maxLineLength := option.MaxLineLength
 	enumFieldNamesZeroValueEndWith := option.EnumFieldNamesZeroValueEndWith
 	serviceNamesEndWith := option.ServiceNamesEndWith
+	rpcRequestResponseNamesEndWith := option.RPCRequestResponseNamesEndWith
 	fieldNamesExcludePrepositions := option.FieldNamesExcludePrepositions
 	messageNamesExcludePrepositions := option.MessageNamesExcludePrepositions
 	messagesHaveComment := option.MessagesHaveComment
@@ -176,6 +177,12 @@ func newAllInternalRules(
 		rules.NewRPCNamesCaseRule(
 			option.RPCNamesCaseOption.Severity,
 			option.RPCNamesCaseOption.Convention,
+		),
+		rules.NewRPCRequestResponseNamesEndWithRule(
+			rpcRequestResponseNamesEndWith.Severity,
+			rpcRequestResponseNamesEndWith.RequestSuffix,
+			rpcRequestResponseNamesEndWith.ResponseSuffix,
+			rpcRequestResponseNamesEndWith.Excludes,
 		),
 		rules.NewRPCsHaveCommentRule(
 			rpcsHaveComment.Severity,

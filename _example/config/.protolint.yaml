@@ -62,6 +62,7 @@ lint:
       - FILE_HAS_COMMENT
       - QUOTE_CONSISTENT
       - FIELD_NUMBERS_ORDER_ASCENDING
+      - RPC_REQUEST_RESPONSE_NAMES_END_WITH
 
     # The specific linters to remove.
     remove:
@@ -138,6 +139,16 @@ lint:
       # The specific convention the name should conforms to.
       ## Available conventions are "lower_camel_case", "upper_snake_case", or "lower_snake_case".
       convention: upper_snake_case
+
+    # RPC_REQUEST_RESPONSE_NAMES_END_WITH rule option.
+    rpc_request_response_names_end_with:
+      # The suffix that rpc request message names must end with. Default is Request.
+      request_suffix: Request
+      # The suffix that rpc response message names must end with. Default is Response.
+      response_suffix: Response
+      # Message types that are not checked. They match the type as written in the rpc, a leading dot is ignored.
+      excludes:
+        - google.protobuf.Empty
 
     # MESSAGES_HAVE_COMMENT rule option.
     messages_have_comment:
