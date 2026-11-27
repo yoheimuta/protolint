@@ -12,6 +12,7 @@ type RulesOption struct {
 	FieldNamesExcludePrepositions   FieldNamesExcludePrepositionsOption   `yaml:"field_names_exclude_prepositions" json:"field_names_exclude_prepositions" toml:"field_names_exclude_prepositions"`
 	MessageNamesExcludePrepositions MessageNamesExcludePrepositionsOption `yaml:"message_names_exclude_prepositions" json:"message_names_exclude_prepositions" toml:"message_names_exclude_prepositions"`
 	RPCNamesCaseOption              RPCNamesCaseOption                    `yaml:"rpc_names_case" json:"rpc_names_case" toml:"rpc_names_case"`
+	RPCRequestResponseNamesEndWith  RPCRequestResponseNamesEndWithOption  `yaml:"rpc_request_response_names_end_with" json:"rpc_request_response_names_end_with" toml:"rpc_request_response_names_end_with"`
 	MessagesHaveComment             MessagesHaveCommentOption             `yaml:"messages_have_comment" json:"messages_have_comment" toml:"messages_have_comment"`
 	ServicesHaveComment             ServicesHaveCommentOption             `yaml:"services_have_comment" json:"services_have_comment" toml:"services_have_comment"`
 	RPCsHaveComment                 RPCsHaveCommentOption                 `yaml:"rpcs_have_comment" json:"rpcs_have_comment" toml:"rpcs_have_comment"`
